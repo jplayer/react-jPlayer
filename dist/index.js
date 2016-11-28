@@ -1,24 +1,25 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "./store"], factory);
+        define(["exports", "react", "react-dom", "react-redux", "./store"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("./store"));
+        factory(exports, require("react"), require("react-dom"), require("react-redux"), require("./store"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.store);
+        factory(mod.exports, global.react, global.reactDom, global.reactRedux, global.store);
         global.index = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _store) {
+})(this, function (exports, _react, _reactDom, _reactRedux, _store) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.jPlayerWrapper = undefined;
 
     var _react2 = _interopRequireDefault(_react);
+
+    var _reactDom2 = _interopRequireDefault(_reactDom);
 
     var _store2 = _interopRequireDefault(_store);
 
@@ -90,41 +91,44 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var jPlayerWrapper = exports.jPlayerWrapper = function jPlayerWrapper(store, WrappedPlayer, options) {
-        return (0, _reactRedux.connect)(function (store) {
-            var JPlayerWrapper = function (_React$Component) {
-                _inherits(JPlayerWrapper, _React$Component);
+    exports.default = function (WrappedPlayer, options) {
+        debugger;
+        var JPlayerWrapper = function (_React$Component) {
+            _inherits(JPlayerWrapper, _React$Component);
 
-                function JPlayerWrapper(props) {
-                    _classCallCheck(this, JPlayerWrapper);
+            function JPlayerWrapper(props) {
+                _classCallCheck(this, JPlayerWrapper);
 
-                    var _this = _possibleConstructorReturn(this, (JPlayerWrapper.__proto__ || Object.getPrototypeOf(JPlayerWrapper)).call(this, props));
+                var _this = _possibleConstructorReturn(this, (JPlayerWrapper.__proto__ || Object.getPrototypeOf(JPlayerWrapper)).call(this, props));
 
-                    _this.updateOptions = function (update, callback) {
-                        return _this.setState(function (prevState) {
-                            return prevState.jPlayerOptions = update(prevState.jPlayerOptions);
-                        }, callback);
-                    };
+                _this.updateOptions = function (update, callback) {
+                    return _this.setState(function (prevState) {
+                        return prevState.jPlayerOptions = update(prevState.jPlayerOptions);
+                    }, callback);
+                };
 
-                    _this.state = {
-                        jPlayerOptions: options
-                    };
-                    return _this;
+                _this.state = {
+                    jPlayerOptions: options
+                };
+                return _this;
+            }
+
+            _createClass(JPlayerWrapper, [{
+                key: "render",
+                value: function render() {
+                    return _react2.default.createElement(WrappedPlayer, _extends({}, this.state.jPlayerOptions, { updateOptions: this.updateOptions }));
                 }
+            }]);
 
-                _createClass(JPlayerWrapper, [{
-                    key: "render",
-                    value: function render() {
-                        return _react2.default.createElement(
-                            _reactRedux.Provider,
-                            { store: store },
-                            _react2.default.createElement(WrappedPlayer, _extends({}, this.state.jPlayerOptions, { updateOptions: this.updateOptions }))
-                        );
-                    }
-                }]);
+            return JPlayerWrapper;
+        }(_react2.default.Component);
 
-                return JPlayerWrapper;
-            }(_react2.default.Component);
-        });
+        JPlayerWrapper = (0, _reactRedux.connect)()(JPlayerWrapper);
+
+        _reactDom2.default.render(_react2.default.createElement(
+            _reactRedux.Provider,
+            { store: _store2.default },
+            _react2.default.createElement(JPlayerWrapper, null)
+        ), document.getElementById("jPlayer"));
     };
 });

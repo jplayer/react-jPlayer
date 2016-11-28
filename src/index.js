@@ -4,8 +4,14 @@ import ReactDOM from "react-dom";
 import {Provider, connect} from "react-redux";
 import store from "./store";
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    muted: state.jPlayer.muted,
+    paused: state.jPlayer.paused
+  }
+}
+
 export default (WrappedPlayer, options) => {
-    debugger
     let JPlayerWrapper = class extends React.Component {
         constructor(props) {
             super(props);
@@ -16,11 +22,12 @@ export default (WrappedPlayer, options) => {
         }
         updateOptions = (update, callback) => this.setState((prevState) => prevState.jPlayerOptions = update(prevState.jPlayerOptions), callback)
         render() {
-            return <WrappedPlayer {...this.state.jPlayerOptions} updateOptions={this.updateOptions} />
+            debugger;
+            return <WrappedPlayer {...this.props} {...this.state.jPlayerOptions} updateOptions={this.updateOptions} />
         }
     }
 
-    JPlayerWrapper = connect()(JPlayerWrapper);
+    JPlayerWrapper = connect(mapStateToProps)(JPlayerWrapper);
 
-    ReactDOM.render(<Provider store={store}><JPlayerWrapper/></Provider>, document.getElementById("jPlayer"));
+    ReactDOM.render(<Provider store={store}><JPlayerWrapper/></Provider>, document.getElementById(options.jPlayerSelector));
 }

@@ -5,6 +5,7 @@ import maxBy from "lodash/maxBy";
 import jPlayer from "../../jPlayer/index";
 import store from "../../store";
 import * as actions from "./actions";
+import * as jPlayerActions from "../../jPlayer/actions";
 import * as utilities from "../../util/index";
 
 const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component {
@@ -43,7 +44,7 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
     }
     constructor(props) {
         super(props);
-debugger
+
         WrappedComponent = jPlayer(WrappedComponent, PlaylistControls);
 
         this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
@@ -66,7 +67,7 @@ debugger
                 this._trigger(this.props.onEnded);
             },
             onPlay: () => { 
-                actions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
+                jPlayerActions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
                 this._trigger(this.props.onPlay);
              },
             onResize: () => {

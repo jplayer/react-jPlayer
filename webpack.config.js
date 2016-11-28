@@ -6,7 +6,7 @@ module.exports = {
     context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
     entry: {
-        example: "./examples/jPlaylistDemo.js"
+        example: ["./examples/jPlaylistDemo.js", "./examples/jPlaylistDemo2.js"]
     },
     module: {
         loaders: [

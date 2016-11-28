@@ -131,8 +131,8 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	}
 	static get defaultProps() {
 		return {
-			cssSelectorAncestor: "#jp_container_1",
-			jPlayerSelector: "#jplayer_1",
+			cssSelectorAncestor: "jp_container_1",
+			jPlayerSelector: "jplayer_1",
 			preload: "metadata", // HTML5 Spec values: none, metadata, auto.
 			supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,		
 			captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.
@@ -175,7 +175,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		super(props);
 
 		this.state = {};	
-debugger
+
         this.assignOptions = utilities.assignOptions.bind(this);
 		this.mergeOptions = utilities.mergeOptions.bind(this);
 		this.modifyOptionsArray = utilities.modifyOptionsArray.bind(this);
@@ -1127,6 +1127,7 @@ debugger
 				}
 			},
 			muted: (value) => {	
+				debugger;
 				if(this.html.used) {
 					this.currentMedia.muted = value;
 				}
@@ -1536,7 +1537,7 @@ debugger
 	componentWillMount() {
 		this._initBeforeRender();
 		// store.on("jPlayerChange", () => {
-		// 	debugger
+
 		// 	if (store.identifier !== this.props.jPlayerSelector) {
 		// 		this.assignOptions({
 		// 			volume: store.volume, 
@@ -1592,9 +1593,9 @@ debugger
 	render() {
 		return (
 			<WrappedComponent playd={this.play} {...this.props}>
-				<div id={this.props.cssSelectorAncestor.slice(1)} className={this.props.status.stateClass.join(" ")}>
+				<div id={this.props.cssSelectorAncestor} className={this.props.status.stateClass.join(" ")}>
 					{this.props.children}		
-					<div ref={(jPlayerElement) => this.jPlayerElement = jPlayerElement} id={this.props.jPlayerSelector.slice(1)} className="jp-jplayer" style={this.state.jPlayerStyle}>
+					<div ref={(jPlayerElement) => this.jPlayerElement = jPlayerElement} className="jp-jplayer" style={this.state.jPlayerStyle}>
 						<Poster posterClass={this.props.posterClass.join(" ")} src={this.state.posterSrc} onLoad={this._posterLoad} onClick={() => this._trigger(this.props.onClick)} /> 
 						<Audio ref={(audio) => this.audio = audio} require={this.require.audio} events={this.mediaEvent}>
 							{this.state.videoTracks}

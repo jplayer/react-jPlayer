@@ -16,7 +16,6 @@
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.PlaylistControls = undefined;
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -441,6 +440,7 @@
                     }
                 };
 
+                debugger;
                 WrappedComponent = (0, _index2.default)(WrappedComponent, PlaylistControls);
 
                 _this.playlistContainerMinHeight = _this.playlistItemAnimMinHeight = 0;
@@ -512,15 +512,13 @@
             _createClass(JPlaylist, [{
                 key: "componentWillMount",
                 value: function componentWillMount() {
-                    var _this2 = this;
-
                     this._initPlaylist(this.props.playlist);
-                    _store2.default.on("jPlayerChange", function () {
-                        debugger;
-                        if (_store2.default.identifier !== _this2.props.jPlayerSelector) {
-                            _this2.mergeOptions({ status: { paused: _store2.default.paused } });
-                        }
-                    });
+                    // store.on("jPlayerChange", () => {
+                    //     debugger
+                    //     if (store.identifier !== this.props.jPlayerSelector) {
+                    //         this.mergeOptions({status: {paused: store.paused}});
+                    //     }
+                    // });
                 }
             }, {
                 key: "componentDidMount",
@@ -530,7 +528,7 @@
             }, {
                 key: "render",
                 value: function render() {
-                    var _this3 = this;
+                    var _this2 = this;
 
                     var MediaAnimationConfig = this.state.useRemoveConfig ? this.props.removeAnimation : this.props.addAnimation;
                     var playlistControlProps = {
@@ -545,7 +543,7 @@
                     return _react2.default.createElement(
                         WrappedComponent,
                         _extends({ ref: function ref(jPlayer) {
-                                return _this3.jPlayer = jPlayer;
+                                return _this2.jPlayer = jPlayer;
                             } }, this.props, this.keyBindings, this.event, { stateClass: this.stateClass, loopOptions: "loop-playlist",
                             additionalControlProps: playlistControlProps }),
                         _react2.default.createElement(
@@ -572,44 +570,44 @@
         }(_react2.default.Component);
     };
 
-    var PlaylistControls = exports.PlaylistControls = function (_React$Component2) {
+    var PlaylistControls = function (_React$Component2) {
         _inherits(PlaylistControls, _React$Component2);
 
         function PlaylistControls(props) {
             _classCallCheck(this, PlaylistControls);
 
-            var _this4 = _possibleConstructorReturn(this, (PlaylistControls.__proto__ || Object.getPrototypeOf(PlaylistControls)).call(this));
+            var _this3 = _possibleConstructorReturn(this, (PlaylistControls.__proto__ || Object.getPrototypeOf(PlaylistControls)).call(this));
 
-            _this4._onShuffleClick = function (event) {
+            _this3._onShuffleClick = function (event) {
                 event.preventDefault();
 
-                _this4.props.shuffle(!_this4.props.shuffled);
-                _this4.props.blur(event.target);
+                _this3.props.shuffle(!_this3.props.shuffled);
+                _this3.props.blur(event.target);
             };
 
-            _this4._onPreviousClick = function (event) {
+            _this3._onPreviousClick = function (event) {
                 event.preventDefault();
 
-                _this4.props.previous();
-                _this4.props.blur(event.target);
+                _this3.props.previous();
+                _this3.props.blur(event.target);
             };
 
-            _this4._onNextClick = function (event) {
+            _this3._onNextClick = function (event) {
                 event.preventDefault();
 
-                _this4.props.next();
-                _this4.props.blur(event.target);
+                _this3.props.next();
+                _this3.props.blur(event.target);
             };
 
-            _this4.state = {};
-            _this4.className = {
+            _this3.state = {};
+            _this3.className = {
                 details: "jp-details",
                 shuffle: "jp-shuffle",
                 previous: "jp-previous",
                 next: "jp-next",
                 extraControls: "jp-extra-controls"
             };
-            return _this4;
+            return _this3;
         }
 
         _createClass(PlaylistControls, [{
@@ -661,67 +659,67 @@
         function Media(props) {
             _classCallCheck(this, Media);
 
-            var _this5 = _possibleConstructorReturn(this, (Media.__proto__ || Object.getPrototypeOf(Media)).call(this, props));
+            var _this4 = _possibleConstructorReturn(this, (Media.__proto__ || Object.getPrototypeOf(Media)).call(this, props));
 
-            _this5._onRemoveMediaClick = function (index, event) {
+            _this4._onRemoveMediaClick = function (index, event) {
                 event.preventDefault();
 
-                _this5.props.remove(index);
-                _this5.props.blur(event.target);
+                _this4.props.remove(index);
+                _this4.props.blur(event.target);
             };
 
-            _this5._onMediaLinkClick = function (index, event) {
+            _this4._onMediaLinkClick = function (index, event) {
                 event.preventDefault();
 
-                _this5.props.current !== index ? _this5.props.play(index) : _this5.props.mergeOptions({ status: { paused: false } });
-                _this5.props.blur(event.target);
+                _this4.props.current !== index ? _this4.props.play(index) : _this4.props.mergeOptions({ status: { paused: false } });
+                _this4.props.blur(event.target);
             };
 
-            _this5.state = {};
-            _this5.className = {
+            _this4.state = {};
+            _this4.className = {
                 currentMedia: "jp-playlist-current"
             };
-            return _this5;
+            return _this4;
         }
 
         _createClass(Media, [{
             key: "render",
             value: function render() {
-                var _this6 = this;
+                var _this5 = this;
 
                 return _react2.default.createElement(
                     "div",
                     null,
                     this.props.medias.map(function (media, index) {
-                        var animationHeight = media.isRemoving ? _this6.props.minHeight : _this6.props.maxHeight;
-                        var mediaListClass = _this6.props.current === index ? _this6.className.currentMedia : null;
-                        var mediaLinkClass = _this6.props.current === index ? _this6.props.itemClass + " " + _this6.className.currentMedia : _this6.props.itemClass;
+                        var animationHeight = media.isRemoving ? _this5.props.minHeight : _this5.props.maxHeight;
+                        var mediaListClass = _this5.props.current === index ? _this5.className.currentMedia : null;
+                        var mediaLinkClass = _this5.props.current === index ? _this5.props.itemClass + " " + _this5.className.currentMedia : _this5.props.itemClass;
                         var onRest = media.isRemoving ? function () {
-                            return _this6.props.onRest(index);
+                            return _this5.props.onRest(index);
                         } : null;
 
                         return _react2.default.createElement(
                             _reactMotion.Motion,
-                            { key: media.key, defaultStyle: { heightToInterpTo: _this6.props.minHeight }, style: { heightToInterpTo: (0, _reactMotion.spring)(animationHeight, _this6.props.config) }, onRest: onRest },
+                            { key: media.key, defaultStyle: { heightToInterpTo: _this5.props.minHeight }, style: { heightToInterpTo: (0, _reactMotion.spring)(animationHeight, _this5.props.config) }, onRest: onRest },
                             function (values) {
                                 return _react2.default.createElement(
                                     "li",
                                     { className: mediaListClass, style: { transform: "scaleY(" + values.heightToInterpTo + ")", transformOrigin: "50% top" } },
-                                    _this6.props.enableRemoveControls && _react2.default.createElement(
+                                    _this5.props.enableRemoveControls && _react2.default.createElement(
                                         "a",
-                                        { href: "javascript:;", className: _this6.props.removeItemClass, onClick: _this6._onRemoveMediaClick.bind(_this6, index) },
+                                        { href: "javascript:;", className: _this5.props.removeItemClass, onClick: _this5._onRemoveMediaClick.bind(_this5, index) },
                                         "\xD7"
                                     ),
                                     media.free && _react2.default.createElement(
                                         "span",
-                                        { className: _this6.props.freeGroupClass },
+                                        { className: _this5.props.freeGroupClass },
                                         "(",
                                         media.freeMediaLinks,
                                         ")"
                                     ),
                                     _react2.default.createElement(
                                         "a",
-                                        { href: "javascript:;", className: mediaLinkClass, onClick: _this6._onMediaLinkClick.bind(_this6, index), tabIndex: "0" },
+                                        { href: "javascript:;", className: mediaLinkClass, onClick: _this5._onMediaLinkClick.bind(_this5, index), tabIndex: "0" },
                                         _react2.default.createElement("img", { src: media.poster }),
                                         media.title,
                                         media.artist && _react2.default.createElement(

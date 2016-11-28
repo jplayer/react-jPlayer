@@ -1777,7 +1777,7 @@
 				};
 
 				_this.state = {};
-
+				debugger;
 				_this.assignOptions = utilities.assignOptions.bind(_this);
 				_this.mergeOptions = utilities.mergeOptions.bind(_this);
 				_this.modifyOptionsArray = utilities.modifyOptionsArray.bind(_this);
@@ -1832,18 +1832,16 @@
 			}, {
 				key: "componentWillMount",
 				value: function componentWillMount() {
-					var _this2 = this;
-
 					this._initBeforeRender();
-					_store2.default.on("jPlayerChange", function () {
-						debugger;
-						if (_store2.default.identifier !== _this2.props.jPlayerSelector) {
-							_this2.assignOptions({
-								volume: _store2.default.volume,
-								muted: _store2.default.muted
-							});
-						}
-					});
+					// store.on("jPlayerChange", () => {
+					// 	debugger
+					// 	if (store.identifier !== this.props.jPlayerSelector) {
+					// 		this.assignOptions({
+					// 			volume: store.volume, 
+					// 			muted: store.muted
+					// 		});				
+					// 	}
+					// });
 				}
 			}, {
 				key: "componentDidUpdate",
@@ -1894,7 +1892,7 @@
 			}, {
 				key: "render",
 				value: function render() {
-					var _this3 = this;
+					var _this2 = this;
 
 					return _react2.default.createElement(
 						WrappedComponent,
@@ -1906,24 +1904,24 @@
 							_react2.default.createElement(
 								"div",
 								{ ref: function ref(jPlayerElement) {
-										return _this3.jPlayerElement = jPlayerElement;
+										return _this2.jPlayerElement = jPlayerElement;
 									}, id: this.props.jPlayerSelector.slice(1), className: "jp-jplayer", style: this.state.jPlayerStyle },
 								_react2.default.createElement(Poster, { posterClass: this.props.posterClass.join(" "), src: this.state.posterSrc, onLoad: this._posterLoad, onClick: function onClick() {
-										return _this3._trigger(_this3.props.onClick);
+										return _this2._trigger(_this2.props.onClick);
 									} }),
 								_react2.default.createElement(
 									Audio,
 									{ ref: function ref(audio) {
-											return _this3.audio = audio;
+											return _this2.audio = audio;
 										}, require: this.require.audio, events: this.mediaEvent },
 									this.state.videoTracks
 								),
 								_react2.default.createElement(
 									Video,
 									{ ref: function ref(video) {
-											return _this3.video = video;
+											return _this2.video = video;
 										}, require: this.require.video, videoClass: this.props.videoClass.join(" "), style: this.state.videoStyle, onClick: function onClick() {
-											return _this3._trigger(_this3.props.onClick);
+											return _this2._trigger(_this2.props.onClick);
 										}, events: this.mediaEvent },
 									this.state.videoTracks
 								)
@@ -2021,43 +2019,43 @@
 		function GUI() {
 			_classCallCheck(this, GUI);
 
-			var _this4 = _possibleConstructorReturn(this, (GUI.__proto__ || Object.getPrototypeOf(GUI)).call(this));
+			var _this3 = _possibleConstructorReturn(this, (GUI.__proto__ || Object.getPrototypeOf(GUI)).call(this));
 
-			_this4._setFading = function (event) {
-				if (!_this4.state.isFadingIn) {
+			_this3._setFading = function (event) {
+				if (!_this3.state.isFadingIn) {
 
-					_this4.fadeHoldTimeout = setTimeout(function () {
-						_this4.setState({ isFadingIn: false });
-					}, _this4.props.autoHide.hold);
+					_this3.fadeHoldTimeout = setTimeout(function () {
+						_this3.setState({ isFadingIn: false });
+					}, _this3.props.autoHide.hold);
 				}
 
-				_this4.setState({ isFadingIn: true });
+				_this3.setState({ isFadingIn: true });
 			};
 
-			_this4._updateAutoHide = function () {
+			_this3._updateAutoHide = function () {
 				return _react2.default.createElement(
 					"div",
-					{ className: _this4.props.nativeVideoControls ? utilities.className.hidden : null, onMouseMove: _this4._setFading, style: { width: "100%", height: "100%", position: "fixed", top: "0" } },
+					{ className: _this3.props.nativeVideoControls ? utilities.className.hidden : null, onMouseMove: _this3._setFading, style: { width: "100%", height: "100%", position: "fixed", top: "0" } },
 					_react2.default.createElement(
 						_reactMotion.Motion,
-						{ defaultStyle: { opacityToInterpTo: 1 }, style: { opacityToInterpTo: (0, _reactMotion.spring)(_this4.state.isFadingIn ? 1 : 0, _this4.state.isFadingIn ? _this4.props.fadeInConfig : _this4.props.fadeOutConfig) } },
+						{ defaultStyle: { opacityToInterpTo: 1 }, style: { opacityToInterpTo: (0, _reactMotion.spring)(_this3.state.isFadingIn ? 1 : 0, _this3.state.isFadingIn ? _this3.props.fadeInConfig : _this3.props.fadeOutConfig) } },
 						function (values) {
 							return _react2.default.createElement(
 								"div",
 								{ className: "jp-gui", onMouseLeave: function onMouseLeave() {
-										return _this4.setState({ isFadingIn: false });
+										return _this3.setState({ isFadingIn: false });
 									}, onMouseEnter: function onMouseEnter() {
-										return clearTimeout(_this4.fadeHoldTimeout);
+										return clearTimeout(_this3.fadeHoldTimeout);
 									}, style: { opacity: values.opacityToInterpTo, display: values.opacityToInterpTo <= 0.05 ? "none" : "" } },
-								_this4.props.children
+								_this3.props.children
 							);
 						}
 					)
 				);
 			};
 
-			_this4.state = {};
-			return _this4;
+			_this3.state = {};
+			return _this3;
 		}
 
 		_createClass(GUI, [{
@@ -2100,7 +2098,7 @@
 		function Audio() {
 			var _ref;
 
-			var _temp, _this5, _ret2;
+			var _temp, _this4, _ret2;
 
 			_classCallCheck(this, Audio);
 
@@ -2108,20 +2106,20 @@
 				args[_key] = arguments[_key];
 			}
 
-			return _ret2 = (_temp = (_this5 = _possibleConstructorReturn(this, (_ref = Audio.__proto__ || Object.getPrototypeOf(Audio)).call.apply(_ref, [this].concat(args))), _this5), _this5.element = function () {
-				return _this5.audioElement;
-			}, _temp), _possibleConstructorReturn(_this5, _ret2);
+			return _ret2 = (_temp = (_this4 = _possibleConstructorReturn(this, (_ref = Audio.__proto__ || Object.getPrototypeOf(Audio)).call.apply(_ref, [this].concat(args))), _this4), _this4.element = function () {
+				return _this4.audioElement;
+			}, _temp), _possibleConstructorReturn(_this4, _ret2);
 		}
 
 		_createClass(Audio, [{
 			key: "render",
 			value: function render() {
-				var _this6 = this;
+				var _this5 = this;
 
 				return this.props.require ? _react2.default.createElement(
 					"audio",
 					_extends({ ref: function ref(audioElement) {
-							return _this6.audioElement = audioElement;
+							return _this5.audioElement = audioElement;
 						} }, this.props.events),
 					this.props.children
 				) : null;
@@ -2137,7 +2135,7 @@
 		function Video() {
 			var _ref2;
 
-			var _temp2, _this7, _ret3;
+			var _temp2, _this6, _ret3;
 
 			_classCallCheck(this, Video);
 
@@ -2145,20 +2143,20 @@
 				args[_key2] = arguments[_key2];
 			}
 
-			return _ret3 = (_temp2 = (_this7 = _possibleConstructorReturn(this, (_ref2 = Video.__proto__ || Object.getPrototypeOf(Video)).call.apply(_ref2, [this].concat(args))), _this7), _this7.element = function () {
-				return _this7.videoElement;
-			}, _temp2), _possibleConstructorReturn(_this7, _ret3);
+			return _ret3 = (_temp2 = (_this6 = _possibleConstructorReturn(this, (_ref2 = Video.__proto__ || Object.getPrototypeOf(Video)).call.apply(_ref2, [this].concat(args))), _this6), _this6.element = function () {
+				return _this6.videoElement;
+			}, _temp2), _possibleConstructorReturn(_this6, _ret3);
 		}
 
 		_createClass(Video, [{
 			key: "render",
 			value: function render() {
-				var _this8 = this;
+				var _this7 = this;
 
 				return this.props.require && _react2.default.createElement(
 					"video",
 					_extends({ ref: function ref(videoElement) {
-							return _this8.videoElement = videoElement;
+							return _this7.videoElement = videoElement;
 						}, className: this.props.videoClass, style: this.props.style, onClick: this.props.onClick }, this.props.events),
 					this.props.children
 				);
