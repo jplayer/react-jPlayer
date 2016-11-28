@@ -318,7 +318,6 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
     componentWillMount() { 
         this._initPlaylist(this.props.playlist);     
         // store.on("jPlayerChange", () => {
-        //     debugger
         //     if (store.identifier !== this.props.jPlayerSelector) {
         //         this.mergeOptions({status: {paused: store.paused}});
         //     }

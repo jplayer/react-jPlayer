@@ -8,21 +8,21 @@ module.exports = {
     entry: {
         example: ["./examples/jPlaylistDemo.js", "./examples/jPlaylistDemo2.js"]
     },
-    module: {
-        loaders: [
-          {
-              test: /\.jsx?$/,
-              exclude: /(node_modules|bower_components)/,
-              loader: "babel-loader",
-              query: {
-                  presets: ["react", "es2015", "stage-0"],
-                  plugins: ["transform-class-properties", "transform-decorators-legacy"]
-              }
-          }
-        ]
-    },
     output: {
         path: "./examples/",
         filename: "[name].bundle.js"
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: "babel-loader",
+                query: {
+                    presets: ["react", "es2015", "stage-0"],
+                    plugins: ["transform-class-properties", "transform-decorators-legacy"]
+                }
+            }
+        ]
     }
 };

@@ -4,7 +4,6 @@ import merge from "lodash.merge";
 import isEqual from "lodash/isEqual";
 import store from "../store";
 import * as utilities from "../util/index";
-import * as actions from "./actions";
 
 const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends React.Component {
 	static get propTypes() {
@@ -264,15 +263,15 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			},
 			muted: {
 				key: 77, // m
-				fn: () => this.assignOptions({muted: !this.props.muted})
+				fn: () => this.props.updateOption("muted", !this.props.muted)
 			},
 			volumeUp: {
 				key: 190, // .
-				fn: () => this.assignOptions({volume: this.props.volume + 0.1})
+				fn: () =>  this.props.updateOption("volume", this.props.volume + 0.1)
 			},
 			volumeDown: {
 				key: 188, // ,
-				fn: () => this.assignOptions({volume: this.props.volume - 0.1})
+				fn: () => this.props.updateOption("volume", this.props.volume - 0.1)
 			},
 			loop: {
 				key: 76, // l
@@ -998,10 +997,10 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	}
 	mute = (mute) => {					
 		if(this.props.muted) {
-			this.assignOptions({muted: false});
+			this.props.updateOption("muted", false);
 		} else {
 			mute = mute === undefined ? true : !!mute;
-			this.assignOptions({muted: mute});
+			this.props.updateOption("muted", mute);
 		}
 	}
 	_updateMute = (mute) => {
@@ -1078,7 +1077,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			this.addClass(utilities.className.hidden, jPlayer.key.playbackRateBarValueClass);
 		}
 	}
-	_incrementCurrentLoop = () => {	
+	_incrementCurrentLoop = () => {
 		var loopIndex = this.loopOptions.indexOf(this.props.loop || this.loopOptions[0]);
 
 		if (loopIndex >= this.loopOptions.length - 1) {
@@ -1123,17 +1122,16 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				}
 
 				if(this.props.globalVolume) {
-					this.props.dispatch(actions.updateOthersOption(this.props.jPlayerSelector, value, "volume"));
+					this.props.updateOtherOption("volume", value);
 				}
 			},
-			muted: (value) => {	
-				debugger;
+			muted: (value) => {				
 				if(this.html.used) {
 					this.currentMedia.muted = value;
 				}
 
 				if(this.props.globalVolume) {
-					this.props.dispatch(actions.updateOthersOption(this.props.jPlayerSelector, value, "muted"));
+					this.props.updateOtherOption("muted", value);
 				}
 			},
 			autoPlay: (value) => {
@@ -1506,25 +1504,25 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			h = getHeight(bar);
 
 		if(this.props.verticalVolume) {
-			this.assignOptions({volume: y/h});
+			this.props.updateOption("volume", y/h);
 		} else {
-			this.assignOptions({volume: x/w});
+			this.props.updateOption("volume", x/w);
 		}
 
 		if(this.props.muted) {
-			this.assignOptions({muted: false});
+			this.props.updateOption("muted", false);
 		}
 	}
 	onVolumeMaxClick = () => {
-		this.assignOptions({volume: 1});
+		this.props.updateOption("volume", 1);
 
 		if(this.props.muted) {
-			this.assignOptions({muted: false});
+			this.props.updateOption("muted", false);
 		}
 	} 
 	onVideoPlayClick = () => this.mergeOptions({status: {paused: false}})
-	onMuteClick = () => this.assignOptions({muted: !this.props.muted})
-	onRepeatClick = () => this.assignOptions({loop: this._incrementCurrentLoop()})
+	onMuteClick = () => this.props.updateOption("muted", !this.props.muted)
+	onRepeatClick = () => this.props.updateOption("loop", this._incrementCurrentLoop())
 	onFullScreenClick = () => this.assignOptions({fullScreen: !this.props.fullScreen})
 	componentWillReceiveProps(nextProps) {
 		this._setOptions(nextProps);

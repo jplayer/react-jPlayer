@@ -63,7 +63,7 @@
 }
 
     .jp-type-footer .jp-controls .jp-volume-bar {
-        background: url("Images/jplayer.blue.monday.jpg") 0 -250px repeat-x;
+        background-color:#79b5ff;
         cursor: pointer;
         height: 4px;
         left: 20px;
@@ -74,7 +74,7 @@
     }
 
         .jp-type-footer .jp-controls .jp-volume-bar .jp-volume-bar-value {
-            background: url("Images/jplayer.blue.monday.jpg") 0 -256px repeat-x;
+            background-color:#024fae;
             height: 4px;
         }
 
