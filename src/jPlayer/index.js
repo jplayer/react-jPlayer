@@ -175,7 +175,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 
 		this.state = {};	
 
-        this.assignOptions = utilities.assignOptions.bind(this);
+		this.assignOptions = utilities.assignOptions.bind(this);
 		this.mergeOptions = utilities.mergeOptions.bind(this);
 		this.modifyOptionsArray = utilities.modifyOptionsArray.bind(this);
 		this.addClass = utilities.addClass.bind(this);
@@ -257,7 +257,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				key: 70, // f
 				fn: () => {
 					if(this.props.status.video || this.props.audioFullScreen) {
-						this.assignOptions({fullScreen: !this.props.fullScreen});
+						this.props.updateOption("fullScreen", !this.props.fullScreen)
 					}
 				}
 			},
@@ -275,7 +275,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			},
 			loop: {
 				key: 76, // l
-				fn: () => this.assignOptions({loop: this._incrementCurrentLoop()})
+				fn: () => this.props.updateOption("loop", this._incrementCurrentLoop())
 			}
 		}, this.props.keyBindings);
 	}
@@ -572,7 +572,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		}
 
 		if (jPlayer.platform.android) {
-			this.assignOptions({preload: this.props.preload !== 'auto' ? 'metadata' : 'auto'});
+			this.props.updateOption("preload", this.props.preload !== 'auto' ? 'metadata' : 'auto');
 		}
 
 		this.html.active = false;
@@ -1055,7 +1055,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			if(this.props.captureDuration) {
 				e.stopPropagation();
 			}
-			this.assignOptions({remainingDuration: !this.props.remainingDuration});
+			this.props.updateOption("remainingDuration", !this.props.remainingDuration);
 		}
 	}
 	_updatePlaybackRate = () => {
@@ -1120,18 +1120,10 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				if(this.html.used) {
 					this.currentMedia.volume = value;
 				}
-
-				if(this.props.globalVolume) {
-					this.props.updateOtherOption("volume", value);
-				}
 			},
-			muted: (value) => {				
+			muted: (value) => {	
 				if(this.html.used) {
 					this.currentMedia.muted = value;
-				}
-
-				if(this.props.globalVolume) {
-					this.props.updateOtherOption("muted", value);
 				}
 			},
 			autoPlay: (value) => {
@@ -1163,7 +1155,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 						this._exitFullscreen();
 					}
 					if(!wkv) {
-						this.assignOptions({fullWindow: value});
+						this.props.updateOption("fullWindow", value);
 					}
 				}
 			},
@@ -1210,15 +1202,6 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			}
 		}
 	}
-	_setFunctions = (functions) => {
-		if (!functions.length) {
-			return;
-		}
-
-		functions.forEach((func) => Array.isArray(func) ? this[func.shift()](...func) : this[func]());
-
-		this.assignOptions({[utilities.key.functions]: []});
-	}
 	_updateSize = () => {
 		// Video html resized if necessary at this time, or if native video controls being used.
 		if(!this.props.status.waitForPlay && this.html.active && this.props.status.video
@@ -1246,7 +1229,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	_fullscreenchange = () => {
 		// If nothing is fullscreen, then we cannot be in fullscreen mode.
 		if(this.props.fullScreen && !jPlayer.nativeFeatures.fullscreen.api.fullscreenElement()) {
-			this.assignOptions({fullScreen: false});
+			this.props.updateOption("fullScreen", false);
 		}
 	}
 	_requestFullscreen = () => {
@@ -1492,7 +1475,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		}
 
 		pbr = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
-		this.assignOptions({playbackRate: pbr});
+		this.props.updateOption("playbackRate", pbr);
 	}
 	onVolumeBarClick = (e) => {
 		// Using $(e.currentTarget) to enable multiple volume bars
@@ -1523,10 +1506,9 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	onVideoPlayClick = () => this.mergeOptions({status: {paused: false}})
 	onMuteClick = () => this.props.updateOption("muted", !this.props.muted)
 	onRepeatClick = () => this.props.updateOption("loop", this._incrementCurrentLoop())
-	onFullScreenClick = () => this.assignOptions({fullScreen: !this.props.fullScreen})
+	onFullScreenClick = () => this.props.updateOption("fullScreen", !this.props.fullScreen)
 	componentWillReceiveProps(nextProps) {
 		this._setOptions(nextProps);
-		this._setFunctions(nextProps.functions);
 	}	
 	componentWillUnmount() {
 		this._removeEventListeners();
@@ -1534,15 +1516,6 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	}
 	componentWillMount() {
 		this._initBeforeRender();
-		// store.on("jPlayerChange", () => {
-
-		// 	if (store.identifier !== this.props.jPlayerSelector) {
-		// 		this.assignOptions({
-		// 			volume: store.volume, 
-		// 			muted: store.muted
-		// 		});				
-		// 	}
-		// });
 	}
 	componentDidUpdate(prevProps, prevState) {
 		this.currentMedia.loop = this.props.loop === "loop" ? true : false;

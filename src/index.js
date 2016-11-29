@@ -5,34 +5,37 @@ import {Provider, connect} from "react-redux";
 import store from "./store";
 import * as jPlayerActions from "./jPlayer/actions";
 
+const mapStateToProps = (state, ownProps) => {
+    let globalProperties = {};
+
+    if (state.jPlayer.globalVolume === ownProps.globalVolume) {
+        globalProperties.volume = state.jPlayer.volume;
+        globalProperties.muted = state.jPlayer.muted;
+    }
+
+    //globalProperties.paused = state.jPlayer.paused;
+
+    if (state.jPlayer.jPlayerSelector === ownProps.jPlayerSelector) {
+        globalProperties.loop = state.jPlayer.loop;
+        globalProperties.fullScreen = state.jPlayer.fullScreen;
+        globalProperties.preload = state.jPlayer.preload;
+        globalProperties.remainingDuration = state.jPlayer.remainingDuration;
+        globalProperties.fullWindow = state.jPlayer.fullWindow;
+        globalProperties.playbackRate = state.jPlayer.playbackRate;
+    }
+
+    return globalProperties;
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        updateOption: (key, value) => {
+            dispatch(jPlayerActions.updateOption(key, value, ownProps.jPlayerSelector, ownProps.globalVolume)); 
+        }
+    }
+}
+
 export default (WrappedPlayer, options) => {
-    debugger
-
-    const mapStateToProps = (state, ownProps) => {
-            debugger
-
-        return {
-            volume: state.jPlayer.volume,
-            muted: state.jPlayer.muted,
-            paused: state.jPlayer.paused,
-            loop: state.jPlayer.loop
-        }
-    }
-
-    const mapDispatchToProps = (dispatch) => {
-        return {
-            updateOption: (key, value) => {
-                          debugger
-                dispatch(jPlayerActions.updateOption(key, value));
-                
-            },
-            updateOtherOption: (key, value) => {
-                          debugger
-                dispatch(jPlayerActions.updateOption(key, value));
-            }
-        }
-    }
-
     let JPlayerWrapper = class extends React.Component {
         constructor(props) {
             super(props);
@@ -41,19 +44,12 @@ export default (WrappedPlayer, options) => {
                 jPlayerOptions: options
             }
         }
-        static get defaultProps() {
-		    return {
-                muted: options.muted,
-                paused: false
-            }
-        }
         updateOptions = (update, callback) => this.setState((prevState) => prevState.jPlayerOptions = update(prevState.jPlayerOptions), callback)
         render() {
-            debugger
             return <WrappedPlayer {...this.state.jPlayerOptions} {...this.props} updateOptions={this.updateOptions} />
         }
     }
 
     JPlayerWrapper = connect(mapStateToProps, mapDispatchToProps)(JPlayerWrapper);
-    ReactDOM.render(<Provider store={store}><JPlayerWrapper/></Provider>, document.getElementById(options.jPlayerSelector));
+    ReactDOM.render(<Provider store={store}><JPlayerWrapper {...options}/></Provider>, document.getElementById(options.jPlayerSelector));
 }
