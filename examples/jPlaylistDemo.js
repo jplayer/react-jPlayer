@@ -34,7 +34,7 @@ const jPlaylistOptions = {
     enableRemoveControls: true,
     loopOnPrevious: true,
     keyEnabled: true,
-    globalVolume: true,
+    globalVolume: false,
     playlist: [
         {
             title:"Cro Magnon Man",

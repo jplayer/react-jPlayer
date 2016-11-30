@@ -9,3 +9,21 @@ export const updateOption = (key, value, identifier, globalVolume) => ({
         globalVolume
     } 
 });
+
+export const addClass = (key, existingClasses, classToAdd) => ({
+    type: constants.ActionType.ADD_CLASS,
+    payload: {
+        key,
+        existingClasses,
+        classToAdd
+    } 
+});
+
+export const removeClass = (key, existingClasses, classToRemove) => ({
+    type: constants.ActionType.REMOVE_CLASS,
+    payload: {
+        key,
+        existingClasses,
+        classToRemove
+    } 
+});

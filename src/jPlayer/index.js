@@ -378,7 +378,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 					});
 					
 					if(this.props.status.video && !this.props.status.nativeVideoControls) {
-						this.addClass(utilities.className.hidden, jPlayer.key.videoClass);
+						this.props.addClass(jPlayer.key.videoClass, utilities.className.hidden);
 					}
 
 					if(this._validString(this.props.status.media.poster) && !this.props.status.nativeVideoControls) {
@@ -507,7 +507,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				sizeFullCssClass: this.props.sizeFullCssClass
 			}), updateCssClass);		
 		} else {
-			this.addClass("jp-audio", utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, "jp-audio");
 
 			this.assignOptions({
 				sizeCssClass: this.props.sizeCssClass,
@@ -581,7 +581,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		this._cssSelectorAncestor();
 
 		// If html is not being used by this browser, then media playback is not possible. Trigger an error event.
-		if(!(this.html.used)) {
+		if(!this.html.used) {
 			this._error({
 				type: this.error.NO_SOLUTION, //Todo: fix errors
 				context: "{solution:'" + this.props.solution + "', supplied:'" + this.props.supplied.join(", ") + "'}",
@@ -1247,7 +1247,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	}
 	_posterLoad = () => {
 		if(!this.props.status.video || this.props.status.waitForPlay) {
-			this.removeClass(utilities.className.hidden, jPlayer.key.posterClass);
+			this.props.removeClass(jPlayer.key.posterClass, this.props.posterClass, utilities.className.hidden);
 		}
 	}
 	_exitFullscreen = () => {

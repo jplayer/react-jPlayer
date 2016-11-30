@@ -7,7 +7,7 @@ import * as jPlayerActions from "./jPlayer/actions";
 
 const mapStateToProps = (state, ownProps) => {
     let globalProperties = {};
-
+debugger;
     if (state.jPlayer.globalVolume === ownProps.globalVolume) {
         globalProperties.volume = state.jPlayer.volume;
         globalProperties.muted = state.jPlayer.muted;
@@ -27,12 +27,14 @@ const mapStateToProps = (state, ownProps) => {
     return globalProperties;
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        updateOption: (key, value) => {
-            dispatch(jPlayerActions.updateOption(key, value, ownProps.jPlayerSelector, ownProps.globalVolume)); 
-        }
-    }
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    updateOption: (key, value) => dispatch(jPlayerActions.updateOption(key, value, ownProps.jPlayerSelector, ownProps.globalVolume)),
+    addClass: (key, existingClasses, classToAdd) => dispatch(jPlayerActions.addClass(key, existingClasses, classToAdd)),
+    removeClass: (key, existingClasses, classToRemove) => dispatch(jPlayerActions.removeClass(key, existingClasses, classToRemove))
+})
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, ownProps, stateProps, dispatchProps);
 }
 
 export default (WrappedPlayer, options) => {
@@ -50,6 +52,6 @@ export default (WrappedPlayer, options) => {
         }
     }
 
-    JPlayerWrapper = connect(mapStateToProps, mapDispatchToProps)(JPlayerWrapper);
+    JPlayerWrapper = connect(mapStateToProps, mapDispatchToProps, mergeProps)(JPlayerWrapper);
     ReactDOM.render(<Provider store={store}><JPlayerWrapper {...options}/></Provider>, document.getElementById(options.jPlayerSelector));
 }
