@@ -3,6 +3,7 @@ import merge from "lodash.merge";
 import remove from "lodash/remove";
 import get from "lodash/get";
 import set from "lodash/set";
+import {defaultProps} from "./index";
 
 export default (state={}, action) => {
     switch (action.type) {
@@ -25,9 +26,13 @@ export default (state={}, action) => {
             }
             return state;
         case constants.ActionType.REMOVE_CLASS:
-            const filteredClasses = action.payload.existingClasses.filter((v) => v !== action.payload.classToRemove);
+        debugger
+            var p = defaultProps;
+            const defaultClass = get(defaultProps, action.payload.key, []);
+            const existingClasses = get(state, action.payload.key, []);
+            const filteredClasses = existingClasses.filter((v) => v !== action.payload.classToRemove);
             const removeState = {...state};
-
+           
             set(removeState, action.payload.key, filteredClasses);
 
             return removeState;

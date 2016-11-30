@@ -19,11 +19,10 @@ export const addClass = (key, existingClasses, classToAdd) => ({
     } 
 });
 
-export const removeClass = (key, existingClasses, classToRemove) => ({
+export const removeClass = (key, classToRemove) => ({
     type: constants.ActionType.REMOVE_CLASS,
     payload: {
         key,
-        existingClasses,
         classToRemove
     } 
 });

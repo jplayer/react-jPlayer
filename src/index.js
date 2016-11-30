@@ -6,34 +6,36 @@ import store from "./store";
 import * as jPlayerActions from "./jPlayer/actions";
 
 const mapStateToProps = (state, ownProps) => {
-    let globalProperties = {};
-debugger;
-    if (state.jPlayer.globalVolume === ownProps.globalVolume) {
-        globalProperties.volume = state.jPlayer.volume;
-        globalProperties.muted = state.jPlayer.muted;
-    }
+    const isCurrentPlayer = state.jPlayer.jPlayerSelector === ownProps.jPlayerSelector;
+    let globalProperties = {...state};
+
+    // if (state.jPlayer.globalVolume === ownProps.globalVolume) {
+    //     globalProperties.volume = state.jPlayer.volume;
+    //     globalProperties.muted = state.jPlayer.muted;
+    // }
 
     //globalProperties.paused = state.jPlayer.paused;
 
-    if (state.jPlayer.jPlayerSelector === ownProps.jPlayerSelector) {
-        globalProperties.loop = state.jPlayer.loop;
-        globalProperties.fullScreen = state.jPlayer.fullScreen;
-        globalProperties.preload = state.jPlayer.preload;
-        globalProperties.remainingDuration = state.jPlayer.remainingDuration;
-        globalProperties.fullWindow = state.jPlayer.fullWindow;
-        globalProperties.playbackRate = state.jPlayer.playbackRate;
-    }
+    // if (isCurrentPlayer) {
+    //     globalProperties.loop = state.jPlayer.loop;
+    //     globalProperties.fullScreen = state.jPlayer.fullScreen;
+    //     globalProperties.preload = state.jPlayer.preload;
+    //     globalProperties.remainingDuration = state.jPlayer.remainingDuration;
+    //     globalProperties.fullWindow = state.jPlayer.fullWindow;
+    //     globalProperties.playbackRate = state.jPlayer.playbackRate;
+    // }
 
-    return globalProperties;
+    return globalProperties.jPlayer;
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     updateOption: (key, value) => dispatch(jPlayerActions.updateOption(key, value, ownProps.jPlayerSelector, ownProps.globalVolume)),
     addClass: (key, existingClasses, classToAdd) => dispatch(jPlayerActions.addClass(key, existingClasses, classToAdd)),
-    removeClass: (key, existingClasses, classToRemove) => dispatch(jPlayerActions.removeClass(key, existingClasses, classToRemove))
+    removeClass: (key, classToRemove) => dispatch(jPlayerActions.removeClass(key, classToRemove))
 })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
+    debugger
     return Object.assign({}, ownProps, stateProps, dispatchProps);
 }
 

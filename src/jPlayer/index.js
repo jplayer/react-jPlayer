@@ -129,46 +129,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		}
 	}
 	static get defaultProps() {
-		return {
-			cssSelectorAncestor: "jp_container_1",
-			jPlayerSelector: "jplayer_1",
-			preload: "metadata", // HTML5 Spec values: none, metadata, auto.
-			supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,		
-			captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.
-			playbackRate: 1.0,
-			defaultPlaybackRate: 1.0,
-			minPlaybackRate: 0.5,
-			maxPlaybackRate: 4,
-			volume: 0.8, // The volume. Number 0 to 1.
-			nativeVideoControls: {
-				// Works well on standard browsers.
-				// Phone and tablet browsers can have problems with the controls disappearing.
-			},
-			guiFadeInAnimation: {
-				stiffness: 40 // Velocity of the animation (higher the faster), other properties automatically set in the Motion component
-			},
-			guiFadeOutAnimation: {
-				stiffness: 40 
-			},
-			html: {},
-			jPlayerStatus: () => {},
-			overrideFunctions: [],
-			functions: [],
-			status: defaultStatus,
-			playClass: [jPlayer.className.play],
-			pauseClass: [jPlayer.className.pause],
-			posterClass: [],
-			videoClass: [],
-			repeatClass: [jPlayer.className.repeat],
-			fullScreenClass: [jPlayer.className.fullScreen],
-			volumeMaxClass: [jPlayer.className.volumeMax],
-			volumeBarClass: [jPlayer.className.volumeBar],
-			volumeBarValueClass: [jPlayer.className.volumeBarValue],
-			playbackRateBarClass: [jPlayer.className.playbackRateBar],
-			playbackRateBarValueClass: [jPlayer.className.playbackRateBarValue],
-			seekBarClass: [jPlayer.className.seekBar],
-			noSolutionClass: [jPlayer.className.noSolution]
-		}
+		return defaultProps;
 	}
 	constructor(props) {
 		super(props);
@@ -178,8 +139,6 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		this.assignOptions = utilities.assignOptions.bind(this);
 		this.mergeOptions = utilities.mergeOptions.bind(this);
 		this.modifyOptionsArray = utilities.modifyOptionsArray.bind(this);
-		this.addClass = utilities.addClass.bind(this);
-		this.removeClass = utilities.removeClass.bind(this);
 		this.assignStyle = utilities.assignStyle.bind(this);
 
 		this._setupInternalProperties();
@@ -378,13 +337,13 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 					});
 					
 					if(this.props.status.video && !this.props.status.nativeVideoControls) {
-						this.props.addClass(jPlayer.key.videoClass, utilities.className.hidden);
+						this.props.addClass(jPlayer.key.videoClass, this.props.videoClass, utilities.className.hidden);
 					}
 
 					if(this._validString(this.props.status.media.poster) && !this.props.status.nativeVideoControls) {
-						this.removeClass(utilities.className.hidden, jPlayer.key.posterClass);
+						this.props.removeClass(jPlayer.key.posterClass, utilities.className.hidden);
 					}
-					this.removeClass(utilities.className.hidden, jPlayer.key.videoPlayClass);
+					this.props.removeClass(jPlayer.key.videoPlayClass, utilities.className.hidden);
 
 					this._error( {
 						type: this.error.URL,
@@ -491,13 +450,13 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 
 		const updateCssClass = () => {
 			const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-			this.addClass(this.stateClass[sizeClass], utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, this.stateClass[sizeClass]);
 			this.mergeOptions({status: {cssClass: sizeClass}});
 		};
 
 		// Now required types are known, finish the options default settings.
 		if(this.require.video) {	
-			this.addClass("jp-video", utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, "jp-video");
 
 			this.assignOptions(merge({
 				sizeCssClass: "jp-video-270p",
@@ -517,7 +476,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		
 		this._setNextProps();	
 		
-		this.addClass(utilities.className.hidden, jPlayer.key.posterClass);
+		this.props.addClass(jPlayer.key.posterClass, this.props.posterClass, utilities.className.hidden);
 
 		// Determine the status for Blocklisted options.
 		this.mergeOptions({status: { 
@@ -588,9 +547,9 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				message: this.errorMsg.NO_SOLUTION,
 				hint: this.errorHint.NO_SOLUTION
 			});
-			this.removeClass(utilities.className.hidden, jPlayer.key.noSolutionClass);
+			this.props.removeClass(jPlayer.key.noSolutionClass, utilities.className.hidden);
 		} else {
-			this.addClass(utilities.className.hidden, jPlayer.key.noSolutionClass);
+			this.props.addClass(jPlayer.key.noSolutionClass, this.props.noSolutionClass, utilities.className.hidden);
 		}
 		this.mergeOptions({status: {playbackRateEnabled: this._testPlaybackRate()}}, () => {
 			// Using the audio element capabilities for playbackRate. ie., Assuming video element is the same.
@@ -603,17 +562,17 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		});
 
 		if(this.props.status.nativeVideoControls) {
-			this.removeClass(utilities.className.hidden, jPlayer.key.videoClass);
+			this.props.removeClass(jPlayer.key.videoClass, utilities.className.hidden);
 			this.assignStyle({width: this.props.status.width, height: this.props.status.height}, "videoStyle");
 		} else {
-			this.addClass(utilities.className.hidden, jPlayer.key.videoClass);
+			this.props.addClass(jPlayer.key.videoClass, this.props.videoClass, utilities.className.hidden);
 		}
 		
 		// Initialize the interface components with the options.
 		this._updateNativeVideoControls();
 
 		// The other controls are now setup in _cssSelectorAncestor()
-		this.addClass(utilities.className.hidden, jPlayer.key.videoPlayClass);
+		this.props.addClass(jPlayer.key.videoPlayClass, this.props.videoPlayClass, utilities.className.hidden);
 	}
 	_testCanPlayType = (codec) => {
 		// IE9 on Win Server 2008 did not implement canPlayType(), but it has the property.
@@ -670,11 +629,11 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			this.setState({videoControls: this.props.status.nativeVideoControls});
 			// For when option changed. The poster image is not updated, as it is dealt with in setMedia(). Acceptable degradation since seriously doubt these options will change on the fly. Can again review later.
 			if(this.props.status.nativeVideoControls && this.require.video) {
-				this.addClass(utilities.className.hidden, jPlayer.key.posterClass);
+				this.props.addClass(jPlayer.key.posterClass, this.props.posterClass, utilities.className.hidden);
 				this.assignStyle({width: this.props.status.width, height: this.props.status.height}, "videoStyle");
 			} else if(this.props.status.waitForPlay && this.props.status.video) {
-				this.removeClass(utilities.className.hidden, jPlayer.key.posterClass);
-				this.removeClass(utilities.className.hidden, jPlayer.key.videoClass);
+				this.props.removeClass(jPlayer.key.posterClass, utilities.className.hidden);
+				this.props.removeClass(jPlayer.key.videoClass, utilities.className.hidden);
 			}
 		}
 	}
@@ -745,19 +704,19 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		}
 		
 		if(playing) {
-			this.addClass(this.stateClass.playing, utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.stateClass.playing);
 		} else {
-			this.removeClass(this.stateClass.playing, utilities.key.stateClass);
+			this.props.removeClass(utilities.key.stateClass, this.stateClass.playing);
 		}
 		if(!this.props.status.noFullWindow && this.nextProps.fullWindow) {
-			this.addClass(this.stateClass.fullScreen, utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.stateClass.fullScreen);
 		} else {
-			this.removeClass(this.stateClass.fullScreen, utilities.key.stateClass);
+			this.props.removeClass(utilities.key.stateClass, this.stateClass.fullScreen);
 		}
 		if(this.nextProps.loop === "loop") {
-			this.addClass(this.stateClass.looped, utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.stateClass.looped);
 		} else {
-			this.removeClass(this.stateClass.looped, utilities.key.stateClass);
+			this.props.removeClass(utilities.key.stateClass, this.stateClass.looped);
 		}
 	}
 	_updateInterface = () => {
@@ -792,12 +751,12 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	}
 	_convertTime = ConvertTime.prototype.time
 	_seeking = () => {
-		this.addClass(jPlayer.className.seeking, jPlayer.key.seekBarClass);
-		this.addClass(this.stateClass.seeking, utilities.key.stateClass);
+		this.props.addClass(jPlayer.key.seekBarClass, this.props.seekBarClass, jPlayer.className.seeking);
+		this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, this.stateClass.seeking);
 	}
 	_seeked = () => {
-		this.removeClass(jPlayer.className.seeking, jPlayer.key.seekBarClass);
-		this.removeClass(this.stateClass.seeking, utilities.key.stateClass);
+		this.props.removeClass(jPlayer.key.seekBarClass, jPlayer.className.seeking);
+		this.props.removeClass(utilities.key.stateClass, this.stateClass.seeking);
 	}
 	_escapeHtml = (s) =>  s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;')
 	_qualifyURL = (url) => {
@@ -847,7 +806,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				this._htmlSetVideo(media);
 				this.html.active = true;
 				this.mergeOptions({status: {video: true}});
-				this.removeClass(utilities.className.hidden, jPlayer.key.videoPlayClass);
+				this.props.removeClass(jPlayer.key.videoPlayClass, utilities.className.hidden);
 			} else {
 				this._htmlSetAudio(media);
 				this.html.active = true;
@@ -857,7 +816,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 					this.androidFix.setMedia = true;
 				}
 				this.mergeOptions({status: {video: false, media: media}});
-				this.addClass(utilities.className.hidden, jPlayer.key.videoPlayClass);
+				this.props.addClass(jPlayer.key.videoPlayClass, this.props.videoPlayClass, utilities.className.hidden);
 			}
 			supported = true;
 			break;
@@ -873,7 +832,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 					if(posterChanged) { // Since some browsers do not generate img onload event.
 						this.setState({posterSrc: media.poster});
 					} else {
-						this.removeClass(utilities.className.hidden, jPlayer.key.posterClass);
+						this.props.removeClass(jPlayer.key.posterClass, utilities.className.hidden);
 					}
 				}
 			}
@@ -899,7 +858,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		this._updateButtons(false);
 		this._updateInterface();
 		this._seeked();
-		this.addClass(utilities.className.hidden, jPlayer.key.posterClass);
+		this.props.addClass(jPlayer.key.posterClass, this.props.posterClass, utilities.className.hidden);
 
 		// Maintains the status properties that persist through a reset.	
 		this.mergeOptions({status: defaultStatus});
@@ -1008,9 +967,9 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			mute = this.props.muted;
 		}
 		if(mute) {
-			this.addClass(this.stateClass.muted, utilities.key.stateClass);
+			this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, this.stateClass.muted);
 		} else {
-			this.removeClass(this.stateClass.muted, utilities.key.stateClass);
+			this.props.removeClass(utilities.key.stateClass, this.stateClass.muted);
 		}	
 	}
 	_updateVolume = (v) => {
@@ -1021,28 +980,27 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		v = this.props.muted ? 0 : v;
 
 		if(this.props.status.noVolume) {
-			this.addClass(this.stateClass.noVolume, utilities.key.stateClass);
-			this.addClass(utilities.className.hidden, jPlayer.key.volumeBarClass);
-			this.addClass(utilities.className.hidden, jPlayer.key.volumeBarValueClass);
-			this.addClass(utilities.className.hidden, jPlayer.key.volumeMaxClass);
+			this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, this.stateClass.noVolume);
+			this.props.addClass(jPlayer.key.volumeBarClass, this.props.volumeBarClass, utilities.className.hidden);
+			this.props.addClass(jPlayer.key.volumeBarValueClass, this.props.volumeBarValueClass, utilities.className.hidden);
+			this.props.addClass(jPlayer.key.volumeMaxClass, this.props.volumeMaxClass, utilities.className.hidden);
 		} else {
-			this.removeClass(this.stateClass.noVolume, utilities.key.stateClass);
-
+			this.props.removeClass(utilities.key.stateClass, this.stateClass.noVolume);
 			const volumeValue = (v * 100) + "%";
 
 			this.assignStyle({
 				width: !this.props.verticalVolume ? volumeValue : null,
 				height: this.props.verticalVolume ? volumeValue : null
 			}, "volumeBarValueStyle");
-			
-			this.removeClass(utilities.className.hidden, jPlayer.key.volumeBarClass);
-			this.removeClass(utilities.className.hidden, jPlayer.key.volumeBarValueClass);
-			this.removeClass(utilities.className.hidden, jPlayer.key.volumeMaxClass);
+
+			this.props.removeClass(jPlayer.key.volumeBarClass, utilities.className.hidden);
+			this.props.removeClass(jPlayer.key.volumeBarValueClass, utilities.className.hidden);
+			this.props.removeClass(jPlayer.key.volumeMaxClass, utilities.className.hidden);
 		}
 	}
 	_cssSelectorAncestor = (ancestor) => {
-		this.removeClass(this.props.status.cssClass, utilities.key.stateClass);
-		this.addClass(this.props.status.cssClass, utilities.key.stateClass);
+		this.props.removeClass(utilities.key.stateClass, this.props.status.cssClass);
+		this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, this.props.status.cssClass);
 							
 		// Set the GUI to the current state.
 		this._updateInterface();
@@ -1062,9 +1020,8 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 		var pbr = this.nextProps.playbackRate,
 			ratio = (pbr - this.props.minPlaybackRate) / (this.props.maxPlaybackRate - this.props.minPlaybackRate);
 		if(this.props.status.playbackRateEnabled) {
-		
-			this.removeClass(utilities.className.hidden, jPlayer.key.playbackRateBarClass);
-			this.removeClass(utilities.className.hidden, jPlayer.key.playbackRateBarValueClass);
+			this.props.removeClass(jPlayer.key.playbackRateBarClass, utilities.className.hidden);
+			this.props.removeClass(jPlayer.key.playbackRateBarValueClass, utilities.className.hidden);
 
 			const playbackRateBarValue = (ratio*100)+"%";
 
@@ -1073,8 +1030,8 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 				height: this.props.verticalPlaybackRate ? playbackRateBarValue : null
 			}, "playbackRateBarValueStyle");
 		} else {
-			this.addClass(utilities.className.hidden, jPlayer.key.playbackRateBarClass);
-			this.addClass(utilities.className.hidden, jPlayer.key.playbackRateBarValueClass);
+			this.props.addClass(jPlayer.key.playbackRateBarClass, this.props.playbackRateBarClass, utilities.className.hidden);
+			this.props.addClass(jPlayer.key.playbackRateBarValueClass, this.props.playbackRateBarValueClass, utilities.className.hidden);
 		}
 	}
 	_incrementCurrentLoop = () => {
@@ -1161,8 +1118,8 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 			},
 			fullWindow: (value) => { 
 				const sizeClass = this.nextProps.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-				this.removeClass(this.props.status.cssClass, utilities.key.stateClass);
-				this.addClass(this.stateClass[sizeClass], utilities.key.stateClass);
+				this.props.removeClass(utilities.key.stateClass, this.props.status.cssClass);
+				this.props.addClass(utilities.key.stateClass, this.props.status.stateClass, this.stateClass[sizeClass]);
 				this._setNextProps({fullWindow: value});			
 				this.mergeOptions({status: {cssClass: sizeClass}}, () => this._trigger(this.props.onResize));			
 			},
@@ -1247,7 +1204,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	}
 	_posterLoad = () => {
 		if(!this.props.status.video || this.props.status.waitForPlay) {
-			this.props.removeClass(jPlayer.key.posterClass, this.props.posterClass, utilities.className.hidden);
+			this.props.removeClass(jPlayer.key.posterClass, utilities.className.hidden);
 		}
 	}
 	_exitFullscreen = () => {
@@ -1314,7 +1271,7 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	_htmlResetMedia = () => {
 		if(this.currentMedia) {
 			if(!this.props.status.nativeVideoControls) {
-				this.addClass(utilities.className.hidden, jPlayer.key.videoClass);
+				this.props.addClass(jPlayer.key.videoClass, this.props.videoClass, utilities.className.hidden);
 			}
 			this.currentMedia.pause();
 		}
@@ -1425,10 +1382,10 @@ const jPlayer = (WrappedComponent, AdditionalControls) => class JPlayer extends 
 	_htmlCheckWaitForPlay = () => {
 		if(this.props.status.waitForPlay) {
 			this.mergeOptions({status: {waitForPlay: false}});
-			this.addClass(utilities.className.hidden, jPlayer.key.videoPlayClass);
+			this.props.addClass(jPlayer.key.videoPlayClass, this.props.videoPlayClass, utilities.className.hidden);
 
 			if(this.props.status.video) {
-				this.addClass(utilities.className.hidden, jPlayer.key.posterClass);
+				this.props.addClass(jPlayer.key.posterClass, this.props.posterClass, utilities.className.hidden);
 				this.assignStyle({width: this.props.status.width, height: this.props.status.height}, "videoStyle");
 			}
 		}
@@ -2139,3 +2096,45 @@ var getHeight = (el) => el.getBoundingClientRect().height;
 var isFunction = (obj) => Object.prototype.toString.call(obj) == '[object Function]';
 
 export default jPlayer;
+
+export const defaultProps = {
+	cssSelectorAncestor: "jp_container_1",
+	jPlayerSelector: "jplayer_1",
+	preload: "metadata", // HTML5 Spec values: none, metadata, auto.
+	supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,		
+	captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.
+	playbackRate: 1.0,
+	defaultPlaybackRate: 1.0,
+	minPlaybackRate: 0.5,
+	maxPlaybackRate: 4,
+	volume: 0.8, // The volume. Number 0 to 1.
+	nativeVideoControls: {
+		// Works well on standard browsers.
+		// Phone and tablet browsers can have problems with the controls disappearing.
+	},
+	guiFadeInAnimation: {
+		stiffness: 40 // Velocity of the animation (higher the faster), other properties automatically set in the Motion component
+	},
+	guiFadeOutAnimation: {
+		stiffness: 40 
+	},
+	html: {},
+	jPlayerStatus: () => {},
+	overrideFunctions: [],
+	functions: [],
+	status: defaultStatus,
+	playClass: [jPlayer.className.play],
+	pauseClass: [jPlayer.className.pause],
+	posterClass: [],
+	videoClass: [],
+	videoPlayClass: [],
+	repeatClass: [jPlayer.className.repeat],
+	fullScreenClass: [jPlayer.className.fullScreen],
+	volumeMaxClass: [jPlayer.className.volumeMax],
+	volumeBarClass: [jPlayer.className.volumeBar],
+	volumeBarValueClass: [jPlayer.className.volumeBarValue],
+	playbackRateBarClass: [jPlayer.className.playbackRateBar],
+	playbackRateBarValueClass: [jPlayer.className.playbackRateBarValue],
+	seekBarClass: [jPlayer.className.seekBar],
+	noSolutionClass: [jPlayer.className.noSolution]
+};
