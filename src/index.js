@@ -6,6 +6,7 @@ import store from "./store";
 import * as jPlayerActions from "./jPlayer/actions";
 
 const mapStateToProps = (state, ownProps) => {
+    debugger
     const isCurrentPlayer = state.jPlayer.jPlayerSelector === ownProps.jPlayerSelector;
     let globalProperties = {...state};
 
@@ -34,11 +35,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     removeClass: (key, classToRemove) => dispatch(jPlayerActions.removeClass(key, classToRemove))
 })
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-    debugger
-    return Object.assign({}, ownProps, stateProps, dispatchProps);
-}
-
 export default (WrappedPlayer, options) => {
     let JPlayerWrapper = class extends React.Component {
         constructor(props) {
@@ -54,6 +50,6 @@ export default (WrappedPlayer, options) => {
         }
     }
 
-    JPlayerWrapper = connect(mapStateToProps, mapDispatchToProps, mergeProps)(JPlayerWrapper);
+    JPlayerWrapper = connect(mapStateToProps, mapDispatchToProps)(JPlayerWrapper);
     ReactDOM.render(<Provider store={store}><JPlayerWrapper {...options}/></Provider>, document.getElementById(options.jPlayerSelector));
 }
