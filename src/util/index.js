@@ -47,17 +47,274 @@ export const assignStyle = function(newOption, styleKey, callback) {
     this.setState((prevState) => prevState[styleKey] = Object.assign({}, prevState[styleKey], newOption), callback);
 }
 
-export const key = {
-    functions: "functions",
-    overrideFunctions: "overrideFunctions",
-    stateClass: "status.stateClass"
-}
-
-export const className = {
-    hidden: "jp-hidden"
-}
-
 export const getOffset = (el) => ({top: el.getBoundingClientRect().top + document.body.scrollTop, left: el.getBoundingClientRect().left + document.body.scrollLeft});
 export const getWidth = (el) => el.getBoundingClientRect().width;
 export const getHeight = (el) => el.getBoundingClientRect().height;
 export const isFunction = (obj) => Object.prototype.toString.call(obj) == '[object Function]';
+
+var keyBindings = (event) => {
+	var f = focusInstance,
+		ignoreKey;
+
+	//A jPlayer instance must be in focusInstance. ie., keyEnabled and the last one played.
+	if(f) {
+		// What generated the key press?
+		for (var index = 0; index < keyIgnoreElementNames.length; index++) {
+			var name = keyIgnoreElementNames[index];
+
+			if(event.target.nodeName.toUpperCase() === name.toUpperCase()) {
+				ignoreKey = true;
+				break;
+			}
+		}
+
+		if(!ignoreKey) {
+			var keyBindings = f.keyBindings;
+
+			for (var action in keyBindings) {
+				var binding = keyBindings[action];
+
+				if(
+					(binding && util.isFunction(binding.fn)) &&
+					((typeof binding.key === 'number' && event.which === binding.key) ||
+					(typeof binding.key === 'string' && event.key === binding.key))
+				) {
+					event.preventDefault(); // Key being used by jPlayer, so prevent default operation.
+					binding.fn.bind(f)();
+					break;
+				}
+			}
+		}
+	}
+}
+
+export const keys = ((en) => {
+	var event = "keydown";
+
+	// Remove any binding, just in case enabled more than once.
+	document.documentElement.removeEventListener(event, keyBindings);
+
+	if(en) {
+		document.documentElement.addEventListener(event, keyBindings);
+	}
+})(true);
+
+export const uaBlocklist = (list) => {
+	// list : object with properties that are all regular expressions. Property names are irrelevant.
+	// Returns true if the user agent is matched in list.
+	var	ua = navigator.userAgent.toLowerCase(),
+		block = false;
+
+	for (var p in list) {
+		var re = list[p];
+
+		if(re && re.test(ua)) {
+			block = true;
+			break;
+		}
+	}
+
+	return block;
+}
+
+export const focusInstance = null;
+
+export const uaBrowser = (userAgent) => {
+	var ua = userAgent.toLowerCase();
+
+	// Useragent RegExp
+	var rwebkit = /(webkit)[ \/]([\w.]+)/;
+	var ropera = /(opera)(?:.*version)?[ \/]([\w.]+)/;
+	var rmsie = /(msie) ([\w.]+)/;
+	var rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/;
+
+	var match = rwebkit.exec( ua ) ||
+		ropera.exec( ua ) ||
+		rmsie.exec( ua ) ||
+		ua.indexOf("compatible") < 0 && rmozilla.exec( ua ) ||
+		[];
+
+	return { browser: match[1] || "", version: match[2] || "0" };
+}
+
+export const uaPlatform = (userAgent) => {
+	var ua = userAgent.toLowerCase();
+
+	// Useragent RegExp
+	var rplatform = /(ipad|iphone|ipod|android|blackberry|playbook|windows ce|webos)/;
+	var rtablet = /(ipad|playbook)/;
+	var randroid = /(android)/;
+	var rmobile = /(mobile)/;
+
+	var platform = rplatform.exec( ua ) || [];
+	var tablet = rtablet.exec( ua ) ||
+		!rmobile.exec( ua ) && randroid.exec( ua ) ||
+		[];
+
+	if(platform[1]) {
+		platform[1] = platform[1].replace(/\s/g, "_"); // Change whitespace to underscore. Enables dot notation.
+	}
+
+	return { platform: platform[1] || "", tablet: tablet[1] || "" };
+}
+
+// Internet Explorer (IE) Browser Document Mode Sniffer. Based on code at:
+// http://msdn.microsoft.com/en-us/library/cc288325%28v=vs.85%29.aspx#GetMode
+export const getDocMode = () => {
+	var docMode;
+
+	if (browser.msie) {
+		if (document.documentMode) { // IE8 or later
+			docMode = document.documentMode;
+		} else { // IE 5-7
+			docMode = 5; // Assume quirks mode unless proven otherwise
+
+			if (document.compatMode && document.compatMode === "CSS1Compat") {
+				docMode = 7; // standards mode
+			}
+		}
+	}
+	return docMode;
+}
+
+export const browser = {};
+export const platform = {};
+
+var browserMatch = uaBrowser(navigator.userAgent);
+
+if (browserMatch.browser) {
+	browser[browserMatch.browser] = true;
+	browser.version = browserMatch.version;
+}
+
+var platformMatch = uaPlatform(navigator.userAgent);
+
+if (platformMatch.platform) {
+	platform[platformMatch.platform] = true;
+	platform.mobile = !platformMatch.tablet;
+	platform.tablet = !!platformMatch.tablet;
+}
+
+browser.documentMode = getDocMode();
+
+export const nativeFeatures = {
+	init: function() {
+		/* Fullscreen function naming influenced by W3C naming.
+			* No support for: Mozilla Proposal: https://wiki.mozilla.org/Gecko:FullScreenAPI
+			*/
+		var d = document,
+			v = d.createElement('video'),
+			spec = {
+				// http://www.w3.org/TR/fullscreen/
+				w3c: [
+					'fullscreenEnabled',
+					'fullscreenElement',
+					'requestFullscreen',
+					'exitFullscreen',
+					'fullscreenchange',
+					'fullscreenerror'
+				],
+				// https://developer.mozilla.org/en-US/docs/DOM/Using_fullscreen_mode
+				moz: [
+					'mozFullScreenEnabled',
+					'mozFullScreenElement',
+					'mozRequestFullScreen',
+					'mozCancelFullScreen',
+					'mozfullscreenchange',
+					'mozfullscreenerror'
+				],
+				// http://developer.apple.com/library/safari/#documentation/WebKit/Reference/ElementClassRef/Element/Element.html
+				// http://developer.apple.com/library/safari/#documentation/UserExperience/Reference/DocumentAdditionsReference/DocumentAdditions/DocumentAdditions.html
+				webkit: [
+					'',
+					'webkitCurrentFullScreenElement',
+					'webkitRequestFullScreen',
+					'webkitCancelFullScreen',
+					'webkitfullscreenchange',
+					''
+				],
+				// http://developer.apple.com/library/safari/#documentation/AudioVideo/Reference/HTMLVideoElementClassReference/HTMLVideoElement/HTMLVideoElement.html
+				// https://developer.apple.com/library/safari/samplecode/HTML5VideoEventFlow/Listings/events_js.html#//apple_ref/doc/uid/DTS40010085-events_js-DontLinkElementID_5
+				// Events: 'webkitbeginfullscreen' and 'webkitendfullscreen'
+				webkitVideo: [
+					'webkitSupportsFullscreen',
+					'webkitDisplayingFullscreen',
+					'webkitEnterFullscreen',
+					'webkitExitFullscreen',
+					'',
+					''
+				],
+				ms: [
+					'',
+					'msFullscreenElement',
+					'msRequestFullscreen',
+					'msExitFullscreen',
+					'MSFullscreenChange',
+					'MSFullscreenError'
+				]
+			},
+			specOrder = [
+				'w3c',
+				'moz',
+				'webkit',
+				'webkitVideo',
+				'ms'
+			],
+			fs, i, il;
+
+		this.fullscreen = fs = {
+			support: {
+				w3c: !!d[spec.w3c[0]],
+				moz: !!d[spec.moz[0]],
+				webkit: typeof d[spec.webkit[3]] === 'function',
+				webkitVideo: typeof v[spec.webkitVideo[2]] === 'function',
+				ms: typeof v[spec.ms[2]] === 'function'
+			},
+			used: {}
+		};
+
+		// Store the name of the spec being used and as a handy boolean.
+		for(i = 0, il = specOrder.length; i < il; i++) {
+			var n = specOrder[i];
+			if(fs.support[n]) {
+				fs.spec = n;
+				fs.used[n] = true;
+				break;
+			}
+		}
+
+		if(fs.spec) {
+			var s = spec[fs.spec];
+			fs.api = {
+				fullscreenEnabled: true,
+				fullscreenElement: (elem) => {
+					elem = elem ? elem : d; // Video element required for webkitVideo
+					return elem[s[1]];
+				},
+				requestFullscreen: (elem) => {
+					return elem[s[2]](); // Chrome and Opera want parameter (Element.ALLOW_KEYBOARD_INPUT) but Safari fails if flag used.
+				},
+				exitFullscreen: (elem) => {
+					elem = elem ? elem : d; // Video element required for webkitVideo
+					return elem[s[3]]();
+				}
+			};
+			fs.event = {
+				fullscreenchange: s[4],
+				fullscreenerror: s[5]
+			};
+		} else {
+			fs.api = {
+				fullscreenEnabled: false,
+				fullscreenElement: () => {
+					return null;
+				},
+				requestFullscreen: () => {},
+				exitFullscreen: () => {}
+			};
+			fs.event = {};
+		}
+	}
+}
+
+nativeFeatures.init();

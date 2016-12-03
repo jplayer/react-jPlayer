@@ -4,9 +4,9 @@ import ReactDOM from "react-dom";
 import {Provider, connect} from "react-redux";
 import store from "./store";
 import * as jPlayerActions from "./jPlayer/actions";
+import * as util from "./util/index";
 
 const mapStateToProps = (state, ownProps) => {
-    debugger
     const isCurrentPlayer = state.jPlayer.jPlayerSelector === ownProps.jPlayerSelector;
     let globalProperties = {...state};
 
@@ -35,18 +35,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     removeClass: (key, classToRemove) => dispatch(jPlayerActions.removeClass(key, classToRemove))
 })
 
-export default (WrappedPlayer, options) => {
+export default (WrappedComponent, options) => {
     let JPlayerWrapper = class extends React.Component {
         constructor(props) {
             super(props);
-
-            this.state = {
-                jPlayerOptions: options
-            }
         }
-        updateOptions = (update, callback) => this.setState((prevState) => prevState.jPlayerOptions = update(prevState.jPlayerOptions), callback)
         render() {
-            return <WrappedPlayer {...this.state.jPlayerOptions} {...this.props} updateOptions={this.updateOptions} />
+            return (
+                <WrappedComponent {...this.props} />
+            );
         }
     }
 

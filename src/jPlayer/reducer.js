@@ -1,4 +1,4 @@
-import constants from "../util/constants";
+import {actionTypes} from "../util/constants";
 import merge from "lodash.merge";
 import remove from "lodash/remove";
 import get from "lodash/get";
@@ -7,14 +7,14 @@ import {defaultProps} from "./index";
 
 export default (state={}, action) => {
     switch (action.type) {
-        case constants.ActionType.UPDATE_OPTION:
+        case actionTypes.UPDATE_OPTION:
             return {
                 ...state, 
                 [action.payload.key]: action.payload.value, 
                 jPlayerSelector: action.payload.identifier,
                 globalVolume: action.payload.globalVolume
             }
-        case constants.ActionType.ADD_CLASS:
+        case actionTypes.ADD_CLASS:
             //Don't add duplicates or empty strings
             const found = action.payload.existingClasses.some((v) => v === action.payload.classToAdd);
             const addState = {...state};
@@ -25,7 +25,7 @@ export default (state={}, action) => {
                 return addState;
             }
             return state;
-        case constants.ActionType.REMOVE_CLASS:
+        case actionTypes.REMOVE_CLASS:
         debugger
             var p = defaultProps;
             const defaultClass = get(defaultProps, action.payload.key, []);

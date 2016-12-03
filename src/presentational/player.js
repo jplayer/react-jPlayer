@@ -1,9 +1,9 @@
 import React from "react";
 import * as util from "../util/index";
 
-export class extends React.Component {
-	constructor() {
-		super();
+export default class extends React.Component {
+	constructor(props) {
+		super(props);
 		
 		this.state = {};
 

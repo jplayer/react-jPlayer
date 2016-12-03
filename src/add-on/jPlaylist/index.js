@@ -6,7 +6,7 @@ import jPlayer from "../../jPlayer/index";
 import store from "../../store";
 import * as actions from "./actions";
 import * as jPlayerActions from "../../jPlayer/actions";
-import * as utilities from "../../util/index";
+import * as util from "../../util/index";
 
 const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component {
     static get propTypes() {
@@ -50,12 +50,12 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
         this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
         this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
 
-        this.assignOptions = utilities.assignOptions.bind(this);
-		this.mergeOptions = utilities.mergeOptions.bind(this);
-		this.modifyOptionsArray = utilities.modifyOptionsArray.bind(this);
-		this.addClass = utilities.addClass.bind(this);
-		this.removeClass = utilities.removeClass.bind(this);
-		this.assignStyle = utilities.assignStyle.bind(this);
+        this.assignOptions = util.assignOptions.bind(this);
+		this.mergeOptions = util.mergeOptions.bind(this);
+		this.modifyOptionsArray = util.modifyOptionsArray.bind(this);
+		this.addClass = util.addClass.bind(this);
+		this.removeClass = util.removeClass.bind(this);
+		this.assignStyle = util.assignStyle.bind(this);
 
         this.state = {
             current: 0
@@ -105,8 +105,8 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
 
         this.freeMediaLinkIndex = 0;
     }
-    _hideDetails = () => this.addClass(utilities.className.hidden, this.key.detailsClass)
-    _showDetails = () => this.removeClass(utilities.className.hidden, this.key.detailsClass)
+    _hideDetails = () => this.addClass(util.className.hidden, this.key.detailsClass)
+    _showDetails = () => this.removeClass(util.className.hidden, this.key.detailsClass)
     _trigger = (func, jPlayer) => {
         if (func !== undefined) {
             func.bind(this)(jPlayer);
@@ -121,7 +121,7 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
 
         for (var property in media) {        
             // Check property is a media format
-            if (jPlayer.format[property]){
+            if (util.format[property]){
                 var value = media[property];
 
                 firstMediaLinkAdded ? firstMediaLinkAdded = false : media.freeMediaLinks.push(", ");
@@ -141,7 +141,7 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
             return function() {
                 originalFunction.apply(this, arguments);
                 const stateClassMethod = this.props.loop === "loop-playlist" ? this.addClass : this.removeClass;
-                stateClassMethod(this.stateClass.loopedPlaylist, utilities.key.stateClass);
+                stateClassMethod(this.stateClass.loopedPlaylist, util.key.stateClass);
             }.bind(this);
         };
         this.jPlayer._updateButtons = newUpdateButtonCallback(this.jPlayer._updateButtons);
@@ -302,10 +302,10 @@ const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component 
 
         if (this.props.shuffled) {
             this.assignOptions({playlist: [...this.props.playlist].sort(() => 0.5 - Math.random())});
-            this.addClass(this.stateClass.shuffled, utilities.key.stateClass, playlistSetCallback);
+            this.addClass(this.stateClass.shuffled, util.key.stateClass, playlistSetCallback);
         } else {
             this._originalPlaylist(playlistSetCallback);
-            this.removeClass(this.stateClass.shuffled, utilities.key.stateClass);
+            this.removeClass(this.stateClass.shuffled, util.key.stateClass);
         }
         
         setTimeout(() => this.setState({isPlaylistContainerSlidingUp: false}), 0);

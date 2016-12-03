@@ -1,7 +1,7 @@
-import constants from "../util/constants";
+import {actionTypes} from "../util/constants";
 
 export const updateOption = (key, value, identifier, globalVolume) => ({
-    type: constants.ActionType.UPDATE_OPTION,
+    type: actionTypes.UPDATE_OPTION,
     payload: {
         key,
         value,
@@ -11,7 +11,7 @@ export const updateOption = (key, value, identifier, globalVolume) => ({
 });
 
 export const addClass = (key, existingClasses, classToAdd) => ({
-    type: constants.ActionType.ADD_CLASS,
+    type: actionTypes.ADD_CLASS,
     payload: {
         key,
         existingClasses,
@@ -20,7 +20,7 @@ export const addClass = (key, existingClasses, classToAdd) => ({
 });
 
 export const removeClass = (key, classToRemove) => ({
-    type: constants.ActionType.REMOVE_CLASS,
+    type: actionTypes.REMOVE_CLASS,
     payload: {
         key,
         classToRemove
