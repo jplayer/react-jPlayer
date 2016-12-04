@@ -2,6 +2,7 @@ import merge from "lodash.merge";
 import remove from "lodash/remove";
 import get from "lodash/get";
 import set from "lodash/set";
+import {browser} from "./constants";
 
 export const assignOptions = function(newOption, callback) {
     this.props.updateOptions((prevOptions) => Object.assign({}, prevOptions, newOption), callback);
@@ -51,53 +52,6 @@ export const getOffset = (el) => ({top: el.getBoundingClientRect().top + documen
 export const getWidth = (el) => el.getBoundingClientRect().width;
 export const getHeight = (el) => el.getBoundingClientRect().height;
 export const isFunction = (obj) => Object.prototype.toString.call(obj) == '[object Function]';
-
-var keyBindings = (event) => {
-	var f = focusInstance,
-		ignoreKey;
-
-	//A jPlayer instance must be in focusInstance. ie., keyEnabled and the last one played.
-	if(f) {
-		// What generated the key press?
-		for (var index = 0; index < keyIgnoreElementNames.length; index++) {
-			var name = keyIgnoreElementNames[index];
-
-			if(event.target.nodeName.toUpperCase() === name.toUpperCase()) {
-				ignoreKey = true;
-				break;
-			}
-		}
-
-		if(!ignoreKey) {
-			var keyBindings = f.keyBindings;
-
-			for (var action in keyBindings) {
-				var binding = keyBindings[action];
-
-				if(
-					(binding && util.isFunction(binding.fn)) &&
-					((typeof binding.key === 'number' && event.which === binding.key) ||
-					(typeof binding.key === 'string' && event.key === binding.key))
-				) {
-					event.preventDefault(); // Key being used by jPlayer, so prevent default operation.
-					binding.fn.bind(f)();
-					break;
-				}
-			}
-		}
-	}
-}
-
-export const keys = ((en) => {
-	var event = "keydown";
-
-	// Remove any binding, just in case enabled more than once.
-	document.documentElement.removeEventListener(event, keyBindings);
-
-	if(en) {
-		document.documentElement.addEventListener(event, keyBindings);
-	}
-})(true);
 
 export const uaBlocklist = (list) => {
 	// list : object with properties that are all regular expressions. Property names are irrelevant.
@@ -177,25 +131,31 @@ export const getDocMode = () => {
 	return docMode;
 }
 
-export const browser = {};
-export const platform = {};
+export const testPlaybackRate = (media) => {
+	var rate = 0.5;
 
-var browserMatch = uaBrowser(navigator.userAgent);
-
-if (browserMatch.browser) {
-	browser[browserMatch.browser] = true;
-	browser.version = browserMatch.version;
+	// Wrapping in a try/catch, just in case older HTML5 browsers throw and error.
+	try {
+		if("playbackRate" in media) {
+			media.playbackRate = rate;
+			return media.playbackRate === rate;
+		} else {
+			return false;
+		}
+	} catch(err) {
+		return false;
+	}
 }
 
-var platformMatch = uaPlatform(navigator.userAgent);
-
-if (platformMatch.platform) {
-	platform[platformMatch.platform] = true;
-	platform.mobile = !platformMatch.tablet;
-	platform.tablet = !!platformMatch.tablet;
+export const testCanPlayType = (media) => {
+	// IE9 on Win Server 2008 did not implement canPlayType(), but it has the property.
+	try {
+		media.canPlayType(formats.mp3.CODEC); // The type is irrelevant.
+		return true;
+	} catch(err) {
+		return false;
+	}
 }
-
-browser.documentMode = getDocMode();
 
 export const nativeFeatures = {
 	init: function() {
@@ -318,3 +278,27 @@ export const nativeFeatures = {
 }
 
 nativeFeatures.init();
+
+export const escapeHtml = (s) =>  s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;')
+
+export const qualifyURL = (url) => {
+	var el = document.createElement('div');
+	el.innerHTML= '<a href="' + escapeHtml(url) + '">x</a>';
+	return el.firstChild.href;
+}
+
+export const absoluteMediaUrls = (media) => {
+	for (var type in media) {
+		var url = media[type];
+
+		if(url && util.format[type] && url.substr(0, 5) !== "data:") {
+			media[type] = qualifyURL(url);
+		}
+	}
+
+	return media;
+}
+
+export const validString = (url) => (url && typeof url === "string"); // Empty strings return false
+
+export const limitValue = (value, min, max) => (value < min) ? min : ((value > max) ? max : value);

@@ -2,13 +2,12 @@ import React from "react";
 import {Motion, spring} from "react-motion";
 import merge from "lodash.merge";
 import maxBy from "lodash/maxBy";
-import jPlayer from "../../jPlayer/index";
 import store from "../../store";
 import * as actions from "./actions";
 import * as jPlayerActions from "../../jPlayer/actions";
 import * as util from "../../util/index";
 
-const jPlaylist = (WrappedComponent) => class JPlaylist extends React.Component {
+const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component {
     static get propTypes() {
 		return {
             updateOptions: React.PropTypes.func.isRequired,

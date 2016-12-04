@@ -3,8 +3,7 @@ import merge from "lodash.merge";
 import isEqual from "lodash/isEqual";
 import store from "../store";
 import * as util from "../util/index";
-import {keys, classNames, errors, errorMessages, errorHints, loopOptions, noFullWindowBlocks, noVolumeBlocks} from "../util/constants";
-import Media from "../presentational/media";
+import {keys, classNames, errors, errorMessages, errorHints, loopOptions, noFullWindows, noVolumes, browser, platform, timeFormats} from "../util/constants";
 import Gui from "../presentational/gui";
 import Progress from "../presentational/progress";
 import Poster from "../presentational/poster";
@@ -54,7 +53,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 					hold: React.PropTypes.number, // Milliseconds. The period of the pause before autohide beings.
 				}),
 				loop: React.PropTypes.string,
-				nativeVideoControls: React.PropTypes.objectOf(React.PropTypes.string),
+				
 				noFullWindow: React.PropTypes.objectOf(React.PropTypes.string),
 				noVolume: React.PropTypes.objectOf(React.PropTypes.string),
 				timeFormat: React.PropTypes.shape({
@@ -69,33 +68,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 					sepSec: React.PropTypes.string
 				}),
 				keyEnabled: React.PropTypes.bool,
-				audioFullScreen: React.PropTypes.bool,
-				keyBindings: React.PropTypes.shape({
-					play: React.PropTypes.shape({
-						key: React.PropTypes.number, 
-						fn: React.PropTypes.func
-					}),
-					fullScreen: React.PropTypes.shape({
-						key: React.PropTypes.number, 
-						fn: React.PropTypes.func
-					}),
-					muted: React.PropTypes.shape({
-						key: React.PropTypes.number, 
-						fn: React.PropTypes.func
-					}),
-					volumeUp: React.PropTypes.shape({
-						key: React.PropTypes.number, 
-						fn: React.PropTypes.func
-					}),
-					volumeDown: React.PropTypes.shape({
-						key: React.PropTypes.number,
-						fn: React.PropTypes.func
-					}),
-					loop: React.PropTypes.shape({
-						key: React.PropTypes.number, 
-						fn: React.PropTypes.func
-					})
-				}),
+				audioFullScreen: React.PropTypes.bool,		
 				verticalVolume: React.PropTypes.bool,
 				verticalPlaybackRate: React.PropTypes.bool,
 				globalVolume: React.PropTypes.bool, // Set to make volume and muted changes affect all jPlayer instances with this option enabled
@@ -149,18 +122,10 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			return {
 				cssSelectorAncestor: "jp_container_1",
 				jPlayerSelector: "jplayer_1",
-				preload: "metadata", // HTML5 Spec values: none, metadata, auto.
-				supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,		
-				captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.
-				playbackRate: 1.0,
-				defaultPlaybackRate: 1.0,
+				preload: "metadata", // HTML5 Spec values: none, metadata, auto.	
+				captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
 				minPlaybackRate: 0.5,
-				maxPlaybackRate: 4,
-				volume: 0.8, // The volume. Number 0 to 1.
-				nativeVideoControls: {
-					// Works well on standard browsers.
-					// Phone and tablet browsers can have problems with the controls disappearing.
-				},
+				maxPlaybackRate: 4,			
 				guiFadeInAnimation: {
 					stiffness: 40 // Velocity of the animation (higher the faster), other properties automatically set in the Motion component
 				},
@@ -189,14 +154,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				networkState: 0,
 				playbackRateStatus: 1, // Warning - Now both an option and a status property
 				ended: 0,
-				[keys.STATE_CLASS]: []
-				/*
-				Persistant status properties created dynamically at _init():
-				nativeVideoControls
-				noFullWindow
-				noVolume
-				playbackRateEnabled
-				*/,
+				[keys.STATE_CLASS]: [],
 				[keys.PLAY_CLASS]: [classNames.PLAY],
 				[keys.PAUSE_CLASS]: [classNames.PAUSE],
 				[keys.POSTER_CLASS]: [],
@@ -216,28 +174,24 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 		constructor(props) {
 			super(props);
 
-			this.state = {};	
+			this.state = {};
 
 			this.assignOptions = util.assignOptions.bind(this);
 			this.mergeOptions = util.mergeOptions.bind(this);
 			this.modifyOptionsArray = util.modifyOptionsArray.bind(this);
 			this.assignStyle = util.assignStyle.bind(this);
 
-			this._setupInternalProperties();
 			this._setupOptions();
 			this._setupEvents();
 		}
-		_setupInternalProperties = () => {
-			this.solution = "html";
-			this.timeFormat = merge(util.timeFormat, this.props.timeFormat);
+		_setupOptions = () => {
+			this.timeFormats = merge(timeFormats, this.props.timeFormats);
 			this.internal = {
-				// instance: undefined
+				// On iOS, assume the commands will be ignored before the user initiates them.
+				cmdsIgnored: platform.ipad || platform.iphone || platform.ipod
 				// htmlDlyCmdId: undefined
 				// mouse: undefined
-				// cmdsIgnored
-			};
-		}
-		_setupOptions = () => {
+			};	
 			this.loopOptions = [
 				loopOptions.OFF,
 				loopOptions.LOOP
@@ -260,46 +214,12 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			}, this.props.autoHide);
 
 			this.noFullWindow = merge({
-				noFullWindowBlocks
+				...noFullWindows
 			}, this.props.noFullWindow);
 
 			this.noVolume = merge({
-				noVolume
-			}, this.props.noVolume);
-			
-			// The key control object, defining the key codes and the functions to execute.
-			this.keyBindings = merge({
-				// The parameter, f = this.focusInstance, will be checked truethy before attempting to call any of these functions.
-				// Properties may be added to this object, in key/fn pairs, to enable other key controls. EG, for the playlist add-on.
-				play: {
-					key: 80, // p
-					fn: () => this.props.updateOption("paused", !this.props.paused)
-				},
-				fullScreen: {
-					key: 70, // f
-					fn: () => {
-						if(this.props.video || this.props.audioFullScreen) {
-							this.props.updateOption("fullScreen", !this.props.fullScreen)
-						}
-					}
-				},
-				muted: {
-					key: 77, // m
-					fn: () => this.props.updateOption("muted", !this.props.muted)
-				},
-				volumeUp: {
-					key: 190, // .
-					fn: () =>  this.props.updateOption("volume", this.props.volume + 0.1)
-				},
-				volumeDown: {
-					key: 188, // ,
-					fn: () => this.props.updateOption("volume", this.props.volume - 0.1)
-				},
-				loop: {
-					key: 76, // l
-					fn: () => this.props.updateOption("loop", this._incrementCurrentLoop())
-				}
-			}, this.props.keyBindings);
+				...noVolumes
+			}, this.props.noVolume);	
 		}
 		_setupEvents = () => {
 			this.mediaEvent = { 
@@ -376,7 +296,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				onEnded: () => {			
 					// Order of the next few commands are important. Change the time and then pause.
 					// Solves a bug in Firefox, where issuing pause 1st causes the media to play from the start. ie., The pause is ignored.
-					if(!util.platform.webkit) { // Chrome crashes if you do this in conjunction with a setMedia command in an ended event handler. ie., The playlist demo.
+					if(!browser.webkit) { // Chrome crashes if you do this in conjunction with a setMedia command in an ended event handler. ie., The playlist demo.
 						this.currentMedia.currentTime = 0; // Safari does not care about this command. ie., It works with or without this line. (Both Safari and Chrome are Webkit.)
 					}
 					// Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
@@ -401,7 +321,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 							this.props.addClass(keys.VIDEO_CLASS, this.props[keys.VIDEO_CLASS], classNames.HIDDEN);
 						}
 
-						if(this._validString(this.props.media.poster) && !this.props.nativeVideoControls) {
+						if(util.validString(this.props.media.poster) && !this.props.nativeVideoControls) {
 							this.props.removeClass(keys.POSTER_CLASS, classNames.HIDDEN);
 						}
 						this.props.removeClass(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN);
@@ -427,9 +347,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 		_initBeforeRender = () => {
 			this.props.updateOptions((prevOptions) => merge({}, this.constructor.defaultProps, prevOptions));
 
-			// On iOS, assume commands will be ignored before user initiates them.
-			this.internal.cmdsIgnored = util.platform.ipad || util.platform.iphone || util.platform.ipod;
-
 			// Add key bindings focusInstance to 1st jPlayer instanced with key control enabled.
 			if(this.props.keyEnabled && !util.focusInstance) {
 				util.focusInstance = this;
@@ -442,9 +359,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				pause: false, // True when a progress event will instruct the media to pause at a time.
 				time: NaN // The play(time) parameter
 			};	
-
-			this.css = {};
-			this.css.cs = {}; // Holds the css selector strings
 
 			const updateCssClass = () => {
 				const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
@@ -476,20 +390,10 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			
 			this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
 
-			// Determine the status for Blocklisted options.
-			this.props.updateOption("nativeVideoControls", util.uaBlocklist(this.props.nativeVideoControls));
 			this.props.updateOption("noVolume", util._uaBlocklist(this.props.noVolume));
 			this.props.updateOption("noFullWindow", util._uaBlocklist(this.props.noFullWindow));
-
-			// Create event handlers if native fullscreen is supported
-			if(util.nativeFeatures.fullscreen.api.fullscreenEnabled) {
-				this._fullscreenAddEventListeners();
-			}
 		}
 		_initAfterRender = () => {
-			// The native controls are only for video and are disabled when audio is also used.
-			this._restrictNativeVideoControls(); 	
-
 			if (util.platform.android) {
 				this.props.updateOption("preload", this.props.preload !== 'auto' ? 'metadata' : 'auto');
 			}
@@ -502,7 +406,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			// If html is not being used by this browser, then media playback is not possible. Trigger an error event.
 			if(!this.html.used) {
 				this._error({
-					type: errors.NO_SOLUTION, //Todo: fix errors
+					type: errors.NO_SOLUTION,
 					context: "{solution:'" + this.props.solution + "', supplied:'" + this.props.supplied.join(", ") + "'}",
 					message: errorMessages.NO_SOLUTION,
 					hint: errorHints.NO_SOLUTION
@@ -517,46 +421,13 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				this.assignStyle({width: this.props.width, height: this.props.height}, "videoStyle");
 			} else {
 				this.props.addClass(keys.VIDEO_CLASS, this.props[keys.VIDEO_CLASS], classNames.HIDDEN);
-			}
+			}		
 			
-			// Initialize the interface components with the options.
-			this._updateNativeVideoControls();
 			this._updatePlaybackRate();
 
 			// The other controls are now setup in _cssSelectorAncestor()
 			this.props.addClass(keys.VIDEO_PLAY_CLASS, this.props[keys.VIDEO_PLAY_CLASS], classNames.HIDDEN);
 		}	
-		_restrictNativeVideoControls = () => {
-			// Fallback to noFullWindow when nativeVideoControls is true and audio media is being used. Affects when both media types are used.
-			if(this.props.require.audio) {
-				if(this.props.nativeVideoControls) {
-					this.props.updateOption("nativeVideoControls", false);
-					this.props.updateOption("noFullWindow", true);
-				}
-			}
-		}
-		_updateNativeVideoControls = () => {
-			if(this.html.video.available && this.html.used) {
-				// Turn the HTML Video controls on/off
-				this.setState({videoControls: this.props.nativeVideoControls});
-				// For when option changed. The poster image is not updated, as it is dealt with in setMedia(). Acceptable degradation since seriously doubt these options will change on the fly. Can again review later.
-				if(this.props.nativeVideoControls && this.props.require.video) {
-					this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
-					this.assignStyle({width: this.props.width, height: this.props.height}, "videoStyle");
-				} else if(this.props.waitForPlay && this.props.video) {
-					this.props.removeClass(keys.POSTER_CLASS, classNames.HIDDEN);
-					this.props.removeClass(keys.VIDEO_CLASS, classNames.HIDDEN);
-				}
-			}
-		}
-		_removeEventListeners = () => {
-			//Remove the fullscreen event listeners
-			var fs = util.nativeFeatures.fullscreen;
-
-			if(this.internal.fullscreenchangeHandler) {
-				document.removeEventListener(fs.event.fullscreenchange, this.internal.fullscreenchangeHandler, false);
-			}
-		}
 		_getHtmlStatus = (media, override) => {
 			let ct = 0, cpa = 0, sp = 0, cpr = 0;
 
@@ -666,23 +537,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			this.props.removeClass(keys.SEEK_BAR_CLASS, classNames.seeking);
 			this.props.removeClass(keys.stateClass, this.stateClass.seeking);
 		}
-		_escapeHtml = (s) =>  s.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;')
-		_qualifyURL = (url) => {
-			var el = document.createElement('div');
-			el.innerHTML= '<a href="' + this._escapeHtml(url) + '">x</a>';
-			return el.firstChild.href;
-		}
-		_absoluteMediaUrls = (media) => {
-			for (var type in media) {
-				var url = media[type];
-
-				if(url && util.format[type] && url.substr(0, 5) !== "data:") {
-					media[type] = this._qualifyURL(url);
-				}
-			}
-
-			return media;
-		}
 		setMedia = (media) => {
 			/*	media[format] = String: URL of format. Must contain all of the supplied option's video or audio formats.
 			*	media.poster = String: Video poster URL.
@@ -702,13 +556,13 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			this.androidFix.pause = false;
 
 			// Convert all media URLs to absolute URLs.
-			media = this._absoluteMediaUrls(media);
+			media = util.absoluteMediaUrls(media);
 
 			for (var formatPriority = 0; formatPriority < this.formats.length; formatPriority++) {
 				var format = this.formats[formatPriority];
 				var isVideo = util.format[format].media === 'video';
 
-				if(this.html.support[format] && this._validString(media[format])) { // Format supported in solution and url given for format.
+				if(this.html.support[format] && util.validString(media[format])) { // Format supported in solution and url given for format.
 
 				if(isVideo) {
 					this._htmlSetVideo(media);
@@ -737,7 +591,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 					// Set poster IMG if native video controls are not being used
 					// Note: With IE the IMG onload event occurs immediately when cached.
 					// Note: Poster hidden by default in _resetMedia()
-					if(this._validString(media.poster)) {
+					if(util.validString(media.poster)) {
 						if(posterChanged) { // Since some browsers do not generate img onload event.
 							this.setState({posterSrc: media.poster});
 						} else {
@@ -770,7 +624,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
 
 			// Maintains the status properties that persist through a reset.	
-		//	this.mergeOptions({status: defaultStatus});
+			//this.mergeOptions({status: defaultStatus});
 			
 			clearTimeout(this.internal.htmlDlyCmdId);
 
@@ -831,7 +685,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			}
 		}
 		playHead = (p) => {
-			p = this._limitValue(p, 0, 100);
+			p = util.limitValue(p, 0, 100);
 			if(this.props.srcSet) {
 				if(this.html.active) {
 					this._htmlPlayHead(p);
@@ -859,7 +713,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			}	
 		}
 		_updateVolume = (v) => {
-			v = this._limitValue(v, 0, 1);
+			v = util.limitValue(v, 0, 1);
 			if(v === undefined) {
 				v = this.props.volume;
 			}
@@ -920,7 +774,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				this.props.addClass(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, this.props[keys.PLAYBACK_RATE_BAR_VALUE_CLASS], classNames.HIDDEN);
 			}
 		}
-		_incrementCurrentLoop = () => {
+		incrementCurrentLoop = () => {
 			var loopIndex = this.loopOptions.indexOf(this.props.loop || this.loopOptions[0]);
 
 			if (loopIndex >= this.loopOptions.length - 1) {
@@ -1005,15 +859,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 					this._setNextProps({remainingDuration: value});
 					this._updateInterface();
 				},
-				nativeVideoControls: () => { 
-					//this.props.nativeVideoControls = util._uaBlocklist(this.props.nativeVideoControls);
-					this._restrictNativeVideoControls();
-				},
-				noFullWindow: () => { 
-					//this.props.nativeVideoControls = util._uaBlocklist(this.props.nativeVideoControls); // Need to check again as noFullWindow can depend on this flag and the restrict() can override it.
-					//this.props.noFullWindow = util._uaBlocklist(this.props.noFullWindow);
-					this._restrictNativeVideoControls();
-				},
 				noVolume: () => { 
 					//this.props.noVolume = util._uaBlocklist(this.props.noVolume);
 					this._updateVolume();
@@ -1040,29 +885,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				this.assignStyle({width: this.props.width, height: this.props.height}, "videoStyle");
 			}
 		}
-		_fullscreenAddEventListeners = () => {
-			var	fs = util.nativeFeatures.fullscreen;
-
-			if(fs.api.fullscreenEnabled) {
-				if(fs.event.fullscreenchange) {
-					// Create the event handler function and store it for removal.
-					if(typeof this.internal.fullscreenchangeHandler !== 'function') {
-						this.internal.fullscreenchangeHandler = () => {
-							this._fullscreenchange();
-						};
-					}
-					document.addEventListener(fs.event.fullscreenchange, this.internal.fullscreenchangeHandler, false);
-				}
-				// No point creating handler for fullscreenerror.
-				// Either logic avoids fullscreen occurring (w3c/moz), or their is no event on the browser (webkit).
-			}
-		}
-		_fullscreenchange = () => {
-			// If nothing is fullscreen, then we cannot be in fullscreen mode.
-			if(this.props.fullScreen && !util.nativeFeatures.fullscreen.api.fullscreenElement()) {
-				this.props.updateOption("fullScreen", false);
-			}
-		}
 		_requestFullscreen = () => {
 			var e = document.querySelector(this.props.cssSelectorAncestor),
 				fs = util.nativeFeatures.fullscreen;
@@ -1074,11 +896,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 
 			if(fs.api.fullscreenEnabled) {
 				fs.api.requestFullscreen(e);
-			}
-		}
-		_posterLoad = () => {
-			if(!this.props.video || this.props.waitForPlay) {
-				this.props.removeClass(keys.POSTER_CLASS, classNames.HIDDEN);
 			}
 		}
 		_exitFullscreen = () => {
@@ -1135,7 +952,7 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 		_htmlSetVideo = (media) => {
 			this._htmlSetFormat(media);
 			if(this.props.nativeVideoControls) {
-				this.video.element().poster = this._validString(media.poster) ? media.poster : "";
+				this.video.element().poster = util.validString(media.poster) ? media.poster : "";
 			}
 		}
 		_htmlResetMedia = () => {
@@ -1262,10 +1079,8 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 				}
 			}
 		}
-		_validString = (url) => (url && typeof url === "string"); // Empty strings return false
-		_limitValue = (value, min, max) => (value < min) ? min : ((value > max) ? max : value);
 		_urlNotSetError = (context) => {
-			this._error( {
+			this._error({
 				type: errors.URL_NOT_SET,
 				context: context,
 				message: errorMessages.URL_NOT_SET,
@@ -1275,74 +1090,9 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 		_error = (error) => {
 			this._trigger(this.props.onError, error);
 		}
-		onPlayClick = () => this.props.updateOption("paused", !this.props.paused)
-		onSeekBarClick = (e) => {	
-			// Using $(e.currentTarget) to enable multiple seek bars
-			var bar = e.currentTarget,
-				offset = util.getOffset(bar),
-				x = e.pageX - offset.left,
-				w = util.getWidth(bar),
-				p = 100 * x / w;
-
-			this.playHead(p);
-		}
-		onPlaybackRateBarClick = (e) => {
-			// Using e.currentTarget to enable multiple playbackRate bars
-			var bar = e.currentTarget,
-				offset = util.getOffset(bar),
-				x = e.pageX - offset.left,
-				w = util.getWidth(bar),
-				y = util.getHeight(bar) - e.pageY + offset.top,
-				h = util.getHeight(bar),
-				ratio,
-				pbr;
-
-			if(this.props.verticalPlaybackRate) {
-				ratio = y/h;
-			} else {
-				ratio = x/w;
-			}
-
-			pbr = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
-			this.props.updateOption("playbackRate", pbr);
-		}
-		onVolumeBarClick = (e) => {
-			// Using $(e.currentTarget) to enable multiple volume bars
-			var bar = e.currentTarget,
-				offset = util.getOffset(bar),
-				x = e.pageX - offset.left,
-				w = util.getWidth(bar),
-				y = util.getHeight(bar) - e.pageY + offset.top,
-				h = util.getHeight(bar);
-
-			if(this.props.verticalVolume) {
-				this.props.updateOption("volume", y/h);
-			} else {
-				this.props.updateOption("volume", x/w);
-			}
-
-			if(this.props.muted) {
-				this.props.updateOption("muted", false);
-			}
-		}
-		onVolumeMaxClick = () => {
-			this.props.updateOption("volume", 1);
-
-			if(this.props.muted) {
-				this.props.updateOption("muted", false);
-			}
-		} 
-		onVideoPlayClick = () => this.props.updateOption("paused", false)
-		onMuteClick = () => this.props.updateOption("muted", !this.props.muted)
-		onRepeatClick = () => this.props.updateOption("loop", this._incrementCurrentLoop())
-		onFullScreenClick = () => this.props.updateOption("fullScreen", !this.props.fullScreen)
 		componentWillReceiveProps(nextProps) {
 			this._setOptions(nextProps);
 		}	
-		componentWillUnmount() {
-			this._removeEventListeners();
-			document.documentElement.removeEventListener("keydown", this._keyBindings);
-		}
 		componentWillMount() {
 			//this._initBeforeRender();
 		}
@@ -1350,8 +1100,6 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			//this._initAfterRender();
 		}
 		componentDidUpdate(prevProps, prevState) {
-			this.currentMedia.loop = this.props.loop === "loop" ? true : false;
-
 			if (this.props.nativeVideoControls !== prevProps.nativeVideoControls) {
 				this._updateNativeVideoControls();
 			}
@@ -1377,14 +1125,10 @@ const jPlayer = (WrappedComponent) => connect(mapStateToProps, mapDispatchToProp
 			}		
 		}
 		render() {
-			debugger
 			return (
 				<WrappedComponent playd={this.play} {...this.props}>
 					<div id={this.props.cssSelectorAncestor} className={this.props[keys.STATE_CLASS].join(" ")}>
 						{this.props.children}
-						<Media events={this.mediaEvent} updateOption={this.updateOption}>
-							{this.state.tracks}
-						</Media>		
 						{/*<Player className={"jp-jplayer"}>
 							<Poster posterClass={this.props[keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onLoad={this._posterLoad} onClick={() => this._trigger(this.props.onClick)} /> 
 							<Audio ref={(audio) => this.audio = audio} require={this.require.audio} events={this.mediaEvent}>

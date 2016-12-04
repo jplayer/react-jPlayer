@@ -1,8 +1,13 @@
 import React from "react";
+import NativeVideoControls from "./NativeVideoControls";
 
-const Video = (props) => (
-	props.require &&
+const video = props => (
+	props.require ?
 		<video ref={props.mediaRef} className={props.videoClass} style={props.style} onClick={props.onClick} {...props.events}>
 			{props.children}
+			<NativeVideoControls {...props} />
 		</video>
+		: null
 );
+
+export default video;

@@ -1,6 +1,7 @@
 import React from "react";
 
 import jPlaylist from "../src/add-on/jPlaylist/index";
+import media from "../src/presentational/media";
 import renderjPlayer from "../src/index";
 
 class ExampleComponent extends React.Component {
@@ -70,4 +71,5 @@ const jPlaylistOptions = {
     onError: (jPlayer) => console.error(jPlayer.error)
 };
 
-renderjPlayer(jPlaylist(ExampleComponent), jPlaylistOptions);
+renderjPlayer(media(ExampleComponent), jPlaylistOptions);
+//renderjPlayer(jPlaylist(ExampleComponent), jPlaylistOptions);

@@ -1,3 +1,5 @@
+import {uaBrowser, uaPlatform, getDocMode} from "./index";
+
 export const actionTypes = {
     UPDATE_OPTION: "UPDATE_OPTION",
     ADD_CLASS: "ADD_CLASS",
@@ -78,7 +80,7 @@ export const loopOptions = {
     LOOP: "loop"
 }
 
-export const noFullWindowBlocks = {
+export const noFullWindows = {
     MSIE: /msie [0-6]\./,
     IPAD: /ipad.*?os [0-4]\./,
     IPHONE: /iphone/,
@@ -91,7 +93,7 @@ export const noFullWindowBlocks = {
     WEBOS: /webos/
 }
 
-export const noVolumeBlocks = {
+export const noVolumes = {
     IPAD: /ipad/,
     IPHONE: /iphone/,
     IPOD: /ipod/,
@@ -189,3 +191,22 @@ export const timeFormats = {
 };
 
 export const keyIgnoreElementNames = ["A", "INPUT", "TEXTAREA", "SELECT", "BUTTON"];
+
+export const browser = {};
+export const platform = {};
+
+const browserMatch = uaBrowser(navigator.userAgent);
+const platformMatch = uaPlatform(navigator.userAgent);
+
+if (browserMatch.browser) {
+	browser[browserMatch.browser] = true;
+	browser.version = browserMatch.version;
+}
+
+if (platformMatch.platform) {
+	platform[platformMatch.platform] = true;
+	platform.mobile = !platformMatch.tablet;
+	platform.tablet = !!platformMatch.tablet;
+}
+
+browser.documentMode = getDocMode();
