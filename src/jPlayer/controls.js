@@ -1,6 +1,6 @@
 import React from "react";
 
-const controls = (AdditionalControls) => class extends React.Component {
+export default (AdditionalControls) => class extends React.Component {
 	constructor(props) {
 		super(props);
 

@@ -6,8 +6,26 @@ import store from "../../store";
 import * as actions from "./actions";
 import * as jPlayerActions from "../../jPlayer/actions";
 import * as util from "../../util/index";
+import media from "../../media";
+import PlaylistControls from "./playlistControls";
+import Playlist from "./playlist";
+import PlaylistItem from "./playlistItem";
+import {connect} from "react-redux";
+import {formats} from "../../util/constants";
 
-const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component {
+const mapStateToProps = (state, ownProps) => {
+	return {
+		...state.jPlaylist
+	}
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    updateOption: jPlayerActions.updateOption,
+    addClass: jPlayerActions.addClass,
+    removeClass: jPlayerActions.removeClass
+});
+
+export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps)(class extends React.Component {
     static get propTypes() {
 		return {
             updateOptions: React.PropTypes.func.isRequired,
@@ -44,17 +62,10 @@ const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component
     constructor(props) {
         super(props);
 
-        WrappedComponent = jPlayer(WrappedComponent, PlaylistControls);
+        WrappedComponent = media(WrappedComponent, PlaylistControls);
 
         this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
         this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
-
-        this.assignOptions = util.assignOptions.bind(this);
-		this.mergeOptions = util.mergeOptions.bind(this);
-		this.modifyOptionsArray = util.modifyOptionsArray.bind(this);
-		this.addClass = util.addClass.bind(this);
-		this.removeClass = util.removeClass.bind(this);
-		this.assignStyle = util.assignStyle.bind(this);
 
         this.state = {
             current: 0
@@ -118,9 +129,9 @@ const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component
 
         media.freeMediaLinks = [];
 
-        for (var property in media) {        
-            // Check property is a media format
-            if (util.format[property]){
+        for (var property in media) {
+            // Check the property is a media format
+            if (formats[property]){
                 var value = media[property];
 
                 firstMediaLinkAdded ? firstMediaLinkAdded = false : media.freeMediaLinks.push(", ");
@@ -156,7 +167,7 @@ const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component
     }
     _initPlaylist = (playlist) => {
         this.setState({current: 0});
-        this.assignOptions({shuffled: false});
+        this.props.updateOption("shuffled", false);
         this.original = [...playlist] // Copy the Array of Objects
 
         for(var i = 0; i < this.original.length; i++){
@@ -166,7 +177,7 @@ const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component
 
         this._originalPlaylist();
     }
-    _originalPlaylist = (playlistSetCallback) => this.assignOptions({playlist: [...this.original]}, playlistSetCallback)
+    _originalPlaylist = (playlistSetCallback) => this.props.updateOption("playlist", [...this.original], playlistSetCallback)
     setPlaylist = (playlist) => {
         this._initPlaylist(playlist);
         this._init();
@@ -342,7 +353,7 @@ const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component
                 <div id="jp_container_playlist">
                     <div className="jp-playlist">
                         <Playlist isSlidingUp={this.state.isPlaylistContainerSlidingUp} config={this.state.useShuffleConfig ? this.props.shuffleAnimation : this.props.displayAnimation} onRest={this._shuffleAnimationCallback}>
-                            <Media medias={this.props.playlist} current={this.state.current} config={MediaAnimationConfig} onRest={this._removeAnimationCallback} 
+                            <PlaylistItem medias={this.props.playlist} current={this.state.current} config={MediaAnimationConfig} onRest={this._removeAnimationCallback} 
                                 removeItemClass={this.props.removeItemClass} freeGroupClass={this.props.freeGroupClass} itemClass={this.props.itemClass} enableRemoveControls={this.props.enableRemoveControls} 
                                 remove={this.remove} blur={this.blur} play={this.play} mergeOptions={this.mergeOptions} />
                         </Playlist> 
@@ -352,128 +363,4 @@ const jPlaylist = (WrappedComponents) => class JPlaylist extends React.Component
             </WrappedComponent>
         );
     }
-}
-
-class PlaylistControls extends React.Component {
-    constructor(props) {
-        super();
-
-        this.state = {};
-        this.className = {
-            details: "jp-details",
-            shuffle: "jp-shuffle",
-            previous: "jp-previous",
-            next: "jp-next",
-            extraControls: "jp-extra-controls"
-        };
-    }
-    _onShuffleClick = (event) => {
-        event.preventDefault();
-
-        this.props.shuffle(!this.props.shuffled);
-        this.props.blur(event.target);
-    }
-    _onPreviousClick = (event) => {
-        event.preventDefault();
-
-        this.props.previous();
-        this.props.blur(event.target);
-    }
-    _onNextClick = (event) => {
-        event.preventDefault();
-
-        this.props.next();
-        this.props.blur(event.target);
-    }
-    render() {
-        return (
-            <div className="jp-playlist-controls">
-                <a className={this.className.shuffle} onClick={this._onShuffleClick}>{this.props.html.shuffle}</a>
-                <a className={this.className.previous} onClick={this._onPreviousClick}>{this.props.html.previous}</a>
-                <a className={this.className.next} onClick={this._onNextClick}>{this.props.html.next}</a>
-                <a className={this.className.extraControls}>{this.props.html.playlistOptions}</a>
-            </div>
-        );
-    }
-}
-
-class Media extends React.Component {
-    static get defaultProps() {
-        return {
-            minHeight: 0,
-            maxHeight: 1
-        };
-    }
-    constructor(props) {
-        super(props);
-        
-        this.state = {};
-        this.className = {
-            currentMedia: "jp-playlist-current",
-        };
-    }
-    _onRemoveMediaClick = (index, event) => {
-        event.preventDefault();
-
-        this.props.remove(index);
-        this.props.blur(event.target);
-    }
-    _onMediaLinkClick = (index, event) => {
-        event.preventDefault();
-
-        this.props.current !== index ? this.props.play(index) : this.props.mergeOptions({status: {paused: false}});
-        this.props.blur(event.target);
-    }
-    render() {
-        return (
-            <div>
-            {this.props.medias.map((media, index) => {
-                    const animationHeight = media.isRemoving ? this.props.minHeight : this.props.maxHeight;
-                    const mediaListClass = this.props.current === index ? this.className.currentMedia : null;
-                    const mediaLinkClass = this.props.current === index ? `${this.props.itemClass} ${this.className.currentMedia}` : this.props.itemClass        
-                    const onRest = media.isRemoving ? () => this.props.onRest(index) : null;
-
-                    return <Motion key={media.key} defaultStyle={{heightToInterpTo: this.props.minHeight}} style={{heightToInterpTo: spring(animationHeight, this.props.config)}} onRest={onRest}>                
-                        {(values) => 
-                            <li className={mediaListClass} style={{transform: `scaleY(${values.heightToInterpTo})`, transformOrigin: "50% top"}}>
-                                {this.props.enableRemoveControls && <a href="javascript:;" className={this.props.removeItemClass} onClick={this._onRemoveMediaClick.bind(this, index)}>&times;</a>}
-                                {media.free && <span className={this.props.freeGroupClass}>({media.freeMediaLinks})</span>}
-                                <a href="javascript:;" className={mediaLinkClass} onClick={this._onMediaLinkClick.bind(this, index)} tabIndex="0"> 
-                                    <img src={media.poster} />
-                                    {media.title}
-                                    {media.artist && <span className="jp-artist">by {media.artist}</span>}
-                                </a>
-                            </li>
-                        }
-                    </Motion>
-                }
-            )}
-            </div>
-        );
-    }
-}
-
-const Playlist = (props) => {
-    const animationHeight = props.isSlidingUp ? props.minHeight : props.maxHeight;
-
-    return (
-        <Motion defaultStyle={{heightToInterpTo: props.minHeight}} style={{heightToInterpTo: spring(animationHeight, props.config)}} onRest={props.onRest}>
-            {(values) =>
-                <ul style={{transform: `scaleY(${values.heightToInterpTo})`, transformOrigin: "50% top"}}>
-                    {props.children}     
-                </ul>
-            }
-        </Motion>   
-    );
-};
-
-Playlist.defaultProps = {
-    minHeight: 0,
-    maxHeight: 1
-};
-
-Playlist.propTypes = {
-    children: React.PropTypes.element.isRequired
-}
-
-export default jPlaylist;
+})

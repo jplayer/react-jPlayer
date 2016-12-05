@@ -27,13 +27,13 @@ const mapStateToProps = (state, ownProps) => {
     // }
 
     return globalProperties.jPlayer;
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     updateOption: (key, value) => dispatch(jPlayerActions.updateOption(key, value, ownProps.jPlayerSelector, ownProps.globalVolume)),
     addClass: (key, existingClasses, classToAdd) => dispatch(jPlayerActions.addClass(key, existingClasses, classToAdd)),
     removeClass: (key, classToRemove) => dispatch(jPlayerActions.removeClass(key, classToRemove))
-})
+});
 
 export default (WrappedComponent, options) => {
     let JPlayerWrapper = class extends React.Component {

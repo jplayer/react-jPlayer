@@ -1,15 +1,15 @@
 import React from "react";
-import {formats} from "../util/constants";
-import Video from "./video";
-import Audio from "./audio";
-import jPlayer from "../jPlayer/index";
-import {testPlaybackRate, testCanPlayType} from "../util/index";
+import Video from "./jPlayer/video";
+import Audio from "./jPlayer/audio";
+import jPlayer from "./jPlayer/index";
+import {formats} from "./util/constants";
+import {testPlaybackRate, testCanPlayType} from "./util/index";
 
-const media = (WrappedComponent) => class extends React.Component {
+const media = (...WrappedComponents) => class extends React.Component {
 	constructor(props) {
 		super(props);
 
-		WrappedComponent = jPlayer(WrappedComponent);
+		WrappedComponents = jPlayer(...WrappedComponents);
 		
         this.setFormats();
         this.setPlayableFormat();
@@ -91,12 +91,12 @@ const media = (WrappedComponent) => class extends React.Component {
 		this.currentMedia.autoplay = this.props.autoPlay;
 		this.currentMedia.loop = this.props.loop === "loop" ? true : false;
 	}
-	render() {
+	render() {debugger
 		return (
-			<WrappedComponent {...this.props} {...this.medias}>
+			<WrappedComponents {...this.props} {...this.medias}>
 			    <Audio mediaRef={this.setMediaRef} require={this.medias.audio.require} />
 				<Video mediaRef={this.setMediaRef} require={this.medias.video.require} />
-			</WrappedComponent>
+			</WrappedComponents>
 		);
 	}
 }

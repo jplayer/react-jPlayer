@@ -71,5 +71,4 @@ const jPlaylistOptions = {
     onError: (jPlayer) => console.error(jPlayer.error)
 };
 
-renderjPlayer(jPlayer(ExampleComponent), jPlaylistOptions);
 //renderjPlayer(jPlaylist(ExampleComponent), jPlaylistOptions);

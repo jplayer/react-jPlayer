@@ -1,5 +1,5 @@
 import React from "react";
-import NativeVideoControls from "./NativeVideoControls";
+import NativeVideoControls from "./nativeVideoControls";
 
 const video = props => (
 	props.require ?
