@@ -3,9 +3,7 @@ import {Motion, spring} from "react-motion";
 import merge from "lodash.merge";
 import maxBy from "lodash/maxBy";
 import store from "../../store";
-import * as actions from "./actions";
-import * as jPlayerActions from "../../jPlayer/actions";
-import * as jPlaylistActions from "./actions";
+import * as actions from "../../jPlayer/actions";
 import * as util from "../../util/index";
 import media from "../../media";
 import PlaylistControls from "./playlistControls";
@@ -22,8 +20,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    actions: bindActionCreators(jPlaylistActions, dispatch),
-    jPlayerActions: bindActionCreators(jPlayerActions, dispatch)
+    actions: bindActionCreators(actions, dispatch)
 });
 
 export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps)(class extends React.Component {
@@ -85,14 +82,14 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
                 this.next()
                 this._trigger(this.props.onEnded);
             },
-            onPlay: () => { 
-                jPlayerActions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
+            onPlay: () => {
+                actions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
                 this._trigger(this.props.onPlay);
              },
             onResize: () => {
-                const method = this.props.fullScreen ? this.props.removeClass : this.props.addClass;
+                const method = this.props.fullScreen ? this.props.actions.removeFromArrayByValue : this.props.actions.addUniqueToArrayByValue;
 
-                method(keys.DETAILS_CLASS, this.props[keys.DETAILS_CLASS], classNames.HIDDEN);
+                method(keys.DETAILS_CLASS, classNames.HIDDEN, this.props[keys.DETAILS_CLASS]);
                 this._trigger(this.props.onResize);
             }
         }
@@ -147,7 +144,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
        
         // Put the title in its initial display state
         if (!this.props.fullScreen) {
-             this.props.addClass(keys.DETAILS_CLASS, this.props[keys.DETAILS_CLASS], classNames.HIDDEN);
+             this.props.actions.addUniqueToArrayByValue(keys.DETAILS_CLASS, classNames.HIDDEN);
         }
 
         this._init();
@@ -161,7 +158,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
     }
     _initPlaylist = (playlist) => {
         this.setState({current: 0});
-        this.props.jPlayerActions.updateOption("shuffled", false);
+        this.props.actions.updateOption("shuffled", false);
         this.original = merge([], playlist); // Copy the Array of Objects
 
         for(var i = 0; i < this.original.length; i++) {
@@ -171,7 +168,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 
         this._originalPlaylist();
     }
-    _originalPlaylist = (playlistSetCallback) => this.props.jPlayerActions.updateOption("playlist", [...this.original], playlistSetCallback)
+    _originalPlaylist = () => this.props.actions.updateOption("playlist", this.original)
     setPlaylist = (playlist) => {
         this._initPlaylist(playlist);
         this._init();
@@ -181,7 +178,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         media.key = maxBy(this.props.playlist, "key").key + 1;
         
         this.original.push(media);
-        this.modifyOptionsArray(media, Array.prototype.concat, this.key.playlist);
+        this.props.actions.addUniqueToArrayByValue(keys.PLAYLIST_CLASS, media);
 
         if (playNow) {
             this.play(this.props.playlist.length - 1);
@@ -194,13 +191,13 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
     remove = (index) => {
         if (index === undefined) {
             this._initPlaylist([]);
-            this.props.jPlayerActions.updateOption("playlist", []);     
+            this.props.actions.updateOption("playlist", []);     
             return true;
         } else {         
             const playlist = merge([], [...this.props.playlist]);
             playlist[index].isRemoving = true;
 
-            this.props.jPlayerActions.updateOption("playlist", playlist);
+            this.props.actions.updateOption("playlist", playlist);
         }
         this.setState({useRemoveConfig: true});
     }
@@ -208,7 +205,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         index = (index < 0) ? this.original.length + index : index; // Negative index relates to end of array.
         if (0 <= index && index < this.props.playlist.length) {
             this.setState({current: index});
-            this.props.jPlayerActions.updateOption("playlist", this.props.playlist[index]);
+            this.props.actions.updateOption("playlist", this.props.playlist[index]);
         } else {
             this.setState({current: 0});
         }
@@ -218,10 +215,10 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         if (0 <= index && index < this.props.playlist.length) {
             if (this.props.playlist.length) {
                 this.select(index, true);
-                this.props.jPlayerActions.updateOption("paused", false);
+                this.props.actions.updateOption("paused", false);
             }
         } else if (index === undefined) {
-            this.props.jPlayerActions.updateOption("paused", false);
+            this.props.actions.updateOption("paused", false);
         }
     }
     next = () => {
@@ -258,7 +255,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         }
 
         this.playNow = playNow;
-        this.props.jPlayerActions.updateOption("shuffled", shuffled);      
+        this.props.actions.updateOption("shuffled", shuffled);      
         this.setState({isPlaylistContainerSlidingUp: true});
         this.setState({useShuffleConfig: true});
     }
@@ -274,7 +271,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         } else {
             this.original.splice(index, 1);
         }
-        this.modifyOptionsArray(function(_, i) {return i !== index}, Array.prototype.filter, this.key.playlist);
+        this.props.actions.removeFromArrayByIndex(keys.PLAYLIST_CLASS, index);
 
         if (this.original.length) {
             if (index === this.state.current) {
@@ -285,8 +282,8 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
             }
         } else {
             this.setState({current: 0});
-            this.props.jPlayerActions.updateOption("playlist", []);
-            this.props.jPlayerActions.updateOption("shuffled", false);
+            this.props.actions.updateOption("playlist", []);
+            this.props.actions.updateOption("shuffled", false);
         }
 
         this.setState({useRemoveConfig: false});
@@ -297,20 +294,17 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
             return;
         }
 
-         var playlistSetCallback = () => { 
-            if (this.playNow || !this.props.paused) {
-                this.play(0);
-            } else {
-                this.select(0);
-            }
-        }
-
         if (this.props.shuffled) {
-            this.props.jPlayerActions.updateOption("playlist", [...this.props.playlist].sort(() => 0.5 - Math.random()));
-            this.addClass(this.stateClass.shuffled, util.key.stateClass, playlistSetCallback);
+            this.props.actions.updateOption("playlist", [...this.props.playlist].sort(() => 0.5 - Math.random()));
+            this.props.actions.addUniqueToArrayByValue(keys.JPLAYER_CLASS, this.stateClass.shuffled);
         } else {
             this._originalPlaylist(playlistSetCallback);
-            this.removeClass(this.stateClass.shuffled, util.key.stateClass);
+            this.props.actions.removeFromArrayByValue(keys.JPLAYER_CLASS, this.stateClass.shuffled);
+        }
+        if (this.playNow || !this.props.paused) {
+            this.play(0);
+        } else {
+            this.select(0);
         }
         
         setTimeout(() => this.setState({isPlaylistContainerSlidingUp: false}), 0);

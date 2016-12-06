@@ -5,36 +5,50 @@ import get from "lodash/get";
 import set from "lodash/set";
 import {defaultProps} from "./index";
 
-export default (state={}, action) => {
+const updateArray = (state, action) => {
+    const existingArray = get(state, action.key, []);
+    const newState = {...state};
+
     switch (action.type) {
-        case actionTypes.UPDATE_OPTION:
-            return {
-                ...state, 
-                [action.payload.key]: action.payload.value, 
-                jPlayerSelector: action.payload.identifier,
-                globalVolume: action.payload.globalVolume
-            }
-        case actionTypes.ADD_CLASS:
-            //Don't add duplicates or empty strings
-            const found = action.payload.existingClasses.some((v) => v === action.payload.classToAdd);
-            const addState = {...state};
+        case actionTypes.ARRAY_ADD_UNIQUE_BY_VALUE:          
+            //Don't add duplicates
+            const found = existingArray.some((v) => v === action.value);
             
             if (!found) {
-                set(addState, action.payload.key, [...action.payload.existingClasses, action.payload.classToAdd]);
+                set(newState, action.key, [...existingArray, action.value]);
 
-                return addState;
+                return newState;
             }
             return state;
-        case actionTypes.REMOVE_CLASS:
-            const defaultClass = get(defaultProps, action.payload.key, []);
-            const existingClasses = get(state, action.payload.key, []);
-            const filteredClasses = existingClasses.filter((v) => v !== action.payload.classToRemove);
-            const removeState = {...state};
+        case actionTypes.ARRAY_REMOVE_BY_VALUE:
+            const filteredArrayByValue = existingArray.filter((v) => v !== action.value);
            
-            set(removeState, action.payload.key, filteredClasses);
+            set(newState, action.key, filteredArrayByValue);
 
-            return removeState;
+            return newState;
+        case actionTypes.ARRAY_REMOVE_BY_INDEX:
+            const filteredArrayByIndex = existingArray.filter((_, i) => i !== action.value);
+           
+            set(newState, action.key, filteredArrayByIndex);
+
+            return newState;
         default:
             return state;
     }
-};
+}
+
+export default (state={}, action) => {
+    switch (action.type) {
+        case actionTypes.ARRAY_ADD_UNIQUE_BY_VALUE:        
+        case actionTypes.ARRAY_REMOVE_BY_VALUE:
+        case actionTypes.ARRAY_REMOVE_BY_INDEX:
+           return updateArray(state, action);
+        case actionTypes.UPDATE:
+            return {
+                ...state, 
+                [action.key]: action.value
+            }
+        default:
+            return state;
+    }
+}

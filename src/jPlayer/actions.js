@@ -1,28 +1,25 @@
 import {actionTypes} from "../util/constants";
 
-export const updateOption = (key, value, identifier, globalVolume) => ({
-    type: actionTypes.UPDATE_OPTION,
-    payload: {
-        key,
-        value,
-        identifier,
-        globalVolume
-    } 
+export const updateOption = (key, value) => ({
+    type: actionTypes.UPDATE,
+    key,
+    value
 });
 
-export const addClass = (key, existingClasses, classToAdd) => ({
-    type: actionTypes.ADD_CLASS,
-    payload: {
-        key,
-        existingClasses,
-        classToAdd
-    } 
+export const addUniqueToArrayByValue = (key, value) => ({
+    type: actionTypes.ARRAY_ADD_UNIQUE_BY_VALUE,
+    key,
+    value
 });
 
-export const removeClass = (key, classToRemove) => ({
-    type: actionTypes.REMOVE_CLASS,
-    payload: {
-        key,
-        classToRemove
-    } 
+export const removeFromArrayByValue = (key, value) => ({
+    type: actionTypes.ARRAY_REMOVE_BY_VALUE,
+    key,
+    value
+});
+
+export const removeFromArrayByIndex = (key, value) => ({
+    type: actionTypes.ARRAY_REMOVE_BY_INDEX,
+    key,
+    value
 });

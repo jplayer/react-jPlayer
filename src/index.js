@@ -39,8 +39,10 @@ export default (WrappedComponent, options) => {
     let JPlayerWrapper = class extends React.Component {
         constructor(props) {
             super(props);
+           
         }
         render() {
+             debugger
             return (
                 <WrappedComponent {...this.props} />
             );
