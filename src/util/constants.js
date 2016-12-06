@@ -3,7 +3,8 @@ import {uaBrowser, uaPlatform, getDocMode} from "./index";
 export const actionTypes = {
     UPDATE_OPTION: "UPDATE_OPTION",
     ADD_CLASS: "ADD_CLASS",
-    REMOVE_CLASS: "REMOVE_CLASS"
+    REMOVE_CLASS: "REMOVE_CLASS",
+	EDIT_PLAYLIST: "EDIT_PLAYLIST"
 }; 
 
 export const keys = {
@@ -21,7 +22,10 @@ export const keys = {
 	PAUSE_CLASS: "pauseClass",
 	REPEAT_CLASS: "repeatClass",
 	FULL_SCREEN_CLASS: "fullScreenClass",
-    STATE_CLASS: "stateClass"
+    STATE_CLASS: "jPlayerClass",
+	PLAYLIST_CLASS: "playlistClass",
+	DETAILS_CLASS: "detailsClass",
+	SHUFFLE_OFF_CLASS: "shuffleOffClass"
 };
 
 export const classNames = {

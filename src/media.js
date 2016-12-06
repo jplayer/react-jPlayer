@@ -91,7 +91,7 @@ const media = (...WrappedComponents) => class extends React.Component {
 		this.currentMedia.autoplay = this.props.autoPlay;
 		this.currentMedia.loop = this.props.loop === "loop" ? true : false;
 	}
-	render() {debugger
+	render() {
 		return (
 			<WrappedComponents {...this.props} {...this.medias}>
 			    <Audio mediaRef={this.setMediaRef} require={this.medias.audio.require} />

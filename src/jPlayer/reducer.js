@@ -26,8 +26,6 @@ export default (state={}, action) => {
             }
             return state;
         case actionTypes.REMOVE_CLASS:
-        debugger
-            var p = defaultProps;
             const defaultClass = get(defaultProps, action.payload.key, []);
             const existingClasses = get(state, action.payload.key, []);
             const filteredClasses = existingClasses.filter((v) => v !== action.payload.classToRemove);

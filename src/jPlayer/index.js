@@ -348,7 +348,6 @@ export default (WrappedComponent, AdditionalControls) => {
 				};
 			}
 			_initBeforeRender = () => {
-				debugger
 				// Add key bindings focusInstance to 1st jPlayer instanced with key control enabled.
 				if(this.props.keyEnabled && !util.focusInstance) {
 					util.focusInstance = this;
@@ -1100,6 +1099,14 @@ export default (WrappedComponent, AdditionalControls) => {
 			}
 			componentDidMount() {
 				//this._initAfterRender();
+				for (var method in this.props.overrideMethods) {
+					const newMethod = this.props.overrideMethods[method];
+					const oldMethod = this[method];
+
+					if (oldMethod !== undefined) {
+						newMethod(oldMethod);
+					}
+				}
 			}
 			componentDidUpdate(prevProps, prevState) {
 				if (this.props.nativeVideoControls !== prevProps.nativeVideoControls) {
