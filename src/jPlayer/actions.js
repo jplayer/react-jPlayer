@@ -6,8 +6,8 @@ export const updateOption = (key, value) => ({
     value
 });
 
-export const addUniqueToArrayByValue = (key, value) => ({
-    type: actionTypes.ARRAY_ADD_UNIQUE_BY_VALUE,
+export const addUniqueToArray = (key, value) => ({
+    type: actionTypes.ARRAY_ADD_UNIQUE,
     key,
     value
 });

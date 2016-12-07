@@ -8,7 +8,7 @@ import {testPlaybackRate, testCanPlayType} from "./util/index";
 const media = (...WrappedComponents) => class extends React.Component {
 	constructor(props) {
 		super(props);
-
+	
 		WrappedComponents = jPlayer(...WrappedComponents);
 		
         this.setFormats();

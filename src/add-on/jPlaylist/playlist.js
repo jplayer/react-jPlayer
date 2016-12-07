@@ -1,5 +1,20 @@
 import React from "react";
 
+export default class extends React.Component {
+    static get defaultProps() {
+        return {
+   
+        };
+    }
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+
+        );
+    }
+}
 const playlist = (props) => {
     const animationHeight = props.isSlidingUp ? props.minHeight : props.maxHeight;
 

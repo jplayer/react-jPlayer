@@ -3,26 +3,25 @@ import merge from "lodash.merge";
 import isEqual from "lodash/isEqual";
 import store from "../store";
 import * as util from "../util/index";
-import {keys, classNames, errors, errorMessages, errorHints, loopOptions, noFullWindows, noVolumes, browser, platform, timeFormats} from "../util/constants";
+import * as constants from "../util/constants";
+import * as actions from "./actions";
 import Gui from "./gui";
 import Progress from "./progress";
 import Poster from "./poster";
 import controls from "./controls";
-import BrowserUnsupported from "./browserUnsupported";
+import browserUnsupported from "./browserUnsupported";
 import Player from "./player";
-import {updateOption} from "./actions";
 import convertTime from "./convertTime";
 import {connect} from "react-redux";
+import { bindActionCreators } from 'redux';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	return {
 		...state.jPlayer
 	}
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    updateOption: updateOption,
-});
+const mapDispatchToProps = (dispatch) => (bindActionCreators(actions, dispatch));
 
 export default (WrappedComponent, AdditionalControls) => {
 	const Controls = controls(AdditionalControls);
@@ -33,11 +32,6 @@ export default (WrappedComponent, AdditionalControls) => {
 				super(props);
 
 				this.state = {};
-
-				this.assignOptions = util.assignOptions.bind(this);
-				this.mergeOptions = util.mergeOptions.bind(this);
-				this.modifyOptionsArray = util.modifyOptionsArray.bind(this);
-				this.assignStyle = util.assignStyle.bind(this);
 
 				this._setupOptions();
 				this._setupEvents();
@@ -170,45 +164,45 @@ export default (WrappedComponent, AdditionalControls) => {
 					networkState: 0,
 					playbackRateStatus: 1, // Warning - Now both an option and a status property
 					ended: 0,
-					[keys.STATE_CLASS]: [],
-					[keys.PLAY_CLASS]: [classNames.PLAY],
-					[keys.PAUSE_CLASS]: [classNames.PAUSE],
-					[keys.POSTER_CLASS]: [],
-					[keys.VIDEO_CLASS]: [],
-					[keys.VIDEO_PLAY_CLASS]: [],
-					[keys.REPEAT_CLASS]: [classNames.REPEAT],
-					[keys.FULL_SCREEN_CLASS]: [classNames.FULL_SCREEN],
-					[keys.VOLUME_MAX_CLASS]: [classNames.VOLUME_MAX],
-					[keys.VOLUME_BAR_CLASS]: [classNames.VOLUME_BAR],
-					[keys.VOLUME_BAR_VALUE_CLASS]: [classNames.VOLUME_BAR_VALUE],
-					[keys.PLAYBACK_RATE_BAR_CLASS]: [classNames.PLAYBACK_RATE_BAR],
-					[keys.PLAYBACK_RATE_BAR_VALUE_CLASS]: [classNames.PLAYBACK_RATE_BAR_VALUE],
-					[keys.SEEK_BAR_CLASS]: [classNames.SEEK_BAR],
-					[keys.NO_SOLUTION_CLASS]: [classNames.NO_SOLUTION]
+					[constants.keys.STATE_CLASS]: [],
+					[constants.keys.PLAY_CLASS]: [constants.classNames.PLAY],
+					[constants.keys.PAUSE_CLASS]: [constants.classNames.PAUSE],
+					[constants.keys.POSTER_CLASS]: [],
+					[constants.keys.VIDEO_CLASS]: [],
+					[constants.keys.VIDEO_PLAY_CLASS]: [],
+					[constants.keys.REPEAT_CLASS]: [constants.classNames.REPEAT],
+					[constants.keys.FULL_SCREEN_CLASS]: [constants.classNames.FULL_SCREEN],
+					[constants.keys.VOLUME_MAX_CLASS]: [constants.classNames.VOLUME_MAX],
+					[constants.keys.VOLUME_BAR_CLASS]: [constants.classNames.VOLUME_BAR],
+					[constants.keys.VOLUME_BAR_VALUE_CLASS]: [constants.classNames.VOLUME_BAR_VALUE],
+					[constants.keys.PLAYBACK_RATE_BAR_CLASS]: [constants.classNames.PLAYBACK_RATE_BAR],
+					[constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS]: [constants.classNames.PLAYBACK_RATE_BAR_VALUE],
+					[constants.keys.SEEK_BAR_CLASS]: [constants.classNames.SEEK_BAR],
+					[constants.keys.NO_SOLUTION_CLASS]: [constants.classNames.NO_SOLUTION]
 				};
 			}
 			_setupOptions = () => {
-				this.timeFormats = merge(timeFormats, this.props.timeFormats);
+				this.timeFormats = merge(constants.timeFormats, this.props.timeFormats);
 				this.internal = {
 					// On iOS, assume the commands will be ignored before the user initiates them.
-					cmdsIgnored: platform.ipad || platform.iphone || platform.ipod
+					cmdsIgnored: constants.platform.ipad || constants.platform.iphone || constants.platform.ipod
 					// htmlDlyCmdId: undefined
 					// mouse: undefined
 				};	
 				this.loopOptions = [
-					loopOptions.OFF,
-					loopOptions.LOOP
+					constants.loopOptions.OFF,
+					constants.loopOptions.LOOP
 				].concat(this.props.loopOptions);	
 
 				// Classes added to the cssSelectorAncestor to indicate the state.
 				this.stateClass = merge({ 
-					playing: classNames.states.PLAYING,
-					seeking: classNames.states.SEEKING,
-					muted: classNames.states.MUTED,
-					looped: classNames.states.LOOPED,
-					fullScreen: classNames.states.FULL_SCREEN,
-					noVolume: classNames.states.NO_VOLUME,
-				}, this.props[keys.STATE_CLASS]);
+					playing: constants.classNames.states.PLAYING,
+					seeking: constants.classNames.states.SEEKING,
+					muted: constants.classNames.states.MUTED,
+					looped: constants.classNames.states.LOOPED,
+					fullScreen: constants.classNames.states.FULL_SCREEN,
+					noVolume: constants.classNames.states.NO_VOLUME,
+				}, this.props[constants.keys.STATE_CLASS]);
 
 				this.autoHide = merge({
 					restored: false, // Controls the interface autoHide feature.
@@ -217,11 +211,11 @@ export default (WrappedComponent, AdditionalControls) => {
 				}, this.props.autoHide);
 
 				this.noFullWindow = merge({
-					...noFullWindows
+					...constants.noFullWindows
 				}, this.props.noFullWindow);
 
 				this.noVolume = merge({
-					...noVolumes
+					...constants.noVolumes
 				}, this.props.noVolume);	
 			}
 			_setupEvents = () => {
@@ -292,14 +286,14 @@ export default (WrappedComponent, AdditionalControls) => {
 						this._updatePlaybackRate();
 						this._trigger(this.props.onRateChange);
 					},
-					onSuspend: () => { // Seems to be the only way of capturing that the iOS4 browser did not actually play the media from the page code. ie., It needs a user gesture.				
+					onSuspend: () => { // Seems to be the only way of capturing that the iOS4 constants.browser did not actually play the media from the page code. ie., It needs a user gesture.				
 						this._seeked();
 						this._trigger(this.props.onSuspend);
 					},
 					onEnded: () => {			
 						// Order of the next few commands are important. Change the time and then pause.
 						// Solves a bug in Firefox, where issuing pause 1st causes the media to play from the start. ie., The pause is ignored.
-						if(!browser.webkit) { // Chrome crashes if you do this in conjunction with a setMedia command in an ended event handler. ie., The playlist demo.
+						if(!constants.browser.webkit) { // Chrome crashes if you do this in conjunction with a setMedia command in an ended event handler. ie., The playlist demo.
 							this.currentMedia.currentTime = 0; // Safari does not care about this command. ie., It works with or without this line. (Both Safari and Chrome are Webkit.)
 						}
 						// Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
@@ -321,19 +315,19 @@ export default (WrappedComponent, AdditionalControls) => {
 							this.props.updateOption("waitForPlay", true);
 							
 							if(this.props.video && !this.props.nativeVideoControls) {
-								this.props.addClass(keys.VIDEO_CLASS, this.props[keys.VIDEO_CLASS], classNames.HIDDEN);
+								this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
 							}
 
 							if(util.validString(this.props.media.poster) && !this.props.nativeVideoControls) {
-								this.props.removeClass(keys.POSTER_CLASS, classNames.HIDDEN);
+								this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 							}
-							this.props.removeClass(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN);
+							this.props.removeFromArrayByValue(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
 
 							this._error( {
-								type: errors.URL,
+								type: constants.errors.URL,
 								context: this.props.src, // this.src shows absolute urls. Want context to show the url given.
-								message: errorMessages.URL,
-								hint: errorHints.URL
+								message: constants.errorMessages.URL,
+								hint: constants.errorHints.URL
 							});
 						}
 						this._trigger(this.props.onError);
@@ -361,73 +355,68 @@ export default (WrappedComponent, AdditionalControls) => {
 					time: NaN // The play(time) parameter
 				};	
 
-				const updateCssClass = () => {
-					const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-					this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], this.stateClass[sizeClass]);
-					this.props.updateOption("cssClass", sizeClass);
-				};
-
 				// Now required types are known, finish the options default settings.
-				if(this.props.require.video) {	
-					this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], "jp-video");
+				if(this.props.video.require) {
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-video");
+					if (this.props.sizeCssClass !== undefined) {
+						this.props.updateOption(constants.keys.SIZE_CLASS, "jp-video-270p");
+					}
 
-					this.assignOptions(merge({
-						sizeCssClass: "jp-video-270p",
-						sizeFullCssClass: "jp-video-full"
-					}, {
-						sizeCssClass: this.props.sizeCssClass,
-						sizeFullCssClass: this.props.sizeFullCssClass
-					}), updateCssClass);		
+					if (this.props.sizeFullCssClass !== undefined) {
+						this.props.updateOption(constants.keys.SIZE_FULL_CLASS, "jp-video-full");	
+					}		
 				} else {
-					this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], "jp-audio");
-
-					this.assignOptions({
-						sizeCssClass: this.props.sizeCssClass,
-						sizeFullCssClass: this.props.sizeFullCssClass
-					}, updateCssClass);		
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-audio");
 				}
+
+				const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
+				if (sizeClass !== undefined) {
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
+					//this.props.updateOption("cssClass", sizeClass);
+				}	
 				
 				this._setNextProps();	
 				
-				this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
+				this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 
-				this.props.updateOption("noVolume", util._uaBlocklist(this.props.noVolume));
-				this.props.updateOption("noFullWindow", util._uaBlocklist(this.props.noFullWindow));
+				this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
+				this.props.updateOption("noFullWindow", util.uaBlocklist(this.props.noFullWindow));
 			}
 			_initAfterRender = () => {
-				if (util.platform.android) {
+				if (constants.platform.android) {
 					this.props.updateOption("preload", this.props.preload !== 'auto' ? 'metadata' : 'auto');
 				}
-
-				this.html.active = false;
 
 				// Set up the css selectors for the control and feedback entities.
 				this._cssSelectorAncestor();
 
-				// If html is not being used by this browser, then media playback is not possible. Trigger an error event.
-				if(!this.html.used) {
-					this._error({
-						type: errors.NO_SOLUTION,
-						context: "{solution:'" + this.props.solution + "', supplied:'" + this.props.supplied.join(", ") + "'}",
-						message: errorMessages.NO_SOLUTION,
-						hint: errorHints.NO_SOLUTION
-					});
-					this.props.removeClass(keys.NO_SOLUTION_CLASS, classNames.HIDDEN);
-				} else {
-					this.props.addClass(keys.NO_SOLUTION_CLASS, this.props[keys.NO_SOLUTION_CLASS], classNames.HIDDEN);
-				}
+				// If html is not being used by this constants.browser, then media playback is not possible. Trigger an error event.
+				// if(!this.html.used) {
+				// 	this._error({
+				// 		type: constants.errors.NO_SOLUTION,
+				// 		context: "{solution:'" + this.props.solution + "', supplied:'" + this.props.supplied.join(", ") + "'}",
+				// 		message: constants.errorMessages.NO_SOLUTION,
+				// 		hint: constants.errorHints.NO_SOLUTION
+				// 	});
+				// 	this.props.removeFromArrayByValue(constants.keys.NO_SOLUTION_CLASS, constants.classNames.HIDDEN);
+				// } else {
+				// 	this.props.addUniqueToArray(constants.keys.NO_SOLUTION_CLASS, this.props[constants.keys.NO_SOLUTION_CLASS], constants.classNames.HIDDEN);
+				// }
 
 				if(this.props.nativeVideoControls) {
-					this.props.removeClass(keys.VIDEO_CLASS, classNames.HIDDEN);
-					this.assignStyle({width: this.props.width, height: this.props.height}, "videoStyle");
+					this.props.removeFromArrayByValue(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
+					this.setState({videoStyle: {
+						width: this.props.width, 
+						height: this.props.height
+					}});
 				} else {
-					this.props.addClass(keys.VIDEO_CLASS, this.props[keys.VIDEO_CLASS], classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
 				}		
 				
 				this._updatePlaybackRate();
 
 				// The other controls are now setup in _cssSelectorAncestor()
-				this.props.addClass(keys.VIDEO_PLAY_CLASS, this.props[keys.VIDEO_PLAY_CLASS], classNames.HIDDEN);
+				this.props.addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
 			}	
 			_getHtmlStatus = (media, override) => {
 				let ct = 0, cpa = 0, sp = 0, cpr = 0;
@@ -485,26 +474,26 @@ export default (WrappedComponent, AdditionalControls) => {
 				}
 				
 				if(playing) {
-					this.props.addClass(keys.stateClass, this.stateClass.playing);
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.playing);
 				} else {
-					this.props.removeClass(keys.stateClass, this.stateClass.playing);
+					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.playing);
 				}
 				if(!this.props.noFullWindow && this.nextProps.fullWindow) {
-					this.props.addClass(keys.stateClass, this.stateClass.fullScreen);
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen);
 				} else {
-					this.props.removeClass(keys.stateClass, this.stateClass.fullScreen);
+					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen);
 				}
 				if(this.nextProps.loop === "loop") {
-					this.props.addClass(keys.stateClass, this.stateClass.looped);
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.looped);
 				} else {
-					this.props.removeClass(keys.stateClass, this.stateClass.looped);
+					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.looped);
 				}
 			}
 			_updateInterface = () => {
-				this.assignStyle({width: `${this.props.seekPercent}%`}, "seekBarStyle");
+				this.setState({seekBarStyle: {width: `${this.props.seekPercent}%`}});
 
-				this.props.smoothPlayBar ? this.assignStyle({width: `${this.props.currentPercentAbsolute}%`}, "playBarStyle")
-										: this.assignStyle({width: `${this.props.currentPercentRelative}%`}, "playBarStyle");
+				this.props.smoothPlayBar ? this.setState({playBarStyle: {width: `${this.props.currentPercentAbsolute}%`}})
+										: this.setState({playBarStyle: {width: `${this.props.currentPercentRelative}%`}});
 				
 				var currentTimeText = convertTime(this.props.currentTime);
 
@@ -531,12 +520,12 @@ export default (WrappedComponent, AdditionalControls) => {
 				this.setState({durationText: durationText});
 			}
 			_seeking = () => {
-				this.props.addClass(keys.SEEK_BAR_CLASS, this.props[keys.SEEK_BAR_CLASS], classNames.seeking);
-				this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], this.stateClass.seeking);
+				this.props.addUniqueToArray(constants.keys.SEEK_BAR_CLASS, constants.classNames.seeking);
+				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.seeking);
 			}
 			_seeked = () => {
-				this.props.removeClass(keys.SEEK_BAR_CLASS, classNames.seeking);
-				this.props.removeClass(keys.stateClass, this.stateClass.seeking);
+				this.props.removeFromArrayByValue(constants.keys.SEEK_BAR_CLASS, constants.classNames.seeking);
+				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.seeking);
 			}
 			setMedia = (media) => {
 				/*	media[format] = String: URL of format. Must contain all of the supplied option's video or audio formats.
@@ -548,8 +537,6 @@ export default (WrappedComponent, AdditionalControls) => {
 					posterChanged = this.props.media.poster !== media.poster; // Compare before reset. Important for OSX Safari as this.htmlElement.poster.src is absolute, even if original poster URL was relative.
 					
 				this._resetMedia();
-				
-				this.html.active = false;
 							
 				//Clear the Android Fix.
 				this.androidFix.setMedia = false;
@@ -561,26 +548,25 @@ export default (WrappedComponent, AdditionalControls) => {
 
 				for (var formatPriority = 0; formatPriority < this.formats.length; formatPriority++) {
 					var format = this.formats[formatPriority];
-					var isVideo = util.format[format].media === 'video';
+					var mediaType = util.format[format].media;
+					var isVideo = mediaType === "video";
 
-					if(this.html.support[format] && util.validString(media[format])) { // Format supported in solution and url given for format.
+					if(this.props[mediaType].playableFormat[format] && util.validString(media[format])) { // Format supported in solution and url given for format.
 
 					if(isVideo) {
 						this._htmlSetVideo(media);
-						this.html.active = true;
 						this.props.updateOption("video", true);
-						this.props.removeClass(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN);
+						this.props.removeFromArrayByValue(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
 					} else {
 						this._htmlSetAudio(media);
-						this.html.active = true;
 
 						// Setup the Android Fix - Only for HTML audio.
-						if(util.platform.android) {
+						if(constants.platform.android) {
 							this.androidFix.setMedia = true;
 						}
 						this.props.updateOption("video", false);
 						this.props.updateOption("media", media);
-						this.props.addClass(keys.VIDEO_PLAY_CLASS, this.props[keys.VIDEO_PLAY_CLASS], classNames.HIDDEN);
+						this.props.addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
 					}
 					supported = true;
 					break;
@@ -588,15 +574,15 @@ export default (WrappedComponent, AdditionalControls) => {
 				}
 
 				if(supported) {
-					if(!(this.props.nativeVideoControls && this.html.video.gate)) {
+					if(!(this.props.nativeVideoControls)) {
 						// Set poster IMG if native video controls are not being used
 						// Note: With IE the IMG onload event occurs immediately when cached.
 						// Note: Poster hidden by default in _resetMedia()
 						if(util.validString(media.poster)) {
-							if(posterChanged) { // Since some browsers do not generate img onload event.
+							if(posterChanged) { // Since some constants.browsers do not generate img onload event.
 								this.setState({posterSrc: media.poster});
 							} else {
-								this.props.removeClass(keys.POSTER_CLASS, classNames.HIDDEN);
+								this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 							}
 						}
 					}
@@ -608,13 +594,13 @@ export default (WrappedComponent, AdditionalControls) => {
 					this.props.updateOption("srcSet", true);
 					this._updateButtons(false);
 					this._trigger(this.props.onSetMedia);
-				} else { // jPlayer cannot support any formats provided in this browser
+				} else { // jPlayer cannot support any formats provided in this constants.browser
 					// Send an error event
 					this._error( {
-						type: errors.NO_SUPPORT,
+						type: constants.errors.NO_SUPPORT,
 						context: "{supplied:'" + this.props.supplied.join(", ") + "'}",
-						message: errorMessages.NO_SUPPORT,
-						hint: errorHints.NO_SUPPORT
+						message: constants.errorMessages.NO_SUPPORT,
+						hint: constants.errorHints.NO_SUPPORT
 					});
 				}
 			}
@@ -622,31 +608,22 @@ export default (WrappedComponent, AdditionalControls) => {
 				this._updateButtons(false);
 				this._updateInterface();
 				this._seeked();
-				this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
+				this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 
-				// Maintains the status properties that persist through a reset.	
+				// Maintains the status properties that persist through a reset.
 				//this.mergeOptions({status: defaultStatus});
 				
 				clearTimeout(this.internal.htmlDlyCmdId);
 
-				if(this.html.active) {
-					this._htmlResetMedia();
-				}
+				this._htmlResetMedia();
 			}
 			clearMedia = () => {
 				this._resetMedia();
-
-				if(this.html.active) {
-					this._htmlClearMedia();
-				}
-
-				this.html.active = false;
+				this._htmlClearMedia();
 			}
 			load = () => {
 				if(this.props.srcSet) {
-					if(this.html.active) {
-						this._htmlLoad();
-					}
+					this._htmlLoad();
 				} else {
 					this._urlNotSetError("load");
 				}
@@ -659,9 +636,7 @@ export default (WrappedComponent, AdditionalControls) => {
 			play = (time) => {
 				if(this.props.srcSet) {
 					this.focus();
-					if(this.html.active) {
-						this._htmlPlay(time);
-					}
+					this._htmlPlay(time);
 				} else {
 					this._urlNotSetError("play");
 					this.props.updateOption("paused", true);
@@ -669,18 +644,14 @@ export default (WrappedComponent, AdditionalControls) => {
 			}
 			pause = (time) => {
 				if(this.props.srcSet) {
-					if(this.html.active) {
-						this._htmlPause(time);
-					}
+					this._htmlPause(time);
 				} else {
 					this._urlNotSetError("pause");
 				}
 			}
 			stop = () => {
 				if(this.props.srcSet) {
-					if(this.html.active) {
-						this._htmlPause(0);
-					}
+					this._htmlPause(0);
 				} else {
 					this._urlNotSetError("stop");
 				}
@@ -688,9 +659,7 @@ export default (WrappedComponent, AdditionalControls) => {
 			playHead = (p) => {
 				p = util.limitValue(p, 0, 100);
 				if(this.props.srcSet) {
-					if(this.html.active) {
-						this._htmlPlayHead(p);
-					}
+					this._htmlPlayHead(p);
 				} else {
 					this._urlNotSetError("playHead");
 				}
@@ -708,9 +677,9 @@ export default (WrappedComponent, AdditionalControls) => {
 					mute = this.props.muted;
 				}
 				if(mute) {
-					this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], this.stateClass.muted);
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.muted);
 				} else {
-					this.props.removeClass(keys.stateClass, this.stateClass.muted);
+					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.muted);
 				}	
 			}
 			_updateVolume = (v) => {
@@ -721,27 +690,27 @@ export default (WrappedComponent, AdditionalControls) => {
 				v = this.props.muted ? 0 : v;
 
 				if(this.props.noVolume) {
-					this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], this.stateClass.noVolume);
-					this.props.addClass(keys.VOLUME_BAR_CLASS, this.props[keys.VOLUME_BAR_CLASS], classNames.HIDDEN);
-					this.props.addClass(keys.VOLUME_BAR_VALUE_CLASS, this.props[keys.VOLUME_BAR_VALUE_CLASS], classNames.HIDDEN);
-					this.props.addClass(keys.VOLUME_MAX_CLASS, this.props[keys.VOLUME_MAX_CLASS], classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.noVolume);
+					this.props.addUniqueToArray(constants.keys.VOLUME_BAR_CLASS, constants.classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.VOLUME_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.VOLUME_MAX_CLASS, constants.classNames.HIDDEN);
 				} else {
-					this.props.removeClass(keys.stateClass, this.stateClass.noVolume);
+					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.noVolume);
 					const volumeValue = (v * 100) + "%";
 
-					this.assignStyle({
+					this.setState({volumeBarValueStyle: {
 						width: !this.props.verticalVolume ? volumeValue : null,
 						height: this.props.verticalVolume ? volumeValue : null
-					}, "volumeBarValueStyle");
+					}});
 
-					this.props.removeClass(keys.VOLUME_BAR_CLASS, classNames.HIDDEN);
-					this.props.removeClass(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN);
-					this.props.removeClass(keys.VOLUME_MAX_CLASS, classNames.HIDDEN);
+					this.props.removeFromArrayByValue(constants.keys.VOLUME_BAR_CLASS, constants.classNames.HIDDEN);
+					this.props.removeFromArrayByValue(constants.keys.VOLUME_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
+					this.props.removeFromArrayByValue(constants.keys.VOLUME_MAX_CLASS, constants.classNames.HIDDEN);
 				}
 			}
 			_cssSelectorAncestor = (ancestor) => {
-				this.props.removeClass(keys.stateClass, this.props.cssClass);
-				this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], this.props.cssClass);
+				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
+				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.props.cssClass);
 									
 				// Set the GUI to the current state.
 				this._updateInterface();
@@ -761,18 +730,18 @@ export default (WrappedComponent, AdditionalControls) => {
 				var pbr = this.nextProps.playbackRate,
 					ratio = (pbr - this.props.minPlaybackRate) / (this.props.maxPlaybackRate - this.props.minPlaybackRate);
 				if(this.props.playbackRateEnabled) {
-					this.props.removeClass(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN);
-					this.props.removeClass(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN);
+					this.props.removeFromArrayByValue(constants.keys.PLAYBACK_RATE_BAR_CLASS, constants.classNames.HIDDEN);
+					this.props.removeFromArrayByValue(constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
 
 					const playbackRateBarValue = (ratio*100)+"%";
 
-					this.assignStyle({
+					this.setState({playbackRateBarValueStyle: {
 						width: !this.props.verticalPlaybackRate ? playbackRateBarValue : null,
 						height: this.props.verticalPlaybackRate ? playbackRateBarValue : null
-					}, "playbackRateBarValueStyle");
+					}});
 				} else {
-					this.props.addClass(keys.PLAYBACK_RATE_BAR_CLASS, this.props[keys.PLAYBACK_RATE_BAR_CLASS], classNames.HIDDEN);
-					this.props.addClass(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, this.props[keys.PLAYBACK_RATE_BAR_VALUE_CLASS], classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_CLASS, constants.classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
 				}
 			}
 			incrementCurrentLoop = () => {
@@ -802,32 +771,16 @@ export default (WrappedComponent, AdditionalControls) => {
 				const dynamicOption = {	
 					media: (value) => this.setMedia(value),
 					paused: (value) => value ? this.pause(value.currentTime) : this.play(value.currentTime),
-					volume: (value) => {
-						if(this.html.used) {
-							this.currentMedia.volume = value;
-						}
-					},
-					muted: (value) => {	
-						if(this.html.used) {
-							this.currentMedia.muted = value;
-						}
-					},
-					autoPlay: (value) => {
-						if (this.html.used) {
-							this.currentMedia.autoplay = value
-						}
-					},
+					volume: (value) => this.currentMedia.volume = value,
+					muted: (value) => this.currentMedia.muted = value,
+					autoPlay: (value) => this.currentMedia.autoplay = value,
 					playbackRate: (value) => {
-						if(this.html.used) {
-							this.currentMedia.playbackRate = value;
-						}
+						this.currentMedia.playbackRate = value;
 						this._setNextProps({playbackRate: value});
 						this._updatePlaybackRate();
 					},
 					defaultPlaybackRate: (value) => { 
-						if(this.html.used) {
-							this.currentMedia.defaultPlaybackRate = value;
-						}
+						this.currentMedia.defaultPlaybackRate = value;
 						this._updatePlaybackRate();
 					},
 					minPlaybackRate: () => this._updatePlaybackRate(),
@@ -847,10 +800,10 @@ export default (WrappedComponent, AdditionalControls) => {
 					},
 					fullWindow: (value) => { 
 						const sizeClass = this.nextProps.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-						this.props.removeClass(keys.stateClass, this.props.cssClass);
-						this.props.addClass(keys.stateClass, this.props[keys.STATE_CLASS], this.stateClass[sizeClass]);
+						this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
+						this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
 						this._setNextProps({fullWindow: value});			
-						this.props.updateOption("cssClass", sizeClass, () => this._trigger(this.props.onResize));		
+						//this.props.updateOption("cssClass", sizeClass, () => this._trigger(this.props.onResize));		
 					},
 					loop: (value) => { 
 						this._setNextProps({loop: value});
@@ -861,7 +814,7 @@ export default (WrappedComponent, AdditionalControls) => {
 						this._updateInterface();
 					},
 					noVolume: () => { 
-						//this.props.noVolume = util._uaBlocklist(this.props.noVolume);
+						//this.props.noVolume = util.uaBlocklist(this.props.noVolume);
 						this._updateVolume();
 						this._updateMute();
 					},
@@ -881,9 +834,12 @@ export default (WrappedComponent, AdditionalControls) => {
 			}
 			_updateSize = () => {
 				// Video html resized if necessary at this time, or if native video controls being used.
-				if(!this.props.waitForPlay && this.html.active && this.props.video
-						|| this.html.video.available && this.html.used && this.props.nativeVideoControls) {
-					this.assignStyle({width: this.props.width, height: this.props.height}, "videoStyle");
+				if(!this.props.waitForPlay && this.props.video
+						|| this.props.video.available && this.props.nativeVideoControls) {
+					this.setState({videoStyle: {
+						width: !this.props.width,
+						height: this.props.height
+					}});
 				}
 			}
 			_requestFullscreen = () => {
@@ -936,15 +892,16 @@ export default (WrappedComponent, AdditionalControls) => {
 					this._trigger(this.props.onTimeUpdate)
 				}
 			}
-			_htmlSetFormat = (media, formatSetCallback) => {
+			_htmlSetFormat = (media) => {
 				// Always finds a format due to checks in setMedia()
 				for (var priority = 0; priority < this.formats.length; priority++) {
 					var format = this.formats[priority];
+					var mediaType = util.format[format].media;
 
-					if(this.html.support[format] && media[format]) {
+					if(this.props[mediaType].playableFormat[format] && media[format]) {
 						this.props.updateOption("src", media[format]);
 						this.props.updateOption("formatType", format);
-						this.props.updateOption("format", {[format]: true}, formatSetCallback);
+						this.props.updateOption("format", {[format]: true});
 						break;
 					}
 				}
@@ -959,7 +916,7 @@ export default (WrappedComponent, AdditionalControls) => {
 			_htmlResetMedia = () => {
 				if(this.currentMedia) {
 					if(!this.props.nativeVideoControls) {
-						this.props.addClass(keys.VIDEO_CLASS, this.props[keys.VIDEO_CLASS], classNames.HIDDEN);
+						this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
 					}
 					this.currentMedia.pause();
 				}
@@ -969,14 +926,14 @@ export default (WrappedComponent, AdditionalControls) => {
 					this.currentMedia.src = "about:blank";
 
 					// The following load() is only required for Firefox 3.6 (PowerMacs).
-					// Recent HTMl5 browsers only require the src change. Due to changes in W3C spec and load() effect.
+					// Recent HTMl5 constants.browsers only require the src change. Due to changes in W3C spec and load() effect.
 					this.currentMedia.load(); // Stops an old, "in progress" download from continuing the download. Triggers the loadstart, error and emptied events, due to the empty src. Also an abort event if a download was in progress.
 				}
 			}
 			_htmlLoad = (htmlLoadedCallback) => {
-				// This function remains to allow the early HTML5 browsers to work, such as Firefox 3.6
+				// This function remains to allow the early HTML5 constants.browsers to work, such as Firefox 3.6
 				// A change in the W3C spec for the media.load() command means that this is no longer necessary.
-				// This command should be removed and actually causes minor undesirable effects on some browsers. Such as loading the whole file and not only the metadata.
+				// This command should be removed and actually causes minor undesirable effects on some constants.browsers. Such as loading the whole file and not only the metadata.
 				if(this.props.waitForLoad) {
 					this.currentMedia.load();
 					this.props.updateOption("waitForLoad", false);
@@ -998,7 +955,7 @@ export default (WrappedComponent, AdditionalControls) => {
 						this.currentMedia.play();
 					}
 					try {
-						// !this.currentMedia.seekable is for old HTML5 browsers, like Firefox 3.6.
+						// !this.currentMedia.seekable is for old HTML5 constants.browsers, like Firefox 3.6.
 						// Checking seekable.length is important for iOS6 to work with setMedia().play(time)
 						if(!this.currentMedia.seekable || typeof this.currentMedia.seekable === "object" && this.currentMedia.seekable.length > 0) {
 							this.currentMedia.currentTime = time;
@@ -1072,20 +1029,23 @@ export default (WrappedComponent, AdditionalControls) => {
 			_htmlCheckWaitForPlay = () => {
 				if(this.props.waitForPlay) {
 					this.props.updateOption("waitForPlay", false);
-					this.props.addClass(keys.VIDEO_PLAY_CLASS, this.props[keys.VIDEO_PLAY_CLASS], classNames.HIDDEN);
+					this.props.addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
 
 					if(this.props.video) {
-						this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
-						this.assignStyle({width: this.props.width, height: this.props.height}, "videoStyle");
+						this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+						this.setState({videoStyle: {
+							width: this.props.width,
+							height: this.props.height
+						}});
 					}
 				}
 			}
 			_urlNotSetError = (context) => {
 				this._error({
-					type: errors.URL_NOT_SET,
+					type: constants.errors.URL_NOT_SET,
 					context: context,
-					message: errorMessages.URL_NOT_SET,
-					hint: errorHints.URL_NOT_SET
+					message: constants.errorMessages.URL_NOT_SET,
+					hint: constants.errorHints.URL_NOT_SET
 				});
 			}
 			_error = (error) => {
@@ -1095,10 +1055,10 @@ export default (WrappedComponent, AdditionalControls) => {
 				this._setOptions(nextProps);
 			}	
 			componentWillMount() {
-				//this._initBeforeRender();
+				this._initBeforeRender();
 			}
 			componentDidMount() {
-				//this._initAfterRender();
+				this._initAfterRender();
 				for (var method in this.props.overrideMethods) {
 					const newMethod = this.props.overrideMethods[method];
 					const oldMethod = this[method];
@@ -1136,14 +1096,14 @@ export default (WrappedComponent, AdditionalControls) => {
 			render() {
 				return (
 					<WrappedComponent playd={this.play} {...this.props}>
-						<div id={this.props.cssSelectorAncestor} className={this.props[keys.STATE_CLASS].join(" ")}>
+						<div id={this.props.cssSelectorAncestor} className={this.props[constants.keys.STATE_CLASS].join(" ")}>
 							{this.props.children}
 							{/*<Player className={"jp-jplayer"}>
-								<Poster posterClass={this.props[keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onLoad={this._posterLoad} onClick={() => this._trigger(this.props.onClick)} /> 
+								<Poster posterClass={this.props[constants.keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onLoad={this._posterLoad} onClick={() => this._trigger(this.props.onClick)} /> 
 								<Audio ref={(audio) => this.audio = audio} require={this.require.audio} events={this.mediaEvent}>
 									{this.state.tracks}
 								</Audio>
-								<Video ref={(video) => this.video = video} require={this.require.video} videoClass={this.props[keys.VIDEO_CLASS].join(" ")} style={this.state.videoStyle} onClick={() => this._trigger(this.props.onClick)} events={this.mediaEvent}>
+								<Video ref={(video) => this.video = video} require={this.require.video} videoClass={this.props[constants.keys.VIDEO_CLASS].join(" ")} style={this.state.videoStyle} onClick={() => this._trigger(this.props.onClick)} events={this.mediaEvent}>
 									{this.state.tracks}
 								</Video>		
 							</Player>
@@ -1151,7 +1111,7 @@ export default (WrappedComponent, AdditionalControls) => {
 								<Controls />
 								<Progress />
 							</GUI>
-							<BrowserUnsupported />	*/}
+							<constants.browserUnsupported />	*/}
 						</div>
 					</WrappedComponent>
 				);

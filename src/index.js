@@ -42,7 +42,6 @@ export default (WrappedComponent, options) => {
            
         }
         render() {
-             debugger
             return (
                 <WrappedComponent {...this.props} />
             );

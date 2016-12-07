@@ -10,7 +10,7 @@ const updateArray = (state, action) => {
     const newState = {...state};
 
     switch (action.type) {
-        case actionTypes.ARRAY_ADD_UNIQUE_BY_VALUE:          
+        case actionTypes.ARRAY_ADD_UNIQUE:   
             //Don't add duplicates
             const found = existingArray.some((v) => v === action.value);
             
@@ -39,7 +39,7 @@ const updateArray = (state, action) => {
 
 export default (state={}, action) => {
     switch (action.type) {
-        case actionTypes.ARRAY_ADD_UNIQUE_BY_VALUE:        
+        case actionTypes.ARRAY_ADD_UNIQUE:        
         case actionTypes.ARRAY_REMOVE_BY_VALUE:
         case actionTypes.ARRAY_REMOVE_BY_INDEX:
            return updateArray(state, action);
