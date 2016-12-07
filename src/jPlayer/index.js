@@ -375,8 +375,6 @@ export default (WrappedComponent, AdditionalControls) => {
 					//this.props.updateOption("cssClass", sizeClass);
 				}	
 				
-				this._setNextProps();	
-				
 				this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 
 				this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
@@ -478,12 +476,12 @@ export default (WrappedComponent, AdditionalControls) => {
 				} else {
 					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.playing);
 				}
-				if(!this.props.noFullWindow && this.nextProps.fullWindow) {
+				if(!this.props.noFullWindow && this.props.fullWindow) {
 					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen);
 				} else {
 					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen);
 				}
-				if(this.nextProps.loop === "loop") {
+				if(this.props.loop === "loop") {
 					this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.looped);
 				} else {
 					this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.looped);
@@ -510,7 +508,7 @@ export default (WrappedComponent, AdditionalControls) => {
 						duration = this.props.media.duration;
 						remaining = duration - this.props.currentTime;
 					}
-					if(this.nextProps.remainingDuration) {
+					if(this.props.remainingDuration) {
 						durationText = (remaining > 0 ? '-' : '') + convertTime(remaining);
 					} else {
 						durationText = convertTime(duration);
@@ -727,7 +725,7 @@ export default (WrappedComponent, AdditionalControls) => {
 				}
 			}
 			_updatePlaybackRate = () => {
-				var pbr = this.nextProps.playbackRate,
+				var pbr = this.props.playbackRate,
 					ratio = (pbr - this.props.minPlaybackRate) / (this.props.maxPlaybackRate - this.props.minPlaybackRate);
 				if(this.props.playbackRateEnabled) {
 					this.props.removeFromArrayByValue(constants.keys.PLAYBACK_RATE_BAR_CLASS, constants.classNames.HIDDEN);
@@ -756,82 +754,6 @@ export default (WrappedComponent, AdditionalControls) => {
 				this._updateButtons(); 
 				this._trigger(this.props.onRepeat);
 			}
-			_setNextProps = (nextProps = {}) => {
-				//props that get updated within the jPlayer component as well as through props
-				this.nextProps = {
-					playbackRate: nextProps.playbackRate === undefined ? this.props.playbackRate : nextProps.playbackRate,
-					fullWindow: nextProps.fullWindow === undefined ? this.props.fullWindow : nextProps.fullWindow,
-					remainingDuration: nextProps.remainingDuration === undefined ? this.props.remainingDuration : nextProps.remainingDuration,
-					loop: nextProps.loop === undefined ? this.props.loop : nextProps.loop,
-					sizeCssClass: nextProps.sizeCssClass === undefined ? this.props.sizeCssClass : nextProps.sizeCssClass,
-					sizeFullCssClass: nextProps.sizeFullCssClass === undefined ? this.props.sizeFullCssClass : nextProps.sizeFullCssClass
-				};
-			}
-			_setOptions = (options) => {
-				const dynamicOption = {	
-					media: (value) => this.setMedia(value),
-					paused: (value) => value ? this.pause(value.currentTime) : this.play(value.currentTime),
-					volume: (value) => this.currentMedia.volume = value,
-					muted: (value) => this.currentMedia.muted = value,
-					autoPlay: (value) => this.currentMedia.autoplay = value,
-					playbackRate: (value) => {
-						this.currentMedia.playbackRate = value;
-						this._setNextProps({playbackRate: value});
-						this._updatePlaybackRate();
-					},
-					defaultPlaybackRate: (value) => { 
-						this.currentMedia.defaultPlaybackRate = value;
-						this._updatePlaybackRate();
-					},
-					minPlaybackRate: () => this._updatePlaybackRate(),
-					maxPlaybackRate: () => this._updatePlaybackRate(),
-					fullScreen: (value) => { 
-						var wkv = util.nativeFeatures.fullscreen.used.webkitVideo;
-						if(!wkv || wkv && !this.props.waitForPlay) {
-							if(value) {
-								this._requestFullscreen();
-							} else {
-								this._exitFullscreen();
-							}
-							if(!wkv) {
-								this.props.updateOption("fullWindow", value);
-							}
-						}
-					},
-					fullWindow: (value) => { 
-						const sizeClass = this.nextProps.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-						this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
-						this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
-						this._setNextProps({fullWindow: value});			
-						//this.props.updateOption("cssClass", sizeClass, () => this._trigger(this.props.onResize));		
-					},
-					loop: (value) => { 
-						this._setNextProps({loop: value});
-						this._loop();
-					},
-					remainingDuration: (value) => { 
-						this._setNextProps({remainingDuration: value});
-						this._updateInterface();
-					},
-					noVolume: () => { 
-						//this.props.noVolume = util.uaBlocklist(this.props.noVolume);
-						this._updateVolume();
-						this._updateMute();
-					},
-					keyEnabled: (value) => { 
-						if(!value && this === util.focusInstance) {
-							util.focusInstance = null;
-						}
-					}
-				};
-
-				for (let key in options) {
-					let option = options[key];
-					if (dynamicOption.hasOwnProperty(key) && !isEqual(this.props[key], option)) {
-						dynamicOption[key](option);		
-					}
-				}
-			}
 			_updateSize = () => {
 				// Video html resized if necessary at this time, or if native video controls being used.
 				if(!this.props.waitForPlay && this.props.video
@@ -841,6 +763,25 @@ export default (WrappedComponent, AdditionalControls) => {
 						height: this.props.height
 					}});
 				}
+			}
+			fullScreen = () => {
+				var wkv = util.nativeFeatures.fullscreen.used.webkitVideo;
+				if(!wkv || wkv && !this.props.waitForPlay) {
+					if(this.props.fullScreen) {
+						this._requestFullscreen();
+					} else {
+						this._exitFullscreen();
+					}
+					if(!wkv) {
+						this.props.updateOption("fullWindow", this.props.fullScreen);
+					}
+				}
+			}
+			fullWindow = () => {
+				const sizeClass = this.props.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
+				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
+				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
+				//this.props.updateOption("cssClass", sizeClass, () => this._trigger(this.props.onResize));		
 			}
 			_requestFullscreen = () => {
 				var e = document.querySelector(this.props.cssSelectorAncestor),
@@ -1051,14 +992,69 @@ export default (WrappedComponent, AdditionalControls) => {
 			_error = (error) => {
 				this._trigger(this.props.onError, error);
 			}
-			componentWillReceiveProps(nextProps) {
-				this._setOptions(nextProps);
-			}	
-			componentWillMount() {
-				this._initBeforeRender();
+			updateOnOptionsChanged = (key) => {
+				switch (key) {
+					case "media":
+						this.setMedia(this.props.media);
+						break;
+					case "paused":
+						this.props.paused ? this.pause(this.props.currentTime) : this.play(this.props.currentTime);
+						break;
+					case "loop":
+						this._loop();
+						break;
+					case "fullScreen":
+						this.fullScreen();
+						break;
+					case "fullWindow":
+						this.fullWindow();
+						break;
+					case "noVolume":
+						this._updateVolume();
+						this._updateMute();
+						this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
+						break;
+					case "keyEnabled":
+						if(!value && this === util.focusInstance) {
+							util.focusInstance = null;
+						}
+						break;
+					case "nativeVideoControls":
+						this._updateNativeVideoControls();
+						break;
+					case "defaultPlaybackRate":
+					case "playbackRate":
+					case "minPlaybackRate":
+					case "maxPlaybackRate":
+						this._updatePlaybackRate();
+						break;
+					case "currentTime":
+					case "duration":
+					case "remainingDuration":
+						this._updateInterface();
+						break;
+					case "paused":
+					case "noFullWindow":
+					case "loop":
+					case "sizeCssClass":
+					case "sizeFullCssClass":
+					case "fullWindow":
+					case "fullScreen":
+						this._updateButtons();
+						break;
+					case "src":
+						this._htmlInitMedia(this.props.media);
+						break;
+					case "waitForLoad":
+					//if(time > 0) { // Avoids a setMedia() followed by stop() or pause(0) hiding the video play button.
+						this._htmlCheckWaitForPlay();
+					//}
+						break;
+					default:
+						break;
+				}	
 			}
-			componentDidMount() {
-				this._initAfterRender();
+			componentWillMount() {
 				for (var method in this.props.overrideMethods) {
 					const newMethod = this.props.overrideMethods[method];
 					const oldMethod = this[method];
@@ -1067,31 +1063,26 @@ export default (WrappedComponent, AdditionalControls) => {
 						newMethod(oldMethod);
 					}
 				}
+				
+				this._initBeforeRender();
+			}
+			componentDidMount() {
+				this._initAfterRender();	
 			}
 			componentDidUpdate(prevProps, prevState) {
-				if (this.props.nativeVideoControls !== prevProps.nativeVideoControls) {
-					this._updateNativeVideoControls();
-				}
-			
-				if (this.props.currentTime !== prevProps.currentTime || this.props.duration !== prevProps.duration) {
-					this._updateInterface();
-				}
+				this.currentMedia.volume = this.props.volume;
+				this.currentMedia.muted = this.props.muted;
+				this.currentMedia.autoplay = this.props.autoplay;
+				this.currentMedia.playbackRate = this.props.playbackRate;
+				this.currentMedia.defaultPlaybackRate = this.props.defaultPlaybackRate;
 
-				if (this.props.paused !== prevProps.paused || this.props.noFullWindow !== prevProps.noFullWindow || this.props.loop !== prevProps.loop ||
-					this.props.sizeCssClass !== prevProps.sizeCssClass || this.props.sizeFullCssClass !== prevProps.sizeFullCssClass ||  
-					this.props.fullWindow !== prevProps.fullWindow || this.props.fullScreen !== prevProps.fullScreen) {
-					this._updateButtons();
-				}
+				for (var key in this.props) {
+					const prop = this.props[key];
 
-				if (this.props.src !== prevProps.src) {
-					this._htmlInitMedia(this.props.media);
+					if (!isEqual(prop, prevProps[key])) {
+						updateOnOptionsChanged(key);
+					}
 				}
-
-				if (this.props.waitForLoad !== prevProps.waitForLoad) {
-					//if(time > 0) { // Avoids a setMedia() followed by stop() or pause(0) hiding the video play button.
-						this._htmlCheckWaitForPlay();
-					//}
-				}		
 			}
 			render() {
 				return (
