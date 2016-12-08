@@ -5,6 +5,7 @@ import {Provider, connect} from "react-redux";
 import store from "./store";
 import * as jPlayerActions from "./jPlayer/actions";
 import * as util from "./util/index";
+import media from "./media";
 
 const mapStateToProps = (state, ownProps) => {
     const isCurrentPlayer = state.jPlayer.jPlayerSelector === ownProps.jPlayerSelector;
@@ -40,6 +41,7 @@ export default (WrappedComponent, options) => {
         constructor(props) {
             super(props);
            
+            WrappedComponent = media(WrappedComponent);
         }
         render() {
             return (

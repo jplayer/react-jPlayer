@@ -1,6 +1,5 @@
 import React from "react";
 
-import jPlaylist from "../src/add-on/jPlaylist/index";
 import renderjPlayer from "../src/index";
 
 class ExampleComponent extends React.Component {
@@ -10,7 +9,12 @@ class ExampleComponent extends React.Component {
         this.state = {};
     }
     render() {
-        return this.props.children
+        debugger
+        return (
+            <div className="test">
+                {this.props.children}
+            </div>
+        );
     }
 }
 
@@ -70,4 +74,4 @@ const jPlaylistOptions = {
     onError: (jPlayer) => console.error(jPlayer.error)
 };
 
-renderjPlayer(jPlaylist(ExampleComponent), jPlaylistOptions);
+renderjPlayer(ExampleComponent, jPlaylistOptions);

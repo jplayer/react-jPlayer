@@ -2,7 +2,7 @@ import merge from "lodash.merge";
 import remove from "lodash/remove";
 import get from "lodash/get";
 import set from "lodash/set";
-import {browser} from "./constants";
+import {formats, browser} from "./constants";
 
 export const assignOptions = function(newOption, callback) {
     this.props.updateOptions((prevOptions) => Object.assign({}, prevOptions, newOption), callback);
@@ -20,7 +20,7 @@ export const modifyOptionsArray = function(newOptions, arrayMethod, key, callbac
 
 export const addClass = function(classToAdd, key, callback) {
     //Use function overload of setState to make sure we have up to date values
-    this.props.updateOptions((prevOptions) => {  
+    this.props.updateOptions((prevOptions) => {
         const prevArray = get(prevOptions, key, []);
         const found = prevArray.some((v) => v === classToAdd); 
 
@@ -291,7 +291,7 @@ export const absoluteMediaUrls = (media) => {
 	for (var type in media) {
 		var url = media[type];
 
-		if(url && util.format[type] && url.substr(0, 5) !== "data:") {
+		if(url && formats[type] && url.substr(0, 5) !== "data:") {
 			media[type] = qualifyURL(url);
 		}
 	}

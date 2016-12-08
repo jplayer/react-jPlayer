@@ -1,32 +1,23 @@
 import React from "react";
-import {Motion, spring} from "react-motion";
 import merge from "lodash.merge";
 import maxBy from "lodash/maxBy";
 import store from "../../store";
 import * as actions from "../../jPlayer/actions";
 import * as util from "../../util/index";
 import * as constants from "../../util/constants";
-import media from "../../media";
 import PlaylistControls from "./playlistControls";
 import Playlist from "./playlist";
 import PlaylistItem from "./playlistItem";
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
+import player from "../../jPlayer/player";
 
-const mapStateToProps = (state, ownProps) => {
-	return {
-		...state.jPlaylist
-	}
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => (bindActionCreators(actions, dispatch));
-
-export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps)(class extends React.Component {
+export default (WrappedComponent) => class extends React.Component {
     static get propTypes() {
-		return {
+        return {
             updateOptions: React.PropTypes.func.isRequired,
             playlist: React.PropTypes.arrayOf(
-                 React.PropTypes.shape({
+                React.PropTypes.shape({
                     title: React.PropTypes.string,
                     artist: React.PropTypes.string,
                     mp3: React.PropTypes.string,
@@ -41,9 +32,9 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
             removeItemClass: React.PropTypes.string,
             freeGroupClass: React.PropTypes.string
         }
-	}
+    }
     static get defaultProps() {
-		return {
+        return {
             functions: [],
             html: {},
             playlist: [],
@@ -58,62 +49,66 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
     constructor(props) {
         super(props);
 
-        WrappedComponent = media(WrappedComponent, PlaylistControls);
-
-        this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
-        this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
-
-        this.overrideMethods = {
-            _updateButtons: (originalFunction) => function() {
-                originalFunction.apply(this, arguments);
-                const stateClassMethod = this.props.loop === "loop-playlist" ? this.addClass : this.removeClass;
-                stateClassMethod(this.stateClass.loopedPlaylist, util.key.stateClass);
-            }.bind(this)
-        };
-
         this.state = {
             current: 0
         }
+        const playlistControlProps = {
+            blur: this.blur,
+            shuffle: this.shuffle,
+            next: this.next,
+            previous: this.previous,
+            html: this.props.html,
+            shuffled: this.props.shuffled
+        };
+        WrappedComponent = player(WrappedComponent, <PlaylistControls additionalControlProps={playlistControlProps} />);
+        // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
+        // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
+        
+        // this.props.extendMethod("_updateButtons", function() {
+        //     const stateClassMethod = this.props.loop === "loop-playlist" ? this.addClass : this.removeClass;
+        //     stateClassMethod(this.stateClass.loopedPlaylist, util.key.stateClass);
+        // }.bind(this));
+    
+        // this.props.updateOption("onEnded", () => {
+        //     this.next()
+        //     this._trigger(this.props.onEnded)
+        // });
 
-        this.event = {
-            onEnded: () => { 
-                this.next()
-                this._trigger(this.props.onEnded);
-            },
-            onPlay: () => {
-                actions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
-                this._trigger(this.props.onPlay);
-             },
-            onResize: () => {
-                const method = this.props.fullScreen ? this.props.removeFromArrayByValue : this.props.addUniqueToArray;
+        // this.props.updateOption("onPlay", () => {
+        //     actions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
+        //     this._trigger(this.props.onPlay);
+        // });
 
-                method(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN, this.props[constants.keys.DETAILS_CLASS]);
-                this._trigger(this.props.onResize);
-            }
-        }
-       
-        //Add a new stateClass for the extra loop option
-        this.stateClass = merge({
-            shuffled: "jp-state-shuffled", 
-            loopedPlaylist: "jp-state-loop-playlist"
-        }, this.props.stateClass);   
+        // this.props.updateOption("onResize", () => {
+        //     const method = this.props.fullScreen ? this.props.removeFromArrayByValue : this.props.addUniqueToArray;
 
-        this.keyBindings = merge({
-            next: {
-                key: 221, // ]
-                fn: () => this.next()
-            },
-            previous: {
-                key: 219, // [
-                fn: () => this.previous()
-            },
-            shuffle: {
-                key: 83, // s
-                fn: () => this.shuffle()
-            }
-        }, this.props.keyBindings);
+        //     method(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN, this.props[constants.keys.DETAILS_CLASS]);
+        //     this._trigger(this.props.onResize);
+        // });
 
-        this.freeMediaLinkIndex = 0;
+        // //Add a new stateClass for the extra loop option
+        // this.props.updateOption("stateClass", merge({
+        //     shuffled: "jp-state-shuffled", 
+        //     loopedPlaylist: "jp-state-loop-playlist"
+        // }, this.props.stateClass));
+    
+        
+        // this.props.updateOption("keyBindings", merge({
+        //     next: {
+        //         key: 221, // ]
+        //         fn: () => this.next()
+        //     },
+        //     previous: {
+        //         key: 219, // [
+        //         fn: () => this.previous()
+        //     },
+        //     shuffle: {
+        //         key: 83, // s
+        //         fn: () => this.shuffle()
+        //     }
+        // }, this.props.keyBindings));
+
+        // this.freeMediaLinkIndex = 0;
     }
     _trigger = (func, jPlayer) => {
         if (func !== undefined) {
@@ -135,14 +130,14 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
                 firstMediaLinkAdded ? firstMediaLinkAdded = false : media.freeMediaLinks.push(", ");
                 media.freeMediaLinks.push(<a key={this.freeMediaLinkIndex++} className={this.props.freeItemClass} href={value} tabIndex="-1">{property}</a>);
             }
-       }
+    }
     }
     _setup = () => {
         this.cssSelector = Object.assign({}, {cssPlaylistOptionsSelector: this.state.cssSelectorAncestor}, this.state.cssSelector);
-       
+    
         // Put the title in its initial display state
         if (!this.props.fullScreen) {
-             this.props.addUniqueToArray(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
+            this.props.addUniqueToArray(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
         }
 
         this._init();
@@ -166,7 +161,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 
         this._originalPlaylist();
     }
-    _originalPlaylist = () => this.props.updateOption("playlist", this.original)
+    _originalPlaylist = () => this.props.setMedia(this.original)
     setPlaylist = (playlist) => {
         this._initPlaylist(playlist);
         this._init();
@@ -189,13 +184,13 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
     remove = (index) => {
         if (index === undefined) {
             this._initPlaylist([]);
-            this.props.updateOption("playlist", []);     
+            this.props.clearMedia();
             return true;
         } else {         
             const playlist = merge([], [...this.props.playlist]);
             playlist[index].isRemoving = true;
 
-            this.props.updateOption("playlist", playlist);
+            this.props.setMedia(playlist);
         }
         this.setState({useRemoveConfig: true});
     }
@@ -203,7 +198,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         index = (index < 0) ? this.original.length + index : index; // Negative index relates to end of array.
         if (0 <= index && index < this.props.playlist.length) {
             this.setState({current: index});
-            this.props.updateOption("playlist", this.props.playlist[index]);
+            this.props.setMedia(this.props.playlist[index]);
         } else {
             this.setState({current: 0});
         }
@@ -213,10 +208,10 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         if (0 <= index && index < this.props.playlist.length) {
             if (this.props.playlist.length) {
                 this.select(index, true);
-                this.props.updateOption("paused", false);
+                this.props.play();
             }
         } else if (index === undefined) {
-            this.props.updateOption("paused", false);
+            this.props.play();
         }
     }
     next = () => {
@@ -280,7 +275,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
             }
         } else {
             this.setState({current: 0});
-            this.props.updateOption("playlist", []);
+            this.props.clearMedia();
             this.props.updateOption("shuffled", false);
         }
 
@@ -293,7 +288,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         }
 
         if (this.props.shuffled) {
-            this.props.updateOption("playlist", [...this.props.playlist].sort(() => 0.5 - Math.random()));
+            this.props.setMedia([...this.props.playlist].sort(() => 0.5 - Math.random()));
             this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.shuffled);
         } else {
             this._originalPlaylist(playlistSetCallback);
@@ -313,25 +308,16 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
         }
     }
     componentWillMount() { 
-        this._initPlaylist(this.props.playlist);
+       // this._initPlaylist(this.props.playlist);
     }
     componentDidMount() {
-        this._setup();
+      //  this._setup();
     }
     render() {
         const MediaAnimationConfig = this.state.useRemoveConfig ? this.props.removeAnimation : this.props.addAnimation
-        const playlistControlProps = {
-            blur: this.blur,
-            shuffle: this.shuffle,
-            next: this.next,
-            previous: this.previous,
-            html: this.props.html,
-            shuffled: this.props.shuffled
-        };
 
         return (   
-            <WrappedComponent {...this.props} {...this.keyBindings} {...this.event} stateClass={this.stateClass} loopOptions={"loop-playlist"}
-                additionalControlProps={playlistControlProps} overrideMethods={this.overrideMethods}>            
+            <WrappedComponent {...this.props} {...this.keyBindings} {...this.event} stateClass={this.stateClass} loopOptions={"loop-playlist"}>                       				
                 <div id="jp_container_playlist">
                     <div className="jp-playlist">
                         <Playlist isSlidingUp={this.state.isPlaylistContainerSlidingUp} config={this.state.useShuffleConfig ? this.props.shuffleAnimation : this.props.displayAnimation} onRest={this._shuffleAnimationCallback}>
@@ -340,9 +326,8 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
                                 remove={this.remove} blur={this.blur} play={this.play} mergeOptions={this.mergeOptions} />
                         </Playlist> 
                     </div>
-                </div>                               
-                {this.props.children}
+                </div>
             </WrappedComponent>
         );
     }
-})
+}

@@ -1,15 +1,18 @@
 import React from "react";
 import Video from "./jPlayer/video";
 import Audio from "./jPlayer/audio";
+import player from "./jPlayer/player";
 import jPlayer from "./jPlayer/index";
+import jPlaylist from "./add-on/jPlaylist/index";
 import {formats} from "./util/constants";
 import {testPlaybackRate, testCanPlayType} from "./util/index";
 
-const media = (...WrappedComponents) => class extends React.Component {
+const media = (WrappedComponent) => class extends React.Component {
 	constructor(props) {
 		super(props);
-	
-		WrappedComponents = jPlayer(...WrappedComponents);
+
+		this.props.playlist ? WrappedComponent = jPlayer(jPlaylist(WrappedComponent))
+							: WrappedComponent = jPlayer(player(WrappedComponent));
 		
         this.setFormats();
         this.setPlayableFormat();
@@ -88,15 +91,26 @@ const media = (...WrappedComponents) => class extends React.Component {
 
 		this.currentMedia.volume = this.props.volume;
 		this.currentMedia.muted = this.props.muted;
-		this.currentMedia.autoplay = this.props.autoPlay;
+		this.currentMedia.autoplay = this.props.autoplay;	
+		this.currentMedia.loop = this.props.loop === "loop" ? true : false;
+	}
+	componentDidUpdate() {
+		if(playBackRateEnabled) {
+            this.currentMedia.defaultPlaybackRate = this.props.defaultPlaybackRate;
+            this.currentMedia.playbackRate = this.props.playbackRate;
+        }
+
+		this.currentMedia.volume = this.props.volume;
+		this.currentMedia.muted = this.props.muted;
+		this.currentMedia.autoplay = this.props.autoplay;	
 		this.currentMedia.loop = this.props.loop === "loop" ? true : false;
 	}
 	render() {
 		return (
-			<WrappedComponents {...this.props} {...this.medias}>
+			<WrappedComponent {...this.props} {...this.medias}>
 			    <Audio mediaRef={this.setMediaRef} require={this.medias.audio.require} />
 				<Video mediaRef={this.setMediaRef} require={this.medias.video.require} />
-			</WrappedComponents>
+			</WrappedComponent>
 		);
 	}
 }
