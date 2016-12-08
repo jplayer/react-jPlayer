@@ -652,7 +652,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 				this._urlNotSetError("stop");
 			}
 		}
-		playHead = (p) => {
+		setPlayHead = (p) => {
 			p = util.limitValue(p, 0, 100);
 			if(this.props.srcSet) {
 				this._htmlPlayHead(p);
@@ -660,7 +660,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 				this._urlNotSetError("playHead");
 			}
 		}
-		mute = (mute) => {					
+		setMute = (mute) => {					
 			if(this.props.muted) {
 				this.props.updateOption("muted", false);
 			} else {
@@ -714,13 +714,18 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 			this._updateVolume();
 			this._updateMute();
 		}
-		duration = (e) => {
+		setDuration = (e) => {
 			if(this.props.toggleDuration) {
 				if(this.props.captureDuration) {
 					e.stopPropagation();
 				}
 				this.props.updateOption("remainingDuration", !this.props.remainingDuration);
 			}
+		}
+		setPlaybackRate = (pbr) => {
+			const limitiedPbr = this._limitValue(pbr, this.options.minPlaybackRate, this.options.maxPlaybackRate);
+			
+			this.props.updateOption("playbackRate", p)
 		}
 		_updatePlaybackRate = () => {
 			var pbr = this.props.playbackRate,
@@ -740,7 +745,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 				this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
 			}
 		}
-		incrementCurrentLoop = () => {
+		incrementLoop = () => {
 			var loopIndex = this.loopOptions.indexOf(this.props.loop || this.loopOptions[0]);
 
 			if (loopIndex >= this.loopOptions.length - 1) {
@@ -762,10 +767,10 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 				}});
 			}
 		}
-		fullScreen = () => {
+		setFullScreen = (fullScreen) => {
 			var wkv = util.nativeFeatures.fullscreen.used.webkitVideo;
 			if(!wkv || wkv && !this.props.waitForPlay) {
-				if(this.props.fullScreen) {
+				if(fullScreen) {
 					this._requestFullscreen();
 				} else {
 					this._exitFullscreen();
@@ -775,7 +780,7 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 				}
 			}
 		}
-		fullWindow = () => {
+		setFullWindow = () => {
 			const sizeClass = this.props.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
 			this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
 			this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
