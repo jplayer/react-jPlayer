@@ -41,7 +41,7 @@ export default (WrappedComponent, options) => {
         constructor(props) {
             super(props);
            
-            WrappedComponent = media(WrappedComponent);
+            WrappedComponent = media(WrappedComponent, options);
         }
         render() {
             return (

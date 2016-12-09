@@ -7,12 +7,12 @@ import jPlaylist from "./add-on/jPlaylist/index";
 import {formats} from "./util/constants";
 import {testPlaybackRate, testCanPlayType} from "./util/index";
 
-const media = (WrappedComponent) => class extends React.Component {
+const media = (WrappedComponent, options) => class extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.props.playlist ? WrappedComponent = jPlayer(jPlaylist(WrappedComponent))
-							: WrappedComponent = jPlayer(player(WrappedComponent));
+		this.props.playlist ? WrappedComponent = jPlayer(jPlaylist(WrappedComponent, options), options)
+							: WrappedComponent = jPlayer(player(WrappedComponent, options), options);
 		
         this.setFormats();
         this.setPlayableFormat();

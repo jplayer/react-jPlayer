@@ -42,6 +42,7 @@ export default (state={}, action) => {
         case actionTypes.ARRAY_ADD_UNIQUE:        
         case actionTypes.ARRAY_REMOVE_BY_VALUE:
         case actionTypes.ARRAY_REMOVE_BY_INDEX:
+        debugger
            return updateArray(state, action);
         case actionTypes.UPDATE:
             return {

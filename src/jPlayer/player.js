@@ -3,8 +3,16 @@ import * as util from "../util/index";
 import controls from "./controls";
 import * as constants from "../util/constants";
 import Controls from "./controls";
+import Poster from "./poster";
+import {connect} from "react-redux";
 
-export default (WrappedComponent, AdditionalControls) => class extends React.Component {
+const mapStateToProps = (state) => {
+	return {
+		...state.jPlayer
+	}
+};
+
+export default (WrappedComponent, options, AdditionalControls) => connect(mapStateToProps)(class extends React.Component {
 	constructor(props) {
 		super(props);
 		
@@ -14,21 +22,23 @@ export default (WrappedComponent, AdditionalControls) => class extends React.Com
 	}
 	static get defaultProps() {
 		return {
-			[constants.keys.PLAYER_CLASS]: []
+			[constants.keys.PLAYER_CLASS]: [],
+			[constants.keys.POSTER_CLASS]: []
 		};
 	}
 	componentWillReceiveProps(prevProps, prevState) {
 		if (prevProps.width !== this.props.width || prevProps.height !== this.props.height) {
 			//this.assignStyle({width: this.props.width, height: this.props.height}, "PlayerStyle");
 		}
-	}
+	}//Get posterclass this redux store instead of parents: todo
 	render() {
 		return (
 			<WrappedComponent>
 				<div id={this.props.cssSelectorAncestor} className={this.props[constants.keys.PLAYER_CLASS].join(" ")}>
-					{this.props.children}				
-					<div className={"jp-jplayer"} style={this.state.PlayerStyle}>					
-						<Poster posterClass={this.props[constants.keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onLoad={this._posterLoad} onClick={() => this._trigger(this.props.onClick)} /> 
+					{this.props.children}	
+					<Poster posterClass={this.props[constants.keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onClick={() => this.props._trigger(options.onClick)} /> 			
+					{/*<div className={"jp-jplayer"} style={this.state.PlayerStyle}>			
+						<Poster posterClass={this.props[constants.keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onClick={() => this.props._trigger(options.onClick)} /> 
 						<Audio ref={(audio) => this.audio = audio} require={this.require.audio} events={this.mediaEvent}>
 							{this.state.tracks}
 						</Audio>
@@ -42,12 +52,12 @@ export default (WrappedComponent, AdditionalControls) => class extends React.Com
 						</Controls>
 						<Progress />
 					</GUI>
-					<BrowserUnsupported />
+					<BrowserUnsupported />*/}
 				</div>
 			</WrappedComponent>
 		);
 	}
-}
+});
 
 function controlProps() {
 	return {

@@ -22,13 +22,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => (bindActionCreators(actions, dispatch));
 
-export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps)(
+export default (WrappedComponent, options) => connect(mapStateToProps, mapDispatchToProps)(
 	class extends React.Component {
 		constructor(props) {
 			super(props);
 
 			this.state = {};
-
 			
 		}
 		static get propTypes() {
@@ -372,9 +371,8 @@ export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps
 				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
 				//this.props.updateOption("cssClass", sizeClass);
 			}	
-			
+			debugger
 			this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
-
 			this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
 			this.props.updateOption("noFullWindow", util.uaBlocklist(this.props.noFullWindow));
 		}

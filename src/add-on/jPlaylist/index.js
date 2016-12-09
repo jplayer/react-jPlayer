@@ -12,7 +12,7 @@ import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
 import player from "../../jPlayer/player";
 
-export default (WrappedComponent) => class extends React.Component {
+export default (WrappedComponent, options) => class extends React.Component {
     static get propTypes() {
         return {
             updateOptions: React.PropTypes.func.isRequired,
@@ -60,7 +60,7 @@ export default (WrappedComponent) => class extends React.Component {
             html: this.props.html,
             shuffled: this.props.shuffled
         };
-        WrappedComponent = player(WrappedComponent, <PlaylistControls {...playlistControlProps} />);
+        WrappedComponent = player(WrappedComponent, options, <PlaylistControls {...playlistControlProps} />);
         // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
         // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
         
