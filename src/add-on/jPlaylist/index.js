@@ -60,7 +60,7 @@ export default (WrappedComponent) => class extends React.Component {
             html: this.props.html,
             shuffled: this.props.shuffled
         };
-        WrappedComponent = player(WrappedComponent, <PlaylistControls additionalControlProps={playlistControlProps} />);
+        WrappedComponent = player(WrappedComponent, <PlaylistControls {...playlistControlProps} />);
         // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
         // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
         

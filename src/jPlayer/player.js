@@ -2,6 +2,7 @@ import React from "react";
 import * as util from "../util/index";
 import controls from "./controls";
 import * as constants from "../util/constants";
+import Controls from "./controls";
 
 export default (WrappedComponent, AdditionalControls) => class extends React.Component {
 	constructor(props) {
@@ -9,7 +10,7 @@ export default (WrappedComponent, AdditionalControls) => class extends React.Com
 		
 		this.state = {};
 
-		this.assignStyle = util.assignStyle.bind(this);
+		controlProps = controlProps.bind(this);
 	}
 	static get defaultProps() {
 		return {
@@ -18,17 +19,15 @@ export default (WrappedComponent, AdditionalControls) => class extends React.Com
 	}
 	componentWillReceiveProps(prevProps, prevState) {
 		if (prevProps.width !== this.props.width || prevProps.height !== this.props.height) {
-			this.assignStyle({width: this.props.width, height: this.props.height}, "PlayerStyle");
+			//this.assignStyle({width: this.props.width, height: this.props.height}, "PlayerStyle");
 		}
 	}
 	render() {
 		return (
 			<WrappedComponent>
 				<div id={this.props.cssSelectorAncestor} className={this.props[constants.keys.PLAYER_CLASS].join(" ")}>
-					{this.props.children}
-					<div className={"jp-jplayer"} style={this.state.PlayerStyle}>
-					</div>
-					<Player className={"jp-jplayer"}>
+					{this.props.children}				
+					<div className={"jp-jplayer"} style={this.state.PlayerStyle}>					
 						<Poster posterClass={this.props[constants.keys.POSTER_CLASS].join(" ")} src={this.state.posterSrc} onLoad={this._posterLoad} onClick={() => this._trigger(this.props.onClick)} /> 
 						<Audio ref={(audio) => this.audio = audio} require={this.require.audio} events={this.mediaEvent}>
 							{this.state.tracks}
@@ -36,10 +35,10 @@ export default (WrappedComponent, AdditionalControls) => class extends React.Com
 						<Video ref={(video) => this.video = video} require={this.require.video} videoClass={this.props[constants.keys.VIDEO_CLASS].join(" ")} style={this.state.videoStyle} onClick={() => this._trigger(this.props.onClick)} events={this.mediaEvent}>
 							{this.state.tracks}
 						</Video>		
-					</Player>
+					</div>
 					<GUI nativeVideoControls={this.props.nativeVideoControls} fullWindow={this.props.fullWindow} autoHide={this.autoHide} fadeInConfig={this.props.guiFadeInAnimation} fadeOutConfig={this.props.guiFadeOutAnimation}>
 						<Controls {...controlProps()}>
-							<AdditionalControls />
+							{React.cloneElement(AdditionalControls)}
 						</Controls>
 						<Progress />
 					</GUI>
