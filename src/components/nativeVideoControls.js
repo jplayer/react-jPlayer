@@ -22,10 +22,9 @@ export default class extends React.Component {
     }
     static get defaultProps() {
         return {
-            nativeVideoControls: {
-                // Works well on standard browsers.
-                // Phone and tablet browsers can have problems with the controls disappearing.
-            }
+            // Works well on standard browsers.
+            // Phone and tablet browsers can have problems with the controls disappearing.
+            nativeVideoControls: uaBlocklist(this.props.nativeVideoControls)            
         }
     }
     fullscreenAddEventListeners = () => {
@@ -81,10 +80,6 @@ export default class extends React.Component {
         if(this.internal.fullscreenchangeHandler) {
             document.removeEventListener(fs.event.fullscreenchange, this.internal.fullscreenchangeHandler, false);
         }
-    }
-    componentDidMount() {
-        // Determine the status for Blocklisted options.
-		this.props.updateOption("nativeVideoControls", uaBlocklist(this.props.nativeVideoControls));
     }
     componentWillUnmount() {
         this.removeEventListeners();

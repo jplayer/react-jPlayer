@@ -1,6 +1,7 @@
 import React from "react";
 
 import renderjPlayer from "../src/index";
+import * as constants from "../src/util/constants";
 
 class ExampleComponent extends React.Component {
     constructor(props){
@@ -9,7 +10,6 @@ class ExampleComponent extends React.Component {
         this.state = {};
     }
     render() {
-        debugger
         return (
             <div className="test">
                 {this.props.children}
@@ -18,10 +18,10 @@ class ExampleComponent extends React.Component {
     }
 }
 
-const jPlaylistOptions = {
+const jPlayerOptions = {
     jPlayerSelector: "jplayer_footer_player",
     cssSelectorAncestor: "jp_container_footer_player",
-    html: {
+     controls: {
         //Toggle between play and pause in css based on playing or not
         play: <i className="fa fa-play"></i>,
         mute: <i className="fa fa-volume-up"></i>,
@@ -30,15 +30,53 @@ const jPlaylistOptions = {
         shuffle: <i className="fa fa-random"></i>,
         previous: <i className="fa fa-step-backward"></i>,
         next: <i className="fa fa-step-forward"></i>,
-        playlistOptions: <div><i className="fa fa-ellipsis-h"></i><i className="fa fa-comment"></i></div>,
-        stop: <i className="fa fa-step-forward jp-test"></i>
-    },
+     },
+    // controls: {
+    //      //Toggle between play and pause in css based on playing or not
+    //     play: {
+    //         type: "i",
+    //         props: {
+    //             className: "fa fa-play"
+    //         }
+    //     },
+    //     mute: {
+    //         type: "i",
+    //         props: {
+    //             className: "fa fa-volume-up"
+    //         }
+    //     },
+    //     fullScreen: {
+    //         type: "i",
+    //         props: {
+    //             className: "fa fa-expand"
+    //         }
+    //     },
+    //     repeat: {
+    //         type: "div",
+    //         children: [
+    //             {
+    //                 type: "i",
+    //                 props: {
+    //                     className: "fa fa-bars"
+    //                 },
+    //             },
+    //             {
+    //                 type: "i",
+    //                 props: {
+    //                     className: "fa fa-repeat"
+    //                 },
+    //             }             
+    //         ],
+    //     }
+    // },
     smoothPlayBar: false,
     muted: true,
-    enableRemoveControls: true,
-    loopOnPrevious: true,
     keyEnabled: true,
     globalVolume: false,
+    onError: (jPlayer) => console.error(jPlayer.error)
+}
+
+const jPlaylistOptions = {
     playlist: [
         {
             title:"Cro Magnon Man",
@@ -71,7 +109,45 @@ const jPlaylistOptions = {
             free: true
         }
     ],
-    onError: (jPlayer) => console.error(jPlayer.error)
-};
+    // controls: {
+    //     shuffle: {
+    //         type: "i",
+    //         props: {
+    //             className: "fa fa-random"
+    //         }
+    //     },
+    //     previous: {
+    //         type: "i",
+    //         props: {
+    //             className: "fa fa-step-backward"
+    //         }
+    //     },
+    //     next: {
+    //         type: "i",
+    //         props: {
+    //             className: "fa fa-step-forward"
+    //         }
+    //     },
+    //     options: {
+    //         type: "div",
+    //         children: [
+    //             {
+    //                 type: "i",
+    //                 props: {
+    //                     className: "fa fa-ellipsis-h"
+    //                 },
+    //             },
+    //             {
+    //                 type: "i",
+    //                 props: {
+    //                     className: "fa fa-comment"
+    //                 },
+    //             }             
+    //         ],
+    //     }
+    // },
+    loopOnPrevious: true,
+    enableRemoveControls: true
+}
 
-renderjPlayer(ExampleComponent, jPlaylistOptions);
+renderjPlayer(ExampleComponent, jPlayerOptions, jPlaylistOptions);

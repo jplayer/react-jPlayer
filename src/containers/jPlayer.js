@@ -4,38 +4,79 @@ import isEqual from "lodash/isEqual";
 import store from "../store";
 import * as util from "../util/index";
 import * as constants from "../util/constants";
-import * as actions from "./actions";
-import Gui from "./gui";
-import Progress from "./progress";
-import Poster from "./poster";
-import browserUnsupported from "./browserUnsupported";
-import Player from "./player";
-import convertTime from "./convertTime";
+import * as actions from "../actions/jPlayerActions";
+import convertTime from "../util/convertTime";
 import {connect} from "react-redux";
-import { bindActionCreators } from 'redux';
+import {bindActionCreators} from 'redux';
+import Gui from "../components/gui";
+import Controls from "../components/controls";
+import Control from "../components/control";
+import Progress from "../components/progress";
+import PlayBar from "../components/playBar";
+import BrowserUnsupported from "../components/browserUnsupported";
 
-const mapStateToProps = (state) => {
-	return {
-		...state.jPlayer
-	}
-};
-
+const mapStateToProps = (state) => ({...state.jPlayer});
 const mapDispatchToProps = (dispatch) => (bindActionCreators(actions, dispatch));
 
-export default (WrappedComponent, options) => connect(mapStateToProps, mapDispatchToProps)(
+export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps)(
 	class extends React.Component {
 		constructor(props) {
 			super(props);
 
+			const volumeBarValue = <div className={this.props.volumeBarValueClass} style={this.props.volumeBarValueStyle} />
+			const playbackRateBarValue = <div className={this.props.playbackRateBarValueClass} style={this.props.playbackRateBarValueStyle} />
+			this.props.addUniqueToArray(constants.keys.VOLUME_BAR_CLASS, "test");
+			//Toggle between play and pause in css based on playing or not
+			this.props.createControl("play", this.onPlayClick, [constants.classNames.PLAY]);
+			this.props.createControl("mute", this.onMuteClick, [constants.classNames.MUTE]);
+			this.props.createControl("volumeMax", this.onVolumeMaxClick, [constants.classNames.VOLUME_MAX]);
+			this.props.createControl("fullScreen", this.onFullScreenClick, [constants.classNames.FULL_SCREEN]);
+			this.props.createControl("repeat", this.onRepeatClick, [constants.classNames.REPEAT]);
+			this.props.createControl("stop", this.onStopClick, [constants.classNames.STOP]);
+			this.props.createControl("volumeBar", this.onVolumeBarClick, this.props.volumeBarClass, volumeBarValue);
+			this.props.createControl("playbackRateBar", this.onPlaybackRateBarClick, this.props.playbackRateBarClass, playbackRateBarValue);
+
 			this.state = {};
-			
+			// The key control object, defining the key codes and the functions to execute.
+			this.keyBindings = merge({
+				// The parameter, f = this.focusInstance, will be checked truethy before attempting to call any of these functions.
+				// Properties may be added to this object, in key/fn pairs, to enable other key controls. EG, for the playlist add-on.
+				play: {
+					key: 80, // p
+					fn: () => this.props.paused ? this.play() : this.pause()
+				},
+				fullScreen: {
+					key: 70, // f
+					fn: () => {
+						if(this.props.video.available || this.props.audioFullScreen) {
+							this.setFullScreen(!this.props.fullScreen);
+						}
+					}
+				},
+				muted: {
+					key: 77, // m
+					fn: () => this.setMute(!this.props.muted)
+				},
+				volumeUp: {
+					key: 190, // .
+					fn: () =>  this.setVolume(this.props.volume + 0.1)
+				},
+				volumeDown: {
+					key: 188, // ,
+					fn: () => this.setVolume(this.props.volume - 0.1)
+				},
+				loop: {
+					key: 76, // l
+					fn: () => this.incrementLoop()
+				}
+			}, this.props.keyBindings);
 		}
 		static get propTypes() {
 			return {
 				updateOptions: React.PropTypes.func.isRequired,
 				jPlayerSelector: React.PropTypes.string,
 				cssSelectorAncestor: React.PropTypes.string,
-				html: React.PropTypes.objectOf(React.PropTypes.element),
+				controls: React.PropTypes.objectOf(React.PropTypes.element),
 				supplied: React.PropTypes.arrayOf(React.PropTypes.string),
 				preload: React.PropTypes.string,
 				volume: React.PropTypes.number,
@@ -50,14 +91,8 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				stateClass: React.PropTypes.objectOf(React.PropTypes.string),
 				smoothPlayBar: React.PropTypes.bool,
 				fullScreen: React.PropTypes.bool,
-				fullWindow: React.PropTypes.bool,
-				autoHide: React.PropTypes.shape({
-					restored: React.PropTypes.bool, // Controls the interface autohide feature.
-					full: React.PropTypes.bool, // Controls the interface autohide feature.
-					hold: React.PropTypes.number, // Milliseconds. The period of the pause before autohide beings.
-				}),
-				loop: React.PropTypes.string,
-				
+				fullWindow: React.PropTypes.bool,			
+				loop: React.PropTypes.string,				
 				noFullWindow: React.PropTypes.objectOf(React.PropTypes.string),
 				noVolume: React.PropTypes.objectOf(React.PropTypes.string),
 				timeFormat: React.PropTypes.shape({
@@ -129,14 +164,8 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				preload: "metadata", // HTML5 Spec values: none, metadata, auto.	
 				captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
 				minPlaybackRate: 0.5,
-				maxPlaybackRate: 4,			
-				guiFadeInAnimation: {
-					stiffness: 40 // Velocity of the animation (higher the faster), other properties automatically set in the Motion component
-				},
-				guiFadeOutAnimation: {
-					stiffness: 40 
-				},
-				html: {},
+				maxPlaybackRate: 4,
+				controls: {},
 				src: "",
 				media: {},
 				paused: true,
@@ -198,12 +227,6 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				noVolume: constants.classNames.states.NO_VOLUME,
 			}, this.props[constants.keys.STATE_CLASS]);
 
-			this.autoHide = merge({
-				restored: false, // Controls the interface autoHide feature.
-				full: true, // Controls the interface autoHide feature.
-				hold: 2000 // Milliseconds. The period of the pause before autoHide beings.
-			}, this.props.autoHide);
-
 			this.noFullWindow = merge({
 				...constants.noFullWindows
 			}, this.props.noFullWindow);
@@ -213,7 +236,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			}, this.props.noVolume);	
 		}
 		_setupEvents = () => {
-			this.mediaEvent = { 
+			this.props.updateOption("mediaEvent", { 
 				onProgress: () => {
 					if(this.internal.cmdsIgnored && this.readyState > 0) { // Detect iOS executed the command
 						this.internal.cmdsIgnored = false;
@@ -280,14 +303,14 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 					this._updatePlaybackRate();
 					this._trigger(this.props.onRateChange);
 				},
-				onSuspend: () => { // Seems to be the only way of capturing that the iOS4 constants.browser did not actually play the media from the page code. ie., It needs a user gesture.				
+				onSuspend: () => { // Seems to be the only way of capturing that the iOS4 browser did not actually play the media from the page code. ie., It needs a user gesture.				
 					this._seeked();
 					this._trigger(this.props.onSuspend);
 				},
 				onEnded: () => {			
 					// Order of the next few commands are important. Change the time and then pause.
 					// Solves a bug in Firefox, where issuing pause 1st causes the media to play from the start. ie., The pause is ignored.
-					if(!constants.browser.webkit) { // Chrome crashes if you do this in conjunction with a setMedia command in an ended event handler. ie., The playlist demo.
+					if(!browser.webkit) { // Chrome crashes if you do this in conjunction with a setMedia command in an ended event handler. ie., The playlist demo.
 						this.currentMedia.currentTime = 0; // Safari does not care about this command. ie., It works with or without this line. (Both Safari and Chrome are Webkit.)
 					}
 					// Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
@@ -308,7 +331,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 						this.props.updateOption("waitForLoad", true);
 						this.props.updateOption("waitForPlay", true);
 						
-						if(this.props.video && !this.props.nativeVideoControls) {
+						if(this.props.video.available && !this.props.nativeVideoControls) {
 							this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
 						}
 
@@ -333,7 +356,8 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				onLoadedMetadata: () => this._trigger(this.props.onLoadedMetadata),
 				onCanPlay: () => this._trigger(this.props.onCanPlay),
 				onCanPlayThrough: () => this._trigger(this.props.onCanPlayThrough)
-			};
+			});
+			
 		}
 		_initBeforeRender = () => {
 			this._setupOptions();
@@ -371,7 +395,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
 				//this.props.updateOption("cssClass", sizeClass);
 			}	
-			debugger
+	
 			this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 			this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
 			this.props.updateOption("noFullWindow", util.uaBlocklist(this.props.noFullWindow));
@@ -384,7 +408,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			// Set up the css selectors for the control and feedback entities.
 			this._cssSelectorAncestor();
 
-			// If html is not being used by this constants.browser, then media playback is not possible. Trigger an error event.
+			// If html is not being used by this browser, then media playback is not possible. Trigger an error event.
 			// if(!this.html.used) {
 			// 	this._error({
 			// 		type: constants.errors.NO_SOLUTION,
@@ -400,8 +424,8 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			if(this.props.nativeVideoControls) {
 				this.props.removeFromArrayByValue(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
 				this.setState({videoStyle: {
-					width: this.props.width, 
-					height: this.props.height
+					//width: this.props.width, 
+					//height: this.props.height
 				}});
 			} else {
 				this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
@@ -452,7 +476,6 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			var jPlayerOptions = {
 				version: Object.assign({}, util.version),
 				element: this.currentMedia,
-				html: merge({}, this.html), // Deep copy
 				error: Object.assign({}, error)
 			}
 
@@ -484,10 +507,10 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			}
 		}
 		_updateInterface = () => {
-			this.setState({seekBarStyle: {width: `${this.props.seekPercent}%`}});
+			this.props.updateOption("seekBarStyle", {width: `${this.props.seekPercent}%`});
 
-			this.props.smoothPlayBar ? this.setState({playBarStyle: {width: `${this.props.currentPercentAbsolute}%`}})
-									: this.setState({playBarStyle: {width: `${this.props.currentPercentRelative}%`}});
+			this.props.smoothPlayBar ? this.props.updateOption("playBarStyle", {width: `${this.props.currentPercentAbsolute}%`})
+									: this.props.updateOption("playBarStyle", {width: `${this.props.currentPercentRelative}%`});
 			
 			var currentTimeText = convertTime(this.props.currentTime);
 
@@ -527,8 +550,8 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			*	media.track = Array: Of objects defining the track element: kind, src, srclang, label, def.
 			*	media.stream = Boolean: * NOT IMPLEMENTED * Designating actual media streams. ie., "false/undefined" for files.
 			*/
-			var	supported = false,
-				posterChanged = this.props.media.poster !== media.poster; // Compare before reset. Important for OSX Safari as this.htmlElement.poster.src is absolute, even if original poster URL was relative.
+			var	supported = false;
+				//posterChanged = this.props.media.poster !== media.poster; // Compare before reset. Important for OSX Safari as this.htmlElement.poster.src is absolute, even if original poster URL was relative.
 				
 			this._resetMedia();
 						
@@ -573,22 +596,21 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 					// Note: With IE the IMG onload event occurs immediately when cached.
 					// Note: Poster hidden by default in _resetMedia()
 					if(util.validString(media.poster)) {
-						if(posterChanged) { // Since some constants.browsers do not generate img onload event.
-							this.setState({posterSrc: media.poster});
-						} else {
-							this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
-						}
+						//if(posterChanged) { // Since some browsers do not generate img onload event.
+						this.props.updateOption("posterSrc", media.poster);
+					//	} else {
+						//	this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+					//	}
 					}
 				}
 
 				if(typeof media.title === 'string') {
-					this.setState({titleText: media.title});
+					this.props.updateOption("titleText", media.title);
 				}
 				
 				this.props.updateOption("srcSet", true);
 				this._updateButtons(false);
-				this._trigger(this.props.onSetMedia);
-			} else { // jPlayer cannot support any formats provided in this constants.browser
+			} else { // jPlayer cannot support any formats provided in this browser
 				// Send an error event
 				this._error( {
 					type: constants.errors.NO_SUPPORT,
@@ -692,10 +714,10 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.noVolume);
 				const volumeValue = (v * 100) + "%";
 
-				this.setState({volumeBarValueStyle: {
+				this.props.updateOption("volumeBarValueStyle", {
 					width: !this.props.verticalVolume ? volumeValue : null,
 					height: this.props.verticalVolume ? volumeValue : null
-				}});
+				});
 
 				this.props.removeFromArrayByValue(constants.keys.VOLUME_BAR_CLASS, constants.classNames.HIDDEN);
 				this.props.removeFromArrayByValue(constants.keys.VOLUME_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
@@ -712,14 +734,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 			this._updateVolume();
 			this._updateMute();
 		}
-		setDuration = (e) => {
-			if(this.props.toggleDuration) {
-				if(this.props.captureDuration) {
-					e.stopPropagation();
-				}
-				this.props.updateOption("remainingDuration", !this.props.remainingDuration);
-			}
-		}
+		setDuration = () => this.props.updateOption("remainingDuration", !this.props.remainingDuration)
 		setPlaybackRate = (pbr) => {
 			const limitiedPbr = this._limitValue(pbr, this.options.minPlaybackRate, this.options.maxPlaybackRate);
 			
@@ -734,10 +749,10 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 
 				const playbackRateBarValue = (ratio*100)+"%";
 
-				this.setState({playbackRateBarValueStyle: {
+				this.props.updateOption("playbackRateBarValueStyle", {
 					width: !this.props.verticalPlaybackRate ? playbackRateBarValue : null,
 					height: this.props.verticalPlaybackRate ? playbackRateBarValue : null
-				}});
+				});
 			} else {
 				this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_CLASS, constants.classNames.HIDDEN);
 				this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
@@ -757,11 +772,10 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 		}
 		_updateSize = () => {
 			// Video html resized if necessary at this time, or if native video controls being used.
-			if(!this.props.waitForPlay && this.props.video
-					|| this.props.video.available && this.props.nativeVideoControls) {
+			if(this.props.video.available && (!this.props.waitForPlay || this.props.nativeVideoControls)) {
 				this.setState({videoStyle: {
-					width: !this.props.width,
-					height: this.props.height
+					//width: !this.props.width,
+					//height: this.props.height
 				}});
 			}
 		}
@@ -826,7 +840,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				trackElements.push(<track kind={v.Kind} src={v.src} srclang={v.srclang} label={v.label} default={vDef}/>);
 			}
 
-			this.setState({tracks: tracks});
+			this.props.updateOption("tracks", tracks);
 			this.currentMedia.src = this.props.src;
 
 			if(this.props.preload !== 'none') {
@@ -868,14 +882,14 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				this.currentMedia.src = "about:blank";
 
 				// The following load() is only required for Firefox 3.6 (PowerMacs).
-				// Recent HTMl5 constants.browsers only require the src change. Due to changes in W3C spec and load() effect.
+				// Recent HTMl5 browsers only require the src change. Due to changes in W3C spec and load() effect.
 				this.currentMedia.load(); // Stops an old, "in progress" download from continuing the download. Triggers the loadstart, error and emptied events, due to the empty src. Also an abort event if a download was in progress.
 			}
 		}
 		_htmlLoad = (htmlLoadedCallback) => {
-			// This function remains to allow the early HTML5 constants.browsers to work, such as Firefox 3.6
+			// This function remains to allow the early HTML5 browsers to work, such as Firefox 3.6
 			// A change in the W3C spec for the media.load() command means that this is no longer necessary.
-			// This command should be removed and actually causes minor undesirable effects on some constants.browsers. Such as loading the whole file and not only the metadata.
+			// This command should be removed and actually causes minor undesirable effects on some browsers. Such as loading the whole file and not only the metadata.
 			if(this.props.waitForLoad) {
 				this.currentMedia.load();
 				this.props.updateOption("waitForLoad", false);
@@ -897,7 +911,7 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 					this.currentMedia.play();
 				}
 				try {
-					// !this.currentMedia.seekable is for old HTML5 constants.browsers, like Firefox 3.6.
+					// !this.currentMedia.seekable is for old HTML5 browsers, like Firefox 3.6.
 					// Checking seekable.length is important for iOS6 to work with setMedia().play(time)
 					if(!this.currentMedia.seekable || typeof this.currentMedia.seekable === "object" && this.currentMedia.seekable.length > 0) {
 						this.currentMedia.currentTime = time;
@@ -973,11 +987,11 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 				this.props.updateOption("waitForPlay", false);
 				this.props.addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
 
-				if(this.props.video) {
+				if(this.props.video.available) {
 					this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 					this.setState({videoStyle: {
-						width: this.props.width,
-						height: this.props.height
+						//width: this.props.width,
+						//height: this.props.height
 					}});
 				}
 			}
@@ -1055,9 +1069,83 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 					break;
 			}	
 		}
-		extendMethod = (methodName, newMethod) => {
-			this[methodName].apply(this, arguments);
-			newMethod(this[methodName]);
+		onMuteClick = () => this.mute(!this.props.muted)
+		onPlayClick = () => this.props.paused ? this.play() : this.pause()
+		onPlaybackRateBarClick = (e) => {
+			// Using e.currentTarget to enable multiple playbackRate bars
+			var bar = e.currentTarget,
+				offset = util.getOffset(bar),
+				x = e.pageX - offset.left,
+				w = util.getWidth(bar),
+				y = util.getHeight(bar) - e.pageY + offset.top,
+				h = util.getHeight(bar),
+				ratio,
+				pbr;
+
+			if(this.props.verticalPlaybackRate) {
+				ratio = y/h;
+			} else {
+				ratio = x/w;
+			}
+
+			pbr = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
+			this.props.setPlaybackRate(pbr);
+		}
+		onVolumeBarClick = (e) => {
+			// Using $(e.currentTarget) to enable multiple volume bars
+			var bar = e.currentTarget,
+				offset = util.getOffset(bar),
+				x = e.pageX - offset.left,
+				w = util.getWidth(bar),
+				y = util.getHeight(bar) - e.pageY + offset.top,
+				h = util.getHeight(bar);
+
+			this.props.verticalVolume ? this.setVolume(y/h) : this.setVolume(x/w)
+
+			if(this.props.muted) {
+				this.setMute(false);
+			}
+		}
+		onVolumeMaxClick = () => {
+			this.setVolume(1);
+
+			if(this.props.muted) {
+				this.setMute(false);
+			}
+		}
+		onStopClick = () => this.stop()
+		onVideoPlayClick = () => this.play()
+		onRepeatClick = () => this.incrementLoop()
+		onFullScreenClick = () => this.setFullScreen(!this.props.fullScreen)
+		onKeyDown = (e) => {
+			for (var key in this.keyBindings) {
+				const keyBinding = this.keyBindings[key];
+
+				if (keyBinding.key === e.charCode) {
+					keyBinding.fn();
+				}
+			}
+		}
+		onSeekBarClick = (e) => {
+			// Using $(e.currentTarget) to enable multiple seek bars
+			var bar = e.currentTarget,
+				offset = getOffset(bar),
+				x = e.pageX - offset.left,
+				w = getWidth(bar),
+				p = 100 * x / w;
+
+			setPlayHead(p);
+		}
+		onDurationClick = (e) => {
+			if(this.props.toggleDuration) {
+				if(this.props.captureDuration) {
+					e.stopPropagation();
+				}
+				setDuration();
+			}
+		}
+		createControl = () => {
+
 		}
 		componentWillMount() {
 			// for (var method in this.props.overrideMethods) {
@@ -1087,8 +1175,24 @@ export default (WrappedComponent, options) => connect(mapStateToProps, mapDispat
 		render() {
 			return (
 				<WrappedComponent setMedia={this.setMedia} clearMedia={this.clearMedia} load={this.load} play={this.play} pause={this.pause} 
-					stop={this.stop} playHead={this.playHead} focus={this.focus} volume={this.volume} mute={this.mute} unmute={this.unmute}			
-					{...this.props} extendMethod={this.extendMethod}>
+					stop={this.stop} playHead={this.playHead} focus={this.focus} volume={this.volume} mute={this.mute} unmute={this.unmute}>
+					<div id={this.props.cssSelectorAncestor} className={this.props[constants.keys.PLAYER_CLASS].join(" ")}>
+						{this.props.children}
+						<Gui {...this.props.autoHide} nativeVideoControls={this.props.nativeVideoControls} fullWindow={this.props.fullWindow} fadeInConfig={this.props.guiFadeInAnimation} 
+						fadeOutConfig={this.props.guiFadeOutAnimation}>
+							<div className={constants.classNames.TITLE}>
+								{this.props.titleText}
+							</div>
+							<Controls className={"jp-controls"} onKeyDown={this.onKeyDown}>
+								{Object.keys(this.props.controls).map(key => {debugger; return <Control {...this.props.controls} />})}
+							</Controls>
+							<Progress className={"jp-progress"} seekBarClick={this.onSeekBarClick} onDurationClick={this.onDurationClick} seekBarStyle={this.props.seekBarStyle} 
+							currentTimeText={this.props.currentTimeText} durationText={this.props.durationText}>
+								<PlayBar smoothPlayBar={this.props.smoothPlayBar} currentPercentAbsolute={this.props.currentPercentAbsolute} playBarStyle={this.props.playBarStyle} />
+							</Progress>
+							<BrowserUnsupported noSolutionClass={this.props.noSolutionClass} />
+						</Gui>
+					</div>
 				</WrappedComponent>					
 			);
 		}

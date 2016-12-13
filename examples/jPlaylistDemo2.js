@@ -1,7 +1,5 @@
 import React from "react";
 
-import jPlaylist from "../src/add-on/jPlaylist/index";
-import jPlayer from "../src/jPlayer/index";
 import renderjPlayer from "../src/index";
 
 class ExampleComponent extends React.Component {
@@ -18,9 +16,13 @@ class ExampleComponent extends React.Component {
 const jPlaylistOptions = {
     jPlayerSelector: "jplayer_footer_player2",
     cssSelectorAncestor: "jp_container_footer_player2",
-    html: {
+    controls: {
         //Toggle between play and pause in css based on playing or not
-        play: <i className="fa fa-play"></i>,
+        play: {
+            className: constants.classNames.PLAY,
+            clickHandler: props.onPlayClick,
+            html: <i className="fa fa-play"></i>
+        },
         mute: <i className="fa fa-volume-up"></i>,
         fullScreen: <i className="fa fa-expand"></i>,
         repeat: <div><i className="fa fa-repeat"></i><i className="fa fa-bars"></i></div>,

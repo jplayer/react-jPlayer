@@ -1,66 +1,42 @@
 import React from "react";
 import merge from "lodash.merge";
 import maxBy from "lodash/maxBy";
-import store from "../../store";
-import * as actions from "../../jPlayer/actions";
-import * as util from "../../util/index";
-import * as constants from "../../util/constants";
-import PlaylistControls from "./playlistControls";
-import Playlist from "./playlist";
-import PlaylistItem from "./playlistItem";
+import store from "../store";
+import * as actions from "../actions/jPlayerActions";
+import * as util from "../util/index";
+import * as constants from "../util/constants";
+import PlaylistControls from "../components/playlistControls";
+import Playlist from "../components/playlist";
+import PlaylistItem from "../components/playlistItem";
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
-import player from "../../jPlayer/player";
 
-export default (WrappedComponent, options) => class extends React.Component {
-    static get propTypes() {
-        return {
-            updateOptions: React.PropTypes.func.isRequired,
-            playlist: React.PropTypes.arrayOf(
-                React.PropTypes.shape({
-                    title: React.PropTypes.string,
-                    artist: React.PropTypes.string,
-                    mp3: React.PropTypes.string,
-                    poster: React.PropTypes.string,
-                    free: React.PropTypes.bool,
-                })
-            ),
-            enableRemoveControls: React.PropTypes.bool,
-            shuffleOnLoop: React.PropTypes.bool,
-            itemClass: React.PropTypes.string,
-            freeItemClass: React.PropTypes.string,
-            removeItemClass: React.PropTypes.string,
-            freeGroupClass: React.PropTypes.string
-        }
-    }
-    static get defaultProps() {
-        return {
-            functions: [],
-            html: {},
-            playlist: [],
-            shuffleOnLoop: true,
-            shuffled: false,
-            itemClass: "jp-playlist-item",
-            freeItemClass: "jp-playlist-item-free",
-            removeItemClass: "jp-playlist-item-remove",
-            freeGroupClass: "jp-free-media",
-        };
-    }
-    constructor(props) {
+const mapStateToProps = (state, ownProps) => {
+    return {
+        ...state.jPlaylist,
+        html: state.jPlayer.html,
+        fullScreen: state.jPlayer.fullScreen,
+        autoPlay: state.jPlayer.autoPlay,
+        loop: state.jPlayer.loop,
+        paused: state.jPlayer.paused,
+        autoBlur: state.jPlayer.autoBlur
+    };
+};
+const mapDispatchToProps = (dispatch) => (bindActionCreators(actions, dispatch));
+
+export default (WrappedComponent) => connect(mapStateToProps, mapDispatchToProps)(class extends React.Component {
+     constructor(props) {
         super(props);
 
         this.state = {
             current: 0
         }
-        const playlistControlProps = {
-            blur: this.blur,
-            shuffle: this.shuffle,
-            next: this.next,
-            previous: this.previous,
-            html: this.props.html,
-            shuffled: this.props.shuffled
-        };
-        WrappedComponent = player(WrappedComponent, options, <PlaylistControls {...playlistControlProps} />);
+        
+        this.props.createControl("shuffle", this._onShuffleClick, [constants.classNames.playlist.SHUFFLE]);
+        this.props.createControl("previous", this._onPreviousClick, [constants.classNames.playlist.PREVIOUS]);
+        this.props.createControl("next", this._onNextClick, [constants.classNames.playlist.NEXT]);
+
+    
         // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
         // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
         
@@ -109,6 +85,39 @@ export default (WrappedComponent, options) => class extends React.Component {
         // }, this.props.keyBindings));
 
         // this.freeMediaLinkIndex = 0;
+    }
+    static get propTypes() {
+        return {
+            updateOptions: React.PropTypes.func.isRequired,
+            playlist: React.PropTypes.arrayOf(
+                React.PropTypes.shape({
+                    title: React.PropTypes.string,
+                    artist: React.PropTypes.string,
+                    mp3: React.PropTypes.string,
+                    poster: React.PropTypes.string,
+                    free: React.PropTypes.bool,
+                })
+            ),
+            enableRemoveControls: React.PropTypes.bool,
+            shuffleOnLoop: React.PropTypes.bool,
+            itemClass: React.PropTypes.string,
+            freeItemClass: React.PropTypes.string,
+            removeItemClass: React.PropTypes.string,
+            freeGroupClass: React.PropTypes.string
+        }
+    }
+    static get defaultProps() {
+        return {
+            functions: [],
+            html: {},
+            playlist: [],
+            shuffleOnLoop: true,
+            shuffled: false,
+            itemClass: "jp-playlist-item",
+            freeItemClass: "jp-playlist-item-free",
+            removeItemClass: "jp-playlist-item-remove",
+            freeGroupClass: "jp-free-media",
+        };
     }
     _trigger = (func, jPlayer) => {
         if (func !== undefined) {
@@ -307,6 +316,24 @@ export default (WrappedComponent, options) => class extends React.Component {
             that.blur();
         }
     }
+    _onShuffleClick = (event) => {
+        event.preventDefault();
+
+        this.shuffle(!this.props.shuffled);
+        this.blur(event.target);
+    }
+    _onPreviousClick = (event) => {
+        event.preventDefault();
+
+        this.previous();
+        this.blur(event.target);
+    }
+    _onNextClick = (event) => {
+        event.preventDefault();
+
+        this.next();
+        this.blur(event.target);
+    }
     componentWillMount() { 
        // this._initPlaylist(this.props.playlist);
     }
@@ -327,7 +354,8 @@ export default (WrappedComponent, options) => class extends React.Component {
                         </Playlist> 
                     </div>
                 </div>
+                {this.props.children}
             </WrappedComponent>
         );
     }
-}
+})

@@ -6,8 +6,8 @@ export default class extends React.Component {
 		super(props);
 	}
 	onLoad = () => {
-		if(!this.props.video || this.props.waitForPlay) {
-			this.props.updateOption(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+		if(!this.props.video.available || this.props.waitForPlay) {
+			this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 		}
 	}
 	render() {

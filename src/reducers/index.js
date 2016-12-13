@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
-import jPlayerReducer from "./jPlayer/reducer";
-import jPlaylistReducer from "./add-on/jPlaylist/reducer";
+import jPlayerReducer from "./jPlayerReducer";
+import jPlaylistReducer from "./jPlaylistReducer";
 
 export default combineReducers({
     jPlayer: jPlayerReducer,

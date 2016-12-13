@@ -1,7 +1,13 @@
 import {uaBrowser, uaPlatform, getDocMode} from "./index";
 
 export const actionTypes = {
-    UPDATE: "UPDATE",
+	jPlayer: {
+		UPDATE_OPTION: "UPDATE_OPTION",
+		CREATE_CONTROL: "CREATE_CONTROL"
+	},
+	jPlaylist: {
+		UPDATE_OPTION: "UPDATE_OPTION"
+	},
     ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
     ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",
 	ARRAY_REMOVE_BY_INDEX: "ARRAY_REMOVE_BY_INDEX"
@@ -42,6 +48,7 @@ export const classNames = {
 	NO_SOLUTION: "jp-no-solution",
 	PLAY: "jp-play",
 	PAUSE: "jp-pause",
+	STOP: "jp-stop",
 	REPEAT: "jp-repeat",
 	FULL_SCREEN: "jp-full-screen",
 	TITLE: "jp-title",
@@ -55,7 +62,13 @@ export const classNames = {
         LOOPED: "jp-state-looped",
         FULL_SCREEN: "jp-state-full-screen",
         NO_VOLUME: "jp-state-no-volume"	
-    }
+    },
+	playlist: {
+		DETAILS: "jp-details",
+		SHUFFLE: "jp-shuffle",
+		PREVIOUS: "jp-previous",
+		NEXT: "jp-next"
+	}
 };
 
 export const errors = {
