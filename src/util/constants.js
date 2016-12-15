@@ -6,12 +6,13 @@ export const actionTypes = {
 		CREATE_CONTROL: "CREATE_CONTROL"
 	},
 	jPlaylist: {
-		UPDATE_OPTION: "UPDATE_OPTION"
+		UPDATE_OPTION: "UPDATE_OPTION",
+		CREATE_CONTROL: "CREATE_CONTROL"
 	},
     ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
     ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",
 	ARRAY_REMOVE_BY_INDEX: "ARRAY_REMOVE_BY_INDEX"
-}; 
+};
 
 export const keys = {
     VOLUME_BAR_CLASS: "volumeBarClass",
@@ -55,6 +56,10 @@ export const classNames = {
 	CURRENT_TIME: "jp-current-time",
 	DURATION: "jp-duration",
     HIDDEN: "jp-hidden",
+	DETAILS: "jp-details",
+	SHUFFLE: "jp-shuffle",
+	PREVIOUS: "jp-previous",
+	NEXT: "jp-next",
     states: {
         PLAYING: "jp-state-playing",
         SEEKING: "jp-state-seeking",
@@ -63,12 +68,6 @@ export const classNames = {
         FULL_SCREEN: "jp-state-full-screen",
         NO_VOLUME: "jp-state-no-volume"	
     },
-	playlist: {
-		DETAILS: "jp-details",
-		SHUFFLE: "jp-shuffle",
-		PREVIOUS: "jp-previous",
-		NEXT: "jp-next"
-	}
 };
 
 export const errors = {

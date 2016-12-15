@@ -3,7 +3,7 @@ import merge from "lodash.merge";
 import remove from "lodash/remove";
 import get from "lodash/get";
 import set from "lodash/set";
-import * as util from "../util/index";
+import {updateOption, createControl} from "./index";
 
 const updateArray = (state, action) => {
     const existingArray = get(state, action.key, []);
@@ -37,47 +37,16 @@ const updateArray = (state, action) => {
     }
 }
 
-const focus = (state={}) => {
-    if(state.keyEnabled) {
-        util.focusInstance = this;
-    }
-}
-
 export default (state={}, action) => {
     switch (action.type) {
         case actionTypes.ARRAY_ADD_UNIQUE:        
         case actionTypes.ARRAY_REMOVE_BY_VALUE:
         case actionTypes.ARRAY_REMOVE_BY_INDEX:
-           return updateArray(state, action);
+            return updateArray(state, action);
         case actionTypes.jPlayer.UPDATE_OPTION:
-            return {
-                ...state, 
-                [action.key]: action.value
-            }
+            return updateOption(state, action);
         case actionTypes.jPlayer.CREATE_CONTROL:
-            const newControl = {
-                [action.key]: {
-                    html: action.html || state.controls[action.key],
-                    onClick: action.onClick,
-                    className: action.className
-                }
-            };
-
-            const newState = {...state};
-            newState.controls = {...state.controls, ...newControl};
-
-            return newState;       
-        case actionTypes.jPlayer.PLAY:
-        	play = (time) => {
-                if(state.srcSet) {
-                    focus();
-                    this._htmlPlay(time);
-                } else {
-                    this._urlNotSetError("play");
-                    this.props.updateOption("paused", true);
-                }
-            }
-            break;  
+            return createControl(state, action);
         default:
             return state;
     }

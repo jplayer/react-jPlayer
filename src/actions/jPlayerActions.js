@@ -6,4 +6,3 @@ export const addUniqueToArray = generator(actionTypes.ARRAY_ADD_UNIQUE, "key", "
 export const removeFromArrayByValue = generator(actionTypes.ARRAY_REMOVE_BY_VALUE, "key", "value");
 export const removeFromArrayByIndex = generator(actionTypes.ARRAY_REMOVE_BY_INDEX, "key", "value");
 export const createControl = generator(actionTypes.jPlayer.CREATE_CONTROL, "key", "onClick", "className", "html");
-export const play = generator(actionTypes.jPlayer.PLAY, "key", "time");

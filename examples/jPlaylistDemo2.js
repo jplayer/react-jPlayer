@@ -13,31 +13,30 @@ class ExampleComponent extends React.Component {
     }
 }
 
-const jPlaylistOptions = {
+const jPlayerOptions = {
     jPlayerSelector: "jplayer_footer_player2",
     cssSelectorAncestor: "jp_container_footer_player2",
     controls: {
         //Toggle between play and pause in css based on playing or not
-        play: {
-            className: constants.classNames.PLAY,
-            clickHandler: props.onPlayClick,
-            html: <i className="fa fa-play"></i>
-        },
+        play: <i className="fa fa-play"></i>,
         mute: <i className="fa fa-volume-up"></i>,
         fullScreen: <i className="fa fa-expand"></i>,
-        repeat: <div><i className="fa fa-repeat"></i><i className="fa fa-bars"></i></div>,
-        shuffle: <i className="fa fa-random"></i>,
-        previous: <i className="fa fa-step-backward"></i>,
-        next: <i className="fa fa-step-forward"></i>,
-        playlistOptions: <div><i className="fa fa-ellipsis-h"></i><i className="fa fa-comment"></i></div>,
-        stop: <i className="fa fa-step-forward jp-test"></i>
+        repeat: <div><i className="fa fa-repeat"></i><i className="fa fa-bars"></i></div>
     },
     smoothPlayBar: false,
     muted: true,
-    enableRemoveControls: true,
-    loopOnPrevious: true,
     keyEnabled: true,
-    globalVolume: true,
+    globalVolume: false,
+    onError: (jPlayer) => console.error(jPlayer.error)
+}
+
+const jPlaylistOptions = {
+    controls: {
+        shuffle: <i className="fa fa-random"></i>,
+        previous: <i className="fa fa-step-backward"></i>,
+        next: <i className="fa fa-step-forward"></i>,
+        playlistOptions: <div><i className="fa fa-ellipsis-h"></i><i className="fa fa-comment"></i></div>
+    },
     playlist: [
         {
             title:"Cro Magnon Man",
@@ -70,7 +69,8 @@ const jPlaylistOptions = {
             free: true
         }
     ],
-    onError: (jPlayer) => console.error(jPlayer.error)
-};
+    loopOnPrevious: true,
+    enableRemoveControls: true
+}
 
 //renderjPlayer(jPlaylist(ExampleComponent), jPlaylistOptions);
