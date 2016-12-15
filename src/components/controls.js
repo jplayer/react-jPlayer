@@ -4,10 +4,17 @@ import {classNames} from "../util/constants";
 const Controls = props => (
     <div className={props.className} onKeyDown={props.onKeyDown}>
         {Object.keys(props.controls).map(key => getControls(props)[key] || props.controls[key])}
+        
+        <div className={props.volumeBarClass.join(" ")} onClick={props.onVolumeBarClick}>
+            <div className={props.volumeBarValueClass.join(" ")} style={props.volumeBarValueStyle} />
+        </div>
+        <div className={props.playbackRateBarClass.join(" ")} onClick={props.onPlaybackRateBarClick}>
+            <div className={props.playbackRateBarValueClass.join(" ")} style={props.playbackRateBarValueStyle}/>
+        </div>
     </div>
 );
 
-const getControls = (props) => ({
+const getControls = props => ({
     play: <a className={classNames.PLAY} onClick={props.onPlayClick}>{props.controls.play}</a>,
 	mute: <a className={classNames.MUTE} onClick={props.onMuteClick}>{props.controls.mute}</a>,
 	volumeMax: <a className={classNames.VOLUME_MAX} onClick={props.onVolumeMaxClick}>{props.controls.volumeMax}</a>,
@@ -15,10 +22,15 @@ const getControls = (props) => ({
 	fullScreen: <a className={classNames.FULL_SCREEN} onClick={props.onFullScreenClick}>{props.controls.fullScreen}</a>,
 	shuffle: <a className={classNames.SHUFFLE} onClick={props.onShuffleClick}>{props.controls.shuffle}</a>,
 	previous: <a className={classNames.PREVIOUS} onClick={props.onPreviousClick}>{props.controls.previous}</a>,
-	next: <a className={classNames.NEXT} onClick={props.onNextClick}>{props.controls.next}</a>,
-    volumeBar: <div className={props.volumeBarClass} onClick={props.onVolumeBarClick}><div style={props.volumeBarValueStyle} /></div>,
-	playbackRateBar: <div className={props.playbackRateBarClass} onClick={props.onPlaybackRateBarClick}><div style={props.playbackRateBarValueStyle} /></div>
+	next: <a className={classNames.NEXT} onClick={props.onNextClick}>{props.controls.next}</a>
 });
+
+Controls.defaultProps = {
+    playbackRateBarClass: [],
+    playbackRateBarValueClass: [],
+    volumeBarClass: [],
+    volumeBarValueClass: []
+}
 
 Controls.propTypes = {
     onPlayClick: React.PropTypes.func,
@@ -34,10 +46,12 @@ Controls.propTypes = {
     className: React.PropTypes.string,
     onKeyDown: React.PropTypes.func,
     controls: React.PropTypes.object.isRequired,
-    volumeBarClass: React.PropTypes.array,
+    volumeBarClass: React.PropTypes.arrayOf(React.PropTypes.string),
+    volumeBarValueClass: React.PropTypes.arrayOf(React.PropTypes.string),
     volumeBarValueStyle: React.PropTypes.object,
-    playbackRateBarClass: React.PropTypes.array,
-    playbackRateBarValueStyle: React.PropTypes.object,
+    playbackRateBarClass: React.PropTypes.arrayOf(React.PropTypes.string),
+    playbackRateBarValueClass: React.PropTypes.arrayOf(React.PropTypes.string),
+    playbackRateBarValueStyle: React.PropTypes.object
 }
 
 export default Controls;

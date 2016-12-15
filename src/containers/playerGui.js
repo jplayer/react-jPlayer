@@ -7,6 +7,9 @@ import PlayBar from "../components/playBar";
 import {getOffset, getWidth, getHeight} from "../util/index";
 import merge from "lodash.merge";
 import convertTime from "../util/convertTime";
+import {updateArray} from "../reducers/index";
+import {addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
+import {keys, classNames} from "../util/constants";
 
 const mapStateToProps = (state, ownProps) => ({...state.jPlayer, playlistControls: state.jPlaylist.controls});
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
@@ -18,7 +21,14 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
     class extends React.PureComponent {
         constructor(props) {
             super();
-            this.state = {};
+            this.state = {
+                [keys.VOLUME_MAX_CLASS]: [classNames.VOLUME_MAX],
+				[keys.VOLUME_BAR_CLASS]: [classNames.VOLUME_BAR],
+				[keys.VOLUME_BAR_VALUE_CLASS]: [classNames.VOLUME_BAR_VALUE],
+                [keys.PLAYBACK_RATE_BAR_CLASS]: [classNames.PLAYBACK_RATE_BAR],
+				[keys.PLAYBACK_RATE_BAR_VALUE_CLASS]: [classNames.PLAYBACK_RATE_BAR_VALUE],
+				[keys.SEEK_BAR_CLASS]: [classNames.SEEK_BAR],
+            };
         }
         static get contextTypes() {
             return {
@@ -149,30 +159,74 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
             this.setState({durationText, durationText});
         }
         _updateBarStyles = (nextProps) => {
+            const widthValue = nextProps.smoothPlayBar ? nextProps.currentPercentAbsolute : nextProps.currentPercentRelative;
             this.setState({seekBarStyle: {width: `${nextProps.seekPercent}%`}});
+            this.setState({playBarStyle: {width: `${widthValue}%`}});
+            if (nextProps.seeking) {
+				this.setState(state => updateArray(state, addUniqueToArray(keys.SEEK_BAR_CLASS, classNames.seeking)));
+			} else {
+				this.setState(state => updateArray(state, removeFromArrayByValue(keys.SEEK_BAR_CLASS, classNames.seeking)))
+			}
+		}
+        _updatePlaybackRateStyles = (nextProps) => {
+			var playbackRate = nextProps.playbackRate,
+				ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
+			if(nextProps.playbackRateEnabled) {
+				this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN)));
+				this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN)));
+                
+				const playbackRateBarValue = (ratio * 100) + "%";
 
-            nextProps.smoothPlayBar ? this.setState({playBarStyle: {width: `${nextProps.currentPercentAbsolute}%`}})
-                                    : this.setState({playBarStyle: {width: `${nextProps.currentPercentRelative}%`}});
+				this.setState({playbackRateBarValueStyle: {
+					width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
+					height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
+				}});
+			} else {
+				this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN)));
+				this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN)));
+			}
+		}
+        _updateVolumeStyles = (nextProps) => {
+			if(nextProps.noVolume) {
+				this.setState(state => updateArray(state, addUniqueToArray(keys.VOLUME_BAR_CLASS, classNames.HIDDEN)));
+				this.setState(state => updateArray(state, addUniqueToArray(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
+				this.setState(state => updateArray(state, addUniqueToArray(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
+			} else {
+				const volumeValue = (this.props.volume * 100) + "%";
+
+				this.setState({volumeBarValueStyle: {
+					width: !nextProps.verticalVolume ? volumeValue : null,
+					height: nextProps.verticalVolume ? volumeValue : null
+				}});
+
+				this.setState(state => updateArray(state, removeFromArrayByValue(keys.VOLUME_BAR_CLASS, classNames.HIDDEN)));
+				this.setState(state => updateArray(state, removeFromArrayByValue(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
+				this.setState(state => updateArray(state, removeFromArrayByValue(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
+			}
 		}
         componentWillReceiveProps = (nextProps) => {
             this._updateCurrentTimeText(nextProps);
             this._updateDurationText(nextProps);
             this._updateBarStyles(nextProps);
+            this._updatePlaybackRateStyles(nextProps);
+            this._updateVolumeStyles(nextProps);
         }
         render() {
             return (
                 <WrappedComponent>
                     {this.props.children}
                     <Gui {...this.props.autoHide} nativeVideoControls={this.props.nativeVideoControls} fullWindow={this.props.fullWindow} fadeInConfig={this.props.guiFadeInAnimation} 
-                    fadeOutConfig={this.props.guiFadeOutAnimation}>     
+                    fadeOutConfig={this.props.guiFadeOutAnimation}>
                         <Controls className={"jp-controls"} onKeyDown={this.onKeyDown} controls={this.props.controls} onMuteClick={this.onMuteClick} onPlayClick={this.onPlayClick} 
                             onPlaybackRateBarClick={this.onPlaybackRateBarClick} onVolumeBarClick={this.onVolumeBarClick} onVolumeMaxClick={this.onVolumeMaxClick} onVideoPlayClick={this.onVideoPlayClick} 
                             onRepeatClick={this.onRepeatClick} onFullScreenClick={this.onFullScreenClick} onSeekBarClick={this.onSeekBarClick} onDurationClick={this.onDurationClick} 
-                            onShuffleClick={this.onShuffleClick} onPreviousClick={this.onPreviousClick} onNextClick={this.onNextClick} />
-                        <Progress className={"jp-progress"} seekBarClick={this.onSeekBarClick} onDurationClick={this.onDurationClick} seekBarStyle={this.state.seekBarStyle} 
-                        currentTimeText={this.state.currentTimeText} durationText={this.state.durationText}>
+                            onShuffleClick={this.onShuffleClick} onPreviousClick={this.onPreviousClick} onNextClick={this.onNextClick} playbackRateBarClass={this.state.playbackRateBarClass} 
+                            playbackRateBarValueClass={this.state.playbackRateBarValueClass} playbackRateBarValueStyle={this.state.playbackRateBarValueStyle} volumeBarClass={this.state.volumeBarClass} 
+                            volumeBarValueClass={this.state.volumeBarValueClass} volumeBarValueStyle={this.state.volumeBarValueStyle} />
+                        <Progress className={"jp-progress"} seekBarClick={this.onSeekBarClick} onDurationClick={this.onDurationClick} seekBarStyle={this.state.seekBarStyle}
+                            seekBarClass={this.state.seekBarClass} currentTimeText={this.state.currentTimeText} durationText={this.state.durationText}>
                             <PlayBar smoothPlayBar={this.props.smoothPlayBar} currentPercentAbsolute={this.props.currentPercentAbsolute} playBarStyle={this.state.playBarStyle} />
-                        </Progress>					
+                        </Progress>
                     </Gui>
                 </WrappedComponent>
             );

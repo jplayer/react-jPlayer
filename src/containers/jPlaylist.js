@@ -105,20 +105,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
                 freeGroupClass: React.PropTypes.string
             }
         }
-        static get defaultProps() {
-            return {
-                functions: [],
-                html: {},
-                playlist: [],
-                shuffleOnLoop: true,
-                shuffled: false,
-                itemClass: "jp-playlist-item",
-                freeItemClass: "jp-playlist-item-free",
-                removeItemClass: "jp-playlist-item-remove",
-                freeGroupClass: "jp-free-media",
-                current: 0
-            };
-        }
         static get contextTypes() {
             return {
                 setMedia: React.PropTypes.func,

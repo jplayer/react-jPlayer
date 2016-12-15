@@ -38,7 +38,6 @@ export const keys = {
 };
 
 export const classNames = {
-	SEEKING: "jp-seeking-bg",
 	MUTE: "jp-mute",
 	VOLUME_BAR: "jp-volume-bar",
 	VOLUME_BAR_VALUE: "jp-volume-bar-value",
@@ -46,6 +45,7 @@ export const classNames = {
 	PLAYBACK_RATE_BAR: "jp-playback-rate-bar",
 	PLAYBACK_RATE_BAR_VALUE: "jp-playback-rate-bar-value",
 	SEEK_BAR: "jp-seek-bar",
+	SEEKING: "jp-seeking-bg",
 	NO_SOLUTION: "jp-no-solution",
 	PLAY: "jp-play",
 	PAUSE: "jp-pause",

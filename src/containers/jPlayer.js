@@ -11,6 +11,8 @@ import Poster from "../components/poster";
 import Audio from "../components/audio";
 import Video from "../components/video";
 import BrowserUnsupported from "../components/browserUnsupported";
+import {updateArray} from "../reducers/index";
+import {addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({...state.jPlayer});
 const mapDispatchToProps = (dispatch) => (bindActionCreators(actions, dispatch));
@@ -23,7 +25,11 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			this.setFormats();
 			this.setPlayableFormat();
 
-			this.state = {};
+			this.state = {
+				[constants.keys.PLAYER_CLASS]: [],
+				[constants.keys.POSTER_CLASS]: [],
+				[constants.keys.NO_SOLUTION_CLASS]: [constants.classNames.NO_SOLUTION]
+			};
 			// The key control object, defining the key codes and the functions to execute.
 			this.keyBindings = merge({
 				// The parameter, f = this.focusInstance, will be checked truethy before attempting to call any of these functions.
@@ -143,57 +149,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				onCanPlay: React.PropTypes.func,
 				onCanPlayThrough: React.PropTypes.func,
 			}
-		}
-		static get defaultProps() {
-			return {
-				cssSelectorAncestor: "jp_container_1",
-				jPlayerSelector: "jplayer_1",
-				preload: "metadata", // HTML5 Spec values: none, metadata, auto.	
-				captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
-				minPlaybackRate: 0.5,
-				maxPlaybackRate: 4,
-				controls: {},
-				src: "",
-				supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
-				playbackRate: 1.0,
-				defaultPlaybackRate: 1.0,		
-				volume: 0.8, // The volume. Number 0 to 1.
-				media: {},
-				paused: true,
-				format: {},
-				formatType: "",
-				waitForPlay: true, // Same as waitForLoad except in case where preloading.
-				waitForLoad: true,
-				srcSet: false,
-				video: false, // True if playing a video
-				seekPercent: 0,
-				currentPercentRelative: 0,
-				currentPercentAbsolute: 0,
-				currentTime: 0,
-				duration: 0,
-				remaining: 0,
-				videoWidth: 0, // Intrinsic width of the video in pixels.
-				videoHeight: 0, // Intrinsic height of the video in pixels.
-				readyState: 0,
-				networkState: 0,
-				playbackRateStatus: 1, // Warning - Now both an option and a status property
-				ended: 0,
-				[constants.keys.PLAYER_CLASS]: [],
-				[constants.keys.PLAY_CLASS]: [constants.classNames.PLAY],
-				[constants.keys.PAUSE_CLASS]: [constants.classNames.PAUSE],
-				[constants.keys.POSTER_CLASS]: [],
-				[constants.keys.VIDEO_CLASS]: [],
-				[constants.keys.VIDEO_PLAY_CLASS]: [],
-				[constants.keys.REPEAT_CLASS]: [constants.classNames.REPEAT],
-				[constants.keys.FULL_SCREEN_CLASS]: [constants.classNames.FULL_SCREEN],
-				[constants.keys.VOLUME_MAX_CLASS]: [constants.classNames.VOLUME_MAX],
-				[constants.keys.VOLUME_BAR_CLASS]: [constants.classNames.VOLUME_BAR],
-				[constants.keys.VOLUME_BAR_VALUE_CLASS]: [constants.classNames.VOLUME_BAR_VALUE],
-				[constants.keys.PLAYBACK_RATE_BAR_CLASS]: [constants.classNames.PLAYBACK_RATE_BAR],
-				[constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS]: [constants.classNames.PLAYBACK_RATE_BAR_VALUE],
-				[constants.keys.SEEK_BAR_CLASS]: [constants.classNames.SEEK_BAR],
-				[constants.keys.NO_SOLUTION_CLASS]: [constants.classNames.NO_SOLUTION]
-			};
 		}
 		static get childContextTypes() {
 			return {
@@ -321,48 +276,34 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 					this._updateMediaStatus(this.currentMedia);	
 					this._trigger(this.props.onDurationChange);
 				},
-				onPlay: () => {			
-					this._updateButtons(true);
+				onPlay: () => {
+					this.props.updateOption("paused", false);
 					this._trigger(this.props.onPlay);
 				},
 				onPlaying: () => {			
-					this._updateButtons(true);
-					this._seeked();
+					this.props.updateOption("paused", false);
+					this.props.updateOption("seeking", false);
 					this._trigger(this.props.onPlaying);
 				},
 				onPause: () => {				
-					this._updateButtons(false);
+					this.props.updateOption("paused", true);
 					this._trigger(this.props.onPause);
 				},
-				onWaiting: () => {			
-					this._seeking();
+				onWaiting: () => {		
+					this.props.updateOption("seeking", true);		
 					this._trigger(this.props.onWaiting);
 				},
 				onSeeking: () => {
-					this._seeking();
+					this.props.updateOption("seeking", true);
 					this._trigger(this.props.onSeeking);
 				},
-				onSeeked: () => {			
-					this._seeked();
+				onSeeked: () => {
+					this.props.updateOption("seeking", false);
 					this._trigger(this.props.onSeeked);
-				},
-				onVolumeChange: () => {	
-					this._updateMute();
-					this._updateVolume();
-					this._trigger(this.props.onVolumeChange);
-				},
-				onRateChange: () => {				
-					this._updatePlaybackRate();
-					this._trigger(this.props.onRateChange);
-				},
-				onSuspend: () => { // Seems to be the only way of capturing that the iOS4 browser did not actually play the media from the page code. ie., It needs a user gesture.				
-					this._seeked();
-					this._trigger(this.props.onSuspend);
 				},
 				onEnded: () => {
 					// Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
 					this.props.updateOption("paused", true);
-					this._updateButtons(false);
 					// With override true. Otherwise Chrome leaves progress at full.
 					this._updateMediaStatus(this.currentMedia, true);
 					this._trigger(this.props.onEnded);
@@ -371,20 +312,20 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 					}
 				},
 				onError: () => {		
-					this._updateButtons(false);
-					this._seeked();
+					this.props.updateOption("paused", true);
+					this.props.updateOption("seeking", false);
 					if(this.props.srcSet) { // Deals with case of clearMedia() causing an error event.
 						this.props.updateOption("waitForLoad", true);
 						this.props.updateOption("waitForPlay", true);
 						
 						if(this.props.video.available && !this.props.nativeVideoControls) {
-							this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
+							this.setState(state => updateArray(state, addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN)));
 						}
 
 						if(util.validString(this.props.media.poster) && !this.props.nativeVideoControls) {
-							this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+							this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN)));
 						}
-						this.props.removeFromArrayByValue(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
+						this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN)));
 
 						this._error( {
 							type: constants.errors.URL,
@@ -395,6 +336,9 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 					}
 					this._trigger(this.props.onError);
 				},
+				onSuspend: () => this._trigger(this.props.onSuspend),
+				onVolumeChange: () => this._trigger(this.props.onVolumeChange),
+				onRateChange: () => this._trigger(this.props.onRateChange),
 				onLoadedData: () => this._trigger(this.props.onLoadedData),
 				onLoadStart: () => this._trigger(this.props.onLoadStart),
 				onAbort: () => this._trigger(this.props.onAbort),
@@ -417,25 +361,25 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 
 			// Now required types are known, finish the options default settings.
 			if(this.props.video.require) {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-video");
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-video")));
 				if (this.props.sizeCssClass !== undefined) {
-					this.props.updateOption(constants.keys.SIZE_CLASS, "jp-video-270p");
+					this.setState(state => updateArray(state, addUniqueToArray(constants.keys.SIZE_CLASS, "jp-video-270p")));
 				}
 
 				if (this.props.sizeFullCssClass !== undefined) {
-					this.props.updateOption(constants.keys.SIZE_FULL_CLASS, "jp-video-full");	
+					this.setState(state => updateArray(state, addUniqueToArray(constants.keys.SIZE_FULL_CLASS, "jp-video-full")));
 				}		
 			} else {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-audio");
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-audio")));
 			}
 
 			const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
 			if (sizeClass !== undefined) {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass])));
 				//this.props.updateOption("cssClass", sizeClass);
 			}	
 
-			this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+			this.setState(state => updateArray(state, addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN)));
 			this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
 			this.props.updateOption("noFullWindow", util.uaBlocklist(this.props.noFullWindow));
 		}
@@ -452,29 +396,22 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			// 		message: constants.errorMessages.NO_SOLUTION,
 			// 		hint: constants.errorHints.NO_SOLUTION
 			// 	});
-			// 	this.props.removeFromArrayByValue(constants.keys.NO_SOLUTION_CLASS, constants.classNames.HIDDEN);
+			// 	this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.NO_SOLUTION_CLASS, constants.classNames.HIDDEN);
 			// } else {
-			// 	this.props.addUniqueToArray(constants.keys.NO_SOLUTION_CLASS, this.props[constants.keys.NO_SOLUTION_CLASS], constants.classNames.HIDDEN);
+			// 	this.setState(state => updateArray(state, addUniqueToArray(constants.keys.NO_SOLUTION_CLASS, this.props[constants.keys.NO_SOLUTION_CLASS], constants.classNames.HIDDEN);
 			// }
 
 			if(this.props.nativeVideoControls) {
-				this.props.removeFromArrayByValue(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN)));
 				this.setState({videoStyle: {
 					//width: this.props.width, 
 					//height: this.props.height
 				}});
 			} else {
-				this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
-			}		
-												
-			this._updatePlaybackRate();
-			this._updateButtons();
-			this._updateVolume();
-			this._updateMute();
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN)));
+			}
 
-			this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
-			this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.props.cssClass);
-			this.props.addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);			
+			this.setState(state => updateArray(state, addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN)));			
 		}	
 		_updateMediaStatus = (media, override) => {
 			let ct = 0, cpa = 0, sp = 0, cpr = 0;
@@ -519,41 +456,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				func.bind(this)(jPlayerOptions);
 			}
 		}
-		_updateButtons = (playing) => {
-			if(playing === undefined) {
-				playing = !this.props.paused;
-			} else {
-				this.props.updateOption("paused", !playing);
-			}
-			
-			if(playing) {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.playing);
-			} else {
-				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.playing);
-			}
-			if(!this.props.noFullWindow && this.props.fullWindow) {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen);
-			} else {
-				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen);
-			}
-			// if(this.props.loop === "loop") {
-			// 	this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.looped);
-			// }
-			// else if (this.props.loop === "loop-playlist") {
-			// 	this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.loopedPlaylist);
-			// }
-			// else {
-			// 	this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.looped);
-			// }
-		}
-		_seeking = () => {
-			this.props.addUniqueToArray(constants.keys.SEEK_BAR_CLASS, constants.classNames.seeking);
-			this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.seeking);
-		}
-		_seeked = () => {
-			this.props.removeFromArrayByValue(constants.keys.SEEK_BAR_CLASS, constants.classNames.seeking);
-			this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.seeking);
-		}
 		setMedia = (media) => {
 			/*	media[format] = String: URL of format. Must contain all of the supplied option's video or audio formats.
 			*	media.poster = String: Video poster URL.
@@ -578,13 +480,13 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 						if(isVideo) {
 							this._setVideo(media);
 							this.props.updateOption("video", true);
-							this.props.removeFromArrayByValue(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
+							this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN)));
 						} else {
 							this._setAudio(media);
 
 							this.props.updateOption("video", false);
 							this.props.updateOption("media", media);
-							this.props.addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN);
+							this.setState(state => updateArray(state, addUniqueToArray(constants.keys.VIDEO_PLAY_CLASS, constants.classNames.HIDDEN)));
 						}
 						supported = true;
 						break;
@@ -600,7 +502,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 						//if(posterChanged) { // Since some browsers do not generate img onload event.
 						this.props.updateOption("posterSrc", media.poster);
 					//	} else {
-						//	this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+						//	this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
 					//	}
 					}
 				}
@@ -610,7 +512,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				}
 				
 				this.props.updateOption("srcSet", true);
-				this._updateButtons(false);
+				this.props.updateOption("paused", true);
 			} else { // jPlayer cannot support any formats provided in this browser
 				// Send an error event
 				this._error( {
@@ -622,15 +524,15 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			}
 		}
 		clearMedia = () => {
-			this._updateButtons(false);
-			this._seeked();
-			this.props.addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+			this.props.updateOption("paused", true);
+			this.props.updateOption("seeking", false);
+			this.setState(state => updateArray(state, addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN)));
 
 			// Maintains the status properties that persist through a reset.
 			//this.mergeOptions({status: defaultStatus});
 
 			if(!this.props.nativeVideoControls) {
-				this.props.addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN);
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN)));
 			}
 			
 			//this.currentMedia.pause();
@@ -660,6 +562,10 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				this._urlNotSetError("playHead");
 			}
 		}
+		volume = (volume) => {
+			volume = util.limitValue(volume, 0, 1);
+			this.props.updateOption("volume", volume);
+		}
 		mute = (mute) => {					
 			if(this.props.muted) {
 				this.props.updateOption("muted", false);
@@ -668,65 +574,11 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				this.props.updateOption("muted", mute);
 			}
 		}
-		_updateMute = (mute) => {
-			if(mute === undefined) {
-				mute = this.props.muted;
-			}
-			if(mute) {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.muted);
-			} else {
-				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.muted);
-			}	
-		}
-		_updateVolume = (v) => {
-			v = util.limitValue(v, 0, 1);
-			if(v === undefined) {
-				v = this.props.volume;
-			}
-			v = this.props.muted ? 0 : v;
-
-			if(this.props.noVolume) {
-				this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.noVolume);
-				this.props.addUniqueToArray(constants.keys.VOLUME_BAR_CLASS, constants.classNames.HIDDEN);
-				this.props.addUniqueToArray(constants.keys.VOLUME_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
-				this.props.addUniqueToArray(constants.keys.VOLUME_MAX_CLASS, constants.classNames.HIDDEN);
-			} else {
-				this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.noVolume);
-				const volumeValue = (v * 100) + "%";
-
-				this.props.updateOption("volumeBarValueStyle", {
-					width: !this.props.verticalVolume ? volumeValue : null,
-					height: this.props.verticalVolume ? volumeValue : null
-				});
-
-				this.props.removeFromArrayByValue(constants.keys.VOLUME_BAR_CLASS, constants.classNames.HIDDEN);
-				this.props.removeFromArrayByValue(constants.keys.VOLUME_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
-				this.props.removeFromArrayByValue(constants.keys.VOLUME_MAX_CLASS, constants.classNames.HIDDEN);
-			}
-		}
 		setDuration = () => this.props.updateOption("remainingDuration", !this.props.remainingDuration)
 		playbackRate = (playbackRate) => {
 			const limitiedPlaybackRate = this._limitValue(playbackRate, this.options.minPlaybackRate, this.options.maxPlaybackRate);
 			
-			this.props.updateOption("playbackRate", limitiedPlaybackRate)
-		}
-		_updatePlaybackRate = () => {
-			var playbackRate = this.props.playbackRate,
-				ratio = (playbackRate - this.props.minPlaybackRate) / (this.props.maxPlaybackRate - this.props.minPlaybackRate);
-			if(this.props.playbackRateEnabled) {
-				this.props.removeFromArrayByValue(constants.keys.PLAYBACK_RATE_BAR_CLASS, constants.classNames.HIDDEN);
-				this.props.removeFromArrayByValue(constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
-
-				const playbackRateBarValue = (ratio*100)+"%";
-
-				this.props.updateOption("playbackRateBarValueStyle", {
-					width: !this.props.verticalPlaybackRate ? playbackRateBarValue : null,
-					height: this.props.verticalPlaybackRate ? playbackRateBarValue : null
-				});
-			} else {
-				this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_CLASS, constants.classNames.HIDDEN);
-				this.props.addUniqueToArray(constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, constants.classNames.HIDDEN);
-			}
+			this.props.updateOption("playbackRate", limitiedPlaybackRate);
 		}
 		incrementLoop = () => {
 			var loopIndex = this.loopOptions.indexOf(this.props.loop || this.loopOptions[0]);
@@ -736,10 +588,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			}
 			return this.loopOptions[++loopIndex];
 		}
-		_loop = () => {
-			this._updateButtons(); 
-			this._trigger(this.props.onRepeat);
-		}
+		_loop = () => this._trigger(this.props.onRepeat)
 		_updateSize = () => {
 			// Video html resized if necessary at this time, or if native video controls being used.
 			if(this.props.video.available && (!this.props.waitForPlay || this.props.nativeVideoControls)) {
@@ -764,8 +613,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 		}
 		// fullWindow = () => {
 		// 	const sizeClass = this.props.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-		// 	this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
-		// 	this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
+		// 	this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.props.cssClass);
+		// 	this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass]);
 		// 	//this.props.updateOption("cssClass", sizeClass, () => this._trigger(this.props.onResize));		
 		// }
 		// _requestFullscreen = () => {
@@ -852,40 +701,57 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 		updateOnOptionsChanged = (key) => {
 			switch (key) {
 				case "noVolume":
-					this._updateVolume();
 					this._updateMute();
 					this.props.updateOption("noVolume", util.uaBlocklist(this.props.noVolume));
 					break;
-				case "keyEnabled":
-					if(!value && this === util.focusInstance) {
-						util.focusInstance = null;
-					}
-					break;
-				case "nativeVideoControls":
-					this._updateNativeVideoControls();
-					break;
-				case "defaultPlaybackRate":
-				case "playbackRate":
-				case "minPlaybackRate":
-				case "maxPlaybackRate":
-					this._updatePlaybackRate();
-					break;
-				case "paused":
-				case "noFullWindow":
-				case "loop":
-				case "sizeCssClass":
-				case "sizeFullCssClass":
-				case "fullWindow":
-				case "fullScreen":
-					this._updateButtons();
-					break;
+				// case "keyEnabled":
+				// 	if(!value && this === util.focusInstance) {
+				// 		util.focusInstance = null;
+				// 	}
+				// 	break;
 				default:
 					break;
 			}	
 		}
+		_updatePlayerStyles = (nextProps) => {
+			if(!nextProps.paused) {
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.playing)));
+			} else {
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.playing)));
+			}
+			if(!nextProps.noFullWindow && nextProps.fullWindow) {
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen)));
+			} else {
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen)));
+			}
+			if(nextProps.noVolume) {
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.noVolume)));
+			} else {
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.noVolume)));
+			}
+			if(nextProps.muted) {
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.muted)));
+			} else {
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.muted)));
+			}
+			if (nextProps.seeking) {
+				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.seeking)));
+			} else {
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.seeking)));
+			}
+			// if(nextProps.loop === "loop") {
+			// 	this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.looped);
+			// }
+			// else if (nextProps.loop === "loop-playlist") {
+			// 	this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.loopedPlaylist);
+			// }
+			// else {
+			// 	this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.looped);
+			// }
+		}
 		onPosterLoad = () => {
 			if(!this.props.video.available) {
-				this.props.removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN);
+				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN)));
 			}
 		}
 		componentWillMount() {			
@@ -896,13 +762,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			this._initAfterRender();	
 		}
 		componentDidUpdate(prevProps, prevState) {
-			// for (var key in this.props) {
-			// 	const prop = this.props[key];
-
-			// 	if (!isEqual(prop, prevProps[key])) {
-			// 		updateOnOptionsChanged(key);
-			// 	}
-			// }
 			//Using the audio element capabilities for playbackRate. ie., Assuming video element is the same.
 			if(this.props.playbackRateEnabled) {
 				this.currentMedia.defaultPlaybackRate = this.props.defaultPlaybackRate;
@@ -914,18 +773,18 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			this.currentMedia.autoplay = this.props.autoplay;	
 			this.currentMedia.loop = this.props.loop === "loop" ? true : false;
 		}
-		componentWillReceiveProps(prevProps, prevState) {
-			if (prevProps.width !== this.props.width || prevProps.height !== this.props.height) {
-				this.setState({playerStyle: {width: this.props.width, height: this.props.height}});
-			}
+		componentWillReceiveProps(nextProps) {
+			// if (prevProps.width !== this.props.width || prevProps.height !== this.props.height) {
+			// 	this.setState({playerStyle: {width: this.props.width, height: this.props.height}});
+			// }
+			this._updatePlayerStyles(nextProps);
 		}
 		render() {
 			return (
 				<WrappedComponent>
-					<div id={this.props.cssSelectorAncestor} className={this.props[constants.keys.PLAYER_CLASS].join(" ")}>
-						{this.props.children}
+					<div id={this.props.cssSelectorAncestor} className={this.state[constants.keys.PLAYER_CLASS].join(" ")}>
 						<div className={"jp-jplayer"} style={this.state.playerStyle}>
-							<Poster video={this.mediaSettings.video} posterClass={this.props[constants.keys.POSTER_CLASS].join(" ")} src={this.props.posterSrc} onClick={this.props.posterOnClick} 
+							<Poster video={this.mediaSettings.video} posterClass={this.state[constants.keys.POSTER_CLASS].join(" ")} src={this.props.posterSrc} onClick={this.props.posterOnClick} 
 								onLoad={this.onPosterLoad} />					
 							<Audio mediaRef={this.setMediaRef} require={this.mediaSettings.audio.require} events={this.props.mediaEvent}>
 								{this.props.tracks}
