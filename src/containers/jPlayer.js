@@ -163,7 +163,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				unmute: React.PropTypes.func,
 				incrementLoop: React.PropTypes.func,
 				fullScreen: React.PropTypes.func,
-				duration: React.PropTypes.func
+				duration: React.PropTypes.func,
+				playbackRate: React.PropTypes.func,
 			}
 		}
 		getChildContext = () => ({
@@ -178,7 +179,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			unmute: this.unmute,
 			incrementLoop: this.incrementLoop,
 			fullScreen: this.fullScreen,
-			duration: this.duration
+			duration: this.duration,
+			playbackRate: this.playbackRate
 		})
 		setFormats = () => {
 			this.mediaSettings = {
@@ -557,7 +559,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 		playHead = (percent) => {
 			percent = util.limitValue(percent, 0, 100);
 			if(this.props.srcSet) {
-				this.currentMedia.currentTime =  percent * this.currentMedia.seekable.end(this.currentMedia.seekable.length-1) / 100;	
+				this.currentMedia.currentTime = percent * this.currentMedia.seekable.end(this.currentMedia.seekable.length-1) / 100;	
 			} else {
 				this._urlNotSetError("playHead");
 			}
@@ -566,19 +568,12 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			volume = util.limitValue(volume, 0, 1);
 			this.props.updateOption("volume", volume);
 		}
-		mute = (mute) => {					
-			if(this.props.muted) {
-				this.props.updateOption("muted", false);
-			} else {
-				mute = mute === undefined ? true : !!mute;
-				this.props.updateOption("muted", mute);
-			}
-		}
-		setDuration = () => this.props.updateOption("remainingDuration", !this.props.remainingDuration)
+		mute = (mute) => this.props.updateOption("muted", mute);
+		duration = () => this.props.updateOption("remainingDuration", !this.props.remainingDuration)
 		playbackRate = (playbackRate) => {
-			const limitiedPlaybackRate = this._limitValue(playbackRate, this.options.minPlaybackRate, this.options.maxPlaybackRate);
+			const limitedPlaybackRate = util.limitValue(playbackRate, this.props.minPlaybackRate, this.props.maxPlaybackRate);
 			
-			this.props.updateOption("playbackRate", limitiedPlaybackRate);
+			this.props.updateOption("playbackRate", limitedPlaybackRate);
 		}
 		incrementLoop = () => {
 			var loopIndex = this.loopOptions.indexOf(this.props.loop || this.loopOptions[0]);
@@ -780,9 +775,9 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			this._updatePlayerStyles(nextProps);
 		}
 		render() {
-			return (
-				<WrappedComponent>
-					<div id={this.props.cssSelectorAncestor} className={this.state[constants.keys.PLAYER_CLASS].join(" ")}>
+			return (			
+				<div id={this.props.cssSelectorAncestor} className={this.state[constants.keys.PLAYER_CLASS].join(" ")}>
+					<WrappedComponent>
 						<div className={"jp-jplayer"} style={this.state.playerStyle}>
 							<Poster video={this.mediaSettings.video} posterClass={this.state[constants.keys.POSTER_CLASS].join(" ")} src={this.props.posterSrc} onClick={this.props.posterOnClick} 
 								onLoad={this.onPosterLoad} />					
@@ -794,9 +789,9 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 								{/*<NativeVideoControls />*/}
 							</Video>
 						</div>
-						<BrowserUnsupported noSolutionClass={this.props.noSolutionClass} />
-					</div>
-				</WrappedComponent>					
+						<BrowserUnsupported noSolutionClass={this.state.noSolutionClass} />
+					</WrappedComponent>
+				</div>				
 			);
 		}
 	}

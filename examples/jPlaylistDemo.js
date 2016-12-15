@@ -29,7 +29,7 @@ const jPlayerOptions = {
         repeat: <div><i className="fa fa-repeat"></i><i className="fa fa-bars"></i></div>
     },
     smoothPlayBar: false,
-    muted: false,
+    muted: true,
     keyEnabled: true,
     globalVolume: false,
     onError: (jPlayer) => console.error(jPlayer.error)

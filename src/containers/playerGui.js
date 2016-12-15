@@ -44,7 +44,7 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
         }
         onMuteClick = () => this.context.mute(!this.props.muted)
         onPlayClick = () => this.props.paused ? this.context.play() : this.context.pause()
-        onPlaybackRateBarClick = (e) => {
+        onPlaybackRateBarClick = (e) => {           
             // Using e.currentTarget to enable multiple playbackRate bars
             var bar = e.currentTarget,
                 offset = getOffset(bar),
@@ -53,7 +53,7 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
                 y = getHeight(bar) - e.pageY + offset.top,
                 h = getHeight(bar),
                 ratio,
-                pbr;
+                playbackRate;
 
             if(this.props.verticalPlaybackRate) {
                 ratio = y/h;
@@ -61,8 +61,8 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
                 ratio = x/w;
             }
 
-            pbr = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
-            this.context.playbackRate(pbr);
+            playbackRate = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
+            this.context.playbackRate(playbackRate);
         }
         onVolumeBarClick = (e) => {
             // Using $(e.currentTarget) to enable multiple volume bars
@@ -192,8 +192,8 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
 				this.setState(state => updateArray(state, addUniqueToArray(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
 				this.setState(state => updateArray(state, addUniqueToArray(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
 			} else {
-				const volumeValue = (this.props.volume * 100) + "%";
-
+				const volumeValue = nextProps.muted ? 0 : (nextProps.volume * 100) + "%";
+                
 				this.setState({volumeBarValueStyle: {
 					width: !nextProps.verticalVolume ? volumeValue : null,
 					height: nextProps.verticalVolume ? volumeValue : null
@@ -219,10 +219,10 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
                     fadeOutConfig={this.props.guiFadeOutAnimation}>
                         <Controls className={"jp-controls"} onKeyDown={this.onKeyDown} controls={this.props.controls} onMuteClick={this.onMuteClick} onPlayClick={this.onPlayClick} 
                             onPlaybackRateBarClick={this.onPlaybackRateBarClick} onVolumeBarClick={this.onVolumeBarClick} onVolumeMaxClick={this.onVolumeMaxClick} onVideoPlayClick={this.onVideoPlayClick} 
-                            onRepeatClick={this.onRepeatClick} onFullScreenClick={this.onFullScreenClick} onSeekBarClick={this.onSeekBarClick} onDurationClick={this.onDurationClick} 
-                            onShuffleClick={this.onShuffleClick} onPreviousClick={this.onPreviousClick} onNextClick={this.onNextClick} playbackRateBarClass={this.state.playbackRateBarClass} 
-                            playbackRateBarValueClass={this.state.playbackRateBarValueClass} playbackRateBarValueStyle={this.state.playbackRateBarValueStyle} volumeBarClass={this.state.volumeBarClass} 
-                            volumeBarValueClass={this.state.volumeBarValueClass} volumeBarValueStyle={this.state.volumeBarValueStyle} />
+                            onRepeatClick={this.onRepeatClick} onFullScreenClick={this.onFullScreenClick} onShuffleClick={this.onShuffleClick} onPreviousClick={this.onPreviousClick} 
+                            onNextClick={this.onNextClick} playbackRateBarClass={this.state.playbackRateBarClass} playbackRateBarValueClass={this.state.playbackRateBarValueClass}
+                            playbackRateBarValueStyle={this.state.playbackRateBarValueStyle} volumeBarClass={this.state.volumeBarClass} volumeBarValueClass={this.state.volumeBarValueClass} 
+                            volumeBarValueStyle={this.state.volumeBarValueStyle} />
                         <Progress className={"jp-progress"} seekBarClick={this.onSeekBarClick} onDurationClick={this.onDurationClick} seekBarStyle={this.state.seekBarStyle}
                             seekBarClass={this.state.seekBarClass} currentTimeText={this.state.currentTimeText} durationText={this.state.durationText}>
                             <PlayBar smoothPlayBar={this.props.smoothPlayBar} currentPercentAbsolute={this.props.currentPercentAbsolute} playBarStyle={this.state.playBarStyle} />
