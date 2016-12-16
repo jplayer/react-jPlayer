@@ -422,7 +422,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				cpr = 0;
 				cpa = 0;
 			}
-debugger
+
 			this.props.updateOption("seekPercent", sp);
 			this.props.updateOption("currentPercentRelative", cpr);
 			this.props.updateOption("currentPercentAbsolute", cpa);
@@ -527,9 +527,12 @@ debugger
 			this.currentMedia.pause();
 		}
 		play = (time) => {
-			if(this.props.srcSet) {		
+			if(this.props.srcSet) {
+				
 				this.currentMedia.play();
-				this.currentMedia.currentTime = this.props.currentTime;	
+				if (!isNaN(time)) {
+					this.currentMedia.currentTime = time;	
+				}
 			} else {
 				this._urlNotSetError("play");
 				this.props.updateOption("paused", true);
@@ -538,12 +541,15 @@ debugger
 		pause = (time) => {
 			if(this.props.srcSet) {
 				this.currentMedia.pause();
-				this.currentMedia.currentTime = this.props.currentTime;	
+				if (!isNaN(time)) {
+					this.currentMedia.currentTime = time;
+				}
 			} else {
 				this._urlNotSetError("pause");
 			}
 		}
 		playHead = (percent) => {
+			debugger
 			percent = util.limitValue(percent, 0, 100);
 			if(this.props.srcSet) {
 				this.currentMedia.currentTime = percent * this.currentMedia.seekable.end(this.currentMedia.seekable.length-1) / 100;	
@@ -641,7 +647,7 @@ debugger
 				trackElements.push(<track kind={v.Kind} src={v.src} srclang={v.srclang} label={v.label} default={vDef}/>);
 			}
 
-			this.props.updateOption("tracks", tracks);	
+			this.props.updateOption("tracks", tracks);
 			this.currentMedia.src = media[currentFormat];
 		}
 		_setFormat = (media) => {
@@ -707,22 +713,20 @@ debugger
 			this.props.updateOption("playbackRateEnabled", util.testPlaybackRate(this.currentMedia));  
 			this._initAfterRender();	
 		}
-		componentDidUpdate(prevProps, prevState) {
+		componentWillReceiveProps(nextProps) {
+			// if (prevProps.width !== nextProps.width || prevProps.height !== nextProps.height) {
+			// 	this.setState({playerStyle: {width: nextProps.width, height: nextProps.height}});
+			// }
 			//Using the audio element capabilities for playbackRate. ie., Assuming video element is the same.
-			if(this.props.playbackRateEnabled) {
-				this.currentMedia.defaultPlaybackRate = this.props.defaultPlaybackRate;
-				this.currentMedia.playbackRate = this.props.playbackRate;
+			if(nextProps.playbackRateEnabled) {
+				this.currentMedia.defaultPlaybackRate = nextProps.defaultPlaybackRate;
+				this.currentMedia.playbackRate = nextProps.playbackRate;
 			}
 
-			this.currentMedia.volume = this.props.volume;
-			this.currentMedia.muted = this.props.muted;
-			this.currentMedia.autoplay = this.props.autoplay;	
-			this.currentMedia.loop = this.props.loop === "loop" ? true : false;
-		}
-		componentWillReceiveProps(nextProps) {
-			// if (prevProps.width !== this.props.width || prevProps.height !== this.props.height) {
-			// 	this.setState({playerStyle: {width: this.props.width, height: this.props.height}});
-			// }
+			this.currentMedia.volume = nextProps.volume;
+			this.currentMedia.muted = nextProps.muted;
+			this.currentMedia.autoplay = nextProps.autoplay;	
+			this.currentMedia.loop = nextProps.loop === "loop" ? true : false;
 		}
 		render() {
 			return (			
