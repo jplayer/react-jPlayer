@@ -39,7 +39,10 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
                 playbackRate: React.PropTypes.func,
                 incrementLoop: React.PropTypes.func,
                 fullScreen: React.PropTypes.func,
-                duration: React.PropTypes.duration
+                duration: React.PropTypes.duration,
+                next: React.PropTypes.func,
+                previous: React.PropTypes.func,
+                blur: React.PropTypes.func
             }
         }
         onMuteClick = () => this.context.mute(!this.props.muted)

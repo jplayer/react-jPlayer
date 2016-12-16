@@ -65,6 +65,7 @@ export const classNames = {
         SEEKING: "jp-state-seeking",
         MUTED: "jp-state-muted",
         LOOPED: "jp-state-looped",
+		LOOPED_PLAYLIST: "jp-state-looped-playlist",
         FULL_SCREEN: "jp-state-full-screen",
         NO_VOLUME: "jp-state-no-volume"	
     },

@@ -10,6 +10,7 @@ import {bindActionCreators} from 'redux';
 import Poster from "../components/poster";
 import Audio from "../components/audio";
 import Video from "../components/video";
+import Player from "../components/player";
 import BrowserUnsupported from "../components/browserUnsupported";
 import {updateArray} from "../reducers/index";
 import {addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
@@ -26,7 +27,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			this.setPlayableFormat();
 
 			this.state = {
-				[constants.keys.PLAYER_CLASS]: [],
 				[constants.keys.POSTER_CLASS]: [],
 				[constants.keys.NO_SOLUTION_CLASS]: [constants.classNames.NO_SOLUTION]
 			};
@@ -81,7 +81,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				defaultPlaybackRate: React.PropTypes.number,
 				minPlaybackRate: React.PropTypes.number,
 				maxPlaybackRate: React.PropTypes.number,
-				stateClass: React.PropTypes.objectOf(React.PropTypes.string),
 				smoothPlayBar: React.PropTypes.bool,
 				fullScreen: React.PropTypes.bool,
 				fullWindow: React.PropTypes.bool,			
@@ -238,23 +237,12 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 		}
 		setMediaRef = (ref) => this.currentMedia = ref;
 		_setupOptions = () => {
-			this.timeFormats = merge(constants.timeFormats, this.props.timeFormats);
-
+			this.timeFormats = merge(constants.timeFormats, this.props.timeFormats);	
 
 			this.loopOptions = [
 				constants.loopOptions.OFF,
-				constants.loopOptions.LOOP
-			].concat(this.props.loopOptions);	
-
-			// Classes added to the cssSelectorAncestor to indicate the state.
-			this.stateClass = merge({ 
-				playing: constants.classNames.states.PLAYING,
-				seeking: constants.classNames.states.SEEKING,
-				muted: constants.classNames.states.MUTED,
-				looped: constants.classNames.states.LOOPED,
-				fullScreen: constants.classNames.states.FULL_SCREEN,
-				noVolume: constants.classNames.states.NO_VOLUME,
-			}, this.props[constants.keys.STATE_CLASS]);
+				constants.loopOptions.LOOP		
+			].concat(this.props.loopOptions);
 
 			this.noFullWindow = merge({
 				...constants.noFullWindows
@@ -274,8 +262,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 					this._updateMediaStatus(this.currentMedia);
 					this._trigger(this.props.onTimeUpdate);
 				},
-				onDurationChange: () => {			
-					this._updateMediaStatus(this.currentMedia);	
+				onDurationChange: () => {
+					this._updateMediaStatus(this.currentMedia);
 					this._trigger(this.props.onDurationChange);
 				},
 				onPlay: () => {
@@ -375,9 +363,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, "jp-audio")));
 			}
 
-			const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-			if (sizeClass !== undefined) {
-				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass[sizeClass])));
+			this.sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
+			if (this.sizeClass !== undefined) {
 				//this.props.updateOption("cssClass", sizeClass);
 			}	
 
@@ -423,7 +410,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			ct = media.currentTime;
 			cpa = (duration > 0) ? 100 * ct / duration : 0;
 			if((typeof media.seekable === "object") && (media.seekable.length > 0)) {
-				sp = (duration > 0) ? 100 * media.seekable.end(media.seekable.length-1) / duration : 100;
+				sp = (duration > 0) ? 100 * media.seekable.end(media.seekable.length - 1) / duration : 100;
 				cpr = (duration > 0) ? 100 * media.currentTime / media.seekable.end(media.seekable.length - 1) : 0; // Duration conditional for iOS duration bug. ie., seekable.end is a NaN in that case.
 			} else {
 				sp = 100;
@@ -435,7 +422,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 				cpr = 0;
 				cpa = 0;
 			}
-
+debugger
 			this.props.updateOption("seekPercent", sp);
 			this.props.updateOption("currentPercentRelative", cpr);
 			this.props.updateOption("currentPercentAbsolute", cpa);
@@ -526,18 +513,18 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			}
 		}
 		clearMedia = () => {
-			this.props.updateOption("paused", true);
 			this.props.updateOption("seeking", false);
 			this.setState(state => updateArray(state, addUniqueToArray(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN)));
-
-			// Maintains the status properties that persist through a reset.
-			//this.mergeOptions({status: defaultStatus});
+			
+			for (var key in statusDefaultValues) {
+				this.props.updateOption(key, statusDefaultValues[key]);
+			}
 
 			if(!this.props.nativeVideoControls) {
 				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.VIDEO_CLASS, constants.classNames.HIDDEN)));
 			}
 			
-			//this.currentMedia.pause();
+			this.currentMedia.pause();
 		}
 		play = (time) => {
 			if(this.props.srcSet) {		
@@ -581,7 +568,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			if (loopIndex >= this.loopOptions.length - 1) {
 				loopIndex = -1;
 			}
-			return this.loopOptions[++loopIndex];
+			this.props.updateOption("loop", this.loopOptions[++loopIndex]);
 		}
 		_loop = () => this._trigger(this.props.onRepeat)
 		_updateSize = () => {
@@ -668,7 +655,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 
 					if(mediaConfig.playableFormat[format] && media[format]) {
 						currentFormat = format;
-						this.props.updateOption("src", currentFormat);
+						this.props.updateOption("src", media[currentFormat]);
 						this.props.updateOption("formatType", format);
 						this.props.updateOption("format", {[format]: true});
 						break;
@@ -708,42 +695,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 					break;
 			}	
 		}
-		_updatePlayerStyles = (nextProps) => {
-			if(!nextProps.paused) {
-				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.playing)));
-			} else {
-				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.playing)));
-			}
-			if(!nextProps.noFullWindow && nextProps.fullWindow) {
-				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen)));
-			} else {
-				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.fullScreen)));
-			}
-			if(nextProps.noVolume) {
-				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.noVolume)));
-			} else {
-				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.noVolume)));
-			}
-			if(nextProps.muted) {
-				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.muted)));
-			} else {
-				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.muted)));
-			}
-			if (nextProps.seeking) {
-				this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.seeking)));
-			} else {
-				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.seeking)));
-			}
-			// if(nextProps.loop === "loop") {
-			// 	this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.looped);
-			// }
-			// else if (nextProps.loop === "loop-playlist") {
-			// 	this.setState(state => updateArray(state, addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.loopedPlaylist);
-			// }
-			// else {
-			// 	this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.looped);
-			// }
-		}
 		onPosterLoad = () => {
 			if(!this.props.video.available) {
 				this.setState(state => updateArray(state, removeFromArrayByValue(constants.keys.POSTER_CLASS, constants.classNames.HIDDEN)));
@@ -772,11 +723,11 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 			// if (prevProps.width !== this.props.width || prevProps.height !== this.props.height) {
 			// 	this.setState({playerStyle: {width: this.props.width, height: this.props.height}});
 			// }
-			this._updatePlayerStyles(nextProps);
 		}
 		render() {
 			return (			
-				<div id={this.props.cssSelectorAncestor} className={this.state[constants.keys.PLAYER_CLASS].join(" ")}>
+				<Player cssSelectorAncestor={this.props.cssSelectorAncestor} sizeClass={this.sizeClass} paused={this.props.paused} noFullWindow={this.props.noFullWindow}
+				fullWindow={this.props.fullWindow} noVolume={this.props.noVolume} muted={this.props.muted} seeking={this.props.seeking} loop={this.props.loop}>
 					<WrappedComponent>
 						<div className={"jp-jplayer"} style={this.state.playerStyle}>
 							<Poster video={this.mediaSettings.video} posterClass={this.state[constants.keys.POSTER_CLASS].join(" ")} src={this.props.posterSrc} onClick={this.props.posterOnClick} 
@@ -791,8 +742,47 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 						</div>
 						<BrowserUnsupported noSolutionClass={this.state.noSolutionClass} />
 					</WrappedComponent>
-				</div>				
+				</Player>			
 			);
 		}
 	}
 )
+
+const statusDefaultValues = {
+    media: {},
+    paused: true,
+    format: {},
+    formatType: "",
+    waitForPlay: true, // Same as waitForLoad except in case where preloading.
+    waitForLoad: true,
+    srcSet: false,
+    video: false, // True if playing a video
+    seekPercent: 0,
+    currentPercentRelative: 0,
+    currentPercentAbsolute: 0,
+    currentTime: 0,
+    duration: 0,
+    remaining: 0,
+    videoWidth: 0, // Intrinsic width of the video in pixels.
+    videoHeight: 0, // Intrinsic height of the video in pixels.
+    readyState: 0,
+    networkState: 0,
+    ended: 0,
+    src: ""
+};
+
+export const jPlayerDefaultValues = {
+    cssSelectorAncestor: "jp_container_1",
+    jPlayerSelector: "jplayer_1",
+    preload: "metadata", // HTML5 Spec values: none, metadata, auto.	
+    captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
+    minPlaybackRate: 0.5,
+    maxPlaybackRate: 4,
+    controls: {},
+    supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
+    loopOptions: ["loop-playlist"],
+    playbackRate: 1.0,
+    defaultPlaybackRate: 1.0,		
+    volume: 0.8, // The volume. Number 0 to 1.
+    ...statusDefaultValues
+};

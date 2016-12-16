@@ -323,7 +323,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
             const MediaAnimationConfig = this.state.useRemoveConfig ? this.props.removeAnimation : this.props.addAnimation
 
             return (   
-                <WrappedComponent {...this.props} {...this.keyBindings} {...this.event} stateClass={this.stateClass} loopOptions={"loop-playlist"}>                       				
+                <WrappedComponent {...this.props} {...this.keyBindings} {...this.event} stateClass={this.stateClass}>                       				
                     <div id="jp_container_playlist">
                         <div className="jp-playlist">
                             <Playlist isSlidingUp={this.state.isPlaylistContainerSlidingUp} config={this.state.useShuffleConfig ? this.props.shuffleAnimation : this.props.displayAnimation} onRest={this._shuffleAnimationCallback}>
@@ -339,3 +339,15 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
         }
     }
 )
+
+export const jPlaylistDefaultValues = {
+    html: {},
+    playlist: [],
+    shuffleOnLoop: true,
+    shuffled: false,
+    itemClass: "jp-playlist-item",
+    freeItemClass: "jp-playlist-item-free",
+    removeItemClass: "jp-playlist-item-remove",
+    freeGroupClass: "jp-free-media",
+    current: 0
+};
