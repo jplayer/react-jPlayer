@@ -54,6 +54,12 @@ export default class extends React.PureComponent {
         } else {
             this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
         }
+        debugger
+        if (nextProps.shuffled) {
+            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
+        } else {
+            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
+        }
     }
     componentWillReceiveProps(nextProps) {
         this._updatePlayerStyles(nextProps);

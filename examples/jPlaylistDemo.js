@@ -78,4 +78,10 @@ const jPlaylistOptions = {
     enableRemoveControls: true
 }
 
+// const myPlaylist = (props) => (
+//     <JPlayer>
+
+//     </JPlayer>
+// );
+
 renderjPlayer(ExampleComponent, jPlayerOptions, jPlaylistOptions);

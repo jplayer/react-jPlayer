@@ -56,12 +56,6 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
                 method(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
                // this._trigger(this.props.onResize);
             });
-
-            //Add a new stateClass for the extra loop option
-            this.props.updateOption("stateClass", merge({
-                shuffled: "jp-state-shuffled", 
-                loopedPlaylist: "jp-state-loop-playlist"
-            }, this.props.stateClass));
             
             this.props.updateOption("keyBindings", merge({
                 next: {
@@ -294,19 +288,10 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
                 this.setState({useShuffleConfig: false});
                 return;
             }
+            debugger
 
-            if (this.props.shuffled) {
-                this.context.setMedia([...this.props.playlist].sort(() => 0.5 - Math.random()));
-                this.props.addUniqueToArray(constants.keys.PLAYER_CLASS, this.stateClass.shuffled);
-            } else {
-                this._originalPlaylist();
-                this.props.removeFromArrayByValue(constants.keys.PLAYER_CLASS, this.stateClass.shuffled);
-            }
-            if (this.playNow || !this.props.paused) {
-                this.play(0);
-            } else {
-                this.select(0);
-            }
+            this.props.shuffled ? this.context.setMedia([...this.props.playlist].sort(() => 0.5 - Math.random())) : this._originalPlaylist();
+            this.playNow || !this.props.paused ? this.play(0) : this.select(0);
             
             setTimeout(() => this.setState({isPlaylistContainerSlidingUp: false}), 0);
         }
@@ -323,7 +308,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
             const MediaAnimationConfig = this.state.useRemoveConfig ? this.props.removeAnimation : this.props.addAnimation
 
             return (   
-                <WrappedComponent {...this.props} {...this.keyBindings} {...this.event} stateClass={this.stateClass}>                       				
+                <WrappedComponent {...this.props} {...this.keyBindings} {...this.event}>                       				
                     <div id="jp_container_playlist">
                         <div className="jp-playlist">
                             <Playlist isSlidingUp={this.state.isPlaylistContainerSlidingUp} config={this.state.useShuffleConfig ? this.props.shuffleAnimation : this.props.displayAnimation} onRest={this._shuffleAnimationCallback}>

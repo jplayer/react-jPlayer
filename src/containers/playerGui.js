@@ -42,7 +42,8 @@ export default WrappedComponent => connect(mapStateToProps, null, mergeProps)(
                 duration: React.PropTypes.duration,
                 next: React.PropTypes.func,
                 previous: React.PropTypes.func,
-                blur: React.PropTypes.func
+                blur: React.PropTypes.func,
+                shuffle: React.PropTypes.func
             }
         }
         onMuteClick = () => this.context.mute(!this.props.muted)

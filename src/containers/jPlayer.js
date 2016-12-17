@@ -731,7 +731,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 		render() {
 			return (			
 				<Player cssSelectorAncestor={this.props.cssSelectorAncestor} sizeClass={this.sizeClass} paused={this.props.paused} noFullWindow={this.props.noFullWindow}
-				fullWindow={this.props.fullWindow} noVolume={this.props.noVolume} muted={this.props.muted} seeking={this.props.seeking} loop={this.props.loop}>
+				fullWindow={this.props.fullWindow} noVolume={this.props.noVolume} muted={this.props.muted} seeking={this.props.seeking} loop={this.props.loop} shuffled={this.props.shuffled}>
 					<WrappedComponent>
 						<div className={"jp-jplayer"} style={this.state.playerStyle}>
 							<Poster video={this.mediaSettings.video} posterClass={this.state[constants.keys.POSTER_CLASS].join(" ")} src={this.props.posterSrc} onClick={this.props.posterOnClick} 
