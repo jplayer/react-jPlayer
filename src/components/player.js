@@ -1,7 +1,7 @@
 import React from "react";
 import {classNames, keys} from "../util/constants";
-import {updateArray} from "../reducers/index";
-import {addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
+import {addUniqueToArray, removeFromArrayByValue} from "../reducers/index";
+import * as jPlayerActions from "../actions/jPlayerActions";
 
 export default class extends React.PureComponent {
     constructor(props) {
@@ -12,7 +12,7 @@ export default class extends React.PureComponent {
         };
 
         if (this.props.sizeClass !== undefined) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states[this.props.sizeClass])));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states[this.props.sizeClass])));
         }        
     }
     static get propTypes() {
@@ -22,43 +22,42 @@ export default class extends React.PureComponent {
     }
     _updatePlayerStyles = (nextProps) => {
         if(!nextProps.paused) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.PLAYING)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.PLAYING)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.PLAYING)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.PLAYING)));
         }
         if(!nextProps.noFullWindow && nextProps.fullWindow) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.FULL_SCREEN)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.FULL_SCREEN)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.FULL_SCREEN)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.FULL_SCREEN)));
         }
         if(nextProps.noVolume) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.NO_VOLUME)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.NO_VOLUME)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.NO_VOLUME)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.NO_VOLUME)));
         }
         if(nextProps.muted) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.MUTED)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.MUTED)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.MUTED)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.MUTED)));
         }
         if (nextProps.seeking) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SEEKING)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SEEKING)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SEEKING)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SEEKING)));
         }
         if(nextProps.loop === "loop") {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED)));
         } else if (nextProps.loop === "loop-playlist") {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
         }
-        debugger
         if (nextProps.shuffled) {
-            this.setState(state => updateArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
+            this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
         } else {
-            this.setState(state => updateArray(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
+            this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
         }
     }
     componentWillReceiveProps(nextProps) {

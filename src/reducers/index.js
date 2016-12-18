@@ -5,36 +5,36 @@ import {actionTypes} from "../util/constants";
 import jPlayerReducer from "./jPlayerReducer";
 import jPlaylistReducer from "./jPlaylistReducer";
 
-export const updateArray = (state, action) => {
+export const addUniqueToArray = (state, action) => {
     const existingArray = get(state, action.key, []);
     const newState = {...state};
-
-    switch (action.type) {
-        case actionTypes.ARRAY_ADD_UNIQUE:
-            //Don't add duplicates
-            const found = existingArray.some((v) => v === action.value);
+    const found = existingArray.some((v) => v === action.value);
             
-            if (!found) {
-                set(newState, action.key, [...existingArray, action.value]);
+    if (!found) {
+        set(newState, action.key, [...existingArray, action.value]);
 
-                return newState;
-            }
-            return state;
-        case actionTypes.ARRAY_REMOVE_BY_VALUE:
-            const filteredArrayByValue = existingArray.filter((v) => v !== action.value);
-           
-            set(newState, action.key, filteredArrayByValue);
-
-            return newState;
-        case actionTypes.ARRAY_REMOVE_BY_INDEX:
-            const filteredArrayByIndex = existingArray.filter((_, i) => i !== action.value);
-           
-            set(newState, action.key, filteredArrayByIndex);
-
-            return newState;
-        default:
-            return state;
+        return newState;
     }
+}
+
+export const removeFromArrayByValue = (state, action) => {
+    const existingArray = get(state, action.key, []);
+    const newState = {...state};
+    const filteredArrayByValue = existingArray.filter((v) => v !== action.value);
+           
+    set(newState, action.key, filteredArrayByValue);
+
+    return newState;
+}
+
+export const removeFromArrayByIndex = (state, action) => {
+    const existingArray = get(state, action.key, []);
+    const newState = {...state};
+    const filteredArrayByIndex = existingArray.filter((_, i) => i !== action.value);
+           
+    set(newState, action.key, filteredArrayByIndex);
+
+    return newState;
 }
 
 export const updateOption = (state, action) => {
@@ -42,21 +42,6 @@ export const updateOption = (state, action) => {
         ...state, 
         [action.key]: action.value
     }
-}
-
-export const createControl = (state, action) => {
-    const newControl = {
-        [action.key]: {
-            html: action.html || state.controls[action.key],
-            onClick: action.onClick,
-            className: action.className
-        }
-    };
-
-    const newState = {...state};
-    newState.controls = {...state.controls, ...newControl};
-    
-    return newState;
 }
 
 export default combineReducers({

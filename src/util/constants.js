@@ -3,15 +3,16 @@ import {uaBrowser, uaPlatform, getDocMode} from "./index";
 export const actionTypes = {
 	jPlayer: {
 		UPDATE_OPTION: "UPDATE_OPTION",
-		CREATE_CONTROL: "CREATE_CONTROL"
+		ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
+    	ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE"
 	},
 	jPlaylist: {
 		UPDATE_OPTION: "UPDATE_OPTION",
-		CREATE_CONTROL: "CREATE_CONTROL"
+		ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
+    	ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",
+		ARRAY_REMOVE_BY_INDEX: "ARRAY_REMOVE_BY_INDEX"
 	},
-    ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
-    ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",
-	ARRAY_REMOVE_BY_INDEX: "ARRAY_REMOVE_BY_INDEX"
+    
 };
 
 export const keys = {
@@ -30,11 +31,11 @@ export const keys = {
 	REPEAT_CLASS: "repeatClass",
 	FULL_SCREEN_CLASS: "fullScreenClass",
     PLAYER_CLASS: "playerClass",
-	PLAYLIST_CLASS: "playlistClass",
 	DETAILS_CLASS: "detailsClass",
 	SHUFFLE_OFF_CLASS: "shuffleOffClass",
 	SIZE_CLASS: "sizeClass",
-	SIZE_FULL_CLASS: "sizeFullClass"
+	SIZE_FULL_CLASS: "sizeFullClass",
+	PLAYLIST: "playlist",
 };
 
 export const classNames = {

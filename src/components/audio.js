@@ -1,6 +1,6 @@
 import React from "react";
 
-const audio = props => (
+const Audio = props => (
 	props.require ?
 		<audio ref={props.mediaRef} {...props.events}>
 			{props.children}
@@ -8,4 +8,4 @@ const audio = props => (
 		: null
 );
 
-export default audio;
+export default Audio;
