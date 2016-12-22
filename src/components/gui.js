@@ -1,5 +1,4 @@
 import React from "react";
-import {Motion, spring} from "react-motion";
 import * as constants from "../util/constants";
 
 export default class extends React.Component {
@@ -54,7 +53,7 @@ export default class extends React.Component {
 			:	<div className={this.props.nativeVideoControls ? "jp-gui " + constants.className.HIDDEN : "jp-gui"}>{this.props.children}</div>
 		);
 	}
-};
+}
 
 const GUI_WRAPPER_STYLE = {
 	width: "100%", 

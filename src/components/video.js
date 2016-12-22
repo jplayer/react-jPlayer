@@ -1,11 +1,12 @@
 import React from "react";
 
-const video = props => (
-	props.require ?
-		<video ref={props.mediaRef} className={props.videoClass} style={props.style} onClick={props.onClick} {...props.events}>
-			{props.children}		
-		</video>
-		: null
+const Video = ({require, mediaRef, videoClass, styke, onClick, events, children, title}) => (
+	// require ?
+	// 	<video ref={mediaRef} className={videoClass} style={style} onClick={onClick} title={title} {...events}>
+	// 		{children}		
+	// 	</video>
+	// 	: null
+	<div />
 );
 
-export default video;
+export default Video;

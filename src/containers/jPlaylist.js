@@ -77,6 +77,16 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
                 this.props.addUniqueToArray(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
             }
         }
+        static get defaultProps() {
+            return {
+                playlist: [],
+                shuffleOnLoop: true,
+                itemClass: "jp-playlist-item",
+                freeItemClass: "jp-playlist-item-free",
+                removeItemClass: "jp-playlist-item-remove",
+                freeGroupClass: "jp-free-media"
+            }
+        }
         static get propTypes() {
             return {
                 updateOptions: React.PropTypes.func.isRequired,
@@ -315,14 +325,3 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
         }
     }
 )
-
-export const jPlaylistDefaultValues = {
-    html: {},
-    playlist: [],
-    shuffleOnLoop: true,
-    shuffled: false,
-    itemClass: "jp-playlist-item",
-    freeItemClass: "jp-playlist-item-free",
-    removeItemClass: "jp-playlist-item-remove",
-    freeGroupClass: "jp-free-media"
-};

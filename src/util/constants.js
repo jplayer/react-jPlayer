@@ -4,7 +4,9 @@ export const actionTypes = {
 	jPlayer: {
 		UPDATE_OPTION: "UPDATE_OPTION",
 		ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
-    	ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE"
+    	ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",
+		SET_MEDIA: "SET_MEDIA",
+		CLEAR_MEDIA: "CLEAR_MEDIA"
 	},
 	jPlaylist: {
 		UPDATE_OPTION: "UPDATE_OPTION",
@@ -33,8 +35,6 @@ export const keys = {
     PLAYER_CLASS: "playerClass",
 	DETAILS_CLASS: "detailsClass",
 	SHUFFLE_OFF_CLASS: "shuffleOffClass",
-	SIZE_CLASS: "sizeClass",
-	SIZE_FULL_CLASS: "sizeFullClass",
 	PLAYLIST: "playlist",
 };
 

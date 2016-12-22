@@ -37,10 +37,10 @@ export const removeFromArrayByIndex = (state, action) => {
     return newState;
 }
 
-export const updateOption = (state, action) => {
+export const updateOption = (existingObject, newValues) => {
      return {
-        ...state, 
-        [action.key]: action.value
+        ...existingObject, 
+        ...newValues
     }
 }
 
