@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {keys, classNames} from "../util/constants";
 import {getOffset, getWidth} from "../util/index";
 import convertTime from "../util/convertTime";
-import {addUniqueToArray, removeFromArrayByValue} from "../reducers/index";
-import * as jPlayerActions from "../actions/jPlayerActions";
+import {addUniqueToArray, removeFromArrayByValue, playHead, duration} from "../actions/jPlayerActions";
+import * as reducer from "../reducers/index";
 
 const mapStateToProps = (state) => ({
     seekPercent: state.jPlayer.seekPercent,
@@ -23,7 +23,7 @@ export default connect(mapStateToProps)(
             super();
             
             this.state = {
-                seekBarClass: []
+                seekBarClass: [classNames.SEEK_BAR]
             }
         }
         static get defaultProps() {
@@ -43,22 +43,23 @@ export default connect(mapStateToProps)(
                 w = getWidth(bar),
                 p = 100 * x / w;
 
-            this.context.playHead(p);
+            this.props.dispatch(playHead(p));
         }
         onDurationClick = (e) => {
             if(this.props.toggleDuration) {
                 if(this.props.captureDuration) {
                     e.stopPropagation();
                 }
-                this.context.duration();
+                this.props.dispatch(duration());
             }
         }
         _updateBarStyles = (nextProps) => {
             this.setState({seekBarStyle: {width: `${nextProps.seekPercent}%`}});
+
             if (nextProps.seeking) {
-                this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(keys.SEEK_BAR_CLASS, classNames.seeking)));
+                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.SEEK_BAR_CLASS, classNames.SEEKING)));
             } else {
-                this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(keys.SEEK_BAR_CLASS, classNames.seeking)))
+                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.SEEK_BAR_CLASS, classNames.SEEKING)))
             }
         }
         _updateDurationText = (nextProps) => {

@@ -11,19 +11,12 @@ export const addUniqueToArray = generator(actionTypes.jPlayer.ARRAY_ADD_UNIQUE, 
 export const removeFromArrayByValue = generator(actionTypes.jPlayer.ARRAY_REMOVE_BY_VALUE, "key", "value");
 export const setMedia = generator(actionTypes.jPlayer.SET_MEDIA, "media");
 export const clearMedia = generator(actionTypes.jPlayer.CLEAR_MEDIA);
-
-export const play = (time) => {
-    return (dispatch, getState) => {
-        const state = getState().jPlayer;
-
-        if(state.srcSet) {	
-            this.currentMedia.play();
-            if (!isNaN(time)) {
-                this.currentMedia.currentTime = time;	
-            }
-        } else {
-            this._urlNotSetError("play");
-            this.props.dispatch(updateOption("paused", true));
-        }
-    }
-}
+export const play = generator(actionTypes.jPlayer.PLAY, "time");
+export const pause = generator(actionTypes.jPlayer.PAUSE, "time");
+export const playHead = generator(actionTypes.jPlayer.PLAY_HEAD, "percent");
+export const volume = generator(actionTypes.jPlayer.VOLUME, "volume");
+export const mute = generator(actionTypes.jPlayer.MUTE, "mute");
+export const duration = generator(actionTypes.jPlayer.DURATION, "remainingDuration");
+export const playbackRate = generator(actionTypes.jPlayer.PLAYBACK_RATE, "playbackRate");
+export const incrementLoop = generator(actionTypes.jPlayer.INCEMENT_LOOP);
+export const fullScreen = generator(actionTypes.jPlayer.FULL_SCREEN, "fullScreen");

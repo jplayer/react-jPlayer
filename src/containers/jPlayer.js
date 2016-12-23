@@ -194,53 +194,8 @@ export default connect(mapStateToProps)(
 		// 			break;
 		// 	}	
 		// }
-        setMedia = (media) => {
-			
-		}
-		clearMedia = () => {
-            
-		}
-		play = (time) => {
-			
-		}
-		pause = (time) => {
-			if(this.props.srcSet) {
-				this.currentMedia.pause();
-				if (!isNaN(time)) {
-					this.currentMedia.currentTime = time;
-				}
-			} else {
-				this._urlNotSetError("pause");
-			}
-		}
-		playHead = (percent) => {
-			const limitedPercent = limitValue(percent, 0, 100);
-
-			if(this.props.srcSet) {
-				this.currentMedia.currentTime = percent * this.currentMedia.seekable.end(this.currentMedia.seekable.length-1) / 100;	
-			} else {
-				this._urlNotSetError("playHead");
-			}
-		}
-		volume = (volume) => {
-			volume = limitValue(volume, 0, 1);
-            this.props.dispatch(updateOption("volume", volume));
-		}
-        mute = (mute) => this.props.dispatch(updateOption("muted", mute));
-        duration = () => this.props.dispatch(updateOption("remainingDuration", !this.props.remainingDuration))
-        playbackRate = (playbackRate) => this.props.dispatch(updateOption("playbackRate", limitValue(playbackRate, this.props.minPlaybackRate, this.props.maxPlaybackRate)))
-		incrementLoop = () => {
-			var loopIndex = this.loopOptions.indexOf(this.props.loop || this.loopOptions[0]);
-
-			if (loopIndex >= this.loopOptions.length - 1) {
-				loopIndex = -1;
-			}
-            this.props.dispatch(updateOption("loop", this.loopOptions[++loopIndex]));
-		}
 		_loop = () => this._trigger(this.props.onRepeat)
 		fullScreen = (fullScreen) => {
-			fullScreen ? screenfull.request(document.getElementById(this.props.jPlayerSelector)) : screenfull.exit();
-            this.props.dispatch(updateOption("fullScreen", fullScreen));
 			// var wkv = nativeFeatures.fullscreen.used.webkitVideo;
 			// if(!wkv || wkv && !this.props.waitForPlay) {
 			// 	if(fullScreen) {

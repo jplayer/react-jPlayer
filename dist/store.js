@@ -25,5 +25,7 @@
     };
   }
 
-  exports.default = (0, _redux.createStore)(_reducers2.default);
+  exports.default = function (initialState) {
+    return (0, _redux.createStore)(_reducers2.default, initialState);
+  };
 });

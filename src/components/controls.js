@@ -1,8 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
 
+import {getWidth, getHeight, getOffset} from "../util/index";
 import {keys, classNames} from "../util/constants";
-import {updateOption, addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
+import {updateOption, addUniqueToArray, removeFromArrayByValue, play, pause, mute, playbackRate,
+volume, incrementLoop, fullScreen} from "../actions/jPlayerActions";
 import * as reducer from "../reducers/index";
 import Control from "./control";
 
@@ -16,10 +18,10 @@ export default connect(mapStateToProps)(
             super();
             
             this.state = {
-                playbackRateBarClass: [],
-                playbackRateBarValueClass: [],
-                volumeBarClass: [],
-                volumeBarValueClass: []
+                playbackRateBarClass: [classNames.PLAYBACK_RATE_BAR],
+                playbackRateBarValueClass: [classNames.PLAYBACK_RATE_BAR_VALUE],
+                volumeBarClass: [classNames.VOLUME_BAR],
+                volumeBarValueClass: [classNames.VOLUME_BAR_VALUE]
             }
         }
         static get defaultProps() {
@@ -82,8 +84,8 @@ export default connect(mapStateToProps)(
             this.context.next();
             this.context.blur(event.target);
         }
-        onMuteClick = () => this.context.mute(!this.props.muted)
-        onPlayClick = () => this.props.paused ? this.context.play() : this.context.pause()
+        onMuteClick = () => this.props.dispatch(mute(!this.props.muted))
+        onPlayClick = () => this.props.paused ? this.props.dispatch(play()) : this.props.dispatch(pause())
         onPlaybackRateBarClick = (e) => {
             // Using e.currentTarget to enable multiple playbackRate bars
             var bar = e.currentTarget,
@@ -93,7 +95,7 @@ export default connect(mapStateToProps)(
                 y = getHeight(bar) - e.pageY + offset.top,
                 h = getHeight(bar),
                 ratio,
-                playbackRate;
+                playbackRateValue;
 
             if(this.props.verticalPlaybackRate) {
                 ratio = y/h;
@@ -101,8 +103,8 @@ export default connect(mapStateToProps)(
                 ratio = x/w;
             }
 
-            playbackRate = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
-            this.context.playbackRate(playbackRate);
+            playbackRateValue = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
+            this.props.dispatch(playbackRate(playbackRateValue));
         }
         onVolumeBarClick = (e) => {
             // Using $(e.currentTarget) to enable multiple volume bars
@@ -113,22 +115,22 @@ export default connect(mapStateToProps)(
                 y = getHeight(bar) - e.pageY + offset.top,
                 h = getHeight(bar);
 
-            this.props.verticalVolume ? this.context.volume(y/h) : this.context.volume(x/w)
+            this.props.verticalVolume ? this.props.dispatch(volume(y/h)) : this.props.dispatch(volume(x/w))
 
             if(this.props.muted) {
-                this.context.mute(false);
+                this.props.dispatch(mute(false));
             }
         }
         onVolumeMaxClick = () => {
-            this.context.volume(1);
+            this.props.dispatch(volume(1));
 
             if(this.props.muted) {
-                this.context.mute(false);
+                this.props.dispatch(mute(false));
             }
         }
-        onVideoPlayClick = () => this.context.play()
-        onRepeatClick = () => this.context.incrementLoop()
-        onFullScreenClick = () => this.context.fullScreen(!this.props.fullScreen)
+        onVideoPlayClick = () => this.props.dispatch(play())
+        onRepeatClick = () => this.props.dispatch(incrementLoop())
+        onFullScreenClick = () => this.props.dispatch(fullScreen(!this.props.fullScreen))
         onKeyDown = (e) => {
             for (var key in this.keyBindings) {
                 const keyBinding = this.keyBindings[key];

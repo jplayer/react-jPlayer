@@ -4,7 +4,7 @@ import merge from "lodash.merge";
 
 import {testPlaybackRate, uaBlocklist} from "../util/index";
 import {keys, classNames} from "../util/constants";
-import {updateOption, addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
+import {updateOption, addUniqueToArray, removeFromArrayByValue, pause} from "../actions/jPlayerActions";
 import * as reducer from "../reducers/index";
 
 const mapStateToProps = (state) => ({
@@ -16,64 +16,33 @@ export default connect(mapStateToProps)(
         constructor(props) {
             super(props);
 
-            this.state = {
-                [keys.VOLUME_MAX_CLASS]: [classNames.VOLUME_MAX],
-                [keys.VOLUME_BAR_CLASS]: [classNames.VOLUME_BAR],
-                [keys.VOLUME_BAR_VALUE_CLASS]: [classNames.VOLUME_BAR_VALUE],
-                [keys.PLAYBACK_RATE_BAR_CLASS]: [classNames.PLAYBACK_RATE_BAR],
-                [keys.PLAYBACK_RATE_BAR_VALUE_CLASS]: [classNames.PLAYBACK_RATE_BAR_VALUE],
-                [keys.SEEK_BAR_CLASS]: [classNames.SEEK_BAR]
-            };
+            this.state = {};
             this.events = {
                 onProgress: () => {
                     this._updateMediaStatus();
-                    this._trigger(this.props.onProgress);		
+                    this.props.onProgress();		
                 },
-                onTimeUpdate: () => {		
+                onTimeUpdate: () => {	
                     this._updateMediaStatus();
-                    this._trigger(this.props.onTimeUpdate);
+                    this.props.onTimeUpdate();
                 },
                 onDurationChange: () => {
                     this._updateMediaStatus();
-                    this._trigger(this.props.onDurationChange);
-                },
-                onPlay: () => {
-                    this.props.dispatch(updateOption("paused", false));
-                    this._trigger(this.props.onPlay);
-                },
-                onPlaying: () => {			
-                    this.props.dispatch(updateOption("paused", false));
-                    this.props.dispatch(updateOption("seeking", false));
-                    this._trigger(this.props.onPlaying);
-                },
-                onPause: () => {				
-                    this.props.dispatch(updateOption("paused", true));
-                    this._trigger(this.props.onPause);
-                },
-                onWaiting: () => {		
-                    this.props.dispatch(updateOption("seeking", true));		
-                    this._trigger(this.props.onWaiting);
-                },
-                onSeeking: () => {
-                    this.props.dispatch(updateOption("seeking", true));
-                    this._trigger(this.props.onSeeking);
-                },
-                onSeeked: () => {
-                    this.props.dispatch(updateOption("seeking", false));
-                    this._trigger(this.props.onSeeked);
+                    this.props.onDurationChange();
                 },
                 onEnded: () => {
                     // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
-                    this.props.dispatch(updateOption("paused", true));
+                    this.props.dispatch(pause());
                     // With override true. Otherwise Chrome leaves progress at full.
                     this._updateMediaStatus(true);
-                    this._trigger(this.props.onEnded);
+                 
                     if (this.props.loop === "loop") {	
-                        this._trigger(this.props.onRepeat);
+                        this.props.onRepeat();
                     }
+                    this.props.onEnded();
                 },
                 onError: () => {		
-                    this.props.dispatch(updateOption("paused", true));
+                    this.props.dispatch(pause());
                     this.props.dispatch(updateOption("seeking", false));
                     if(this.props.srcSet) { // Deals with case of clearMedia() causing an error event.
                         this.props.dispatch(updateOption("waitForLoad", true));
@@ -95,20 +64,35 @@ export default connect(mapStateToProps)(
                             hint: errorHints.URL
                         });
                     }
-                    this._trigger(this.props.onError);
+                    this.props.onError();
                 },
-                onSuspend: () => this._trigger(this.props.onSuspend),
-                onVolumeChange: () => this._trigger(this.props.onVolumeChange),
-                onRateChange: () => this._trigger(this.props.onRateChange),
-                onLoadedData: () => this._trigger(this.props.onLoadedData),
-                onLoadStart: () => this._trigger(this.props.onLoadStart),
-                onAbort: () => this._trigger(this.props.onAbort),
-                onEmptied: () => this._trigger(this.props.onEmptied),
-                onStalled: () => this._trigger(this.props.onStalled),
-                onLoadedMetadata: () => this._trigger(this.props.onLoadedMetadata),
-                onCanPlay: () => this._trigger(this.props.onCanPlay),
-                onCanPlayThrough: () => this._trigger(this.props.onCanPlayThrough)
+                onPlay: this.props.onPlay,
+                onPlaying: this.props.onPlaying,
+                onPause: this.props.onPause,
+                onWaiting: this.props.onWaiting,
+                onSeeking: this.props.onSeeking,
+                onSeeked: this.props.onSeeked,
+                onSuspend: this.props.onSuspend,
+                onVolumeChange: this.props.onVolumeChange,
+                onRateChange: this.props.onRateChange,
+                onLoadedData: this.props.onLoadedData,
+                onLoadStart: this.props.onLoadStart,
+                onAbort: this.props.onAbort,
+                onEmptied: this.props.onEmptied,
+                onStalled: this.props.onStalled,
+                onLoadedMetadata: this.props.onLoadedMetadata,
+                onCanPlay: this.props.onCanPlay,
+                onCanPlayThrough: this.props.onCanPlayThrough
             };
+        }
+        static get defaultProps() {
+            return {
+                onProgress: () => null,
+                onTimeUpdate: () => null,
+                onDurationChange: () => null,
+                onEnded: () => null,
+                onError: () => null
+            }
         }
 		static get contextTypes() {
 			return {
@@ -169,7 +153,17 @@ export default connect(mapStateToProps)(
                 this.currentMedia.src = nextProps.src;
             }
 
-            nextProps.paused ? this.currentMedia.pause() : this.currentMedia.play();
+            if (nextProps.newCurrentTime !== this.props.newCurrentTime) {
+                this.currentMedia.currentTime = nextProps.newCurrentTime;
+            }
+
+            if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
+                this.currentMedia.currentTime = nextProps.playHeadPercent * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100;	
+            }
+            
+            if (nextProps.paused !== this.props.paused) {
+                nextProps.paused ? this.currentMedia.pause() : this.currentMedia.play();
+            }
 
 			this.currentMedia.preload = nextProps.preload;
             this.currentMedia.volume = nextProps.volume;

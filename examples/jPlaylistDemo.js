@@ -74,9 +74,10 @@ const jPlayerOptions = {
     jPlayerSelector: "jplayer_footer_player",
     cssSelectorAncestor: "jp_container_footer_player",
     smoothPlayBar: false,
-    muted: false,
+    muted: true,
     keyEnabled: true,
     globalVolume: false,
+    autoplay: false,
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",
