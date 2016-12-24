@@ -18,5 +18,5 @@ export const volume = generator(actionTypes.jPlayer.VOLUME, "volume");
 export const mute = generator(actionTypes.jPlayer.MUTE, "mute");
 export const duration = generator(actionTypes.jPlayer.DURATION, "remainingDuration");
 export const playbackRate = generator(actionTypes.jPlayer.PLAYBACK_RATE, "playbackRate");
-export const incrementLoop = generator(actionTypes.jPlayer.INCEMENT_LOOP);
+export const loop = generator(actionTypes.jPlayer.LOOP, "loop");
 export const fullScreen = generator(actionTypes.jPlayer.FULL_SCREEN, "fullScreen");

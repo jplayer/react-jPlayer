@@ -14,7 +14,8 @@ const mapStateToProps = (state) => ({
     media: state.jPlayer.media,
     currentTime: state.jPlayer.currentTime,
     currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
-    currentPercentRelative: state.jPlayer.currentPercentRelative
+    currentPercentRelative: state.jPlayer.currentPercentRelative,
+    smoothPlayBar: state.jPlayer.smoothPlayBar
 });
 
 export default connect(mapStateToProps)(

@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import merge from "lodash.merge";
+import screenfull from "screenfull";
 
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
 import {testCanPlayType, absoluteMediaUrls} from "../util/index";
@@ -41,45 +42,8 @@ export default connect(mapStateToProps)(
             this.state = {
                 [keys.PLAYER_CLASS]: [],
             };
-			// The key control object, defining the key codes and the functions to execute.
-			this.keyBindings = merge({
-				// The parameter, f = this.focusInstance, will be checked truethy before attempting to call any of these functions.
-				// Properties may be added to this object, in key/fn pairs, to enable other key controls. EG, for the playlist add-on.
-				play: {
-					key: 80, // p
-					fn: () => this.props.paused ? this.play() : this.pause()
-				},
-				fullScreen: {
-					key: 70, // f
-					fn: () => {
-						if(this.props.mediaSettings.available && this.props.mediaSettings.video || this.props.audioFullScreen) {
-							this.fullScreen(!this.props.fullScreen);
-						}
-					}
-				},
-				muted: {
-					key: 77, // m
-					fn: () => this.mute(!this.props.muted)
-				},
-				volumeUp: {
-					key: 190, // .
-					fn: () =>  this.volume(this.props.volume + 0.1)
-				},
-				volumeDown: {
-					key: 188, // ,
-					fn: () => this.volume(this.props.volume - 0.1)
-				},
-				loop: {
-					key: 76, // l
-					fn: () => this.incrementLoop()
-				}
-			}, this.props.keyBindings);
+			
 			this.timeFormats = merge(timeFormats, this.props.timeFormats);	
-
-			this.loopOptions = [
-				loopOptions.OFF,
-				loopOptions.LOOP		
-			].concat(this.props.loopOptions);
 
 			this.noFullWindow = merge({
 				...noFullWindows
@@ -167,17 +131,6 @@ export default connect(mapStateToProps)(
 				hint: errorHints.URL_NOT_SET
 			});
 		}
-		_trigger = (func, error) => {
-			// var jPlayerOptions = {
-			// 	version: Object.assign({}, version),
-			// 	element: this.currentMedia,
-			// 	error: Object.assign({}, error)
-			// }
-
-			// if (func !== undefined) {
-			// 	func.bind(this)(jPlayerOptions);
-			// }
-		}
 		_error = (error) => this._trigger(this.props.onError, error);
 		// updateOnOptionsChanged = (key) => {
 		// 	switch (key) {
@@ -194,8 +147,7 @@ export default connect(mapStateToProps)(
 		// 			break;
 		// 	}	
 		// }
-		_loop = () => this._trigger(this.props.onRepeat)
-		fullScreen = (fullScreen) => {
+		//fullScreen = (fullScreen) => {
 			// var wkv = nativeFeatures.fullscreen.used.webkitVideo;
 			// if(!wkv || wkv && !this.props.waitForPlay) {
 			// 	if(fullScreen) {
@@ -207,7 +159,7 @@ export default connect(mapStateToProps)(
             //         this.props.dispatch(updateOption("fullWindow", this.props.fullScreen));
 			// 	}
 			// }
-		}
+		//}
 		// fullWindow = () => {
 		// 	const sizeClass = this.props.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
 		// 	this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.PLAYER_CLASS, this.props.cssClass);
@@ -266,14 +218,19 @@ export default connect(mapStateToProps)(
             } else {
                 this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SEEKING)));
             }
-            if(nextProps.loop === "loop") {
+            if(nextProps.loop === loopOptions.LOOP) {
                 this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-            } else if (nextProps.loop === "loop-playlist") {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
             } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
+                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
             }
+            // if(nextProps.loop === loopOptions.LOOP) {
+            //     this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED)));
+            // } else if (nextProps.loop === loopOptions.LOOP_PLAYLIST) {
+            //     this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
+            //     this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
+            // } else {
+            //     this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
+            // }
             if (nextProps.shuffled) {
                 this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
             } else {
@@ -295,9 +252,10 @@ export default connect(mapStateToProps)(
         }
 		componentWillMount() {
 			this.setFormats();
-			this.props.dispatch(setMedia(this.props.media));
 		}
         componentDidMount() {
+            this.props.dispatch(setMedia(this.props.media));
+            
             if(this.props.mediaSettings.video) {
                 this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, "jp-video")));
                 if (this.props.sizeCssClass !== undefined) {
@@ -311,7 +269,7 @@ export default connect(mapStateToProps)(
                 this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, "jp-audio")));
             }
 
-            const sizeClass = this.props.fullScreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
+            const sizeClass = screenfull.isFullscreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
 
             if (this.props.sizeClass !== undefined) {
                 this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states[sizeClass])));

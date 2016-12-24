@@ -1,0 +1,224 @@
+@backgroundColour:#157BF9;
+@foregroundColour:#114CA8;
+
+#time() {
+  padding:0 12px;
+  position: absolute;
+}
+
+.jp-blue-compact {
+  .jp-title {
+    font-weight:bold;
+    white-space:nowrap;
+    position:absolute;
+    left:200px;
+    z-index:999;
+  }
+  .jp-details {
+    cursor:default;
+    display:inline-block;
+    font-size:13px;
+    font-weight:bold;
+    width:100%;
+  }
+  .jp-gui {
+    height: 42px;
+    .jp-no-solution {
+      background-color:@backgroundColour;
+      color:#215cfe;
+      display:none;
+      font-size:16px;
+      height:42px;
+      left:42px;
+      line-height:24px;
+      padding:8px 0;
+      position:absolute;
+      right:0;
+      text-align:center;
+      top:0;
+    }
+    .jp-controls {
+      height: 100%;
+      position: relative;
+      border: solid;
+      line-height: 43px;
+      text-align: center;
+      a {
+        font-size:26px;
+        padding: 12px;
+        position: relative;
+      }   
+      .jp-playback-rate-bar {
+        background-color:@backgroundColour;
+        height:100%;
+        .jp-playback-rate-bar-value {
+          background-color:@foregroundColour;
+          height:100%;
+        }
+      }
+      .jp-volume-bar {
+        background-color:@backgroundColour;
+        cursor:pointer;
+        left:490px;
+        position:absolute;
+        top:17px;
+        width:100px;
+        border-radius:1px;
+        .jp-volume-bar-value {
+          background-color:@foregroundColour;
+          height:6px;
+        }
+      }
+    }
+    .jp-progress {
+      background-color:@backgroundColour;
+      height:42px;
+      left:0;
+      position:absolute;
+      right:0;
+      top:0;
+      bottom:0;
+      margin:auto;
+      width:300px;
+      .jp-current-time {
+        #time;
+      }
+      .jp-duration {
+        #time;
+        right:0;
+        top:0;
+      }
+      .jp-seek-bar {
+        cursor:pointer;
+        height:100%;
+        .jp-play-bar {
+          background-color:@foregroundColour;
+          height:100%;
+          position:absolute;
+        }
+      }
+    }
+  }
+}
+
+// @backgroundColour:#157BF9;
+// @foregroundColour:#114CA8;
+
+// #time() {
+//   padding:0 12px;
+//   position: absolute;
+// }
+
+// .jp-blue-compact {
+//   .jp-title {
+//     font-weight:bold;
+//     white-space:nowrap;
+//     position:absolute;
+//     left:200px;
+//     z-index:999;
+//   }
+//   .jp-details {
+//     cursor:default;
+//     display:inline-block;
+//     font-size:13px;
+//     font-weight:bold;
+//     width:100%;
+//   }
+//   .jp-gui {
+//     font-family:"Source Sans Pro", sans-serif;
+//     font-size:16px;
+//     color:#d1d1d1;
+//     line-height:42px;
+//     .jp-no-solution {
+//       background-color:@backgroundColour;
+//       color:#215cfe;
+//       display:none;
+//       font-size:16px;
+//       height:42px;
+//       left:42px;
+//       line-height:24px;
+//       padding:8px 0;
+//       position:absolute;
+//       right:0;
+//       text-align:center;
+//       top:0;
+//     }
+//     .jp-controls {
+//       height:42px;
+//       left:0;
+//       position:absolute;
+//       top:0;
+//       width:42px;
+//       bottom:0;
+//       line-height:42px;
+//       font-size:16px;
+//       margin:auto;
+//       right:500px;
+//       a {
+//         font-size:26px;
+//         position:absolute;
+//       }
+//       .jp-mute {       
+//         left:460px;;
+//       }
+//       .jp-full-screen {
+//         left:430px;
+//       }
+//       .jp-repeat {
+//         left:85px;
+//       }
+//       .jp-play {
+//         right:80px;
+//       }
+//       .jp-playback-rate-bar {
+//         background-color:@backgroundColour;
+//         height:100%;
+//         .jp-playback-rate-bar-value {
+//           background-color:@foregroundColour;
+//           height:100%;
+//         }
+//       }
+//       .jp-volume-bar {
+//         background-color:@backgroundColour;
+//         cursor:pointer;
+//         left:490px;
+//         position:absolute;
+//         top:17px;
+//         width:100px;
+//         border-radius:1px;
+//         .jp-volume-bar-value {
+//           background-color:@foregroundColour;
+//           height:6px;
+//         }
+//       }
+//     }
+//     .jp-progress {
+//       background-color:@backgroundColour;
+//       height:42px;
+//       left:0;
+//       position:absolute;
+//       right:0;
+//       top:0;
+//       bottom:0;
+//       margin:auto;
+//       width:300px;
+//       .jp-current-time {
+//         #time;
+//       }
+//       .jp-duration {
+//         #time;
+//         right:0;
+//         top:0;
+//       }
+//       .jp-seek-bar {
+//         cursor:pointer;
+//         height:100%;
+//         .jp-play-bar {
+//           background-color:@foregroundColour;
+//           height:100%;
+//           position:absolute;
+//         }
+//       }
+//     }
+//   }
+// }

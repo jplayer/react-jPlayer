@@ -7,7 +7,7 @@ export default class extends React.PureComponent {
         
         this.state = {}
     }
-	static get defaultProps() {
+	static get propTypes() {
 		return {
 			playBarStyle: React.PropTypes.object,
 			smoothPlayBar: React.PropTypes.bool,

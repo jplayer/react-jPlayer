@@ -45,9 +45,12 @@ export default class extends React.Component {
 			this.props.fullWindow && this.props.full || !this.props.fullWindow && this.props.restored ?
 				<div className={this.props.nativeVideoControls ? constants.classNames.HIDDEN : null} onMouseMove={this._setFading} style={GUI_WRAPPER_STYLE}>
 					<Motion defaultStyle={{opacityToInterpTo: 1}} style={{opacityToInterpTo: spring(this.state.isFadingIn ? 1 : 0, this.state.isFadingIn ? this.props.fadeInConfig : this.props.fadeOutConfig)}}>
-						{values => <div className="jp-gui" onMouseLeave={() => this.setState({isFadingIn: false})} onMouseEnter={() => clearTimeout(this.fadeHoldTimeout)} style={{opacity: values.opacityToInterpTo, display: values.opacityToInterpTo <= 0.05 ? "none" : ""}}>
-							{this.props.children}
-						</div>}
+						{values => 
+							<div className="jp-gui" onMouseLeave={() => this.setState({isFadingIn: false})} onMouseEnter={() => clearTimeout(this.fadeHoldTimeout)} 
+								style={{opacity: values.opacityToInterpTo, display: values.opacityToInterpTo <= 0.05 ? "none" : ""}}>
+								{this.props.children}
+							</div>
+						}
 					</Motion>
 				</div>
 			:	<div className={this.props.nativeVideoControls ? "jp-gui " + constants.className.HIDDEN : "jp-gui"}>{this.props.children}</div>

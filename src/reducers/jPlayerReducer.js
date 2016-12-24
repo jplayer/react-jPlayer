@@ -49,15 +49,8 @@ const setMedia = (state, action) => {
     }
     if(supported) {
         if(!(newState.nativeVideoControls)) {
-            // Set poster IMG if native video controls are not being used
-            // Note: With IE the IMG onload event occurs immediately when cached.
-            // Note: Poster hidden by default in clearMedia()
             if(validString(media.poster)) {
-                //if(posterChanged) { // Since some browsers do not generate img onload event.
                 newState.posterSrc = media.poster;
-            //	} else {
-                //	this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.POSTER_CLASS, classNames.HIDDEN);
-            //	}
             }
         }
 
@@ -130,23 +123,14 @@ const playbackRate = (state, action) => updateOption(state, {
     playbackRate: limitValue(action.playbackRate, state.minPlaybackRate, state.maxPlaybackRate)
 });
 
-const incrementLoop = (state) => {
-    var loopIndex = state.loopOptions.indexOf(state.loop || state.loopOptions[0]);
-
-    if (loopIndex >= state.loopOptions.length - 1) {
-        loopIndex = -1;
-    }
-    return updateOption(state, {
-        loop: state.loopOptions[++loopIndex]
-    });
-}
+const loop = (state, action) => updateOption(state, {
+    loop: action.loop
+});
 
 const fullScreen = (state, action) => {
     action.fullScreen ? screenfull.request(document.getElementById(state.jPlayerSelector)) : screenfull.exit();
 
-    return updateOption(state, {
-        fullScreen: action.fullScreen
-    });
+    return state;
 }
 
 export default (state={}, action) => {
@@ -175,8 +159,8 @@ export default (state={}, action) => {
             return duration(state, action);
         case actionTypes.jPlayer.PLAYBACK_RATE:
             return playbackRate(state, action);
-        case actionTypes.jPlayer.INCEMENT_LOOP:
-            return incrementLoop(state, action);
+        case actionTypes.jPlayer.LOOP:
+            return loop(state, action);
         case actionTypes.jPlayer.FULL_SCREEN:
             return fullScreen(state, action);
         default:

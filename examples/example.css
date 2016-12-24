@@ -1,0 +1,130 @@
+.jp-hidden {
+  display: none;
+}
+.jp-audio img {
+  width: 40px;
+  height: 40px;
+}
+.jp-audio.jp-state-full-screen img,
+.jp-video.jp-state-full-screen img {
+  height: 90%;
+  width: 90%;
+}
+.jp-video.jp-video-270p img {
+  width: 480px;
+  height: 270px;
+}
+.jp-state-full-screen {
+  margin: 0 auto;
+}
+.jp-state-full-screen img {
+  display: block;
+  margin: 0 auto;
+}
+.jp-blue-compact .jp-title {
+  font-weight: bold;
+  white-space: nowrap;
+  position: absolute;
+  left: 200px;
+  z-index: 999;
+}
+.jp-blue-compact .jp-details {
+  cursor: default;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  width: 100%;
+}
+.jp-blue-compact .jp-gui {
+  height: 42px;
+}
+.jp-blue-compact .jp-gui .jp-no-solution {
+  background-color: #157BF9;
+  color: #215cfe;
+  display: none;
+  font-size: 16px;
+  height: 42px;
+  left: 42px;
+  line-height: 24px;
+  padding: 8px 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+}
+.jp-blue-compact .jp-gui .jp-controls {
+  height: 100%;
+  position: relative;
+  border: solid;
+  line-height: 43px;
+  text-align: center;
+}
+.jp-blue-compact .jp-gui .jp-controls a {
+  font-size: 26px;
+  padding: 12px;
+  position: relative;
+}
+.jp-blue-compact .jp-gui .jp-controls .jp-playback-rate-bar {
+  background-color: #157BF9;
+  height: 100%;
+}
+.jp-blue-compact .jp-gui .jp-controls .jp-playback-rate-bar .jp-playback-rate-bar-value {
+  background-color: #114CA8;
+  height: 100%;
+}
+.jp-blue-compact .jp-gui .jp-controls .jp-volume-bar {
+  background-color: #157BF9;
+  cursor: pointer;
+  left: 490px;
+  position: absolute;
+  top: 17px;
+  width: 100px;
+  border-radius: 1px;
+}
+.jp-blue-compact .jp-gui .jp-controls .jp-volume-bar .jp-volume-bar-value {
+  background-color: #114CA8;
+  height: 6px;
+}
+.jp-blue-compact .jp-gui .jp-progress {
+  background-color: #157BF9;
+  height: 42px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 300px;
+}
+.jp-blue-compact .jp-gui .jp-progress .jp-current-time {
+  padding: 0 12px;
+  position: absolute;
+}
+.jp-blue-compact .jp-gui .jp-progress .jp-duration {
+  padding: 0 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.jp-blue-compact .jp-gui .jp-progress .jp-seek-bar {
+  cursor: pointer;
+  height: 100%;
+}
+.jp-blue-compact .jp-gui .jp-progress .jp-seek-bar .jp-play-bar {
+  background-color: #114CA8;
+  height: 100%;
+  position: absolute;
+}
+.jp-controls a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+}
+.jp-controls a:hover {
+  color: #1a1a1a;
+}
+.jp-state-playing .jp-controls .jp-play i:before {
+  content: "\F04C";
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJleGFtcGxlLmNzcyIsInNvdXJjZVJvb3QiOiIifQ==*/

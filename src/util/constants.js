@@ -14,7 +14,7 @@ export const actionTypes = {
 		MUTE: "MUTE",
 		DURATION: "DURATION",
 		PLAYBACK_RATE: "PLAYBACK_RATE",
-		INCEMENT_LOOP: "INCEMENT_LOOP",
+		LOOP: "LOOP",
 		FULL_SCREEN: "FULL_SCREEN"
 	},
 	jPlaylist: {
@@ -62,14 +62,15 @@ export const classNames = {
 	STOP: "jp-stop",
 	REPEAT: "jp-repeat",
 	FULL_SCREEN: "jp-full-screen",
-	TITLE: "jp-title",
 	CURRENT_TIME: "jp-current-time",
 	DURATION: "jp-duration",
     HIDDEN: "jp-hidden",
 	DETAILS: "jp-details",
+	TITLE: "jp-title",
 	SHUFFLE: "jp-shuffle",
 	PREVIOUS: "jp-previous",
 	NEXT: "jp-next",
+	POSTER: "jp-poster",
     states: {
         PLAYING: "jp-state-playing",
         SEEKING: "jp-state-seeking",
@@ -107,7 +108,8 @@ export const errorHints = {
 
 export const loopOptions = {
     OFF: "off",
-    LOOP: "loop"
+    LOOP: "loop",
+	LOOP_PLAYLIST: "loop-playlist"
 }
 
 export const noFullWindows = {

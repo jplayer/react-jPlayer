@@ -1,12 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
+import merge from "lodash.merge";
+import screenfull from "screenfull";
 
-import {getWidth, getHeight, getOffset} from "../util/index";
-import {keys, classNames} from "../util/constants";
-import {updateOption, addUniqueToArray, removeFromArrayByValue, play, pause, mute, playbackRate,
-volume, incrementLoop, fullScreen} from "../actions/jPlayerActions";
-import * as reducer from "../reducers/index";
-import Control from "./control";
+import {keys, classNames, keyIgnoreElementNames, loopOptions} from "../util/constants";
+import {pause, mute, volume, loop, fullScreen} from "../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     ...state.jPlayer
@@ -14,15 +12,39 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(
     class extends React.Component {
-        constructor() {
-            super();
-            
-            this.state = {
-                playbackRateBarClass: [classNames.PLAYBACK_RATE_BAR],
-                playbackRateBarValueClass: [classNames.PLAYBACK_RATE_BAR_VALUE],
-                volumeBarClass: [classNames.VOLUME_BAR],
-                volumeBarValueClass: [classNames.VOLUME_BAR_VALUE]
-            }
+        constructor(props) {
+            super(props);
+
+            this.keyBindings = merge({
+				play: {
+					key: 80, // p
+					fn: () => this.props.paused ? this.props.dispatch(play()) : this.props.dispatch(pause())
+				},
+				fullScreen: {
+					key: 70, // f
+					fn: () => {
+						if(this.props.mediaSettings.available && this.props.mediaSettings.video || this.props.audioFullScreen) {
+							this.fullScreen(!screenfull.isFullscreen);
+						}
+					}
+				},
+				muted: {
+					key: 77, // m
+					fn: () => this.props.dispatch(mute(!this.props.muted))
+				},
+				volumeUp: {
+					key: 190, // .
+					fn: () => this.props.dispatch(volume(this.props.volume + 0.1))
+				},
+				volumeDown: {
+					key: 188, // ,
+					fn: () =>  this.props.dispatch(volume(this.props.volume - 0.1))
+				},
+				loop: {
+					key: 76, // l
+					fn: () => this.props.loop === loopOptions.LOOP ? this.props.dispatch(loop(loopOptions.OFF)) : this.props.dispatch(loop(loopOptions.LOOP))
+				}
+			}, this.props.keyBindings);
         }
         static get defaultProps() {
             return {
@@ -84,119 +106,38 @@ export default connect(mapStateToProps)(
             this.context.next();
             this.context.blur(event.target);
         }
-        onMuteClick = () => this.props.dispatch(mute(!this.props.muted))
-        onPlayClick = () => this.props.paused ? this.props.dispatch(play()) : this.props.dispatch(pause())
-        onPlaybackRateBarClick = (e) => {
-            // Using e.currentTarget to enable multiple playbackRate bars
-            var bar = e.currentTarget,
-                offset = getOffset(bar),
-                x = e.pageX - offset.left,
-                w = getWidth(bar),
-                y = getHeight(bar) - e.pageY + offset.top,
-                h = getHeight(bar),
-                ratio,
-                playbackRateValue;
-
-            if(this.props.verticalPlaybackRate) {
-                ratio = y/h;
-            } else {
-                ratio = x/w;
-            }
-
-            playbackRateValue = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
-            this.props.dispatch(playbackRate(playbackRateValue));
-        }
-        onVolumeBarClick = (e) => {
-            // Using $(e.currentTarget) to enable multiple volume bars
-            var bar = e.currentTarget,
-                offset = getOffset(bar),
-                x = e.pageX - offset.left,
-                w = getWidth(bar),
-                y = getHeight(bar) - e.pageY + offset.top,
-                h = getHeight(bar);
-
-            this.props.verticalVolume ? this.props.dispatch(volume(y/h)) : this.props.dispatch(volume(x/w))
-
-            if(this.props.muted) {
-                this.props.dispatch(mute(false));
-            }
-        }
-        onVolumeMaxClick = () => {
-            this.props.dispatch(volume(1));
-
-            if(this.props.muted) {
-                this.props.dispatch(mute(false));
-            }
-        }
         onVideoPlayClick = () => this.props.dispatch(play())
-        onRepeatClick = () => this.props.dispatch(incrementLoop())
-        onFullScreenClick = () => this.props.dispatch(fullScreen(!this.props.fullScreen))
-        onKeyDown = (e) => {
+        onKeyDown = (event) => {
+            if (keyIgnoreElementNames.some(name => name.toUpperCase() === event.target.nodeName.toUpperCase())) {
+                return;
+            }
+
             for (var key in this.keyBindings) {
                 const keyBinding = this.keyBindings[key];
 
-                if (keyBinding.key === e.charCode) {
+                if (keyBinding.key === event.keyCode ||
+                    keyBinding.key === event.key) {
+                    event.preventDefault();
                     keyBinding.fn();
                 }
             }
         }
-        _updatePlaybackRateStyles = (nextProps) => {
-            var playbackRate = nextProps.playbackRate,
-                ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
-            if(nextProps.playbackRateEnabled) {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN)));
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN)));
-                
-                const playbackRateBarValue = (ratio * 100) + "%";
-
-                this.setState({playbackRateBarValueStyle: {
-                    width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
-                    height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
-                }});
-            } else {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN)));
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN)));
-            }
+        componentWillMount() {
+            document.addEventListener("keydown", this.onKeyDown);
         }
-        _updateVolumeStyles = (nextProps) => {
-            if(nextProps.noVolume) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.VOLUME_BAR_CLASS, classNames.HIDDEN)));
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
-            } else {
-                const volumeValue = nextProps.muted ? 0 : (nextProps.volume * 100) + "%";
-                
-                this.setState({volumeBarValueStyle: {
-                    width: !nextProps.verticalVolume ? volumeValue : null,
-                    height: nextProps.verticalVolume ? volumeValue : null
-                }});
-
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_BAR_CLASS, classNames.HIDDEN)));
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
-            }
-        }
-        componentWillReceiveProps(nextProps) {
-            this._updatePlaybackRateStyles(nextProps);
-            this._updateVolumeStyles(nextProps);
+        componentWillUnmount() {
+            document.removeEventListener("keydown", this.onKeyDown);
         }
         render() {
             return (
-                <div className="jp-controls" onKeyDown={this.onKeyDown}>
-                    {React.Children.map(this.props.children, child => 
-                        <Control onPlayClick={this.onPlayClick} onMuteClick={this.onMuteClick} onVolumeMaxClick={this.onVolumeMaxClick} onRepeatClick={this.onRepeatClick}
-                            onFullScreenClick={this.onFullScreenClick} onShuffleClick={this.onShuffleClick} onPreviousClick={this.onPreviousClick} onNextClick={this.onNextClick}>
-                            {child}
-                        </Control>
-                    )}
-                    <div className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick}>
-                        <div className={this.state.volumeBarValueClass.join(" ")} style={this.state.volumeBarValueStyle} />
-                    </div>
-                    <div className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick}>
-                        <div className={this.state.playbackRateBarValueClass.join(" ")} style={this.state.playbackRateBarValueStyle}/>
-                    </div>
+                <div className="jp-controls">
+                    {this.props.children}
                 </div>
             );
         }
     }
 )
+
+// shuffle: (<a className={classNames.SHUFFLE} onClick={props.onShuffleClick}>{props.children}</a>),
+// previous: (<a className={classNames.PREVIOUS} onClick={props.onPreviousClick}>{props.children}</a>),
+// next: (<a className={classNames.NEXT} onClick={props.onNextClick}>{props.children}</a>)

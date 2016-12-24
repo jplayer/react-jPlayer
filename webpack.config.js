@@ -1,12 +1,13 @@
 var debug = process.env.NODE_ENV !== "production";
 var webpack = require("webpack");
 var path = require("path");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
     entry: {
-        example: ["./examples/jPlaylistDemo.js", "./examples/jPlaylistDemo2.js"]
+        example: ["./examples/jPlayerDemo.js", "./examples/jPlaylistDemo.js"]
     },
     output: {
         path: "./examples/",
@@ -16,13 +17,25 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
                 loader: "babel-loader",
                 query: {
                     presets: ["react", "es2015", "stage-0"],
                     plugins: ["transform-class-properties", "transform-decorators-legacy"]
                 }
+            },
+            { 
+                test: /(\.css$|\.less$)/,
+                exclude: /node_modules/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader?importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!less-loader")
             }
-        ]
+        ],
+       
+    },
+    plugins: [
+        new ExtractTextPlugin("[name].css")
+    ],
+    postcss: function () {
+        return [require("autoprefixer")];
     }
 };

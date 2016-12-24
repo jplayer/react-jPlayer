@@ -30,6 +30,11 @@ export default connect(mapStateToProps)(
                     this._updateMediaStatus();
                     this.props.onDurationChange();
                 },
+                onPlay: () => {
+                    //When the autoPlay option is true
+                    this.props.dispatch(updateOption("paused", false));
+                    this.props.onPlay();
+                },
                 onEnded: () => {
                     // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
                     this.props.dispatch(pause());
@@ -66,7 +71,6 @@ export default connect(mapStateToProps)(
                     }
                     this.props.onError();
                 },
-                onPlay: this.props.onPlay,
                 onPlaying: this.props.onPlaying,
                 onPause: this.props.onPause,
                 onWaiting: this.props.onWaiting,
@@ -90,6 +94,7 @@ export default connect(mapStateToProps)(
                 onProgress: () => null,
                 onTimeUpdate: () => null,
                 onDurationChange: () => null,
+                onPlay: () => null,
                 onEnded: () => null,
                 onError: () => null
             }
@@ -132,17 +137,6 @@ export default connect(mapStateToProps)(
             this.props.dispatch(updateOption("playbackRate", this.currentMedia.playbackRate));
             this.props.dispatch(updateOption("ended", this.currentMedia.ended));
 		}
-		_trigger = (func, error) => {
-			// var jPlayerOptions = {
-			// 	version: Object.assign({}, version),
-			// 	element: this.currentMedia,
-			// 	error: Object.assign({}, error)
-			// }
-
-			// if (func !== undefined) {
-			// 	func.bind(this)(jPlayerOptions);
-			// }
-		}
         _updateCurrentMedia = (nextProps) => {
             if(nextProps.playbackRateEnabled) {
                 this.currentMedia.defaultPlaybackRate = nextProps.defaultPlaybackRate;
@@ -167,7 +161,7 @@ export default connect(mapStateToProps)(
 
 			this.currentMedia.preload = nextProps.preload;
             this.currentMedia.volume = nextProps.volume;
-            this.currentMedia.muted = nextProps.muted;
+            this.currentMedia.muted = nextProps.muted; 
             this.currentMedia.autoplay = nextProps.autoplay;
             this.currentMedia.loop = nextProps.loop === "loop" ? true : false;
         }
@@ -207,7 +201,6 @@ export default connect(mapStateToProps)(
                     {React.Children.map(this.props.children, child => React.cloneElement(child,
                         {
                             ...this.events,
-							title: this.props.title,
                             setCurrentMedia: ref => this.currentMedia = ref 
                         }
                     ))}
