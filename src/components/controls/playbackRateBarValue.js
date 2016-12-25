@@ -42,7 +42,7 @@ export default connect(mapStateToProps)(
             this._updatePlaybackRateBarValueStyles(nextProps);
         }
         render() {
-            return <div className={this.state.playbackRateBarValueClass.join(" ")} style={this.state.playbackRateBarValueStyle} {...this.props}/>
+            return <div className={this.state.playbackRateBarValueClass.join(" ")} style={this.state.playbackRateBarValueStyle} />
         }
     }  
 );

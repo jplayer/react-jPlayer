@@ -65,7 +65,7 @@ export default connect(mapStateToProps)(
                 onPlaybackRateBarClick: React.PropTypes.func,
                 className: React.PropTypes.string,
                 onKeyDown: React.PropTypes.func,
-                controls: React.PropTypes.object.isRequired,
+                controls: React.PropTypes.object,
                 playlistControls: React.PropTypes.object,
                 volumeBarClass: React.PropTypes.arrayOf(React.PropTypes.string),
                 volumeBarValueClass: React.PropTypes.arrayOf(React.PropTypes.string),

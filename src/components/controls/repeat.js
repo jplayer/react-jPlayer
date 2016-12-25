@@ -15,7 +15,7 @@ export default connect(mapStateToProps)(
         }
         onRepeatClick = () => this.props.loop === loopOptions.LOOP ? this.props.dispatch(loop(loopOptions.OFF)) : this.props.dispatch(loop(loopOptions.LOOP))
         render() {
-            return <a className={classNames.REPEAT} onClick={this.props.onRepeatClick} {...this.props}>{this.props.children}</a>
+            return <a className={classNames.REPEAT} onClick={this.props.onRepeatClick}>{this.props.children}</a>
         }
     }  
 );

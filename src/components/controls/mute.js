@@ -15,7 +15,7 @@ export default connect(mapStateToProps)(
         }
         onMuteClick = () => this.props.dispatch(mute(!this.props.muted))
         render() {
-            return <a className={classNames.MUTE} onClick={this.onMuteClick} {...this.props}>{this.props.children}</a>
+            return <a className={classNames.MUTE} onClick={this.onMuteClick}>{this.props.children}</a>
         }
     }  
 );

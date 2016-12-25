@@ -48,7 +48,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick} {...this.props}>
+                <div className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick}>
                     {this.props.children}
                 </div>
             );

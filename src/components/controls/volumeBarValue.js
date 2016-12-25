@@ -39,7 +39,7 @@ export default connect(mapStateToProps)(
             this._updateVolumeBarValueStyles(nextProps);
         }
         render() {
-            return <div className={this.state.volumeBarValueClass.join(" ")} style={this.state.volumeBarValueStyle} {...this.props} />
+            return <div className={this.state.volumeBarValueClass.join(" ")} style={this.state.volumeBarValueStyle} />
         }
     }  
 );

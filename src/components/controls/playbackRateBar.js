@@ -55,7 +55,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick} {...this.props}>
+                <div className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick}>
                     {this.props.children}
                 </div>
             );

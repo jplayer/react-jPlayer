@@ -15,7 +15,7 @@ export default connect()(
         }
         onPlayClick = () => this.props.paused ? this.props.dispatch(play()) : this.props.dispatch(pause())
         render() {
-            return <a className={classNames.PLAY} onClick={this.onPlayClick} {...this.props}>{this.props.children}</a>
+            return <a className={classNames.PLAY} onClick={this.onPlayClick}>{this.props.children}</a>
         }
     }  
 );

@@ -23,6 +23,7 @@
     "mocha": "--require scripts/mocha_runner test/**/*.js"
   },
   "scripts": {
+    "dev": "webpack-dev-server --progress --inline --content-base ./src",
     "prepublish": "babel src --out-dir ./dist --copy-files",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
@@ -63,7 +64,8 @@
     "redux": "^3.6.0",
     "screenfull": "^3.0.2",
     "sinon": "^1.17.3",
-    "style-loader": "^0.13.1"
+    "style-loader": "^0.13.1",
+    "webpack-dev-server": "^1.16.2"
   },
   "peerDependencies": {
     "react": "~0.14.8 || ^15.0.0",

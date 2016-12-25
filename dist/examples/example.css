@@ -61,8 +61,7 @@
 }
 .jp-blue-compact .jp-gui .jp-controls a {
   font-size: 26px;
-  padding: 12px;
-  position: relative;
+  position: absolute;
 }
 .jp-blue-compact .jp-gui .jp-controls .jp-playback-rate-bar {
   background-color: #157BF9;

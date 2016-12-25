@@ -36,7 +36,7 @@ export default connect(mapStateToProps)(
             this._updateVolumeMaxStyles(nextProps);
         }
         render() {
-            return <a className={this.state.volumeMaxClass.join(" ")} onClick={this.props.onVolumeMaxClick} {...this.props}>{this.props.children}</a>
+            return <a className={this.state.volumeMaxClass.join(" ")} onClick={this.props.onVolumeMaxClick}>{this.props.children}</a>
         }
     }  
 );

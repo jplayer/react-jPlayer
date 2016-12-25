@@ -7,10 +7,11 @@ module.exports = {
     context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
     entry: {
-        example: ["./examples/jPlayerDemo.js", "./examples/jPlaylistDemo.js"]
+        example: "./src/examples/jPlayerDemo.js"
     },
     output: {
-        path: "./examples/",
+        path: "./dist/examples/",
+        publicPath: "/dist/examples/",
         filename: "[name].bundle.js"
     },
     module: {
