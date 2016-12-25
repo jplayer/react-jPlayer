@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
     paused: state.jPlayer.paused
 });
 
-export default connect()(
+export default connect(mapStateToProps)(
     class extends React.Component {
         constructor(props) {
             super();

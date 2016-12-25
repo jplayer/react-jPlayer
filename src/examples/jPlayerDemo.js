@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {Provider, connect} from "react-redux";
 
-import "../less/jPlayerBlueCompactSkin.less";
+import "../less/default/jPlayer.less";
 import "../less/jPlayerIconControls.less";
 
 import * as constants from "../util/constants";
@@ -62,22 +62,24 @@ class Player extends React.Component {
                 <Gui>
                     <Controls>
                         <Play><i className="fa fa-play"></i></Play>
-                        <Mute><i className={this.state.muteClassName}></i></Mute>
+                        <div className="jp-volume-controls">
+                            <Mute><i className={this.state.muteClassName}></i></Mute>
+                            <VolumeBar><VolumeBarValue /></VolumeBar>
+                        </div>
                         <FullScreen><i className="fa fa-expand"></i></FullScreen>
                         <Repeat><i className="fa fa-repeat"></i></Repeat>
-                        <VolumeBar><VolumeBarValue /></VolumeBar>
-                        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>  
+                        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
+                        <Progress>
+                            <PlayBar />
+                        </Progress>
                     </Controls>
-                    <Progress>
-                        <PlayBar />
-                    </Progress>
                 </Gui>
                 <Details>
                     <Title>{this.props.jPlayer.media.title}</Title>
                 </Details>
                 <BrowserUnsupported>
-                    <span>Update Required</span>
-                    To play the media you will need to update your browser to a recent version.
+                    <h1>Update Required</h1>
+                    To play the media you will need to update your browser to a more recent version.
                 </BrowserUnsupported>
             </JPlayer>
         );

@@ -35,7 +35,7 @@ export const statusDefaultValues = {
 };
 
 export default connect(mapStateToProps)(
-    class extends React.PureComponent {
+    class extends React.Component {
         constructor(props) {
             super(props);
             

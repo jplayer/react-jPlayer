@@ -1,0 +1,31 @@
+#time() {
+  padding:0 12px;
+  position: absolute;
+}
+
+.jp-progress {
+  background-color:@backgroundColour;
+  height:42px;
+  left:0;
+  right:0;
+  margin:auto;
+  width:300px;
+  font-size: 20px;
+  .jp-current-time {
+    #time;
+  }
+  .jp-duration {
+    #time;
+    right:0;
+  }
+  .jp-seek-bar {
+    #centerChildren;
+    cursor:pointer;
+    height:100%;
+    .jp-play-bar {
+      background-color:@foregroundColour;
+      height:100%;
+      position:absolute;
+    }
+  }
+}

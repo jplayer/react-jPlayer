@@ -35,6 +35,9 @@ export default connect(mapStateToProps)(
                 this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
             }
         }
+        componentDidMount() {
+            this._updateVolumeBarValueStyles(this.props);
+        }
         componentWillReceiveProps(nextProps) {
             this._updateVolumeBarValueStyles(nextProps);
         }

@@ -24,10 +24,7 @@ export default connect(mapStateToProps)(
             //     this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.POSTER_CLASS, classNames.HIDDEN)));
             // }
         }
-        componentWillMount() {
-            this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.POSTER_CLASS, classNames.HIDDEN)));
-        }
-        componentWillReceiveProps(nextProps) {
+        _updatePosterStyles = (nextProps) => {
             if (nextProps.media.length <= 0) {
                 this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.POSTER_CLASS, classNames.HIDDEN)));
             }
@@ -35,6 +32,12 @@ export default connect(mapStateToProps)(
             if (nextProps.src !== this.props.src) {
                 this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.POSTER_CLASS, classNames.HIDDEN)));
             }
+        }
+        componentWillMount() {
+            this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.POSTER_CLASS, classNames.HIDDEN)));
+        }
+        componentWillReceiveProps(nextProps) {
+           this._updatePosterStyles(nextProps);
         }
         render() {
             return <img className={this.state.posterClass.join(" ")} src={this.props.src} onLoad={this.onLoad} onClick={this.props.onClick} />;

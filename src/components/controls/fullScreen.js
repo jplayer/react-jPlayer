@@ -12,7 +12,7 @@ export default connect()(
         }
         onFullScreenClick = () => this.props.dispatch(fullScreen(!screenfull.isFullscreen))
         render() {
-            return <a className={classNames.FULL_SCREEN} onClick={this.props.onFullScreenClick}>{this.props.children}</a>
+            return <a className={classNames.FULL_SCREEN} onClick={this.onFullScreenClick}>{this.props.children}</a>
         }
     }  
 );
