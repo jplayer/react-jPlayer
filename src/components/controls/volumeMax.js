@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 
+import {addUniqueToArray, removeFromArrayByValue,updateObjectByKey} from "../../util/index";
 import {classNames} from "../../util/constants";
-import {mute, volume, addUniqueToArray, removeFromArrayByValue} from "../../actions/jPlayerActions";
-import * as reducer from "../../reducers/index";
+import {mute, volume} from "../../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     muted: state.jPlayer.muted
@@ -27,9 +27,9 @@ export default connect(mapStateToProps)(
         }
         _updateVolumeMaxStyles = (nextProps) => {
             if(nextProps.noVolume) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "volumeMaxClass", addUniqueToArray(state.volumeMaxClass, classNames.HIDDEN)));
             } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_MAX_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "volumeMaxClass", removeFromArrayByValue(state.volumeMaxClass, classNames.HIDDEN)));
             }
         }
         componentWillReceiveProps(nextProps) {

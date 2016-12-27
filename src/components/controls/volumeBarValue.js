@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 
+import {addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
-import {mute, volume, addUniqueToArray, removeFromArrayByValue} from "../../actions/jPlayerActions";
-import * as reducer from "../../reducers/index";
+import {mute, volume} from "../../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     verticalVolume: state.jPlayer.verticalVolume,
@@ -23,7 +23,7 @@ export default connect(mapStateToProps)(
         }
         _updateVolumeBarValueStyles = (nextProps) => {
             if(nextProps.noVolume) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "volumeBarValueClass", addUniqueToArray(state.volumeBarValueClass, classNames.HIDDEN)));
             } else {
                 const volumeBarValue = nextProps.muted ? 0 : (nextProps.volume * 100) + "%";
                 
@@ -32,7 +32,7 @@ export default connect(mapStateToProps)(
                     height: nextProps.verticalVolume ? volumeBarValue : null
                 }});
 
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_BAR_VALUE_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "volumeBarValueClass", removeFromArrayByValue(state.volumeBarValueClass, classNames.HIDDEN)));
             }
         }
         componentDidMount() {

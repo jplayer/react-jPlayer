@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 
+import {addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
-import {playbackRate, addUniqueToArray, removeFromArrayByValue} from "../../actions/jPlayerActions";
-import * as reducer from "../../reducers/index";
+import {playbackRate} from "../../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
@@ -26,7 +26,7 @@ export default connect(mapStateToProps)(
             var playbackRate = nextProps.playbackRate,
                 ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
             if(nextProps.playbackRateEnabled) {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "playbackRateBarValueClass", removeFromArrayByValue(state.playbackRateBarValueClass, classNames.HIDDEN)));
                 
                 const playbackRateBarValue = (ratio * 100) + "%";
 
@@ -35,7 +35,7 @@ export default connect(mapStateToProps)(
                     height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
                 }});
             } else {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYBACK_RATE_BAR_VALUE_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "playbackRateBarValueClass", addUniqueToArray(state.playbackRateBarValueClass, classNames.HIDDEN)));
             }
         }
         componentWillReceiveProps(nextProps) {

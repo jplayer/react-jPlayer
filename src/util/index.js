@@ -2,51 +2,49 @@ import merge from "lodash.merge";
 import remove from "lodash/remove";
 import get from "lodash/get";
 import set from "lodash/set";
-import {formats, browser} from "./constants";
+import {formats, browser, errors, hints} from "./constants";
 
-export const assignOptions = function(newOption, callback) {
-    this.props.updateOptions((prevOptions) => Object.assign({}, prevOptions, newOption), callback);
+export const addUniqueToArray = (existingArray = [], value) => {
+    const found = existingArray.some(v => v === value);
+            
+    if (!found) {
+		return existingArray.concat(value);
+    }
+
+    return existingArray;
 }
 
-export const mergeOptions = function(newOption, callback) {
-    this.props.updateOptions((prevOptions) => merge({}, prevOptions, newOption), callback);
+export const updateObjectByKey = (object, key, value) => {
+	var newObject = {...object};
+	set(newObject, key, value);
+	return newObject;
 }
 
-export const modifyOptionsArray = function(newOptions, arrayMethod, key, callback) {
-    const handleNewOptions = (prevOptions = []) => arrayMethod.call(prevOptions, newOptions);
+export const removeFromArrayByValue = (existingArray = [], value) => existingArray.filter(v => v !== value);
+export const removeFromArrayByIndex = (existingArray = [], value) => existingArray.filter((_, i) => i !== action.value);
 
-    this.props.updateOptions((prevOptions) => Object.assign({}, prevOptions, {[key]: handleNewOptions(prevOptions[key])}), callback);
-}
+export const updateOption = (existingObject, newValues) => ({
+    ...existingObject, 
+    ...newValues
+});
 
-export const addClass = function(classToAdd, key, callback) {
-    //Use function overload of setState to make sure we have up to date values
-    this.props.updateOptions((prevOptions) => {
-        const prevArray = get(prevOptions, key, []);
-        const found = prevArray.some((v) => v === classToAdd); 
+export const noFormatSupportedError = (context) => ({
+	context: context,
+    message: errors.FORMAT_NO_SUPPORT,
+    hint: hints.FORMAT_NO_SUPPORT
+});
 
-        //Don't add duplicates or empty strings
-        if (!found && classToAdd !== undefined) {
-            set(prevOptions, key, [...prevArray, classToAdd]);    
-        }
-        return prevOptions;
-    }, callback);
-}
+export const urlNotSupportedError = (context) => ({
+	context: context,
+	message: errors.URL_NO_SUPPORT,
+	hint: hints.URL_NO_SUPPORT
+});
 
-export const removeClass = function(classToRemove, key, callback) {
-    this.props.updateOptions((prevOptions) => {
-        const prevArray = get(prevOptions, key, []);
-
-        if (classToRemove !== undefined) {
-            remove(prevArray, (v) => classToRemove === v);
-        }
-
-        return prevOptions;
-    }, callback);
-}
-
-export const assignStyle = function(newOption, styleKey, callback) { 
-    this.setState((prevState) => prevState[styleKey] = Object.assign({}, prevState[styleKey], newOption), callback);
-}
+export const urlNotSetError = (context) => ({
+    context: context,
+    message: errors.URL_NOT_SET,
+    hint: hints.URL_NOT_SET
+});
 
 export const getOffset = (el) => ({top: el.getBoundingClientRect().top + document.body.scrollTop, left: el.getBoundingClientRect().left + document.body.scrollLeft});
 export const getWidth = (el) => el.getBoundingClientRect().width;

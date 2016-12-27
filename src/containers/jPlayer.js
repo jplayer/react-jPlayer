@@ -4,35 +4,12 @@ import merge from "lodash.merge";
 import screenfull from "screenfull";
 
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
-import {testCanPlayType, absoluteMediaUrls} from "../util/index";
-import reducer from "../reducers/index";
-import {setMedia, clearMedia, updateOption, addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
+import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
+import actions, {setMedia, clearMedia} from "../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     ...state.jPlayer
 });
-
-export const statusDefaultValues = {
-    paused: true,
-    format: {},
-    formatType: "",
-    waitForPlay: true, // Same as waitForLoad except in case where preloading.
-    waitForLoad: true,
-    srcSet: false,
-    video: false, // True if playing a video
-    seekPercent: 0,
-    currentPercentRelative: 0,
-    currentPercentAbsolute: 0,
-    currentTime: 0,
-    duration: 0,
-    remaining: 0,
-    videoWidth: 0, // Intrinsic width of the video in pixels.
-    videoHeight: 0, // Intrinsic height of the video in pixels.
-    readyState: 0,
-    networkState: 0,
-    ended: 0,
-	src: ""
-};
 
 export default connect(mapStateToProps)(
     class extends React.Component {
@@ -79,7 +56,7 @@ export default connect(mapStateToProps)(
         }
         getChildContext = () => ({
             setCurrentMedia: (ref) => this.currentMedia = ref,
-            getCurrentMedia: () => this.state.currentMedia,
+            getCurrentMedia: () => this.currentMedia,
             setMedia: this.setMedia,
 			clearMedia: this.clearMedia,
 			play: this.play,
@@ -121,121 +98,7 @@ export default connect(mapStateToProps)(
                 };
             });
 
-            this.props.dispatch(updateOption("mediaSettings", mediaSettings));
-        }
-		_urlNotSetError = (context) => {
-			this._error({
-				type: errors.URL_NOT_SET,
-				context: context,
-				message: errorMessages.URL_NOT_SET,
-				hint: errorHints.URL_NOT_SET
-			});
-		}
-		_error = (error) => this._trigger(this.props.onError, error);
-		// updateOnOptionsChanged = (key) => {
-		// 	switch (key) {
-		// 		case "noVolume":
-		// 			this._updateMute();
-		// 			this.props.dispatch(updateOption("noVolume", uaBlocklist(this.props.noVolume));
-		// 			break;
-		// 		// case "keyEnabled":
-		// 		// 	if(!value && this === focusInstance) {
-		// 		// 		focusInstance = null;
-		// 		// 	}
-		// 		// 	break;
-		// 		default:
-		// 			break;
-		// 	}	
-		// }
-		//fullScreen = (fullScreen) => {
-			// var wkv = nativeFeatures.fullscreen.used.webkitVideo;
-			// if(!wkv || wkv && !this.props.waitForPlay) {
-			// 	if(fullScreen) {
-			// 		this._requestFullscreen();
-			// 	} else {
-			// 		this._exitFullscreen();
-			// 	}
-			// 	if(!wkv) {
-            //         this.props.dispatch(updateOption("fullWindow", this.props.fullScreen));
-			// 	}
-			// }
-		//}
-		// fullWindow = () => {
-		// 	const sizeClass = this.props.fullWindow ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-		// 	this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.PLAYER_CLASS, this.props.cssClass);
-		// 	this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.PLAYER_CLASS, this.stateClass[sizeClass]);
-		// 	//this.props.dispatch(updateOption("cssClass", sizeClass, () => this._trigger(this.props.onResize));		
-		// }
-		// _requestFullscreen = () => {
-		// 	var e = document.querySelector(this.props.cssSelectorAncestor),
-		// 		fs = nativeFeatures.fullscreen;
-
-		// 	// This method needs the video element. For iOS and Android.
-		// 	if(fs.used.webkitVideo) {
-		// 		e = this.currentMedia;
-		// 	}
-
-		// 	if(fs.api.fullscreenEnabled) {
-		// 		fs.api.requestFullscreen(e);
-		// 	}
-		// }
-		// _exitFullscreen = () => {
-		// 	var fs = nativeFeatures.fullscreen,
-		// 		e;
-
-		// 	// This method needs the video element. For iOS and Android.
-		// 	if(fs.used.webkitVideo) {
-		// 		e = this.video.element();
-		// 	}
-
-		// 	if(fs.api.fullscreenEnabled) {
-		// 		fs.api.exitFullscreen(e);
-		// 	}
-		// }
-        _updatePlayerStyles = (nextProps) => {
-            if(!nextProps.paused) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.PLAYING)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.PLAYING)));
-            }
-            if(!nextProps.noFullWindow && nextProps.fullWindow) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.FULL_SCREEN)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.FULL_SCREEN)));
-            }
-            if(nextProps.noVolume) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.NO_VOLUME)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.NO_VOLUME)));
-            }
-            if(nextProps.muted) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.MUTED)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.MUTED)));
-            }
-            if (nextProps.seeking) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SEEKING)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SEEKING)));
-            }
-            if(nextProps.loop === loopOptions.LOOP) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-            }
-            // if(nextProps.loop === loopOptions.LOOP) {
-            //     this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-            // } else if (nextProps.loop === loopOptions.LOOP_PLAYLIST) {
-            //     this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED)));
-            //     this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
-            // } else {
-            //     this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.LOOPED_PLAYLIST)));
-            // }
-            if (nextProps.shuffled) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
-            } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYER_CLASS, classNames.states.SHUFFLED)));
-            }
+            this.props.dispatch(actions.updateOption("mediaSettings", mediaSettings));
         }
 		_updateSize = (nextProps) => {
 			// Video html resized if necessary at this time, or if native video controls being used.
@@ -246,37 +109,92 @@ export default connect(mapStateToProps)(
 				}});
 			}
 		}
+        _logErrors = (nextProps) => {
+            if (nextProps.logErrors && nextProps.error !== this.props.error) {
+                console.error(nextProps.error);
+            }
+        }
+        _updatePlayerStyles = (nextProps) => {
+            if(!nextProps.paused) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.PLAYING)));
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.PLAYING)));
+            }
+            if(nextProps.fullScreen) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.FULL_SCREEN)));
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.FULL_SCREEN)));
+            }
+            if(nextProps.noVolume) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.NO_VOLUME)));;
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.NO_VOLUME)));;
+            }
+            if(nextProps.muted) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.MUTED)));;
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.MUTED)));;
+            }
+            if (nextProps.seeking) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.SEEKING)));;
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.SEEKING)));;
+            }
+            if(nextProps.loop === loopOptions.LOOP) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.LOOPED)));;
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.LOOPED)));;
+            }
+            // if(nextProps.loop === loopOptions.LOOP) {
+            //     this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.LOOPED)));;
+            // } else if (nextProps.loop === loopOptions.LOOP_PLAYLIST) {
+            //     this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.LOOPED)));;
+            //     this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.LOOPED_PLAYLIST)));;
+            // } else {
+            //     this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.LOOPED_PLAYLIST)));;
+            // }
+            if (nextProps.shuffled) {
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.SHUFFLED)));;
+            } else {
+                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.SHUFFLED)));;
+            }
+        }
         componentWillReceiveProps(nextProps) {
             this._updatePlayerStyles(nextProps);
 			this._updateSize(nextProps);
+            this._logErrors(nextProps);
         }
 		componentWillMount() {
 			this.setFormats();
+            // Add key bindings focusInstance to 1st jPlayer instanced with key control enabled.
+			// if(this.props.keyEnabled && !focusInstance) {
+			// 	focusInstance = this;
+			// }
+
+            this.props.dispatch(actions.updateOption("noVolume", uaBlocklist(this.props.noVolume)));
+            this.props.dispatch(actions.updateOption("noFullWindow", uaBlocklist(this.props.noFullWindow)));
+            document.addEventListener(screenfull.raw.fullscreenchange, () => this.props.dispatch(actions.updateOption("fullScreen", screenfull.isFullscreen)));
 		}
         componentDidMount() {
-            this.props.dispatch(setMedia(this.props.media));
+            if (Object.keys(this.props.media).length) {
+                this.props.dispatch(setMedia(this.props.media));   
+            }
             
             if(this.props.mediaSettings.video) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, "jp-video")));
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-video")));;
                 if (this.props.sizeCssClass !== undefined) {
-                    this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, "jp-video-270p")));
+                    this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-video-270p")));;
                 }
 
                 if (this.props.sizeFullCssClass !== undefined) {
-                    this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, "jp-video-full")));
+                    this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-video-full")));;
                 }
             } else {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, "jp-audio")));
-            }
-
-            const sizeClass = screenfull.isFullscreen ? this.props.sizeFullCssClass : this.props.sizeCssClass;
-
-            if (this.props.sizeClass !== undefined) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYER_CLASS, classNames.states[sizeClass])));
+                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-audio")));;
             }
         }
         render() {
-            const {setCurrentMedia, ...childProps} = {...this.getChildContext()}
+            const {...childProps} = {...this.getChildContext()}
 
             return (
                 <div id={this.props.cssSelectorAncestor} className={this.state[keys.PLAYER_CLASS].join(" ")}>
@@ -286,6 +204,29 @@ export default connect(mapStateToProps)(
         }
     }
 )
+
+export const statusDefaultValues = {
+    paused: true,
+    format: {},
+    formatType: "",
+    waitForPlay: true, // Same as waitForLoad except in case where preloading.
+    waitForLoad: true,
+    srcSet: false,
+    video: false, // True if playing a video
+    seekPercent: 0,
+    currentPercentRelative: 0,
+    currentPercentAbsolute: 0,
+    newTime: 0,
+    currentTime: 0,
+    duration: 0,
+    remaining: 0,
+    videoWidth: 0, // Intrinsic width of the video in pixels.
+    videoHeight: 0, // Intrinsic height of the video in pixels.
+    readyState: 0,
+    networkState: 0,
+    ended: 0,
+	src: ""
+};
 
 export const jPlayerDefaultOptions = {
     jPlayerSelector: "jplayer_1",
@@ -299,6 +240,7 @@ export const jPlayerDefaultOptions = {
     playbackRate: 1.0,
     defaultPlaybackRate: 1.0,		
     volume: 0.8, // The volume. Number 0 to 1
+    media: {},
 	mediaSettings: {
 		video: false,
 		formats: [], //Order defines priority.

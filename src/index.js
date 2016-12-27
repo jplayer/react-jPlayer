@@ -6,7 +6,6 @@ import merge from "lodash.merge";
 import "../src/less/jPlayer.less";
 
 import {jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
-import {updateOption} from "./actions/jPlayerActions";
 
 const mapStateToProps = (state, ownProps) => ({jPlayer: state.jPlayer, jPlaylist: state.jPlaylist});
 

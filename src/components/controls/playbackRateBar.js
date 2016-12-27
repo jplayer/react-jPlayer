@@ -1,10 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {getWidth, getHeight, getOffset} from "../../util/index";
+import {getWidth, getHeight, getOffset, addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
-import {playbackRate, addUniqueToArray, removeFromArrayByValue} from "../../actions/jPlayerActions";
-import * as reducer from "../../reducers/index";
+import {playbackRate} from "../../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
@@ -44,10 +43,10 @@ export default connect(mapStateToProps)(
             this.props.dispatch(playbackRate(playbackRateValue));
         }
         _updatePlaybackRateBarStyles = (nextProps) => {
-            if(nextProps.playbackRateEnabled) {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN)));
+            if(nextProps.playbackRateEnabled) {         
+                this.setState(state => updateObjectByKey(state, "playbackRateBarClass", removeFromArrayByValue(state.playbackRateBarClass, classNames.HIDDEN)));
             } else {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.PLAYBACK_RATE_BAR_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "playbackRateBarClass", addUniqueToArray(state.playbackRateBarClass, classNames.HIDDEN)));
             }
         }
         componentWillReceiveProps(nextProps) {

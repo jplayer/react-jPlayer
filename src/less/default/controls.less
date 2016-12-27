@@ -1,4 +1,5 @@
 .jp-controls {
+    @import "progress";
     height: 100%;
     position:relative;
     margin:auto;
@@ -10,17 +11,17 @@
     }
     
     .jp-play {
-        left:580px;
+        left:625px;
     }
     .jp-repeat {
-        left:610px;
+        left:755px;
     }
     .jp-full-screen {
-        left:640px;
+        right: 758px;
     }
     .jp-volume-controls {
         #centerChildren;
-        right: 580px;
+        right: 610px;
         .jp-mute {
             display: inline-block;
         }
@@ -41,12 +42,11 @@
         background-color:@backgroundColour;
         cursor: pointer;
         left: 670px;
-        width: 100px;
+        width: 60px;
         height:100%;
         .jp-playback-rate-bar-value {
             background-color:@foregroundColour;
             height:100%;
         }
     }
-    @import "progress";
 }

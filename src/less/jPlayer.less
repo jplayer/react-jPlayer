@@ -1,24 +1,28 @@
 .jp-hidden {
   display:none;
 }
-.jp-audio img {
-  width:40px;
-  height:40px;
+
+.jp-gui {
+  user-select: none
 }
-.jp-audio.jp-state-full-screen img, 
-.jp-video.jp-state-full-screen img {
-  height:90%;
-  width:90%;
-}
-.jp-video.jp-video-270p img {
-  width:480px;
-  height:270px;
+
+.jp-no-solution {
+    display:none;
 }
 
 .jp-state-full-screen {
-  margin:0 auto;
-  img {
-    display:block;
-    margin:0 auto;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+
+  .jp-poster {
+    max-width: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    position: fixed;
   }
 }

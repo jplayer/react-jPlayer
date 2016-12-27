@@ -8,7 +8,7 @@ import "../less/jPlayerIconControls.less";
 import * as constants from "../util/constants";
 import renderjPlayer from "../index";
 import JPlayer from "../containers/jPlayer";
-import Media from "../containers/media";
+import Media from "../components/media";
 import Gui from "../components/gui";
 import Controls from "../components/controls";
 import Progress from "../components/progress";
@@ -17,7 +17,6 @@ import BrowserUnsupported from "../components/browserUnsupported";
 import Poster from "../components/poster";
 import Audio from "../components/audio";
 import Video from "../components/video";
-import Details from "../components/details";
 import Title from "../components/title";
 import FullScreen from "../components/controls/fullScreen";
 import Mute from "../components/controls/mute";
@@ -36,6 +35,13 @@ class Player extends React.Component {
             muteClassName: "fa fa-volume-up"
         };
     }
+    static get defaultProps() {
+        return {
+            jPlayer: {
+                media: {}
+            }
+        }
+    }
     onVolumeChange = () => {
         if (this.props.jPlayer.muted) {
             this.setState({muteClassName: "fa fa-volume-off"});
@@ -50,16 +56,19 @@ class Player extends React.Component {
     render() {
         return (
             <JPlayer>
-                <Poster />
-                <Media onVolumeChange={this.onVolumeChange}>
-                    <Audio>
-                        <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-                    </Audio>
-                    <Video>
-                        {/*<NativeVideoControls />*/}
-                    </Video>
-                </Media>
                 <Gui>
+                    <Media onVolumeChange={this.onVolumeChange}>
+                        <Audio>
+                            <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+                        </Audio>
+                        <Video>
+                            {/*<NativeVideoControls />*/}
+                        </Video>
+                    </Media>
+                    <div className="jp-poster-container">
+                        <Poster />
+                        <Title>{this.props.jPlayer.media.title}</Title>
+                    </div>
                     <Controls>
                         <Play><i className="fa fa-play"></i></Play>
                         <div className="jp-volume-controls">
@@ -74,13 +83,10 @@ class Player extends React.Component {
                         </Progress>
                     </Controls>
                 </Gui>
-                <Details>
-                    <Title>{this.props.jPlayer.media.title}</Title>
-                </Details>
                 <BrowserUnsupported>
-                    <h1>Update Required</h1>
+                    <h2>Browser Unsupported</h2>
                     To play the media you will need to update your browser to a more recent version.
-                </BrowserUnsupported>
+                </BrowserUnsupported>          
             </JPlayer>
         );
     }
@@ -94,11 +100,12 @@ const jPlayerOptions = {
     keyEnabled: true,
     globalVolume: false,
     autoplay: false,
+    logErrors: true,
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",
-        mp3: "http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
-        poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png",
+        mp3: "http://www.davidgagne.net/m/song.mp3",
+        poster: "http://wallpapercave.com/wp/Mb4UPsY.png",
         free: true
     }
 };

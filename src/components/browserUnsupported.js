@@ -23,9 +23,9 @@ export default class extends React.Component {
         // 		message: constants.errorMessages.NO_SOLUTION,
         // 		hint: constants.errorHints.NO_SOLUTION
         // 	});
-        // 	this.setState(state => removeFromArrayByValue(state, jPlayerActions.removeFromArrayByValue(constants.keys.NO_SOLUTION_CLASS, constants.classNames.HIDDEN);
+        // 	this.setState(state => removeFromArrayByValue(state.noSolutionClass, constants.classNames.HIDDEN));
         // } else {
-        // 	this.setState(state => addUniqueToArray(state, jPlayerActions.addUniqueToArray(constants.keys.NO_SOLUTION_CLASS, this.props[constants.keys.NO_SOLUTION_CLASS], constants.classNames.HIDDEN);
+        // 	this.setState(state => addUniqueToArray(state.noSolutionClass, constants.classNames.HIDDEN));
         // }
     }
     render() {

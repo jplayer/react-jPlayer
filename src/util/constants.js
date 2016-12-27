@@ -47,6 +47,18 @@ export const keys = {
 	PLAYLIST: "playlist",
 };
 
+export const errors = {
+	FORMAT_NO_SUPPORT: "It is not possible to play any media format provided on this browser using your current options.", 
+	URL_NO_SUPPORT: "The media URL could not be loaded.",
+	URL_NOT_SET: "Attempted to issue media playback commands while no media url is set."
+};
+
+export const hints = {
+	FORMAT_NO_SUPPORT: "Video or audio formats defined in the supplied option may be missing.", 
+	URL_NO_SUPPORT: "Check the media URL is valid.",
+	URL_NOT_SET: "Pass the media through the options or use the setMedia() action that is passed into the component props."
+};
+
 export const classNames = {
 	MUTE: "jp-mute",
 	VOLUME_BAR: "jp-volume-bar",
@@ -81,29 +93,6 @@ export const classNames = {
         NO_VOLUME: "jp-state-no-volume",
 		SHUFFLED: "jp-state-shuffled"
     },
-};
-
-export const errors = {
-    NO_SOLUTION: "e_no_solution",
-    NO_SUPPORT: "e_no_support",
-    URL: "e_url",
-    URL_NOT_SET: "e_url_not_set",
-    VERSION: "e_version"
-};
-
-export const errorMessages = {
-    NO_SOLUTION: "No solution can be found by jPlayer in this browser. HTML can not be used.", // Used in: _init()
-    NO_SUPPORT: "It is not possible to play any media format provided in setMedia() on this browser using your current options.", // Used in: setMedia()
-    URL: "Media URL could not be loaded.",
-    URL_NOT_SET: "Attempt to issue media playback commands, while no media url is set." // Used in: load(), play(), pause(), stop() and playHead()
-};
-
-export const errorHints = {
-    NO_SOLUTION: "Review the jPlayer supplied option.",
-    NO_SUPPORT: "Video or audio formats defined in the supplied option are missing.",
-    URL: "Check media URL is valid.",
-    URL_NOT_SET: "Use setMedia() to set the media URL.",
-    VERSION: "Update jPlayer files."
 };
 
 export const loopOptions = {

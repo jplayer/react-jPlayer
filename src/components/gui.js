@@ -30,7 +30,7 @@ export default class extends React.Component {
 			full: true, // Controls the interface autoHide feature.
 			hold: 2000 // Milliseconds. The period of the pause before autoHide beings.
 		}
-	}			
+	}	
 	_setFading = (event) => {	
 		if (!this.state.isFadingIn) {
 			this.fadeHoldTimeout = setTimeout(() => {

@@ -1,7 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
 import merge from "lodash.merge";
-import screenfull from "screenfull";
 
 import {keys, classNames, keyIgnoreElementNames, loopOptions} from "../util/constants";
 import {pause, mute, volume, loop, fullScreen} from "../actions/jPlayerActions";
@@ -24,7 +23,7 @@ export default connect(mapStateToProps)(
 					key: 70, // f
 					fn: () => {
 						if(this.props.mediaSettings.available && this.props.mediaSettings.video || this.props.audioFullScreen) {
-							this.fullScreen(!screenfull.isFullscreen);
+							this.fullScreen(!this.props.fullScreen);
 						}
 					}
 				},

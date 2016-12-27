@@ -51,7 +51,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
             this.props.updateOption("onResize", () => {
                 const method = this.props.fullScreen ? this.props.removeFromArrayByValue : this.props.addUniqueToArray;
 
-                method(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
+                this.setState(state => method(state.detailsClass, constants.classNames.HIDDEN));
                // this._trigger(this.props.onResize);
             });
             
@@ -74,7 +74,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
 
             // Put the title in its initial display state
             if (!this.props.fullScreen) {
-                this.props.addUniqueToArray(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
+                this.setState(state => addUniqueToArray(state.detailsClass, constants.classNames.HIDDEN));
             }
         }
         static get defaultProps() {

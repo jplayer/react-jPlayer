@@ -1,10 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {getWidth, getHeight, getOffset} from "../../util/index";
+import {getWidth, getHeight, getOffset, addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
-import {mute, volume, addUniqueToArray, removeFromArrayByValue} from "../../actions/jPlayerActions";
-import * as reducer from "../../reducers/index";
+import {mute, volume} from "../../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     verticalVolume: state.jPlayer.verticalVolume,
@@ -22,7 +21,6 @@ export default connect(mapStateToProps)(
             }
         }
         onVolumeBarClick = (e) => {
-            // Using $(e.currentTarget) to enable multiple volume bars
             var bar = e.currentTarget,
                 offset = getOffset(bar),
                 x = e.pageX - offset.left,
@@ -38,9 +36,9 @@ export default connect(mapStateToProps)(
         }
         _updateVolumeBarStyles = (nextProps) => {
             if(nextProps.noVolume) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.VOLUME_BAR_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "volumeBarClass", addUniqueToArray(state.volumeBarClass, classNames.HIDDEN)));
             } else {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.VOLUME_BAR_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "volumeBarClass", removeFromArrayByValue(state.volumeBarClass, classNames.HIDDEN)));
             }
         }
         componentWillReceiveProps(nextProps) {

@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
+
+import {addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../util/index";
 import {keys, classNames} from "../util/constants";
-import {addUniqueToArray, removeFromArrayByValue} from "../actions/jPlayerActions";
-import * as reducer from "../reducers/index";
 
 const mapStateToProps = (state) => ({
     mediaSettings: state.jPlayer.mediaSettings,
@@ -16,25 +16,25 @@ export default connect(mapStateToProps)(
             super();
             
             this.state = {
-                [keys.POSTER_CLASS]: [classNames.POSTER],
+                posterClass: [classNames.POSTER],
             };      
         }
         onLoad = () => {
             // if(!this.props.mediaSettings.video.available) {
-            //     this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.POSTER_CLASS, classNames.HIDDEN)));
+            //     this.setState(state => removeFromArrayByValue(state.posterClass, classNames.HIDDEN));
             // }
         }
         _updatePosterStyles = (nextProps) => {
             if (nextProps.media.length <= 0) {
-                this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.POSTER_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "posterClass", addUniqueToArray(state.posterClass, classNames.HIDDEN)));
             }
 
             if (nextProps.src !== this.props.src) {
-                this.setState(state => reducer.removeFromArrayByValue(state, removeFromArrayByValue(keys.POSTER_CLASS, classNames.HIDDEN)));
+                this.setState(state => updateObjectByKey(state, "posterClass", removeFromArrayByValue(state.posterClass, classNames.HIDDEN)));
             }
         }
         componentWillMount() {
-            this.setState(state => reducer.addUniqueToArray(state, addUniqueToArray(keys.POSTER_CLASS, classNames.HIDDEN)));
+            this.setState(state => updateObjectByKey(state, "posterClass", addUniqueToArray(state.posterClass, classNames.HIDDEN)));
         }
         componentWillReceiveProps(nextProps) {
            this._updatePosterStyles(nextProps);

@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {classNames, loopOptions} from "../../util/constants";
-import {mute} from "../../actions/jPlayerActions";
+import {mute, loop} from "../../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     loop: state.jPlayer.loop
@@ -15,7 +15,7 @@ export default connect(mapStateToProps)(
         }
         onRepeatClick = () => this.props.loop === loopOptions.LOOP ? this.props.dispatch(loop(loopOptions.OFF)) : this.props.dispatch(loop(loopOptions.LOOP))
         render() {
-            return <a className={classNames.REPEAT} onClick={this.props.onRepeatClick}>{this.props.children}</a>
+            return <a className={classNames.REPEAT} onClick={this.onRepeatClick}>{this.props.children}</a>
         }
     }  
 );

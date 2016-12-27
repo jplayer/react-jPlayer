@@ -1,9 +1,10 @@
 import screenfull from "screenfull";
+import get from "lodash/get";
+import set from "lodash/set";
 
-import {actionTypes} from "../util/constants";
-import {addUniqueToArray, removeFromArrayByValue, updateOption} from "./index";
-import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
-import {testCanPlayType, absoluteMediaUrls, validString, limitValue} from "../util/index";
+import {actionTypes, classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes} from "../util/constants";
+import {testCanPlayType, absoluteMediaUrls, validString, limitValue, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey, 
+    urlNotSetError, noFormatSupportedError} from "../util/index";
 import {statusDefaultValues} from "../containers/jPlayer";
 
 const clearMedia = (state) => {
@@ -39,6 +40,7 @@ const setMedia = (state, action) => {
             // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
             }
             if(newState.mediaSettings.playableFormat[format] && media[format]) {
+                newState.originalSrc = action.media[format]; 
                 newState.src = media[format];
                 newState.formatType = format;
                 newState.format = {[format]: true};
@@ -47,6 +49,7 @@ const setMedia = (state, action) => {
             break;
         }
     }
+
     if(supported) {
         if(!(newState.nativeVideoControls)) {
             if(validString(media.poster)) {
@@ -57,14 +60,8 @@ const setMedia = (state, action) => {
         newState.titleText = media.title;          
         newState.srcSet = true;
         newState.paused = true;
-    } else { // jPlayer cannot support any formats provided in this browser
-        // Send an error event
-        // this._error( {
-        // 	type: errors.NO_SUPPORT,
-        // 	context: "{supplied:'" + this.props.supplied.join(", ") + "'}",
-        // 	message: errorMessages.NO_SUPPORT,
-        // 	hint: errorHints.NO_SUPPORT
-        // });
+    } else {
+        newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(", ")}'}`);
     }
     
     return updateOption(state, newState);
@@ -74,11 +71,12 @@ const play = (state, action) => {
     if(state.srcSet) {
         return updateOption(state, {
             paused: false,
-            newCurrentTime: !isNaN(action.time) ? action.time : state.currentTime 
+            newTime: !isNaN(action.time) ? action.time : state.currentTime 
         });
     } else {
-        //this._urlNotSetError("play");
-        return updateOption(state, {paused: true});
+        return updateOption(state, {
+            error: urlNotSetError(play.name)
+        });
     }
 }
 
@@ -86,10 +84,12 @@ const pause = (state, action) => {
     if(state.srcSet) {
         return updateOption(state, {
             paused: true,
-            newCurrentTime: !isNaN(action.time) ? action.time : state.currentTime 
+            newTime: !isNaN(action.time) ? action.time : state.currentTime 
         });
     } else {
-        //this._urlNotSetError("pause");
+        return updateOption(state, {
+            error: urlNotSetError(pause.name)
+        });
     }
     return state;
 }
@@ -102,7 +102,9 @@ const playHead = (state, action) => {
             playHeadPercent: limitedPercent
         });
     } else {
-        //this._urlNotSetError("playHead");
+        return updateOption(state, {
+            error: urlNotSetError(playHead.name)
+        });
     }
     return state;
 }
@@ -127,18 +129,17 @@ const loop = (state, action) => updateOption(state, {
     loop: action.loop
 });
 
-const fullScreen = (state, action) => {
-    action.fullScreen ? screenfull.request(document.getElementById(state.jPlayerSelector)) : screenfull.exit();
-
+const fullScreen = (state, {fullScreen, element = state.cssSelectorAncestor}) => {
+    fullScreen ? screenfull.request(document.getElementById(element)) : screenfull.exit();
     return state;
 }
 
 export default (state={}, action) => {
     switch (action.type) {
         case actionTypes.jPlayer.ARRAY_ADD_UNIQUE:
-            return addUniqueToArray(state, action);
+            return updateObjectByKey(state, action.key, addUniqueToArray(get(state, action.key), action.value));
         case actionTypes.jPlayer.ARRAY_REMOVE_BY_VALUE:
-            return removeFromArrayByValue(state, action);
+            return updateObjectByKey(state, action.key, removeFromArrayByValue(get(state, action.key), action.value));
         case actionTypes.jPlayer.UPDATE_OPTION:
             return updateOption(state, {[action.key]: action.value});
         case actionTypes.jPlayer.CLEAR_MEDIA:
@@ -161,7 +162,7 @@ export default (state={}, action) => {
             return playbackRate(state, action);
         case actionTypes.jPlayer.LOOP:
             return loop(state, action);
-        case actionTypes.jPlayer.FULL_SCREEN:
+        case actionTypes.jPlayer.FULL_SCREEN: 
             return fullScreen(state, action);
         default:
             return state;
