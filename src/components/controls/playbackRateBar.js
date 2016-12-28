@@ -23,7 +23,7 @@ export default connect(mapStateToProps)(
                 playbackRateBarClass: [classNames.PLAYBACK_RATE_BAR]
             }
         }
-        onPlaybackRateBarClick = (e) => !this.props.barDrag ? this.movePlaybackRate(e) : null
+        onPlaybackRateBarClick = (e) => this.movePlaybackRate(e)
         onPlaybackRateMouseMove = (e) => this.props.barDrag && this.dragging ? this.movePlaybackRate(e) : null
         onPlaybackRateMouseDown = () => this.dragging = true
         onPlaybackRateMouseUp = () => this.dragging = false

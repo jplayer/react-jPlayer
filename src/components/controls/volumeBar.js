@@ -21,7 +21,7 @@ export default connect(mapStateToProps)(
                 volumeBarClass: [classNames.VOLUME_BAR]
             }
         }
-        onVolumeBarClick = (e) => !this.props.barDrag ? this.moveVolumeBar(e) : null
+        onVolumeBarClick = (e) => this.moveVolumeBar(e)
         onVolumeBarMouseMove = (e) => this.props.barDrag && this.dragging ? this.moveVolumeBar(e) : null
         onVolumeBarMouseDown = () => this.dragging = true
         onVolumeBarMouseUp = () => this.dragging = false

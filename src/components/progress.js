@@ -32,7 +32,7 @@ export default connect(mapStateToProps)(
                 seekBarStyle: React.PropTypes.object
             }
         }
-        onSeekBarClick = (e) => !this.props.barDrag ? this.movePlayHead(e) : null
+        onSeekBarClick = (e) => this.movePlayHead(e)
         onSeekBarMouseMove = (e) => this.props.barDrag && this.dragging ? this.movePlayHead(e) : null
         onSeekBarMouseDown = () => this.dragging = true
         onSeekBarMouseUp = () => this.dragging = false
