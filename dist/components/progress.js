@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../util/constants", "../util/index", "../util/convertTime", "../reducers/index", "../actions/jPlayerActions"], factory);
+        define(["exports", "react", "react-redux", "../util/constants", "../util/index", "../util/convertTime", "../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../util/constants"), require("../util/index"), require("../util/convertTime"), require("../reducers/index"), require("../actions/jPlayerActions"));
+        factory(exports, require("react"), require("react-redux"), require("../util/constants"), require("../util/index"), require("../util/convertTime"), require("../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constants, global.index, global.convertTime, global.index, global.jPlayerActions);
+        factory(mod.exports, global.react, global.reactRedux, global.constants, global.index, global.convertTime, global.jPlayerActions);
         global.progress = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constants, _index, _convertTime, _index2, _jPlayerActions) {
+})(this, function (exports, _react, _reactRedux, _constants, _index, _convertTime, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -21,24 +21,7 @@
 
     var _convertTime2 = _interopRequireDefault(_convertTime);
 
-    var jPlayerActions = _interopRequireWildcard(_jPlayerActions);
-
-    function _interopRequireWildcard(obj) {
-        if (obj && obj.__esModule) {
-            return obj;
-        } else {
-            var newObj = {};
-
-            if (obj != null) {
-                for (var key in obj) {
-                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-                }
-            }
-
-            newObj.default = obj;
-            return newObj;
-        }
-    }
+    var _jPlayerActions2 = _interopRequireDefault(_jPlayerActions);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -118,7 +101,9 @@
             media: state.jPlayer.media,
             currentTime: state.jPlayer.currentTime,
             currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
-            currentPercentRelative: state.jPlayer.currentPercentRelative
+            currentPercentRelative: state.jPlayer.currentPercentRelative,
+            smoothPlayBar: state.jPlayer.smoothPlayBar,
+            playHeadPercent: state.jPlayer.playHeadPercent
         };
     };
 
@@ -131,14 +116,13 @@
             var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
 
             _this.onSeekBarClick = function (e) {
-                // Using $(e.currentTarget) to enable multiple seek bars
                 var bar = e.currentTarget,
                     offset = (0, _index.getOffset)(bar),
                     x = e.pageX - offset.left,
                     w = (0, _index.getWidth)(bar),
-                    p = 100 * x / w;
+                    percentage = 100 * x / w;
 
-                _this.context.playHead(p);
+                _this.props.dispatch((0, _jPlayerActions.playHead)(percentage));
             };
 
             _this.onDurationClick = function (e) {
@@ -146,24 +130,33 @@
                     if (_this.props.captureDuration) {
                         e.stopPropagation();
                     }
-                    _this.context.duration();
+                    _this.props.dispatch((0, _jPlayerActions.duration)());
                 }
             };
 
-            _this._updateBarStyles = function (nextProps) {
+            _this.onProgressMouseDown = function () {
+                return _this.dragging = true;
+            };
+
+            _this.onProgressMouseOut = function () {
+                return _this.dragging = false;
+            };
+
+            _this.updateBarStyles = function (nextProps) {
                 _this.setState({ seekBarStyle: { width: nextProps.seekPercent + "%" } });
+
                 if (nextProps.seeking) {
                     _this.setState(function (state) {
-                        return (0, _index2.addUniqueToArray)(state, jPlayerActions.addUniqueToArray(_constants.keys.SEEK_BAR_CLASS, _constants.classNames.seeking));
+                        return (0, _index.updateObjectByKey)(state, "seekBarClass", (0, _index.addUniqueToArray)(state.seekBarClass, _constants.classNames.states.SEEKING));
                     });
                 } else {
                     _this.setState(function (state) {
-                        return (0, _index2.removeFromArrayByValue)(state, jPlayerActions.removeFromArrayByValue(_constants.keys.SEEK_BAR_CLASS, _constants.classNames.seeking));
+                        return (0, _index.updateObjectByKey)(state, "seekBarClass", (0, _index.removeFromArrayByValue)(state.seekBarClass, _constants.classNames.states.SEEKING));
                     });
                 }
             };
 
-            _this._updateDurationText = function (nextProps) {
+            _this.updateDurationText = function (nextProps) {
                 var durationText = '',
                     duration = nextProps.duration,
                     remaining = nextProps.remaining;
@@ -184,13 +177,13 @@
                 _this.setState(_defineProperty({ durationText: durationText }, "durationText", durationText));
             };
 
-            _this._updateCurrentTimeText = function (nextProps) {
+            _this.updateCurrentTimeText = function (nextProps) {
                 var currentTimeText = (0, _convertTime2.default)(nextProps.currentTime);
                 _this.setState(_defineProperty({ currentTimeText: currentTimeText }, "currentTimeText", currentTimeText));
             };
 
             _this.state = {
-                seekBarClass: []
+                seekBarClass: [_constants.classNames.SEEK_BAR]
             };
             return _this;
         }
@@ -198,9 +191,9 @@
         _createClass(_class2, [{
             key: "componentWillReceiveProps",
             value: function componentWillReceiveProps(nextProps) {
-                this._updateBarStyles(nextProps);
-                this._updateDurationText(nextProps);
-                this._updateCurrentTimeText(nextProps);
+                this.updateBarStyles(nextProps);
+                this.updateDurationText(nextProps);
+                this.updateCurrentTimeText(nextProps);
             }
         }, {
             key: "render",
@@ -210,11 +203,14 @@
                     { className: "jp-progress" },
                     _react2.default.createElement(
                         "div",
-                        { className: this.state.seekBarClass.join(" "), style: this.state.seekBarStyle, onClick: this.onSeekBarClick },
+                        { className: this.state.seekBarClass.join(" "), style: this.state.seekBarStyle, onMouseMove: this.onSeekBarClick },
                         _react2.default.cloneElement(_react2.default.Children.only(this.props.children), {
                             smoothPlayBar: this.props.smoothPlayBar,
                             currentPercentAbsolute: this.props.currentPercentAbsolute,
-                            currentPercentRelative: this.props.currentPercentRelative
+                            currentPercentRelative: this.props.currentPercentRelative,
+                            currentTime: this.props.currentTime,
+                            duration: this.props.duration,
+                            playHeadPercent: this.props.playHeadPercent
                         }),
                         _react2.default.createElement(
                             "div",
@@ -240,6 +236,16 @@
                     durationText: _react2.default.PropTypes.string
                 };
             }
+            // onProgressMouseMove = (e) => {
+            //     if (this.dragging) {
+            //         var position = e.pageX - getOffset(e.currentTarget).left;
+            //         var percentage = 100 * position / getWidth(e.currentTarget);
+
+            //     // this.setState({width: `${percentage}%`});
+            //         this.props.dispatch(playHead(percentage));
+            //     }
+            // }
+
         }]);
 
         return _class2;

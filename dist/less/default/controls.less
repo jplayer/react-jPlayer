@@ -1,0 +1,52 @@
+.jp-controls {
+    @import "progress";
+    height: 100%;
+    position:relative;
+    margin:auto;
+    font-size:24px;
+    display: flex;
+    align-items: center;
+    > * {
+        position: absolute;
+    }
+    
+    .jp-play {
+        left:625px;
+    }
+    .jp-repeat {
+        left:755px;
+    }
+    .jp-full-screen {
+        right: 758px;
+    }
+    .jp-volume-controls {
+        #centerChildren;
+        right: 610px;
+        .jp-mute {
+            display: inline-block;
+        }
+        .jp-volume-bar {
+            margin-left: 10px;
+            background-color:@backgroundColour;
+            cursor: pointer;
+            width: 100px;
+            display: inline-block;
+            border-radius: 1px;
+            .jp-volume-bar-value {
+            background-color:@foregroundColour;
+            height:6px;
+            }
+        }
+    }
+    .jp-playback-rate-bar {
+        background-color:@backgroundColour;
+        cursor: pointer;
+        left: 670px;
+        width: 60px;
+        height:100%;
+        .jp-playback-rate-bar-value {
+            background-color:@foregroundColour;
+            height:100%;
+        }
+    }
+}

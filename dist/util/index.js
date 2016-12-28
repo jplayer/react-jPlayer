@@ -16,7 +16,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.limitValue = exports.validString = exports.absoluteMediaUrls = exports.qualifyURL = exports.escapeHtml = exports.nativeFeatures = exports.testCanPlayType = exports.testPlaybackRate = exports.getDocMode = exports.uaPlatform = exports.uaBrowser = exports.focusInstance = exports.uaBlocklist = exports.isFunction = exports.getHeight = exports.getWidth = exports.getOffset = exports.assignStyle = exports.removeClass = exports.addClass = exports.modifyOptionsArray = exports.mergeOptions = exports.assignOptions = undefined;
+	exports.limitValue = exports.validString = exports.absoluteMediaUrls = exports.qualifyURL = exports.escapeHtml = exports.nativeFeatures = exports.testCanPlayType = exports.testPlaybackRate = exports.getDocMode = exports.uaPlatform = exports.uaBrowser = exports.focusInstance = exports.uaBlocklist = exports.isFunction = exports.getHeight = exports.getWidth = exports.getOffset = exports.urlNotSetError = exports.urlNotSupportedError = exports.noFormatSupportedError = exports.updateOption = exports.removeFromArrayByIndex = exports.removeFromArrayByValue = exports.updateObjectByKey = exports.addUniqueToArray = undefined;
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -32,90 +32,82 @@
 		};
 	}
 
-	function _toConsumableArray(arr) {
-		if (Array.isArray(arr)) {
-			for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-				arr2[i] = arr[i];
+	var _extends = Object.assign || function (target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
+
+			for (var key in source) {
+				if (Object.prototype.hasOwnProperty.call(source, key)) {
+					target[key] = source[key];
+				}
 			}
-
-			return arr2;
-		} else {
-			return Array.from(arr);
-		}
-	}
-
-	function _defineProperty(obj, key, value) {
-		if (key in obj) {
-			Object.defineProperty(obj, key, {
-				value: value,
-				enumerable: true,
-				configurable: true,
-				writable: true
-			});
-		} else {
-			obj[key] = value;
 		}
 
-		return obj;
-	}
-
-	var assignOptions = exports.assignOptions = function assignOptions(newOption, callback) {
-		this.props.updateOptions(function (prevOptions) {
-			return Object.assign({}, prevOptions, newOption);
-		}, callback);
+		return target;
 	};
 
-	var mergeOptions = exports.mergeOptions = function mergeOptions(newOption, callback) {
-		this.props.updateOptions(function (prevOptions) {
-			return (0, _lodash2.default)({}, prevOptions, newOption);
-		}, callback);
+	var addUniqueToArray = exports.addUniqueToArray = function addUniqueToArray() {
+		var existingArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+		var value = arguments[1];
+
+		var found = existingArray.some(function (v) {
+			return v === value;
+		});
+
+		if (!found) {
+			return existingArray.concat(value);
+		}
+
+		return existingArray;
 	};
 
-	var modifyOptionsArray = exports.modifyOptionsArray = function modifyOptionsArray(newOptions, arrayMethod, key, callback) {
-		var handleNewOptions = function handleNewOptions() {
-			var prevOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-			return arrayMethod.call(prevOptions, newOptions);
+	var updateObjectByKey = exports.updateObjectByKey = function updateObjectByKey(object, key, value) {
+		var newObject = _extends({}, object);
+		(0, _set2.default)(newObject, key, value);
+		return newObject;
+	};
+
+	var removeFromArrayByValue = exports.removeFromArrayByValue = function removeFromArrayByValue() {
+		var existingArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+		var value = arguments[1];
+		return existingArray.filter(function (v) {
+			return v !== value;
+		});
+	};
+	var removeFromArrayByIndex = exports.removeFromArrayByIndex = function removeFromArrayByIndex() {
+		var existingArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+		var value = arguments[1];
+		return existingArray.filter(function (_, i) {
+			return i !== action.value;
+		});
+	};
+
+	var updateOption = exports.updateOption = function updateOption(existingObject, newValues) {
+		return _extends({}, existingObject, newValues);
+	};
+
+	var noFormatSupportedError = exports.noFormatSupportedError = function noFormatSupportedError(context) {
+		return {
+			context: context,
+			message: _constants.errors.FORMAT_NO_SUPPORT,
+			hint: _constants.hints.FORMAT_NO_SUPPORT
 		};
-
-		this.props.updateOptions(function (prevOptions) {
-			return Object.assign({}, prevOptions, _defineProperty({}, key, handleNewOptions(prevOptions[key])));
-		}, callback);
 	};
 
-	var addClass = exports.addClass = function addClass(classToAdd, key, callback) {
-		//Use function overload of setState to make sure we have up to date values
-		this.props.updateOptions(function (prevOptions) {
-			var prevArray = (0, _get2.default)(prevOptions, key, []);
-			var found = prevArray.some(function (v) {
-				return v === classToAdd;
-			});
-
-			//Don't add duplicates or empty strings
-			if (!found && classToAdd !== undefined) {
-				(0, _set2.default)(prevOptions, key, [].concat(_toConsumableArray(prevArray), [classToAdd]));
-			}
-			return prevOptions;
-		}, callback);
+	var urlNotSupportedError = exports.urlNotSupportedError = function urlNotSupportedError(context) {
+		return {
+			context: context,
+			message: _constants.errors.URL_NO_SUPPORT,
+			hint: _constants.hints.URL_NO_SUPPORT
+		};
 	};
 
-	var removeClass = exports.removeClass = function removeClass(classToRemove, key, callback) {
-		this.props.updateOptions(function (prevOptions) {
-			var prevArray = (0, _get2.default)(prevOptions, key, []);
-
-			if (classToRemove !== undefined) {
-				(0, _remove2.default)(prevArray, function (v) {
-					return classToRemove === v;
-				});
-			}
-
-			return prevOptions;
-		}, callback);
-	};
-
-	var assignStyle = exports.assignStyle = function assignStyle(newOption, styleKey, callback) {
-		this.setState(function (prevState) {
-			return prevState[styleKey] = Object.assign({}, prevState[styleKey], newOption);
-		}, callback);
+	var urlNotSetError = exports.urlNotSetError = function urlNotSetError(context) {
+		return {
+			context: context,
+			message: _constants.errors.URL_NOT_SET,
+			hint: _constants.hints.URL_NOT_SET
+		};
 	};
 
 	var getOffset = exports.getOffset = function getOffset(el) {

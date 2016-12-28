@@ -132,7 +132,8 @@
 										return _this2.setState({ isFadingIn: false });
 									}, onMouseEnter: function onMouseEnter() {
 										return clearTimeout(_this2.fadeHoldTimeout);
-									}, style: { opacity: values.opacityToInterpTo, display: values.opacityToInterpTo <= 0.05 ? "none" : "" } },
+									},
+									style: { opacity: values.opacityToInterpTo, display: values.opacityToInterpTo <= 0.05 ? "none" : "" } },
 								_this2.props.children
 							);
 						}

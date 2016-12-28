@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "../util/constants"], factory);
+        define(["exports", "react", "react-redux", "../../util/constants", "../../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("../util/constants"));
+        factory(exports, require("react"), require("react-redux"), require("../../util/constants"), require("../../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.constants);
-        global.browserUnsupported = mod.exports;
+        factory(mod.exports, global.react, global.reactRedux, global.constants, global.jPlayerActions);
+        global.repeat = mod.exports;
     }
-})(this, function (exports, _react, _constants) {
+})(this, function (exports, _react, _reactRedux, _constants, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -23,21 +23,6 @@
         return obj && obj.__esModule ? obj : {
             default: obj
         };
-    }
-
-    function _defineProperty(obj, key, value) {
-        if (key in obj) {
-            Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: true,
-                configurable: true,
-                writable: true
-            });
-        } else {
-            obj[key] = value;
-        }
-
-        return obj;
     }
 
     function _classCallCheck(instance, Constructor) {
@@ -88,54 +73,38 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var _class = function (_React$Component) {
-        _inherits(_class, _React$Component);
+    var mapStateToProps = function mapStateToProps(state) {
+        return {
+            loop: state.jPlayer.loop
+        };
+    };
 
-        function _class() {
-            _classCallCheck(this, _class);
+    exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
+        _inherits(_class2, _React$Component);
 
-            var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+        function _class2(props) {
+            _classCallCheck(this, _class2);
 
-            _this.state = _defineProperty({}, _constants.keys.NO_SOLUTION_CLASS, [_constants.classNames.NO_SOLUTION]);
+            var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
+
+            _this.onRepeatClick = function () {
+                return _this.props.loop === _constants.loopOptions.LOOP ? _this.props.dispatch((0, _jPlayerActions.loop)(_constants.loopOptions.OFF)) : _this.props.dispatch((0, _jPlayerActions.loop)(_constants.loopOptions.LOOP));
+            };
+
             return _this;
         }
 
-        _createClass(_class, [{
-            key: "componentDidMount",
-            value: function componentDidMount() {
-                // If html is not being used by this browser, then media playback is not possible. Trigger an error event.
-                // if(!this.html.used) {
-                // 	this._error({
-                // 		type: constants.errors.NO_SOLUTION,
-                // 		context: "{solution:'" + this.props.solution + "', supplied:'" + this.props.supplied.join(", ") + "'}",
-                // 		message: constants.errorMessages.NO_SOLUTION,
-                // 		hint: constants.errorHints.NO_SOLUTION
-                // 	});
-                // 	this.setState(state => removeFromArrayByValue(state.noSolutionClass, constants.classNames.HIDDEN));
-                // } else {
-                // 	this.setState(state => addUniqueToArray(state.noSolutionClass, constants.classNames.HIDDEN));
-                // }
-            }
-        }, {
+        _createClass(_class2, [{
             key: "render",
             value: function render() {
                 return _react2.default.createElement(
-                    "div",
-                    { className: this.state.noSolutionClass.join(" ") },
+                    "a",
+                    { className: _constants.classNames.REPEAT, onClick: this.onRepeatClick },
                     this.props.children
                 );
             }
-        }], [{
-            key: "propTypes",
-            get: function get() {
-                return {
-                    noSolutionClass: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string)
-                };
-            }
         }]);
 
-        return _class;
-    }(_react2.default.Component);
-
-    exports.default = _class;
+        return _class2;
+    }(_react2.default.Component));
 });

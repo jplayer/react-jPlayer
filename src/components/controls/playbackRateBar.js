@@ -10,7 +10,8 @@ const mapStateToProps = (state) => ({
     minPlaybackRate: state.jPlayer.minPlaybackRate,
     maxPlaybackRate: state.jPlayer.maxPlaybackRate,
     playbackRate: state.jPlayer.playbackRate,
-    playbackRateEnabled: state.jPlayer.playbackRateEnabled
+    playbackRateEnabled: state.jPlayer.playbackRateEnabled,
+    barDrag: state.jPlayer.barDrag
 });
 
 export default connect(mapStateToProps)(
@@ -22,14 +23,16 @@ export default connect(mapStateToProps)(
                 playbackRateBarClass: [classNames.PLAYBACK_RATE_BAR]
             }
         }
-        onPlaybackRateBarClick = (e) => {
-            // Using e.currentTarget to enable multiple playbackRate bars
-            var bar = e.currentTarget,
-                offset = getOffset(bar),
+        onPlaybackRateBarClick = (e) => !this.props.barDrag ? this.movePlaybackRate(e) : null
+        onPlaybackRateMouseMove = (e) => this.props.barDrag && this.dragging ? this.movePlaybackRate(e) : null
+        onPlaybackRateMouseDown = () => this.dragging = true
+        onPlaybackRateMouseUp = () => this.dragging = false
+        movePlaybackRate = (e) => {
+            var offset = getOffset(this.playbackRateBar),
                 x = e.pageX - offset.left,
-                w = getWidth(bar),
-                y = getHeight(bar) - e.pageY + offset.top,
-                h = getHeight(bar),
+                w = getWidth(this.playbackRateBar),
+                y = getHeight(this.playbackRateBar) - e.pageY + offset.top,
+                h = getHeight(this.playbackRateBar),
                 ratio,
                 playbackRateValue;
 
@@ -52,9 +55,17 @@ export default connect(mapStateToProps)(
         componentWillReceiveProps(nextProps) {
             this._updatePlaybackRateBarStyles(nextProps);
         }
+        componentWillMount() {
+            document.addEventListener("mouseup", this.onPlaybackRateMouseUp);
+            document.addEventListener("mousemove", this.onPlaybackRateMouseMove);
+        }
+        componentWillUnMount() {
+            document.removeEventListener("mouseup", this.onPlaybackRateMouseUp);
+            document.removeEventListener("mousemove", this.onPlaybackRateMouseMove);
+        }
         render() {
             return (
-                <div className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick}>
+                <div ref={(ref) => this.playbackRateBar = ref} className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick} onMouseDown={this.onPlaybackRateMouseDown}>
                     {this.props.children}
                 </div>
             );

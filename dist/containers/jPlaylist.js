@@ -378,7 +378,9 @@
                 _this.props.updateOption("onResize", function () {
                     var method = _this.props.fullScreen ? _this.props.removeFromArrayByValue : _this.props.addUniqueToArray;
 
-                    method(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
+                    _this.setState(function (state) {
+                        return method(state.detailsClass, constants.classNames.HIDDEN);
+                    });
                     // this._trigger(this.props.onResize);
                 });
 
@@ -407,7 +409,9 @@
 
                 // Put the title in its initial display state
                 if (!_this.props.fullScreen) {
-                    _this.props.addUniqueToArray(constants.keys.DETAILS_CLASS, constants.classNames.HIDDEN);
+                    _this.setState(function (state) {
+                        return addUniqueToArray(state.detailsClass, constants.classNames.HIDDEN);
+                    });
                 }
                 return _this;
             }

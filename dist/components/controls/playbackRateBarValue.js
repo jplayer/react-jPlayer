@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../util/index", "../util/constants"], factory);
+        define(["exports", "react", "react-redux", "../../util/index", "../../util/constants", "../../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../util/index"), require("../util/constants"));
+        factory(exports, require("react"), require("react-redux"), require("../../util/index"), require("../../util/constants"), require("../../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.index, global.constants);
-        global.poster = mod.exports;
+        factory(mod.exports, global.react, global.reactRedux, global.index, global.constants, global.jPlayerActions);
+        global.playbackRateBarValue = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _index, _constants) {
+})(this, function (exports, _react, _reactRedux, _index, _constants, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -75,9 +75,11 @@
 
     var mapStateToProps = function mapStateToProps(state) {
         return {
-            mediaSettings: state.jPlayer.mediaSettings,
-            media: state.jPlayer.media,
-            src: state.jPlayer.posterSrc
+            verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
+            minPlaybackRate: state.jPlayer.minPlaybackRate,
+            maxPlaybackRate: state.jPlayer.maxPlaybackRate,
+            playbackRate: state.jPlayer.playbackRate,
+            playbackRateEnabled: state.jPlayer.playbackRateEnabled
         };
     };
 
@@ -89,48 +91,42 @@
 
             var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
 
-            _this.onLoad = function () {
-                // if(!this.props.mediaSettings.video.available) {
-                //     this.setState(state => removeFromArrayByValue(state.posterClass, classNames.HIDDEN));
-                // }
-            };
-
-            _this._updatePosterStyles = function (nextProps) {
-                if (nextProps.media.length <= 0) {
+            _this._updatePlaybackRateBarValueStyles = function (nextProps) {
+                var playbackRate = nextProps.playbackRate,
+                    ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
+                if (nextProps.playbackRateEnabled) {
                     _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "posterClass", (0, _index.addUniqueToArray)(state.posterClass, _constants.classNames.HIDDEN));
+                        return (0, _index.updateObjectByKey)(state, "playbackRateBarValueClass", (0, _index.removeFromArrayByValue)(state.playbackRateBarValueClass, _constants.classNames.HIDDEN));
                     });
-                }
 
-                if (nextProps.src !== _this.props.src) {
+                    var playbackRateBarValue = ratio * 100 + "%";
+
+                    _this.setState({ playbackRateBarValueStyle: {
+                            width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
+                            height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
+                        } });
+                } else {
                     _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "posterClass", (0, _index.removeFromArrayByValue)(state.posterClass, _constants.classNames.HIDDEN));
+                        return (0, _index.updateObjectByKey)(state, "playbackRateBarValueClass", (0, _index.addUniqueToArray)(state.playbackRateBarValueClass, _constants.classNames.HIDDEN));
                     });
                 }
             };
 
             _this.state = {
-                posterClass: [_constants.classNames.POSTER]
+                playbackRateBarValueClass: [_constants.classNames.PLAYBACK_RATE_BAR_VALUE]
             };
             return _this;
         }
 
         _createClass(_class2, [{
-            key: "componentWillMount",
-            value: function componentWillMount() {
-                this.setState(function (state) {
-                    return (0, _index.updateObjectByKey)(state, "posterClass", (0, _index.addUniqueToArray)(state.posterClass, _constants.classNames.HIDDEN));
-                });
-            }
-        }, {
             key: "componentWillReceiveProps",
             value: function componentWillReceiveProps(nextProps) {
-                this._updatePosterStyles(nextProps);
+                this._updatePlaybackRateBarValueStyles(nextProps);
             }
         }, {
             key: "render",
             value: function render() {
-                return _react2.default.createElement("img", { className: this.state.posterClass.join(" "), src: this.props.src, onLoad: this.onLoad, onClick: this.props.onClick });
+                return _react2.default.createElement("div", { className: this.state.playbackRateBarValueClass.join(" "), style: this.state.playbackRateBarValueStyle });
             }
         }]);
 

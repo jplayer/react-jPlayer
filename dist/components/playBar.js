@@ -81,33 +81,25 @@
 
             var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
 
-            _this._updatePlayBarStyles = function (nextProps) {
-                var widthValue = nextProps.smoothPlayBar ? nextProps.currentPercentAbsolute : nextProps.currentPercentRelative;
-                _this.setState({ playBarStyle: { width: widthValue + "%" } });
-            };
-
             _this.state = {};
             return _this;
         }
 
         _createClass(_class, [{
-            key: "componentWillReceiveProps",
-            value: function componentWillReceiveProps(nextProps) {
-                this._updatePlayBarStyles(nextProps);
-            }
-        }, {
             key: "render",
             value: function render() {
-                return this.props.smoothPlayBar ? _react2.default.createElement(
+                var _this2 = this;
+
+                return _react2.default.createElement(
                     _reactMotion.Motion,
                     { style: { smoothWidth: (0, _reactMotion.spring)(this.props.currentPercentAbsolute, [250]) } },
                     function (values) {
-                        return _react2.default.createElement("div", { className: "jp-play-bar", style: { width: values.smoothWidth + "%" } });
+                        return _react2.default.createElement("div", { className: "jp-play-bar", style: { width: _this2.props.smoothPlayBar ? values.smoothWidth + "%" : _this2.props.currentPercentRelative + "%" } });
                     }
-                ) : _react2.default.createElement("div", { className: "jp-play-bar", style: this.state.playBarStyle });
+                );
             }
         }], [{
-            key: "defaultProps",
+            key: "propTypes",
             get: function get() {
                 return {
                     playBarStyle: _react2.default.PropTypes.object,

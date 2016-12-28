@@ -104,7 +104,7 @@ const jPlayerOptions = {
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",
-        mp3: "http://www.davidgagne.net/m/song.mp3",
+        mp3: "http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3",
         poster: "http://wallpapercave.com/wp/Mb4UPsY.png",
         free: true
     }

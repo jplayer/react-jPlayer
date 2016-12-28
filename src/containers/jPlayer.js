@@ -240,6 +240,7 @@ export const jPlayerDefaultOptions = {
     playbackRate: 1.0,
     defaultPlaybackRate: 1.0,		
     volume: 0.8, // The volume. Number 0 to 1
+    barDrag: true,
     media: {},
 	mediaSettings: {
 		video: false,

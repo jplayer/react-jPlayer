@@ -16,7 +16,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.platform = exports.browser = exports.keyIgnoreElementNames = exports.timeFormats = exports.formats = exports.noVolumes = exports.noFullWindows = exports.loopOptions = exports.errorHints = exports.errorMessages = exports.errors = exports.classNames = exports.keys = exports.actionTypes = undefined;
+	exports.platform = exports.browser = exports.keyIgnoreElementNames = exports.timeFormats = exports.formats = exports.noVolumes = exports.noFullWindows = exports.loopOptions = exports.classNames = exports.hints = exports.errors = exports.keys = exports.actionTypes = undefined;
 	var actionTypes = exports.actionTypes = {
 		jPlayer: {
 			UPDATE_OPTION: "UPDATE_OPTION",
@@ -31,7 +31,7 @@
 			MUTE: "MUTE",
 			DURATION: "DURATION",
 			PLAYBACK_RATE: "PLAYBACK_RATE",
-			INCEMENT_LOOP: "INCEMENT_LOOP",
+			LOOP: "LOOP",
 			FULL_SCREEN: "FULL_SCREEN"
 		},
 		jPlaylist: {
@@ -64,6 +64,18 @@
 		PLAYLIST: "playlist"
 	};
 
+	var errors = exports.errors = {
+		FORMAT_NO_SUPPORT: "It is not possible to play any media format provided on this browser using your current options.",
+		URL_NO_SUPPORT: "The media URL could not be loaded.",
+		URL_NOT_SET: "Attempted to issue media playback commands while no media url is set."
+	};
+
+	var hints = exports.hints = {
+		FORMAT_NO_SUPPORT: "Video or audio formats defined in the supplied option may be missing.",
+		URL_NO_SUPPORT: "Check the media URL is valid.",
+		URL_NOT_SET: "Pass the media through the options or use the setMedia() action that is passed into the component props."
+	};
+
 	var classNames = exports.classNames = {
 		MUTE: "jp-mute",
 		VOLUME_BAR: "jp-volume-bar",
@@ -79,14 +91,15 @@
 		STOP: "jp-stop",
 		REPEAT: "jp-repeat",
 		FULL_SCREEN: "jp-full-screen",
-		TITLE: "jp-title",
 		CURRENT_TIME: "jp-current-time",
 		DURATION: "jp-duration",
 		HIDDEN: "jp-hidden",
 		DETAILS: "jp-details",
+		TITLE: "jp-title",
 		SHUFFLE: "jp-shuffle",
 		PREVIOUS: "jp-previous",
 		NEXT: "jp-next",
+		POSTER: "jp-poster",
 		states: {
 			PLAYING: "jp-state-playing",
 			SEEKING: "jp-state-seeking",
@@ -99,32 +112,10 @@
 		}
 	};
 
-	var errors = exports.errors = {
-		NO_SOLUTION: "e_no_solution",
-		NO_SUPPORT: "e_no_support",
-		URL: "e_url",
-		URL_NOT_SET: "e_url_not_set",
-		VERSION: "e_version"
-	};
-
-	var errorMessages = exports.errorMessages = {
-		NO_SOLUTION: "No solution can be found by jPlayer in this browser. HTML can not be used.", // Used in: _init()
-		NO_SUPPORT: "It is not possible to play any media format provided in setMedia() on this browser using your current options.", // Used in: setMedia()
-		URL: "Media URL could not be loaded.",
-		URL_NOT_SET: "Attempt to issue media playback commands, while no media url is set." // Used in: load(), play(), pause(), stop() and playHead()
-	};
-
-	var errorHints = exports.errorHints = {
-		NO_SOLUTION: "Review the jPlayer supplied option.",
-		NO_SUPPORT: "Video or audio formats defined in the supplied option are missing.",
-		URL: "Check media URL is valid.",
-		URL_NOT_SET: "Use setMedia() to set the media URL.",
-		VERSION: "Update jPlayer files."
-	};
-
 	var loopOptions = exports.loopOptions = {
 		OFF: "off",
-		LOOP: "loop"
+		LOOP: "loop",
+		LOOP_PLAYLIST: "loop-playlist"
 	};
 
 	var noFullWindows = exports.noFullWindows = {

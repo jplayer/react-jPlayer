@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../util/index", "../util/constants"], factory);
+        define(["exports", "react", "react-redux", "../../util/index", "../../util/constants", "../../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../util/index"), require("../util/constants"));
+        factory(exports, require("react"), require("react-redux"), require("../../util/index"), require("../../util/constants"), require("../../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.index, global.constants);
-        global.poster = mod.exports;
+        factory(mod.exports, global.react, global.reactRedux, global.index, global.constants, global.jPlayerActions);
+        global.volumeBar = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _index, _constants) {
+})(this, function (exports, _react, _reactRedux, _index, _constants, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -75,9 +75,9 @@
 
     var mapStateToProps = function mapStateToProps(state) {
         return {
-            mediaSettings: state.jPlayer.mediaSettings,
-            media: state.jPlayer.media,
-            src: state.jPlayer.posterSrc
+            verticalVolume: state.jPlayer.verticalVolume,
+            noVolume: state.jPlayer.noVolume,
+            muted: state.jPlayer.muted
         };
     };
 
@@ -89,48 +89,52 @@
 
             var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
 
-            _this.onLoad = function () {
-                // if(!this.props.mediaSettings.video.available) {
-                //     this.setState(state => removeFromArrayByValue(state.posterClass, classNames.HIDDEN));
-                // }
+            _this.onVolumeBarClick = function (e) {
+                var bar = e.currentTarget,
+                    offset = (0, _index.getOffset)(bar),
+                    x = e.pageX - offset.left,
+                    w = (0, _index.getWidth)(bar),
+                    y = (0, _index.getHeight)(bar) - e.pageY + offset.top,
+                    h = (0, _index.getHeight)(bar);
+
+                _this.props.verticalVolume ? _this.props.dispatch((0, _jPlayerActions.volume)(y / h)) : _this.props.dispatch((0, _jPlayerActions.volume)(x / w));
+
+                if (_this.props.muted) {
+                    _this.props.dispatch((0, _jPlayerActions.mute)(false));
+                }
             };
 
-            _this._updatePosterStyles = function (nextProps) {
-                if (nextProps.media.length <= 0) {
+            _this._updateVolumeBarStyles = function (nextProps) {
+                if (nextProps.noVolume) {
                     _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "posterClass", (0, _index.addUniqueToArray)(state.posterClass, _constants.classNames.HIDDEN));
+                        return (0, _index.updateObjectByKey)(state, "volumeBarClass", (0, _index.addUniqueToArray)(state.volumeBarClass, _constants.classNames.HIDDEN));
                     });
-                }
-
-                if (nextProps.src !== _this.props.src) {
+                } else {
                     _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "posterClass", (0, _index.removeFromArrayByValue)(state.posterClass, _constants.classNames.HIDDEN));
+                        return (0, _index.updateObjectByKey)(state, "volumeBarClass", (0, _index.removeFromArrayByValue)(state.volumeBarClass, _constants.classNames.HIDDEN));
                     });
                 }
             };
 
             _this.state = {
-                posterClass: [_constants.classNames.POSTER]
+                volumeBarClass: [_constants.classNames.VOLUME_BAR]
             };
             return _this;
         }
 
         _createClass(_class2, [{
-            key: "componentWillMount",
-            value: function componentWillMount() {
-                this.setState(function (state) {
-                    return (0, _index.updateObjectByKey)(state, "posterClass", (0, _index.addUniqueToArray)(state.posterClass, _constants.classNames.HIDDEN));
-                });
-            }
-        }, {
             key: "componentWillReceiveProps",
             value: function componentWillReceiveProps(nextProps) {
-                this._updatePosterStyles(nextProps);
+                this._updateVolumeBarStyles(nextProps);
             }
         }, {
             key: "render",
             value: function render() {
-                return _react2.default.createElement("img", { className: this.state.posterClass.join(" "), src: this.props.src, onLoad: this.onLoad, onClick: this.props.onClick });
+                return _react2.default.createElement(
+                    "div",
+                    { className: this.state.volumeBarClass.join(" "), onClick: this.onVolumeBarClick },
+                    this.props.children
+                );
             }
         }]);
 

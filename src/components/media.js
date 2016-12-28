@@ -19,25 +19,15 @@ export default connect(mapStateToProps)(
 
             this.events = {
                 onProgress: () => {
+                    this.updateMediaStatus();
                     this.props.onProgress();
                 },
                 onTimeUpdate: () => {
-                    let currentPercentRelative = 0;
-                    let seekPercent = 0;
-
-                    if (this.currentMedia.seekable.length > 0) {
-                       currentPercentRelative = 100 * this.currentMedia.currentTime / this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1);
-                       seekPercent = 100 * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / this.currentMedia.duration;
-                    }
-                    
-                    this.props.dispatch(actions.updateOption("currentPercentRelative", currentPercentRelative));
-                    this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
-                    this.props.dispatch(actions.updateOption("currentTime", this.currentMedia.currentTime));
-                    this.props.dispatch(actions.updateOption("remaining", this.currentMedia.duration - this.currentMedia.currentTime));
-                    this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
+                    this.updateMediaStatus();
                     this.props.onTimeUpdate();
                 },
                 onDurationChange: () => {
+                    this.updateMediaStatus();
                     this.props.onDurationChange();
                 },
                 onPlay: () => {
@@ -48,7 +38,7 @@ export default connect(mapStateToProps)(
                 onEnded: () => {
                     // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
                     this.props.dispatch(pause());
-                    this._updateMediaStatus();
+                    this.updateMediaStatus();
                     
                     if (this.props.loop === "loop") {	
                         this.props.onRepeat();
@@ -68,24 +58,7 @@ export default connect(mapStateToProps)(
                 onVolumeChange: this.props.onVolumeChange,
                 onRateChange: this.props.onRateChange,
                 onLoadStart: this.props.onLoadStart,
-                onLoadedMetadata: () => {
-                    let currentPercentRelative = 0;
-                    let seekPercent = 0;
-                    
-                    if (this.currentMedia.seekable.length > 0) {
-                       currentPercentRelative = 100 * this.currentMedia.currentTime / this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1);
-                       seekPercent = 100 * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / this.currentMedia.duration;
-                    }
-                    
-                    this.props.dispatch(actions.updateOption("currentPercentRelative", currentPercentRelative));
-                    this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
-                    this.props.dispatch(actions.updateOption("currentTime", this.currentMedia.currentTime));
-                    this.props.dispatch(actions.updateOption("remaining", this.currentMedia.duration - this.currentMedia.currentTime));
-                    this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
-                    this.props.dispatch(actions.updateOption("duration", this.currentMedia.duration));
-                    this.props.dispatch(actions.updateOption("playbackRate", this.currentMedia.playbackRate));
-                    this.props.onLoadedMetadata();
-                },
+                onLoadedMetadata: this.props.onLoadedMetadata,
                 onAbort: this.props.onAbort,
                 onEmptied: this.props.onEmptied,
                 onStalled: this.props.onStalled,
@@ -101,41 +74,33 @@ export default connect(mapStateToProps)(
                 onDurationChange: () => null,
                 onPlay: () => null,
                 onEnded: () => null,
-                onError: () => null,
-                onLoadedMetadata: () => null
+                onError: () => null
             }
         }
-        // _updateMediaStatus = () => {
-		// 	let ct = 0, cpa = 0, sp = 0, cpr = 0;
-
-			
-		// 	if((typeof this.currentMedia.seekable === "object") && (this.currentMedia.seekable.length > 0)) {
-		// 		sp = (duration > 0) ? 100 * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / duration : 100;
-		// 		 // Duration conditional for iOS duration bug. ie., seekable.end is a NaN in that case.
-		// 	} else {
-		// 		sp = 100;
-		// 		cpr = cpa;
-		// 	}
-
-            
-        //     // this.props.dispatch(actions.updateOption("videoWidth", this.currentMedia.videoWidth));
-        //     // this.props.dispatch(actions.updateOption("videoHeight", this.currentMedia.videoHeight));
-        //     // this.props.dispatch(actions.updateOption("ended", this.currentMedia.ended));
-		// }
-        updatePlayHeadPercent = (playHeadPercent) => {
-            let currentPercentRelative = 0;
-            let currentTime = 0;
+        updateMediaStatus = () => {
+            let seekPercent = 0;
 
             if (this.currentMedia.seekable.length > 0) {
-                currentTime = playHeadPercent * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100;
-                currentPercentRelative = 100 * currentTime / this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1);
+                seekPercent = 100 * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / this.currentMedia.duration;
             }
+            this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
+            this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative()));
+            this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
+            this.props.dispatch(actions.updateOption("currentTime", this.currentMedia.currentTime));
+            this.props.dispatch(actions.updateOption("remaining", this.currentMedia.duration - this.currentMedia.currentTime));          
+            this.props.dispatch(actions.updateOption("duration", this.currentMedia.duration));
+            this.props.dispatch(actions.updateOption("playbackRate", this.currentMedia.playbackRate));
+            // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth));
+            // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight));
+            // this.props.dispatch(updateOption("ended", this.currentMedia.ended));
+        }
+        getCurrentPercentRelative = () => {
+            let currentPercentRelative = 0;
             
-            this.props.dispatch(actions.updateOption("currentPercentRelative", currentPercentRelative));
-            // this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
-            this.props.dispatch(actions.updateOption("currentTime", currentTime));
-            // this.props.dispatch(actions.updateOption("remaining", this.currentMedia.duration - this.currentMedia.currentTime));
-            // this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
+            if (this.currentMedia.seekable.length > 0) {
+                currentPercentRelative = 100 * this.currentMedia.currentTime / this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1);
+            }
+            return currentPercentRelative;
         }
         _updateCurrentMedia = (nextProps) => {
             if (nextProps.src !== this.currentMedia.src) {
@@ -147,7 +112,13 @@ export default connect(mapStateToProps)(
             }
 
             if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
-                this.updatePlayHeadPercent(nextProps.playHeadPercent);
+                //TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
+                //Hasn't fully loaded the song????
+                if (this.currentMedia.seekable.length > 0) {
+                    this.currentMedia.currentTime = nextProps.playHeadPercent * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100;
+                    //Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
+                    this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative()));
+                }
             }
             
             if (nextProps.paused !== this.props.paused) {
@@ -169,6 +140,7 @@ export default connect(mapStateToProps)(
             // }
         }
         componentDidMount() {
+            this.props.dispatch(actions.updateOption("currentMedia", this.currentMedia));
             this.props.dispatch(actions.updateOption("playbackRateEnabled", testPlaybackRate(this.currentMedia)));  
             if(this.props.nativeVideoControls) {
 				this.setState(state => actions.removeFromArrayByValue(state.videoClass, classNames.HIDDEN));

@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../util/constants", "../actions/jPlayerActions", "../reducers/index", "./control"], factory);
+        define(["exports", "react", "react-redux", "lodash.merge", "../util/constants", "../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../util/constants"), require("../actions/jPlayerActions"), require("../reducers/index"), require("./control"));
+        factory(exports, require("react"), require("react-redux"), require("lodash.merge"), require("../util/constants"), require("../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constants, global.jPlayerActions, global.index, global.control);
+        factory(mod.exports, global.react, global.reactRedux, global.lodash, global.constants, global.jPlayerActions);
         global.controls = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constants, _jPlayerActions, _index, _control) {
+})(this, function (exports, _react, _reactRedux, _lodash, _constants, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -19,26 +19,7 @@
 
     var _react2 = _interopRequireDefault(_react);
 
-    var reducer = _interopRequireWildcard(_index);
-
-    var _control2 = _interopRequireDefault(_control);
-
-    function _interopRequireWildcard(obj) {
-        if (obj && obj.__esModule) {
-            return obj;
-        } else {
-            var newObj = {};
-
-            if (obj != null) {
-                for (var key in obj) {
-                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-                }
-            }
-
-            newObj.default = obj;
-            return newObj;
-        }
-    }
+    var _lodash2 = _interopRequireDefault(_lodash);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -115,10 +96,10 @@
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
         _inherits(_class2, _React$Component);
 
-        function _class2() {
+        function _class2(props) {
             _classCallCheck(this, _class2);
 
-            var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
+            var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this, props));
 
             _this.onShuffleClick = function (event) {
                 event.preventDefault();
@@ -141,180 +122,87 @@
                 _this.context.blur(event.target);
             };
 
-            _this.onMuteClick = function () {
-                return _this.props.dispatch((0, _jPlayerActions.mute)(!_this.props.muted));
-            };
-
-            _this.onPlayClick = function () {
-                return _this.props.paused ? _this.props.dispatch((0, _jPlayerActions.play)()) : _this.props.dispatch((0, _jPlayerActions.pause)());
-            };
-
-            _this.onPlaybackRateBarClick = function (e) {
-                // Using e.currentTarget to enable multiple playbackRate bars
-                var bar = e.currentTarget,
-                    offset = getOffset(bar),
-                    x = e.pageX - offset.left,
-                    w = getWidth(bar),
-                    y = getHeight(bar) - e.pageY + offset.top,
-                    h = getHeight(bar),
-                    ratio,
-                    playbackRate;
-
-                if (_this.props.verticalPlaybackRate) {
-                    ratio = y / h;
-                } else {
-                    ratio = x / w;
-                }
-
-                playbackRate = ratio * (_this.props.maxPlaybackRate - _this.props.minPlaybackRate) + _this.props.minPlaybackRate;
-                _this.props.dispatch(playbackRate(playbackRate));
-            };
-
-            _this.onVolumeBarClick = function (e) {
-                // Using $(e.currentTarget) to enable multiple volume bars
-                var bar = e.currentTarget,
-                    offset = getOffset(bar),
-                    x = e.pageX - offset.left,
-                    w = getWidth(bar),
-                    y = getHeight(bar) - e.pageY + offset.top,
-                    h = getHeight(bar);
-
-                _this.props.verticalVolume ? _this.props.dispatch((0, _jPlayerActions.volume)(y / h)) : _this.props.dispatch((0, _jPlayerActions.volume)(x / w));
-
-                if (_this.props.muted) {
-                    _this.props.dispatch((0, _jPlayerActions.mute)(false));
-                }
-            };
-
-            _this.onVolumeMaxClick = function () {
-                _this.props.dispatch((0, _jPlayerActions.volume)(1));
-
-                if (_this.props.muted) {
-                    _this.props.dispatch((0, _jPlayerActions.mute)(false));
-                }
-            };
-
             _this.onVideoPlayClick = function () {
-                return _this.props.dispatch((0, _jPlayerActions.play)());
+                return _this.props.dispatch(play());
             };
 
-            _this.onRepeatClick = function () {
-                return _this.props.dispatch((0, _jPlayerActions.incrementLoop)());
-            };
+            _this.onKeyDown = function (event) {
+                if (_constants.keyIgnoreElementNames.some(function (name) {
+                    return name.toUpperCase() === event.target.nodeName.toUpperCase();
+                })) {
+                    return;
+                }
 
-            _this.onFullScreenClick = function () {
-                return _this.props.dispatch((0, _jPlayerActions.fullScreen)(!_this.props.fullScreen));
-            };
-
-            _this.onKeyDown = function (e) {
                 for (var key in _this.keyBindings) {
                     var keyBinding = _this.keyBindings[key];
 
-                    if (keyBinding.key === e.charCode) {
+                    if (keyBinding.key === event.keyCode || keyBinding.key === event.key) {
+                        event.preventDefault();
                         keyBinding.fn();
                     }
                 }
             };
 
-            _this._updatePlaybackRateStyles = function (nextProps) {
-                var playbackRate = nextProps.playbackRate,
-                    ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
-                if (nextProps.playbackRateEnabled) {
-                    _this.setState(function (state) {
-                        return reducer.removeFromArrayByValue(state, (0, _jPlayerActions.removeFromArrayByValue)(_constants.keys.PLAYBACK_RATE_BAR_CLASS, _constants.classNames.HIDDEN));
-                    });
-                    _this.setState(function (state) {
-                        return reducer.removeFromArrayByValue(state, (0, _jPlayerActions.removeFromArrayByValue)(_constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, _constants.classNames.HIDDEN));
-                    });
-
-                    var playbackRateBarValue = ratio * 100 + "%";
-
-                    _this.setState({ playbackRateBarValueStyle: {
-                            width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
-                            height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
-                        } });
-                } else {
-                    _this.setState(function (state) {
-                        return reducer.addUniqueToArray(state, (0, _jPlayerActions.addUniqueToArray)(_constants.keys.PLAYBACK_RATE_BAR_CLASS, _constants.classNames.HIDDEN));
-                    });
-                    _this.setState(function (state) {
-                        return reducer.addUniqueToArray(state, (0, _jPlayerActions.addUniqueToArray)(_constants.keys.PLAYBACK_RATE_BAR_VALUE_CLASS, _constants.classNames.HIDDEN));
-                    });
+            _this.keyBindings = (0, _lodash2.default)({
+                play: {
+                    key: 80, // p
+                    fn: function fn() {
+                        return _this.props.paused ? _this.props.dispatch(play()) : _this.props.dispatch((0, _jPlayerActions.pause)());
+                    }
+                },
+                fullScreen: {
+                    key: 70, // f
+                    fn: function fn() {
+                        if (_this.props.mediaSettings.available && _this.props.mediaSettings.video || _this.props.audioFullScreen) {
+                            _this.fullScreen(!_this.props.fullScreen);
+                        }
+                    }
+                },
+                muted: {
+                    key: 77, // m
+                    fn: function fn() {
+                        return _this.props.dispatch((0, _jPlayerActions.mute)(!_this.props.muted));
+                    }
+                },
+                volumeUp: {
+                    key: 190, // .
+                    fn: function fn() {
+                        return _this.props.dispatch((0, _jPlayerActions.volume)(_this.props.volume + 0.1));
+                    }
+                },
+                volumeDown: {
+                    key: 188, // ,
+                    fn: function fn() {
+                        return _this.props.dispatch((0, _jPlayerActions.volume)(_this.props.volume - 0.1));
+                    }
+                },
+                loop: {
+                    key: 76, // l
+                    fn: function fn() {
+                        return _this.props.loop === _constants.loopOptions.LOOP ? _this.props.dispatch((0, _jPlayerActions.loop)(_constants.loopOptions.OFF)) : _this.props.dispatch((0, _jPlayerActions.loop)(_constants.loopOptions.LOOP));
+                    }
                 }
-            };
-
-            _this._updateVolumeStyles = function (nextProps) {
-                if (nextProps.noVolume) {
-                    _this.setState(function (state) {
-                        return reducer.addUniqueToArray(state, (0, _jPlayerActions.addUniqueToArray)(_constants.keys.VOLUME_BAR_CLASS, _constants.classNames.HIDDEN));
-                    });
-                    _this.setState(function (state) {
-                        return reducer.addUniqueToArray(state, (0, _jPlayerActions.addUniqueToArray)(_constants.keys.VOLUME_BAR_VALUE_CLASS, _constants.classNames.HIDDEN));
-                    });
-                    _this.setState(function (state) {
-                        return reducer.addUniqueToArray(state, (0, _jPlayerActions.addUniqueToArray)(_constants.keys.VOLUME_MAX_CLASS, _constants.classNames.HIDDEN));
-                    });
-                } else {
-                    var volumeValue = nextProps.muted ? 0 : nextProps.volume * 100 + "%";
-
-                    _this.setState({ volumeBarValueStyle: {
-                            width: !nextProps.verticalVolume ? volumeValue : null,
-                            height: nextProps.verticalVolume ? volumeValue : null
-                        } });
-
-                    _this.setState(function (state) {
-                        return reducer.removeFromArrayByValue(state, (0, _jPlayerActions.removeFromArrayByValue)(_constants.keys.VOLUME_BAR_CLASS, _constants.classNames.HIDDEN));
-                    });
-                    _this.setState(function (state) {
-                        return reducer.removeFromArrayByValue(state, (0, _jPlayerActions.removeFromArrayByValue)(_constants.keys.VOLUME_BAR_VALUE_CLASS, _constants.classNames.HIDDEN));
-                    });
-                    _this.setState(function (state) {
-                        return reducer.removeFromArrayByValue(state, (0, _jPlayerActions.removeFromArrayByValue)(_constants.keys.VOLUME_MAX_CLASS, _constants.classNames.HIDDEN));
-                    });
-                }
-            };
-
-            _this.state = {
-                playbackRateBarClass: [],
-                playbackRateBarValueClass: [],
-                volumeBarClass: [],
-                volumeBarValueClass: []
-            };
+            }, _this.props.keyBindings);
             return _this;
         }
 
         _createClass(_class2, [{
-            key: "componentWillReceiveProps",
-            value: function componentWillReceiveProps(nextProps) {
-                this._updatePlaybackRateStyles(nextProps);
-                this._updateVolumeStyles(nextProps);
+            key: "componentWillMount",
+            value: function componentWillMount() {
+                document.addEventListener("keydown", this.onKeyDown);
+            }
+        }, {
+            key: "componentWillUnmount",
+            value: function componentWillUnmount() {
+                document.removeEventListener("keydown", this.onKeyDown);
             }
         }, {
             key: "render",
             value: function render() {
-                var _this2 = this;
-
                 return _react2.default.createElement(
                     "div",
-                    { className: "jp-controls", onKeyDown: this.onKeyDown },
-                    _react2.default.Children.map(this.props.children, function (child) {
-                        return _react2.default.createElement(
-                            _control2.default,
-                            { onPlayClick: _this2.onPlayClick, onMuteClick: _this2.onMuteClick, onVolumeMaxClick: _this2.onVolumeMaxClick, onRepeatClick: _this2.onRepeatClick,
-                                onFullScreenClick: _this2.onFullScreenClick, onShuffleClick: _this2.onShuffleClick, onPreviousClick: _this2.onPreviousClick, onNextClick: _this2.onNextClick },
-                            child
-                        );
-                    }),
-                    _react2.default.createElement(
-                        "div",
-                        { className: this.state.volumeBarClass.join(" "), onClick: this.onVolumeBarClick },
-                        _react2.default.createElement("div", { className: this.state.volumeBarValueClass.join(" "), style: this.state.volumeBarValueStyle })
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: this.state.playbackRateBarClass.join(" "), onClick: this.onPlaybackRateBarClick },
-                        _react2.default.createElement("div", { className: this.state.playbackRateBarValueClass.join(" "), style: this.state.playbackRateBarValueStyle })
-                    )
+                    { className: "jp-controls" },
+                    this.props.children
                 );
             }
         }], [{
@@ -340,7 +228,7 @@
                     onPlaybackRateBarClick: _react2.default.PropTypes.func,
                     className: _react2.default.PropTypes.string,
                     onKeyDown: _react2.default.PropTypes.func,
-                    controls: _react2.default.PropTypes.object.isRequired,
+                    controls: _react2.default.PropTypes.object,
                     playlistControls: _react2.default.PropTypes.object,
                     volumeBarClass: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),
                     volumeBarValueClass: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),

@@ -23,8 +23,8 @@ export default connect(mapStateToProps)(
             }
         }
         _updatePlaybackRateBarValueStyles = (nextProps) => {
-            var playbackRate = nextProps.playbackRate,
-                ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
+            const ratio = (nextProps.playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
+            
             if(nextProps.playbackRateEnabled) {
                 this.setState(state => updateObjectByKey(state, "playbackRateBarValueClass", removeFromArrayByValue(state.playbackRateBarValueClass, classNames.HIDDEN)));
                 

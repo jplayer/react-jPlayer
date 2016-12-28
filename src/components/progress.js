@@ -16,7 +16,8 @@ const mapStateToProps = (state) => ({
     currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
     currentPercentRelative: state.jPlayer.currentPercentRelative,
     smoothPlayBar: state.jPlayer.smoothPlayBar,
-    playHeadPercent: state.jPlayer.playHeadPercent
+    playHeadPercent: state.jPlayer.playHeadPercent,
+    barDrag: state.jPlayer.barDrag
 });
 
 export default connect(mapStateToProps)(
@@ -37,13 +38,16 @@ export default connect(mapStateToProps)(
                 durationText: React.PropTypes.string
             }
         }
-        onSeekBarClick = (e) => {
-            var bar = e.currentTarget,
-                offset = getOffset(bar),
+        onSeekBarClick = (e) => !this.props.barDrag ? this.movePlayHead(e) : null
+        onSeekBarMouseMove = (e) => this.props.barDrag && this.dragging ? this.movePlayHead(e) : null
+        onSeekBarMouseDown = () => this.dragging = true
+        onSeekBarMouseUp = () => this.dragging = false
+        movePlayHead = (e) => {
+            var offset = getOffset(this.seekBar),
                 x = e.pageX - offset.left,
-                w = getWidth(bar),
+                w = getWidth(this.seekBar),
                 percentage = 100 * x / w;
-    
+            
             this.props.dispatch(playHead(percentage));
         }
         onDurationClick = (e) => {
@@ -54,17 +58,6 @@ export default connect(mapStateToProps)(
                 this.props.dispatch(duration());
             }
         }
-        onProgressMouseDown = () => this.dragging = true
-        onProgressMouseOut = () => this.dragging = false
-        // onProgressMouseMove = (e) => {
-        //     if (this.dragging) {
-        //         var position = e.pageX - getOffset(e.currentTarget).left;
-        //         var percentage = 100 * position / getWidth(e.currentTarget);
-
-        //     // this.setState({width: `${percentage}%`});
-        //         this.props.dispatch(playHead(percentage));
-        //     }
-        // }
         updateBarStyles = (nextProps) => {
             this.setState({seekBarStyle: {width: `${nextProps.seekPercent}%`}});
 
@@ -103,10 +96,19 @@ export default connect(mapStateToProps)(
             this.updateDurationText(nextProps);
             this.updateCurrentTimeText(nextProps);
         }
+        componentWillMount() {
+            document.addEventListener("mouseup", this.onSeekBarMouseUp);
+            document.addEventListener("mousemove", this.onSeekBarMouseMove);
+        }
+        componentWillUnMount() {
+            document.removeEventListener("mouseup", this.onSeekBarMouseUp);
+            document.removeEventListener("mousemove", this.onSeekBarMouseMove);
+        }
         render() {
             return (
                 <div className="jp-progress">
-                    <div className={this.state.seekBarClass.join(" ")} style={this.state.seekBarStyle} onMouseMove={this.onSeekBarClick}>                         
+                    <div ref={(ref) => this.seekBar = ref} className={this.state.seekBarClass.join(" ")} style={this.state.seekBarStyle} onClick={this.onSeekBarClick} 
+                        onMouseDown={this.onSeekBarMouseDown}>                         
                         {React.cloneElement(React.Children.only(this.props.children), {
                             smoothPlayBar: this.props.smoothPlayBar,
                             currentPercentAbsolute: this.props.currentPercentAbsolute,
