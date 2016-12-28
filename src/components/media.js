@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import actions, {pause} from "../actions/jPlayerActions";
 import {urlNotSupportedError} from "../util/index";
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
-import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
+import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
 
 const mapStateToProps = (state) => ({
     ...state.jPlayer
@@ -78,16 +78,28 @@ export default connect(mapStateToProps)(
             }
         }
         updateMediaStatus = () => {
-            let seekPercent = 0;
+            let seekPercent = 0,
+                durationText = "";
+
+            const remaining = this.currentMedia.duration - this.currentMedia.currentTime;
 
             if (this.currentMedia.seekable.length > 0) {
                 seekPercent = 100 * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / this.currentMedia.duration;
             }
+    
+            if(this.props.remainingDuration) {
+                durationText = (remaining > 0 ? "-" : "") + convertTime(remaining);
+            } else {
+                durationText = convertTime(this.currentMedia.duration);
+            }
+
+            this.props.dispatch(actions.updateOption("durationText", durationText));
+            this.props.dispatch(actions.updateOption("currentTimeText", convertTime(this.currentMedia.currentTime)));
             this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
             this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative()));
             this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
             this.props.dispatch(actions.updateOption("currentTime", this.currentMedia.currentTime));
-            this.props.dispatch(actions.updateOption("remaining", this.currentMedia.duration - this.currentMedia.currentTime));          
+            this.props.dispatch(actions.updateOption("remaining", remaining));          
             this.props.dispatch(actions.updateOption("duration", this.currentMedia.duration));
             this.props.dispatch(actions.updateOption("playbackRate", this.currentMedia.playbackRate));
             // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth));

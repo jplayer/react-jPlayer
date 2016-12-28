@@ -2,17 +2,14 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {keys, classNames} from "../util/constants";
-import {getOffset, getWidth, addUniqueToArray, removeFromArrayByValue, updateObjectByKey, limitValue} from "../util/index";
-import convertTime from "../util/convertTime";
-import actions, {playHead, duration} from "../actions/jPlayerActions";
+import {getOffset, getWidth, addUniqueToArray, removeFromArrayByValue, updateObjectByKey, limitValue, convertTime} from "../util/index";
+import actions, {playHead} from "../actions/jPlayerActions";
 
 const mapStateToProps = (state) => ({
     seekPercent: state.jPlayer.seekPercent,
     seeking: state.jPlayer.seeking,
-    duration: state.jPlayer.duration,
     remaining: state.jPlayer.remaining,
     media: state.jPlayer.media,
-    currentTime: state.jPlayer.currentTime,
     currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
     currentPercentRelative: state.jPlayer.currentPercentRelative,
     smoothPlayBar: state.jPlayer.smoothPlayBar,
@@ -32,10 +29,7 @@ export default connect(mapStateToProps)(
         static get defaultProps() {
             return {
                 onSeekBarClick: React.PropTypes.func,
-                onDurationClick: React.PropTypes.func,
-                seekBarStyle: React.PropTypes.object,
-                currentTimeText: React.PropTypes.string,
-                durationText: React.PropTypes.string
+                seekBarStyle: React.PropTypes.object
             }
         }
         onSeekBarClick = (e) => !this.props.barDrag ? this.movePlayHead(e) : null
@@ -50,14 +44,6 @@ export default connect(mapStateToProps)(
             
             this.props.dispatch(playHead(percentage));
         }
-        onDurationClick = (e) => {
-            if(this.props.toggleDuration) {
-                if(this.props.captureDuration) {
-                    e.stopPropagation();
-                }
-                this.props.dispatch(duration());
-            }
-        }
         updateBarStyles = (nextProps) => {
             this.setState({seekBarStyle: {width: `${nextProps.seekPercent}%`}});
 
@@ -67,34 +53,8 @@ export default connect(mapStateToProps)(
                 this.setState(state => updateObjectByKey(state, "seekBarClass", removeFromArrayByValue(state.seekBarClass, classNames.states.SEEKING)));
             }
         }
-        updateDurationText = (nextProps) => {
-            var durationText = '',
-                duration = nextProps.duration,
-                remaining = nextProps.remaining;
-
-            if(nextProps.media.duration === 'string') {
-                durationText = nextProps.media.duration;
-            } else {
-                if(nextProps.media.duration === 'number') {
-                    duration = nextProps.media.duration;
-                    remaining = duration - nextProps.currentTime;
-                }
-                if(nextProps.remainingDuration) {
-                    durationText = (remaining > 0 ? '-' : '') + convertTime(remaining);
-                } else {
-                    durationText = convertTime(duration);
-                }
-            }
-            this.setState({durationText, durationText});
-        }
-        updateCurrentTimeText = (nextProps) => {
-            var currentTimeText = convertTime(nextProps.currentTime);
-            this.setState({currentTimeText, currentTimeText});
-        }
         componentWillReceiveProps(nextProps) {
             this.updateBarStyles(nextProps);
-            this.updateDurationText(nextProps);
-            this.updateCurrentTimeText(nextProps);
         }
         componentWillMount() {
             document.addEventListener("mouseup", this.onSeekBarMouseUp);
@@ -107,18 +67,9 @@ export default connect(mapStateToProps)(
         render() {
             return (
                 <div className="jp-progress">
-                    <div ref={(ref) => this.seekBar = ref} className={this.state.seekBarClass.join(" ")} style={this.state.seekBarStyle} onClick={this.onSeekBarClick} 
-                        onMouseDown={this.onSeekBarMouseDown}>                         
-                        {React.cloneElement(React.Children.only(this.props.children), {
-                            smoothPlayBar: this.props.smoothPlayBar,
-                            currentPercentAbsolute: this.props.currentPercentAbsolute,
-                            currentPercentRelative: this.props.currentPercentRelative,
-                            currentTime: this.props.currentTime,
-                            duration: this.props.duration,
-                            playHeadPercent: this.props.playHeadPercent
-                        })}
-                        <div className={classNames.CURRENT_TIME}>{this.state.currentTimeText}</div>
-                        <div className={classNames.DURATION} onClick={this.onDurationClick}>{this.state.durationText}</div>
+                    <div ref={ref => this.seekBar = ref} className={this.state.seekBarClass.join(" ")} style={this.state.seekBarStyle} onClick={this.onSeekBarClick} 
+                        onMouseDown={this.onSeekBarMouseDown}>
+                        {this.props.children}
                     </div>
                 </div>
             );

@@ -26,6 +26,7 @@ import PlaybackRateBar from "../components/controls/playbackRateBar";
 import PlaybackRateBarValue from "../components/controls/playbackRateBarValue";
 import VolumeBar from "../components/controls/volumeBar";
 import VolumeBarValue from "../components/controls/volumeBarValue";
+import {classNames} from "../util/constants";
 
 class Player extends React.Component {
     constructor(props){
@@ -80,6 +81,8 @@ class Player extends React.Component {
                         <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
                         <Progress>
                             <PlayBar />
+                            <div className={classNames.CURRENT_TIME}>{this.props.jPlayer.currentTimeText}</div>
+                            <div className={classNames.DURATION} onClick={this.props.onDurationClick}>{this.props.jPlayer.durationText}</div>
                         </Progress>
                     </Controls>
                 </Gui>

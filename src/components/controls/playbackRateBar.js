@@ -65,7 +65,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div ref={(ref) => this.playbackRateBar = ref} className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick} onMouseDown={this.onPlaybackRateMouseDown}>
+                <div ref={ref => this.playbackRateBar = ref} className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick} onMouseDown={this.onPlaybackRateMouseDown}>
                     {this.props.children}
                 </div>
             );

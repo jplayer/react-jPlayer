@@ -58,7 +58,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div ref={(ref) => this.volumeBar = ref} className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}>
+                <div ref={ref => this.volumeBar = ref} className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}>
                     {this.props.children}
                 </div>
             );
