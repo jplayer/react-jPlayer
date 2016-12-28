@@ -13,6 +13,7 @@ import Gui from "../components/gui";
 import Controls from "../components/controls";
 import Progress from "../components/progress";
 import PlayBar from "../components/playBar";
+import Buffer from "../components/buffer";
 import BrowserUnsupported from "../components/browserUnsupported";
 import Poster from "../components/poster";
 import Audio from "../components/audio";
@@ -81,11 +82,12 @@ class Player extends React.Component {
                         <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
                         <Progress>
                             <PlayBar />
+                            <Buffer />
                             <div className={classNames.CURRENT_TIME}>{this.props.jPlayer.currentTimeText}</div>
                             <div className={classNames.DURATION} onClick={this.props.onDurationClick}>{this.props.jPlayer.durationText}</div>      
                         </Progress>
                     </Controls>
-                </Gui>
+                </Gui>             
                 <BrowserUnsupported>
                     <h2>Browser Unsupported</h2>
                     To play the media you will need to update your browser to a more recent version.
@@ -107,7 +109,7 @@ const jPlayerOptions = {
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",
-        mp3: "http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3",
+        mp3: "http://www.jplayer.org/audio/mp3/Miaow-01-Tempered-song.mp3",
         poster: "http://wallpapercave.com/wp/Mb4UPsY.png",
         free: true
     }

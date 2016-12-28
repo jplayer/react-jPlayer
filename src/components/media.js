@@ -19,6 +19,15 @@ export default connect(mapStateToProps)(
 
             this.events = {
                 onProgress: () => {
+                    let buffer = 0;
+
+                    for (var i = 0; i < this.currentMedia.buffered.length; i++) {
+                        this.props.dispatch(actions.addUniqueToArray("bufferedTimeRanges", {
+                            start: this.currentMedia.buffered.start(i),
+                            end: this.currentMedia.buffered.end(i)
+                        }));       
+                    }
+                   // this.props.dispatch(actions.updateOption("buffer", this.currentMedia.buffered.end(this.currentMedia.buffered.length - 1)));  
                     this.updateMediaStatus();
                     this.props.onProgress();
                 },
@@ -158,7 +167,6 @@ export default connect(mapStateToProps)(
             // }
         }
         componentDidMount() {
-            this.props.dispatch(actions.updateOption("currentMedia", this.currentMedia));
             this.props.dispatch(actions.updateOption("playbackRateEnabled", testPlaybackRate(this.currentMedia)));  
             if(this.props.nativeVideoControls) {
 				this.setState(state => actions.removeFromArrayByValue(state.videoClass, classNames.HIDDEN));

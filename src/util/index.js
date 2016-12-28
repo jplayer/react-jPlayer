@@ -5,13 +5,15 @@ import set from "lodash/set";
 import {formats, browser, errors, hints, timeFormats} from "./constants";
 
 export const addUniqueToArray = (existingArray = [], value) => {
-    const found = existingArray.some(v => v === value);
+	const newArray = [...existingArray];
+    const found = newArray.some(v => v === value);
             
     if (!found) {
-		return existingArray.concat(value);
+		newArray.push(value);
+		return newArray;
     }
 
-    return existingArray;
+    return newArray;
 }
 
 export const updateObjectByKey = (object, key, value) => {
