@@ -82,7 +82,7 @@ class Player extends React.Component {
                         <Progress>
                             <PlayBar />
                             <div className={classNames.CURRENT_TIME}>{this.props.jPlayer.currentTimeText}</div>
-                            <div className={classNames.DURATION} onClick={this.props.onDurationClick}>{this.props.jPlayer.durationText}</div>
+                            <div className={classNames.DURATION} onClick={this.props.onDurationClick}>{this.props.jPlayer.durationText}</div>      
                         </Progress>
                     </Controls>
                 </Gui>

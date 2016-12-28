@@ -241,6 +241,7 @@ export const jPlayerDefaultOptions = {
     defaultPlaybackRate: 1.0,		
     volume: 0.8, // The volume. Number 0 to 1
     barDrag: true,
+    playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
     media: {},
 	mediaSettings: {
 		video: false,

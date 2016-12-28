@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import actions, {pause} from "../actions/jPlayerActions";
 import {urlNotSupportedError} from "../util/index";
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
-import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
+import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, limitValue, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
 
 const mapStateToProps = (state) => ({
     ...state.jPlayer
@@ -29,6 +29,12 @@ export default connect(mapStateToProps)(
                 onDurationChange: () => {
                     this.updateMediaStatus();
                     this.props.onDurationChange();
+                },
+                onRateChange: () => {
+                    const playbackRateText = this.currentMedia.playbackRate.toFixed(limitValue(this.props.playbackRateTextDigits, 0, 20));
+
+                    this.props.dispatch(actions.updateOption("playbackRateText", playbackRateText));
+                    this.props.onRateChange();
                 },
                 onPlay: () => {
                     //When the autoPlay option is true
@@ -56,7 +62,6 @@ export default connect(mapStateToProps)(
                 onSeeked: this.props.onSeeked,
                 onSuspend: this.props.onSuspend,
                 onVolumeChange: this.props.onVolumeChange,
-                onRateChange: this.props.onRateChange,
                 onLoadStart: this.props.onLoadStart,
                 onLoadedMetadata: this.props.onLoadedMetadata,
                 onAbort: this.props.onAbort,
@@ -74,7 +79,8 @@ export default connect(mapStateToProps)(
                 onDurationChange: () => null,
                 onPlay: () => null,
                 onEnded: () => null,
-                onError: () => null
+                onError: () => null,
+                onRateChange: () => null
             }
         }
         updateMediaStatus = () => {
