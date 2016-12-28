@@ -238,14 +238,15 @@ export const jPlayerDefaultOptions = {
     supplied: ["mp3"], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
     loopOptions: ["loop-playlist"],
     playbackRate: 1.0,
-    defaultPlaybackRate: 1.0,		
+    defaultPlaybackRate: 1.0,
+    bufferColour: "#dddddd", // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
     volume: 0.8, // The volume. Number 0 to 1
     barDrag: true,
     playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
     media: {},
 	mediaSettings: {
 		video: false,
-		formats: [], //Order defines priority.
+		formats: [], // Order defines priority.
 		available: false,
 		playableFormat: []
 	},

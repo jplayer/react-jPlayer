@@ -19,15 +19,16 @@ export default connect(mapStateToProps)(
 
             this.events = {
                 onProgress: () => {
-                    let buffer = 0;
+                    const bufferedTimeRanges = [];
 
                     for (var i = 0; i < this.currentMedia.buffered.length; i++) {
-                        this.props.dispatch(actions.addUniqueToArray("bufferedTimeRanges", {
+                        bufferedTimeRanges.push({
                             start: this.currentMedia.buffered.start(i),
                             end: this.currentMedia.buffered.end(i)
-                        }));       
+                        });
                     }
-                   // this.props.dispatch(actions.updateOption("buffer", this.currentMedia.buffered.end(this.currentMedia.buffered.length - 1)));  
+
+                    this.props.dispatch(actions.updateOption("bufferedTimeRanges", bufferedTimeRanges));
                     this.updateMediaStatus();
                     this.props.onProgress();
                 },
@@ -41,7 +42,7 @@ export default connect(mapStateToProps)(
                 },
                 onRateChange: () => {
                     const playbackRateText = this.currentMedia.playbackRate.toFixed(limitValue(this.props.playbackRateTextDigits, 0, 20));
-
+                    
                     this.props.dispatch(actions.updateOption("playbackRateText", playbackRateText));
                     this.props.onRateChange();
                 },

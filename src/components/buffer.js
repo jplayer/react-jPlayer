@@ -5,25 +5,22 @@ import {Motion, spring} from "react-motion";
 
 const mapStateToProps = (state) => ({
     bufferedTimeRanges: state.jPlayer.bufferedTimeRanges,
-    duration: state.jPlayer.duration
+    duration: state.jPlayer.duration,
+    bufferColour: state.jPlayer.bufferColour
 });
 
 export default connect(mapStateToProps)(
     class extends React.Component {
         newCanvas = (nextProps) => {
-            const inc = this.canvas.width / nextProps.duration;
+            const modifier = this.canvas.width / nextProps.duration;
             const context = this.canvas.getContext("2d");
 
             nextProps.bufferedTimeRanges.forEach(bufferedTimeRange => {
-                const startX = bufferedTimeRange.start * inc;
-                const endX = bufferedTimeRange.end * inc;
+                const startX = bufferedTimeRange.start * modifier;
+                const endX = bufferedTimeRange.end * modifier;
                 const width = endX - startX;
 
-                console.log(bufferedTimeRange.start);
-                console.log(bufferedTimeRange.end);
-
-                context.fillStyle = "red";
-                context.strokeStyle = "white";
+                context.fillStyle = this.props.bufferColour;
                 context.fillRect(startX, 0, width, this.canvas.height);
             });
         }
@@ -33,9 +30,6 @@ export default connect(mapStateToProps)(
             }
         }
         render() {
-           // const bufferPercentage = (this.props.buffer / this.props.duration) * 100;
-
-            // return <canvas ref={ref => this.canvas = ref} className="jp-buffer-bar" style={{width: `${bufferPercentage}%`}} />
             return <canvas ref={ref => this.canvas = ref} className="jp-buffer-bar" />
         }
     }
