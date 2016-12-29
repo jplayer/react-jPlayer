@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import merge from "lodash.merge";
 import screenfull from "screenfull";
+import {default as setClassNames} from "classnames";
 
 import {classNames, keys, formats, timeFormats, loopOptions, errors, errorMessages, errorHints} from "../util/constants";
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";

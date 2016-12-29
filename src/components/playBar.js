@@ -1,7 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
-
 import {Motion, spring} from "react-motion";
+
+import {classNames} from "../util/constants";
 
 const mapStateToProps = (state, ownProps) => ({
     smoothPlayBar: state.jPlayer.smoothPlayBar,
@@ -15,11 +16,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps)(
     class extends React.PureComponent {
-        constructor() {
-            super();
-            
-            this.state = {}
-        }
         static get propTypes() {
             return {
                 playBarStyle: React.PropTypes.object,
@@ -30,7 +26,7 @@ export default connect(mapStateToProps)(
         render() {
             return (
                 <Motion style={{smoothWidth: spring(this.props.currentPercentAbsolute, [250])}}>
-                    {values => <div className="jp-play-bar" style={{width: this.props.smoothPlayBar ? `${values.smoothWidth}%` : `${this.props.currentPercentRelative}%`}} {...this.props.attributes} />}
+                    {values => <div className={classNames.PLAY_BAR} style={{width: this.props.smoothPlayBar ? `${values.smoothWidth}%` : `${this.props.currentPercentRelative}%`}} {...this.props.attributes} />}
                 </Motion>
             );
         }

@@ -47,6 +47,14 @@ export default connect(mapStateToProps)(
                     this.props.dispatch(actions.updateOption("playbackRateText", playbackRateText));
                     this.props.onRateChange();
                 },
+                onSeeking: () => {
+                    this.props.dispatch(actions.updateOption("seeking", true));
+                    this.props.onSeeking();
+                },
+                onSeeked: () => {
+                    this.props.dispatch(actions.updateOption("seeking", false));
+                    this.props.onSeeked();
+                },
                 onPlay: () => {
                     //When the autoPlay option is true
                     this.props.dispatch(actions.updateOption("paused", false));
@@ -69,8 +77,6 @@ export default connect(mapStateToProps)(
                 onPlaying: this.props.onPlaying,
                 onPause: this.props.onPause,
                 onWaiting: this.props.onWaiting,
-                onSeeking: this.props.onSeeking,
-                onSeeked: this.props.onSeeked,
                 onSuspend: this.props.onSuspend,
                 onVolumeChange: this.props.onVolumeChange,
                 onLoadStart: this.props.onLoadStart,
@@ -91,7 +97,9 @@ export default connect(mapStateToProps)(
                 onPlay: () => null,
                 onEnded: () => null,
                 onError: () => null,
-                onRateChange: () => null
+                onRateChange: () => null,
+                onSeeking: () => null,
+                onSeeked: () => null
             }
         }
         updateMediaStatus = () => {
@@ -170,15 +178,6 @@ export default connect(mapStateToProps)(
         }
         componentDidMount() {
             this.props.dispatch(actions.updateOption("playbackRateEnabled", testPlaybackRate(this.currentMedia)));  
-            if(this.props.nativeVideoControls) {
-				this.setState(state => actions.removeFromArrayByValue(state.videoClass, classNames.HIDDEN));
-				this.setState({videoStyle: {
-					//width: this.props.width, 
-					//height: this.props.height
-				}});
-			} else {
-                this.setState(state => updateObjectByKey(state, "videoClass", addUniqueToArray(state.videoClass, classNames.HIDDEN)));
-            }
         }
         render() {
             return (

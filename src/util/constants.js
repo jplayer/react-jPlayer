@@ -70,6 +70,7 @@ export const classNames = {
 	BUFFER_BAR: "jp-buffer-bar",
 	PROGRESS: "jp-progress",
 	SEEK_BAR: "jp-seek-bar",
+	PLAY_BAR: "jp-play-bar",
 	SEEKING: "jp-seeking-bg",
 	GUI: "jp-gui",
 	NO_SOLUTION: "jp-no-solution",
@@ -87,10 +88,6 @@ export const classNames = {
 	PREVIOUS: "jp-previous",
 	NEXT: "jp-next",
 	POSTER: "jp-poster",
-	animations: {
-		FADE_OUT: "fade-out",
-		FADE_IN: "fade-in"
-	},
     states: {
         PLAYING: "jp-state-playing",
         SEEKING: "jp-state-seeking",

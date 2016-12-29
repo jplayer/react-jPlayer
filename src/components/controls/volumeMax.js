@@ -12,13 +12,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps)(
     class extends React.Component {
-        constructor(props) {
-            super();
-
-            this.state = {
-                volumeMaxClass: [classNames.VOLUME_MAX]
-            }
-        }
         onVolumeMaxClick = () => {
             this.props.dispatch(volume(1));
 
@@ -26,18 +19,8 @@ export default connect(mapStateToProps)(
                 this.props.dispatch(mute(false));
             }
         }
-        _updateVolumeMaxStyles = (nextProps) => {
-            if(nextProps.noVolume) {
-                this.setState(state => updateObjectByKey(state, "volumeMaxClass", addUniqueToArray(state.volumeMaxClass, classNames.HIDDEN)));
-            } else {
-                this.setState(state => updateObjectByKey(state, "volumeMaxClass", removeFromArrayByValue(state.volumeMaxClass, classNames.HIDDEN)));
-            }
-        }
-        componentWillReceiveProps(nextProps) {
-            this._updateVolumeMaxStyles(nextProps);
-        }
         render() {
-            return <a className={this.state.volumeMaxClass.join(" ")} onClick={this.props.onVolumeMaxClick} {...this.props.attributes}>{this.props.children}</a>
+            return <a className={classNames.VOLUME_MAX} onClick={this.props.onVolumeMaxClick} {...this.props.attributes}>{this.props.children}</a>
         }
     }  
 );

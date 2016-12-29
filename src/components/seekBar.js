@@ -20,19 +20,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps)(
     class extends React.Component {
-        constructor() {
-            super();
-            
-            this.state = {
-                seekBarClass: [classNames.SEEK_BAR]
-            }
-        }
-        static get defaultProps() {
-            return {
-                onSeekBarClick: React.PropTypes.func,
-                seekBarStyle: React.PropTypes.object
-            }
-        }
         onSeekBarClick = (e) => this.movePlayHead(e)
         onSeekBarMouseMove = (e) => this.props.barDrag && this.dragging ? this.movePlayHead(e) : null
         onSeekBarMouseDown = () => this.dragging = true
@@ -45,18 +32,6 @@ export default connect(mapStateToProps)(
             
             this.props.dispatch(playHead(percentage));
         }
-        updateBarStyles = (nextProps) => {
-            this.setState({seekBarStyle: {width: `${nextProps.seekPercent}%`}});
-
-            if (nextProps.seeking) {
-                this.setState(state => updateObjectByKey(state, "seekBarClass", addUniqueToArray(state.seekBarClass, classNames.states.SEEKING)));
-            } else {
-                this.setState(state => updateObjectByKey(state, "seekBarClass", removeFromArrayByValue(state.seekBarClass, classNames.states.SEEKING)));
-            }
-        }
-        componentWillReceiveProps(nextProps) {
-            this.updateBarStyles(nextProps);
-        }
         componentWillMount() {
             document.addEventListener("mouseup", this.onSeekBarMouseUp);
             document.addEventListener("mousemove", this.onSeekBarMouseMove);
@@ -67,7 +42,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div ref={ref => this.seekBar = ref} className={this.state.seekBarClass.join(" ")} style={this.state.seekBarStyle} onClick={this.onSeekBarClick} 
+                <div ref={ref => this.seekBar = ref} className={classNames.SEEK_BAR} style={{width: `${this.props.seekPercent}%`}} onClick={this.onSeekBarClick} 
                     onMouseDown={this.onSeekBarMouseDown} {...this.props.attributes}>
                     {this.props.children}
                 </div>

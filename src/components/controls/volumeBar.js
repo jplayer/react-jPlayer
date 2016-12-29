@@ -15,13 +15,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps)(
     class extends React.Component {
-        constructor(props) {
-            super();
-
-            this.state = {
-                volumeBarClass: [classNames.VOLUME_BAR]
-            }
-        }
         onVolumeBarClick = (e) => this.moveVolumeBar(e)
         onVolumeBarMouseMove = (e) => this.props.barDrag && this.dragging ? this.moveVolumeBar(e) : null
         onVolumeBarMouseDown = () => this.dragging = true
@@ -36,16 +29,6 @@ export default connect(mapStateToProps)(
             this.props.verticalVolume ? this.props.dispatch(volume(y/h)) : this.props.dispatch(volume(x/w))
             this.props.dispatch(mute(false));
         }
-        _updateVolumeBarStyles = (nextProps) => {
-            if(nextProps.noVolume) {
-                this.setState(state => updateObjectByKey(state, "volumeBarClass", addUniqueToArray(state.volumeBarClass, classNames.HIDDEN)));
-            } else {
-                this.setState(state => updateObjectByKey(state, "volumeBarClass", removeFromArrayByValue(state.volumeBarClass, classNames.HIDDEN)));
-            }
-        }
-        componentWillReceiveProps(nextProps) {
-            this._updateVolumeBarStyles(nextProps);
-        }
         componentWillMount() {
             document.addEventListener("mouseup", this.onVolumeBarMouseUp);
             document.addEventListener("mousemove", this.onVolumeBarMouseMove);
@@ -56,7 +39,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div ref={ref => this.volumeBar = ref} className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}
+                <div ref={ref => this.volumeBar = ref} className={classNames.VOLUME_BAR} onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}
                     {...this.props.attributes}>
                     {this.props.children}
                 </div>

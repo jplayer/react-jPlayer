@@ -15,26 +15,18 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps)(
     class extends React.Component {
-        constructor(props) {
+        constructor() {
             super();
-
-            this.state = {
-                volumeBarValueClass: [classNames.VOLUME_BAR_VALUE]
-            }
+            
+            this.state = {};
         }
         _updateVolumeBarValueStyles = (nextProps) => {
-            if(nextProps.noVolume) {
-                this.setState(state => updateObjectByKey(state, "volumeBarValueClass", addUniqueToArray(state.volumeBarValueClass, classNames.HIDDEN)));
-            } else {
-                const volumeBarValue = nextProps.muted ? 0 : (nextProps.volume * 100) + "%";
-                
-                this.setState({volumeBarValueStyle: {
-                    width: !nextProps.verticalVolume ? volumeBarValue : null,
-                    height: nextProps.verticalVolume ? volumeBarValue : null
-                }});
-
-                this.setState(state => updateObjectByKey(state, "volumeBarValueClass", removeFromArrayByValue(state.volumeBarValueClass, classNames.HIDDEN)));
-            }
+            const volumeBarValue = nextProps.muted ? 0 : (nextProps.volume * 100) + "%";
+            
+            this.setState({volumeBarValueStyle: {
+                width: !nextProps.verticalVolume ? volumeBarValue : null,
+                height: nextProps.verticalVolume ? volumeBarValue : null
+            }});
         }
         componentDidMount() {
             this._updateVolumeBarValueStyles(this.props);
@@ -43,7 +35,7 @@ export default connect(mapStateToProps)(
             this._updateVolumeBarValueStyles(nextProps);
         }
         render() {
-            return <div className={this.state.volumeBarValueClass.join(" ")} style={this.state.volumeBarValueStyle} {...this.props.attributes} />
+            return <div className={classNames.VOLUME_BAR_VALUE} style={this.state.volumeBarValueStyle} {...this.props.attributes} />
         }
     }  
 );

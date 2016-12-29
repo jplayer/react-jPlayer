@@ -20,30 +20,24 @@ export default connect(mapStateToProps)(
             super();
 
             this.state = {
-                playbackRateBarValueClass: [classNames.PLAYBACK_RATE_BAR_VALUE]
+                playbackRateBarValueClass: []
             }
         }
         _updatePlaybackRateBarValueStyles = (nextProps) => {
             const ratio = (nextProps.playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
             
-            if(nextProps.playbackRateEnabled) {
-                this.setState(state => updateObjectByKey(state, "playbackRateBarValueClass", removeFromArrayByValue(state.playbackRateBarValueClass, classNames.HIDDEN)));
-                
-                const playbackRateBarValue = (ratio * 100) + "%";
+            const playbackRateBarValue = (ratio * 100) + "%";
 
-                this.setState({playbackRateBarValueStyle: {
-                    width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
-                    height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
-                }});
-            } else {
-                this.setState(state => updateObjectByKey(state, "playbackRateBarValueClass", addUniqueToArray(state.playbackRateBarValueClass, classNames.HIDDEN)));
-            }
+            this.setState({playbackRateBarValueStyle: {
+                width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
+                height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
+            }});
         }
         componentWillReceiveProps(nextProps) {
             this._updatePlaybackRateBarValueStyles(nextProps);
         }
         render() {
-            return <div className={this.state.playbackRateBarValueClass.join(" ")} style={this.state.playbackRateBarValueStyle} {...this.props.attributes}/>
+            return <div className={classNames.PLAYBACK_RATE_BAR_VALUE} style={this.state.playbackRateBarValueStyle} {...this.props.attributes}/>
         }
     }  
 );

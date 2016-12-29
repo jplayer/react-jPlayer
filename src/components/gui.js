@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import * as constants from "../util/constants";
+import {classNames} from "../util/constants";
 
 const mapStateToProps = (state, ownProps) => ({
 	fullScreen: state.jPlayer.fullScreen,
@@ -9,5 +9,5 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(mapStateToProps)(
-	({children, nativeVideoControls, attributes}) => <div className={nativeVideoControls ? "jp-gui " + constants.className.HIDDEN : "jp-gui"} {...attributes}>{children}</div>
+	({children, nativeVideoControls, attributes}) => <div className={classNames.GUI} {...attributes}>{children}</div>
 );
