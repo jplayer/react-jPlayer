@@ -6,7 +6,6 @@ import store from "./store";
 import merge from "lodash.merge";
 
 import "./less/jPlayer.less";
-import root from "./root";
 import * as jPlayerActions from "./actions/jPlayerActions";
 import {defaultValues, jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
 
@@ -23,12 +22,10 @@ export default (WrappedComponent, jPlayerOptions) => {
     const initialState = {
         jPlayer: merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, jPlayerOptions)
     };
-
-    const Root = root(WrappedComponent); 
     
     ReactDOM.render(
     <Provider store={store(initialState)}>
-        <Root />
+        <WrappedComponent />
     </Provider>,
     document.getElementById(jPlayerOptions.jPlayerSelector));
 }

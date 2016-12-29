@@ -5,12 +5,13 @@ import {addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../..
 import {keys, classNames} from "../../util/constants";
 import {playbackRate} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
     minPlaybackRate: state.jPlayer.minPlaybackRate,
     maxPlaybackRate: state.jPlayer.maxPlaybackRate,
     playbackRate: state.jPlayer.playbackRate,
-    playbackRateEnabled: state.jPlayer.playbackRateEnabled
+    playbackRateEnabled: state.jPlayer.playbackRateEnabled,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -42,7 +43,7 @@ export default connect(mapStateToProps)(
             this._updatePlaybackRateBarValueStyles(nextProps);
         }
         render() {
-            return <div className={this.state.playbackRateBarValueClass.join(" ")} style={this.state.playbackRateBarValueStyle} />
+            return <div className={this.state.playbackRateBarValueClass.join(" ")} style={this.state.playbackRateBarValueStyle} {...this.props.attributes}/>
         }
     }  
 );

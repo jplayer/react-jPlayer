@@ -5,11 +5,12 @@ import {addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../..
 import {keys, classNames} from "../../util/constants";
 import {mute, volume} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     verticalVolume: state.jPlayer.verticalVolume,
     noVolume: state.jPlayer.noVolume,
     muted: state.jPlayer.muted,
-    volume: state.jPlayer.volume
+    volume: state.jPlayer.volume,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -42,7 +43,7 @@ export default connect(mapStateToProps)(
             this._updateVolumeBarValueStyles(nextProps);
         }
         render() {
-            return <div className={this.state.volumeBarValueClass.join(" ")} style={this.state.volumeBarValueStyle} />
+            return <div className={this.state.volumeBarValueClass.join(" ")} style={this.state.volumeBarValueStyle} {...this.props.attributes} />
         }
     }  
 );

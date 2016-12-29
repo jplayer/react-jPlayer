@@ -1,12 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
-
 import {Motion, spring} from "react-motion";
 
-const mapStateToProps = (state) => ({
+import {classNames} from "../util/constants";
+
+const mapStateToProps = (state, ownProps) => ({
     bufferedTimeRanges: state.jPlayer.bufferedTimeRanges,
     duration: state.jPlayer.duration,
-    bufferColour: state.jPlayer.bufferColour
+    bufferColour: state.jPlayer.bufferColour,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -30,7 +32,7 @@ export default connect(mapStateToProps)(
             }
         }
         render() {
-            return <canvas ref={ref => this.canvas = ref} className="jp-buffer-bar" />
+            return <canvas ref={ref => this.canvas = ref} className={classNames.BUFFER_BAR} {...this.props.attributes} />
         }
     }
 )

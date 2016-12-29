@@ -30,7 +30,7 @@ export default class extends React.Component {
     }
     render() {
         return (
-            <div className={this.state.noSolutionClass.join(" ")}>
+            <div className={this.state.noSolutionClass.join(" ")} {...this.props}>
                 {this.props.children}
             </div>
         );

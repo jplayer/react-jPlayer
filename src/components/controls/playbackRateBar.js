@@ -5,13 +5,14 @@ import {getWidth, getHeight, getOffset, addUniqueToArray, removeFromArrayByValue
 import {keys, classNames} from "../../util/constants";
 import {playbackRate} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
     minPlaybackRate: state.jPlayer.minPlaybackRate,
     maxPlaybackRate: state.jPlayer.maxPlaybackRate,
     playbackRate: state.jPlayer.playbackRate,
     playbackRateEnabled: state.jPlayer.playbackRateEnabled,
-    barDrag: state.jPlayer.barDrag
+    barDrag: state.jPlayer.barDrag,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -65,7 +66,8 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div ref={ref => this.playbackRateBar = ref} className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick} onMouseDown={this.onPlaybackRateMouseDown}>
+                <div ref={ref => this.playbackRateBar = ref} className={this.state.playbackRateBarClass.join(" ")} onClick={this.onPlaybackRateBarClick} onMouseDown={this.onPlaybackRateMouseDown}
+                    {...this.props.attributes}>
                     {this.props.children}
                 </div>
             );

@@ -60,12 +60,15 @@ export const hints = {
 };
 
 export const classNames = {
+	JPLAYER: "jp-jplayer",
 	MUTE: "jp-mute",
 	VOLUME_BAR: "jp-volume-bar",
 	VOLUME_BAR_VALUE: "jp-volume-bar-value",
 	VOLUME_MAX: "jp-volume-max",
 	PLAYBACK_RATE_BAR: "jp-playback-rate-bar",
 	PLAYBACK_RATE_BAR_VALUE: "jp-playback-rate-bar-value",
+	BUFFER_BAR: "jp-buffer-bar",
+	PROGRESS: "jp-progress",
 	SEEK_BAR: "jp-seek-bar",
 	SEEKING: "jp-seeking-bg",
 	NO_SOLUTION: "jp-no-solution",
@@ -75,6 +78,7 @@ export const classNames = {
 	REPEAT: "jp-repeat",
 	FULL_SCREEN: "jp-full-screen",
 	CURRENT_TIME: "jp-current-time",
+	CONTROLS: "jp-controls",
 	DURATION: "jp-duration",
     HIDDEN: "jp-hidden",
 	DETAILS: "jp-details",

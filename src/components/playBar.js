@@ -3,13 +3,14 @@ import {connect} from "react-redux";
 
 import {Motion, spring} from "react-motion";
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     smoothPlayBar: state.jPlayer.smoothPlayBar,
     currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
     currentPercentRelative: state.jPlayer.currentPercentRelative,
     currentTime: state.jPlayer.currentTime,
     duration: state.jPlayer.duration,
-    playHeadPercent: state.jPlayer.playHeadPercent
+    playHeadPercent: state.jPlayer.playHeadPercent,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -29,7 +30,7 @@ export default connect(mapStateToProps)(
         render() {
             return (
                 <Motion style={{smoothWidth: spring(this.props.currentPercentAbsolute, [250])}}>
-                    {values => <div className="jp-play-bar" style={{width: this.props.smoothPlayBar ? `${values.smoothWidth}%` : `${this.props.currentPercentRelative}%`}} />}
+                    {values => <div className="jp-play-bar" style={{width: this.props.smoothPlayBar ? `${values.smoothWidth}%` : `${this.props.currentPercentRelative}%`}} {...this.props.attributes} />}
                 </Motion>
             );
         }

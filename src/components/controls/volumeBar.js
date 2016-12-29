@@ -5,11 +5,12 @@ import {getWidth, getHeight, getOffset, addUniqueToArray, removeFromArrayByValue
 import {keys, classNames} from "../../util/constants";
 import {mute, volume} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     verticalVolume: state.jPlayer.verticalVolume,
     noVolume: state.jPlayer.noVolume,
     muted: state.jPlayer.muted,
-    barDrag: state.jPlayer.barDrag
+    barDrag: state.jPlayer.barDrag,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -33,10 +34,7 @@ export default connect(mapStateToProps)(
                 h = getHeight(this.volumeBar);
 
             this.props.verticalVolume ? this.props.dispatch(volume(y/h)) : this.props.dispatch(volume(x/w))
-
-            if(this.props.muted) {
-                this.props.dispatch(mute(false));
-            }
+            this.props.dispatch(mute(false));
         }
         _updateVolumeBarStyles = (nextProps) => {
             if(nextProps.noVolume) {
@@ -58,7 +56,8 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div ref={ref => this.volumeBar = ref} className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}>
+                <div ref={ref => this.volumeBar = ref} className={this.state.volumeBarClass.join(" ")} onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}
+                    {...this.props.attributes}>
                     {this.props.children}
                 </div>
             );

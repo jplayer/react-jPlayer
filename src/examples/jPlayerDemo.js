@@ -5,13 +5,14 @@ import {Provider, connect} from "react-redux";
 import "../less/default/jPlayer.less";
 import "../less/jPlayerIconControls.less";
 
-import * as constants from "../util/constants";
 import renderjPlayer from "../index";
 import JPlayer from "../containers/jPlayer";
 import Media from "../components/media";
 import Gui from "../components/gui";
 import Controls from "../components/controls";
+import KeyControl from "../components/keyControl";
 import Progress from "../components/progress";
+import SeekBar from "../components/seekBar";
 import PlayBar from "../components/playBar";
 import Buffer from "../components/buffer";
 import BrowserUnsupported from "../components/browserUnsupported";
@@ -27,7 +28,8 @@ import PlaybackRateBar from "../components/controls/playbackRateBar";
 import PlaybackRateBarValue from "../components/controls/playbackRateBarValue";
 import VolumeBar from "../components/controls/volumeBar";
 import VolumeBarValue from "../components/controls/volumeBarValue";
-import {classNames} from "../util/constants";
+import Duration from "../components/duration";
+import CurrentTime from "../components/currentTime";
 
 class Player extends React.Component {
     constructor(props){
@@ -63,28 +65,28 @@ class Player extends React.Component {
                         <Audio>
                             <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
                         </Audio>
-                        <Video>
-                            {/*<NativeVideoControls />*/}
-                        </Video>
                     </Media>
                     <div className="jp-poster-container">
                         <Poster />
-                        <Title>{this.props.jPlayer.media.title}</Title>
+                        <Title />
                     </div>
                     <Controls>
+                        <KeyControl />
                         <Play><i className="fa fa-play"></i></Play>
+                        <FullScreen><i className="fa fa-expand"></i></FullScreen>
+                        <Repeat><i className="fa fa-repeat"></i></Repeat>
+                        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
                         <div className="jp-volume-controls">
                             <Mute><i className={this.state.muteClassName}></i></Mute>
                             <VolumeBar><VolumeBarValue /></VolumeBar>
                         </div>
-                        <FullScreen><i className="fa fa-expand"></i></FullScreen>
-                        <Repeat><i className="fa fa-repeat"></i></Repeat>
-                        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
                         <Progress>
-                            <PlayBar />
-                            <Buffer />
-                            <div className={classNames.CURRENT_TIME}>{this.props.jPlayer.currentTimeText}</div>
-                            <div className={classNames.DURATION} onClick={this.props.onDurationClick}>{this.props.jPlayer.durationText}</div>      
+                            <SeekBar>
+                                <PlayBar />
+                                <Buffer />
+                                <CurrentTime />
+                                <Duration />  
+                            </SeekBar>  
                         </Progress>
                     </Controls>
                 </Gui>             
@@ -102,7 +104,6 @@ const jPlayerOptions = {
     cssSelectorAncestor: "jp-container-footer-player",
     smoothPlayBar: false,
     muted: true,
-    keyEnabled: true,
     globalVolume: false,
     autoplay: false,
     logErrors: true,

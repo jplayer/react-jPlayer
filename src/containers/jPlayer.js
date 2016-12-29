@@ -7,8 +7,9 @@ import {classNames, keys, formats, timeFormats, loopOptions, errors, errorMessag
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
 import actions, {setMedia, clearMedia} from "../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
-    ...state.jPlayer
+const mapStateToProps = (state, ownProps) => ({
+    ...state.jPlayer,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -27,42 +28,6 @@ export default connect(mapStateToProps)(
                 stateClass: React.PropTypes.objectOf(React.PropTypes.string)
             }
         }
-        static get childContextTypes() {
- 			return {
- 				setCurrentMedia: React.PropTypes.func,
-                getCurrentMedia: React.PropTypes.func,
-                setMedia: React.PropTypes.func,
-				clearMedia: React.PropTypes.func,
-				play: React.PropTypes.func,
-				pause: React.PropTypes.func,
-				playHead: React.PropTypes.func,
-				focus: React.PropTypes.func,
-				volume: React.PropTypes.func,
-				mute: React.PropTypes.func,
-				unmute: React.PropTypes.func,
-				incrementLoop: React.PropTypes.func,
-				fullScreen: React.PropTypes.func,
-				duration: React.PropTypes.func,
-				playbackRate: React.PropTypes.func,
-             }
-        }
-        getChildContext = () => ({
-            setCurrentMedia: (ref) => this.currentMedia = ref,
-            getCurrentMedia: () => this.currentMedia,
-            setMedia: this.setMedia,
-			clearMedia: this.clearMedia,
-			play: this.play,
-			pause: this.pause,
-			playHead: this.playHead,
-			focus: this.focus,
-			volume: this.volume,
-			mute: this.mute,
-			unmute: this.unmute,
-			incrementLoop: this.incrementLoop,
-			fullScreen: this.fullScreen,
-			duration: this.duration,
-			playbackRate: this.playbackRate
-        })
 		setFormats = () => {
             const mediaSettings = merge({}, this.props.mediaSettings);
 
@@ -184,11 +149,9 @@ export default connect(mapStateToProps)(
             }
         }
         render() {
-            const {...childProps} = {...this.getChildContext()}
-
             return (
-                <div id={this.props.cssSelectorAncestor} className={this.state[keys.PLAYER_CLASS].join(" ")}>
-                    {React.Children.map(this.props.children, child => React.cloneElement(child, childProps))}
+                <div id={this.props.cssSelectorAncestor} className={this.state[keys.PLAYER_CLASS].join(" ")} {...this.props.attributes}>
+                    {this.props.children}
                 </div>
             );
         }
@@ -243,4 +206,13 @@ export const jPlayerDefaultOptions = {
     barDrag: true,
     playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
     media: {},
+    fadeInConfig: {
+        stiffness: 40 // Velocity of the animation (higher the faster), other properties automatically set in the Motion component
+    },
+    fadeOutConfig: {
+        stiffness: 40 
+    },
+    restored: false, // Controls the interface autoHide feature.
+    full: true, // Controls the interface autoHide feature.
+    hold: 2000 // Milliseconds. The period of the pause before autoHide beings.
 };

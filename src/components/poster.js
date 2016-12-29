@@ -4,10 +4,11 @@ import {connect} from "react-redux";
 import {addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../util/index";
 import {keys, classNames} from "../util/constants";
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     mediaSettings: state.jPlayer.mediaSettings,
     media: state.jPlayer.media,
-    src: state.jPlayer.posterSrc
+    src: state.jPlayer.posterSrc,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -40,7 +41,7 @@ export default connect(mapStateToProps)(
            this._updatePosterStyles(nextProps);
         }
         render() {
-            return <img className={this.state.posterClass.join(" ")} src={this.props.src} onLoad={this.onLoad} onClick={this.props.onClick} />;
+            return <img className={this.state.posterClass.join(" ")} src={this.props.src} onLoad={this.onLoad} onClick={this.props.onClick} {...this.props.attributes}/>;
         }
     }
 )

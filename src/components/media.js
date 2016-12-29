@@ -6,8 +6,9 @@ import {urlNotSupportedError} from "../util/index";
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, limitValue, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
 
-const mapStateToProps = (state) => ({
-    ...state.jPlayer
+const mapStateToProps = (state, ownProps) => ({
+    ...state.jPlayer,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -181,7 +182,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div className={"jp-jplayer"} style={this.state.playerStyle}>
+                <div className={classNames.JPLAYER} style={this.state.playerStyle} {...this.props.attributes}>
                     {React.Children.map(this.props.children, child => React.cloneElement(child,
                         {
                             ...this.events,

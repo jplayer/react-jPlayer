@@ -5,8 +5,9 @@ import {addUniqueToArray, removeFromArrayByValue,updateObjectByKey} from "../../
 import {classNames} from "../../util/constants";
 import {mute, volume} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
-    muted: state.jPlayer.muted
+const mapStateToProps = (state, ownProps) => ({
+    muted: state.jPlayer.muted,
+    attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
@@ -36,7 +37,7 @@ export default connect(mapStateToProps)(
             this._updateVolumeMaxStyles(nextProps);
         }
         render() {
-            return <a className={this.state.volumeMaxClass.join(" ")} onClick={this.props.onVolumeMaxClick}>{this.props.children}</a>
+            return <a className={this.state.volumeMaxClass.join(" ")} onClick={this.props.onVolumeMaxClick} {...this.props.attributes}>{this.props.children}</a>
         }
     }  
 );

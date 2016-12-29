@@ -4,10 +4,10 @@ import {connect} from "react-redux";
 import {classNames} from "../util/constants";
 
 const mapStateToProps = (state, ownProps) => ({
-    title: state.jPlayer.media.title,
+    currentTimeText: state.jPlayer.currentTimeText,
     attributes: ownProps
 });
 
 export default connect(mapStateToProps)(
-    ({title, attributes, ...props}) => <div className={classNames.TITLE} {...attributes}>{title}</div>
+    ({currentTimeText, attributes}) => <div className={classNames.CURRENT_TIME} {...attributes}>{currentTimeText}</div>
 );
