@@ -71,6 +71,7 @@ export const classNames = {
 	PROGRESS: "jp-progress",
 	SEEK_BAR: "jp-seek-bar",
 	SEEKING: "jp-seeking-bg",
+	GUI: "jp-gui",
 	NO_SOLUTION: "jp-no-solution",
 	PLAY: "jp-play",
 	PAUSE: "jp-pause",
@@ -78,7 +79,6 @@ export const classNames = {
 	REPEAT: "jp-repeat",
 	FULL_SCREEN: "jp-full-screen",
 	CURRENT_TIME: "jp-current-time",
-	CONTROLS: "jp-controls",
 	DURATION: "jp-duration",
     HIDDEN: "jp-hidden",
 	DETAILS: "jp-details",
@@ -87,6 +87,10 @@ export const classNames = {
 	PREVIOUS: "jp-previous",
 	NEXT: "jp-next",
 	POSTER: "jp-poster",
+	animations: {
+		FADE_OUT: "fade-out",
+		FADE_IN: "fade-in"
+	},
     states: {
         PLAYING: "jp-state-playing",
         SEEKING: "jp-state-seeking",

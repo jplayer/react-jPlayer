@@ -9,6 +9,16 @@ export default class extends React.Component {
             [keys.NO_SOLUTION_CLASS]: [classNames.NO_SOLUTION],
         };
     }
+    static get defaultProps() {
+        return {
+            children: (
+                <div>
+                    <h2>Browser Unsupported</h2>
+                    <div>To play the media you will need to update your browser to a more recent version.</div>
+                </div>
+            )
+        }
+    }
     static get propTypes() {
         return {
             noSolutionClass: React.PropTypes.arrayOf(React.PropTypes.string)

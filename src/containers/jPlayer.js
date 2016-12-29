@@ -205,14 +205,5 @@ export const jPlayerDefaultOptions = {
     volume: 0.8, // The volume. Number 0 to 1
     barDrag: true,
     playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
-    media: {},
-    fadeInConfig: {
-        stiffness: 40 // Velocity of the animation (higher the faster), other properties automatically set in the Motion component
-    },
-    fadeOutConfig: {
-        stiffness: 40 
-    },
-    restored: false, // Controls the interface autoHide feature.
-    full: true, // Controls the interface autoHide feature.
-    hold: 2000 // Milliseconds. The period of the pause before autoHide beings.
+    media: {}
 };

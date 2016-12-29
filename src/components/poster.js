@@ -41,7 +41,9 @@ export default connect(mapStateToProps)(
            this._updatePosterStyles(nextProps);
         }
         render() {
-            return <img className={this.state.posterClass.join(" ")} src={this.props.src} onLoad={this.onLoad} onClick={this.props.onClick} {...this.props.attributes}/>;
+            return (
+                <img className={this.state.posterClass.join(" ")} src={this.props.src} onLoad={this.onLoad} onClick={this.props.onClick} {...this.props.attributes} />    
+            );
         }
     }
 )
