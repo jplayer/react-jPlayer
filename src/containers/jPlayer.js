@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import merge from "lodash.merge";
 import screenfull from "screenfull";
 
-import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
+import {classNames, keys, formats, timeFormats, loopOptions, errors, errorMessages, errorHints} from "../util/constants";
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
 import actions, {setMedia, clearMedia} from "../actions/jPlayerActions";
 
@@ -19,16 +19,8 @@ export default connect(mapStateToProps)(
             this.state = {
                 [keys.PLAYER_CLASS]: [],
             };
-			
-			this.timeFormats = merge(timeFormats, this.props.timeFormats);	
-
-			this.noFullWindow = merge({
-				...noFullWindows
-			}, this.props.noFullWindow);
-
-			this.noVolume = merge({
-				...noVolumes
-			}, this.props.noVolume);
+		
+			this.timeFormats = merge(timeFormats, this.props.timeFormats);
         }
         static get propTypes() {
             return {
@@ -171,8 +163,6 @@ export default connect(mapStateToProps)(
 			// 	focusInstance = this;
 			// }
 
-            this.props.dispatch(actions.updateOption("noVolume", uaBlocklist(this.props.noVolume)));
-            this.props.dispatch(actions.updateOption("noFullWindow", uaBlocklist(this.props.noFullWindow)));
             document.addEventListener(screenfull.raw.fullscreenchange, () => this.props.dispatch(actions.updateOption("fullScreen", screenfull.isFullscreen)));
 		}
         componentDidMount() {
@@ -205,6 +195,15 @@ export default connect(mapStateToProps)(
     }
 )
 
+export const defaultValues = {
+    mediaSettings: {
+		video: false,
+		formats: [], // Order defines priority.
+		available: false,
+		playableFormat: []
+	},
+}
+
 export const statusDefaultValues = {
     paused: true,
     format: {},
@@ -231,7 +230,7 @@ export const statusDefaultValues = {
 export const jPlayerDefaultOptions = {
     jPlayerSelector: "jplayer_1",
     cssSelectorAncestor: "jp_container_1",
-    preload: "metadata", // HTML5 Spec values: none, metadata, auto.	
+    preload: "metadata", // HTML5 Spec values: none, metadata, auto.
     captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
     minPlaybackRate: 0.5,
     maxPlaybackRate: 4,
@@ -244,10 +243,4 @@ export const jPlayerDefaultOptions = {
     barDrag: true,
     playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
     media: {},
-	mediaSettings: {
-		video: false,
-		formats: [], // Order defines priority.
-		available: false,
-		playableFormat: []
-	},
 };

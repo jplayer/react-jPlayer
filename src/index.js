@@ -8,7 +8,7 @@ import merge from "lodash.merge";
 import "./less/jPlayer.less";
 import root from "./root";
 import * as jPlayerActions from "./actions/jPlayerActions";
-import {jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
+import {defaultValues, jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
 
 const mapStateToProps = (state, ownProps) => ({
     jPlayer: state.jPlayer, 
@@ -21,7 +21,7 @@ export default (WrappedComponent, jPlayerOptions) => {
     WrappedComponent = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
 
     const initialState = {
-        jPlayer: merge({}, statusDefaultValues, jPlayerDefaultOptions, jPlayerOptions)
+        jPlayer: merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, jPlayerOptions)
     };
 
     const Root = root(WrappedComponent); 
