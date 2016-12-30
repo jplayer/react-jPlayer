@@ -2,7 +2,7 @@
   "name": "jplayer-single",
   "version": "0.0.1",
   "scripts": {
-    "dev": "webpack-dev-server --progress --inline --content-base ./",
+    "dev": "webpack-dev-server --inline --content-base ./",
     "prepublish": "babel src --out-dir ./dist --copy-files",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
