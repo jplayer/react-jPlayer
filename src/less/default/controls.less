@@ -9,9 +9,14 @@
     > * {
         position: absolute;
     }
-    
     .jp-play {
         left:625px;
+        .jp-default& i:before {
+            content:"\f04b";
+        }
+        .jp-state-playing& i:before {
+            content:"\f04c";
+        }
     }
     .jp-repeat {
         left:755px;
@@ -24,6 +29,15 @@
         right: 610px;
         .jp-mute {
             display: inline-block;
+            .jp-state-muted& i:before {
+                content:"\f026";
+            }
+            .jp-state-volume-low& i:before {
+                content:"\f027";
+            }
+            .jp-state-volume-high& i:before {
+                content:"\f028";
+            }
         }
         .jp-volume-bar {
             margin-left: 10px;

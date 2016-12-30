@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../util/constants"], factory);
+        define(["exports", "react", "react-redux", "react-motion", "../util/constants"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../util/constants"));
+        factory(exports, require("react"), require("react-redux"), require("react-motion"), require("../util/constants"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constants);
-        global.poster = mod.exports;
+        factory(mod.exports, global.react, global.reactRedux, global.reactMotion, global.constants);
+        global.buffer = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constants) {
+})(this, function (exports, _react, _reactRedux, _reactMotion, _constants) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -89,29 +89,60 @@
 
     var mapStateToProps = function mapStateToProps(state, ownProps) {
         return {
-            mediaSettings: state.jPlayer.mediaSettings,
-            media: state.jPlayer.media,
-            src: state.jPlayer.posterSrc,
+            bufferedTimeRanges: state.jPlayer.bufferedTimeRanges,
+            duration: state.jPlayer.duration,
+            bufferColour: state.jPlayer.bufferColour,
             attributes: ownProps
         };
     };
 
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
-        _inherits(_class, _React$Component);
+        _inherits(_class2, _React$Component);
 
-        function _class() {
-            _classCallCheck(this, _class);
+        function _class2() {
+            var _ref;
 
-            return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+            var _temp, _this, _ret;
+
+            _classCallCheck(this, _class2);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _class2.__proto__ || Object.getPrototypeOf(_class2)).call.apply(_ref, [this].concat(args))), _this), _this.newCanvas = function (nextProps) {
+                var modifier = _this.canvas.width / nextProps.duration;
+                var context = _this.canvas.getContext("2d");
+
+                nextProps.bufferedTimeRanges.forEach(function (bufferedTimeRange) {
+                    var startX = bufferedTimeRange.start * modifier;
+                    var endX = bufferedTimeRange.end * modifier;
+                    var width = endX - startX;
+
+                    context.fillStyle = _this.props.bufferColour;
+                    context.fillRect(startX, 0, width, _this.canvas.height);
+                });
+            }, _temp), _possibleConstructorReturn(_this, _ret);
         }
 
-        _createClass(_class, [{
+        _createClass(_class2, [{
+            key: "componentWillReceiveProps",
+            value: function componentWillReceiveProps(nextProps) {
+                if (nextProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
+                    this.newCanvas(nextProps);
+                }
+            }
+        }, {
             key: "render",
             value: function render() {
-                return _react2.default.createElement("img", _extends({ className: _constants.classNames.POSTER, src: this.props.src, onClick: this.props.onClick }, this.props.attributes));
+                var _this2 = this;
+
+                return _react2.default.createElement("canvas", _extends({ ref: function ref(_ref2) {
+                        return _this2.canvas = _ref2;
+                    }, className: _constants.classNames.BUFFER_BAR }, this.props.attributes));
             }
         }]);
 
-        return _class;
+        return _class2;
     }(_react2.default.Component));
 });

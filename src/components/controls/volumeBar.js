@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {getWidth, getHeight, getOffset, addUniqueToArray, removeFromArrayByValue, updateObjectByKey} from "../../util/index";
+import {getWidth, getHeight, getOffset} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
 import {mute, volume} from "../../actions/jPlayerActions";
 

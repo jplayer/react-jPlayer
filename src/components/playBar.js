@@ -15,20 +15,9 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(mapStateToProps)(
-    class extends React.PureComponent {
-        static get propTypes() {
-            return {
-                playBarStyle: React.PropTypes.object,
-                smoothPlayBar: React.PropTypes.bool,
-                currentPercentAbsolute: React.PropTypes.number
-            }
-        }
-        render() {
-            return (
-                <Motion style={{smoothWidth: spring(this.props.currentPercentAbsolute, [250])}}>
-                    {values => <div className={classNames.PLAY_BAR} style={{width: this.props.smoothPlayBar ? `${values.smoothWidth}%` : `${this.props.currentPercentRelative}%`}} {...this.props.attributes} />}
-                </Motion>
-            );
-        }
-    }
-)
+    (props) => (
+        <Motion style={{smoothWidth: spring(props.currentPercentAbsolute, [250])}}>
+            {values => <div className={classNames.PLAY_BAR} style={{width: props.smoothPlayBar ? `${values.smoothWidth}%` : `${props.currentPercentRelative}%`}} {...props.attributes} />}
+        </Motion>
+    )
+);

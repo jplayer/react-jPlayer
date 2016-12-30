@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(jPlayerActions, dispatch);
 
-export default (WrappedComponent, jPlayerOptions) => {
+export default (selector, WrappedComponent, jPlayerOptions) => {
     WrappedComponent = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
 
     const initialState = {
@@ -27,5 +27,5 @@ export default (WrappedComponent, jPlayerOptions) => {
     <Provider store={store(initialState)}>
         <WrappedComponent />
     </Provider>,
-    document.getElementById(jPlayerOptions.jPlayerSelector));
+    document.getElementById(selector));
 }

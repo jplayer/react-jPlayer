@@ -1,23 +1,21 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["react", "react-dom", "react-redux", "../util/constants", "../index", "../containers/jPlayer", "../components/media", "../components/gui", "../components/controls", "../components/progress", "../components/playBar", "../components/browserUnsupported", "../components/poster", "../components/audio", "../components/video", "../components/title", "../components/controls/fullScreen", "../components/controls/mute", "../components/controls/play", "../components/controls/repeat", "../components/controls/playbackRateBar", "../components/controls/playbackRateBarValue", "../components/controls/volumeBar", "../components/controls/volumeBarValue", "../less/default/jPlayer.less", "../less/jPlayerIconControls.less"], factory);
+        define(["react", "react-dom", "react-redux", "../index", "../containers/jPlayer", "../components/media", "../components/gui", "../components/keyControl", "../components/progress", "../components/seekBar", "../components/playBar", "../components/buffer", "../components/browserUnsupported", "../components/poster", "../components/audio", "../components/video", "../components/title", "../components/controls/fullScreen", "../components/controls/mute", "../components/controls/play", "../components/controls/repeat", "../components/controls/playbackRateBar", "../components/controls/playbackRateBarValue", "../components/controls/volumeBar", "../components/controls/volumeBarValue", "../components/duration", "../components/currentTime", "../less/default/jPlayer.less", "../less/jPlayerIconControls.less"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(require("react"), require("react-dom"), require("react-redux"), require("../util/constants"), require("../index"), require("../containers/jPlayer"), require("../components/media"), require("../components/gui"), require("../components/controls"), require("../components/progress"), require("../components/playBar"), require("../components/browserUnsupported"), require("../components/poster"), require("../components/audio"), require("../components/video"), require("../components/title"), require("../components/controls/fullScreen"), require("../components/controls/mute"), require("../components/controls/play"), require("../components/controls/repeat"), require("../components/controls/playbackRateBar"), require("../components/controls/playbackRateBarValue"), require("../components/controls/volumeBar"), require("../components/controls/volumeBarValue"), require("../less/default/jPlayer.less"), require("../less/jPlayerIconControls.less"));
+        factory(require("react"), require("react-dom"), require("react-redux"), require("../index"), require("../containers/jPlayer"), require("../components/media"), require("../components/gui"), require("../components/keyControl"), require("../components/progress"), require("../components/seekBar"), require("../components/playBar"), require("../components/buffer"), require("../components/browserUnsupported"), require("../components/poster"), require("../components/audio"), require("../components/video"), require("../components/title"), require("../components/controls/fullScreen"), require("../components/controls/mute"), require("../components/controls/play"), require("../components/controls/repeat"), require("../components/controls/playbackRateBar"), require("../components/controls/playbackRateBarValue"), require("../components/controls/volumeBar"), require("../components/controls/volumeBarValue"), require("../components/duration"), require("../components/currentTime"), require("../less/default/jPlayer.less"), require("../less/jPlayerIconControls.less"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(global.react, global.reactDom, global.reactRedux, global.constants, global.index, global.jPlayer, global.media, global.gui, global.controls, global.progress, global.playBar, global.browserUnsupported, global.poster, global.audio, global.video, global.title, global.fullScreen, global.mute, global.play, global.repeat, global.playbackRateBar, global.playbackRateBarValue, global.volumeBar, global.volumeBarValue, global.jPlayer, global.jPlayerIconControls);
+        factory(global.react, global.reactDom, global.reactRedux, global.index, global.jPlayer, global.media, global.gui, global.keyControl, global.progress, global.seekBar, global.playBar, global.buffer, global.browserUnsupported, global.poster, global.audio, global.video, global.title, global.fullScreen, global.mute, global.play, global.repeat, global.playbackRateBar, global.playbackRateBarValue, global.volumeBar, global.volumeBarValue, global.duration, global.currentTime, global.jPlayer, global.jPlayerIconControls);
         global.jPlayerDemo = mod.exports;
     }
-})(this, function (_react, _reactDom, _reactRedux, _constants, _index, _jPlayer, _media, _gui, _controls, _progress, _playBar, _browserUnsupported, _poster, _audio, _video, _title, _fullScreen, _mute, _play, _repeat, _playbackRateBar, _playbackRateBarValue, _volumeBar, _volumeBarValue) {
+})(this, function (_react, _reactDom, _reactRedux, _index, _jPlayer, _media, _gui, _keyControl, _progress, _seekBar, _playBar, _buffer, _browserUnsupported, _poster, _audio, _video, _title, _fullScreen, _mute, _play, _repeat, _playbackRateBar, _playbackRateBarValue, _volumeBar, _volumeBarValue, _duration, _currentTime) {
     "use strict";
 
     var _react2 = _interopRequireDefault(_react);
 
     var _reactDom2 = _interopRequireDefault(_reactDom);
-
-    var constants = _interopRequireWildcard(_constants);
 
     var _index2 = _interopRequireDefault(_index);
 
@@ -27,11 +25,15 @@
 
     var _gui2 = _interopRequireDefault(_gui);
 
-    var _controls2 = _interopRequireDefault(_controls);
+    var _keyControl2 = _interopRequireDefault(_keyControl);
 
     var _progress2 = _interopRequireDefault(_progress);
 
+    var _seekBar2 = _interopRequireDefault(_seekBar);
+
     var _playBar2 = _interopRequireDefault(_playBar);
+
+    var _buffer2 = _interopRequireDefault(_buffer);
 
     var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
 
@@ -59,22 +61,9 @@
 
     var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
 
-    function _interopRequireWildcard(obj) {
-        if (obj && obj.__esModule) {
-            return obj;
-        } else {
-            var newObj = {};
+    var _duration2 = _interopRequireDefault(_duration);
 
-            if (obj != null) {
-                for (var key in obj) {
-                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-                }
-            }
-
-            newObj.default = obj;
-            return newObj;
-        }
-    }
+    var _currentTime2 = _interopRequireDefault(_currentTime);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -170,40 +159,22 @@
                                 _audio2.default,
                                 null,
                                 _react2.default.createElement("track", { src: "subtitles_en.vtt", kind: "subtitles", srcLang: "en", label: "English" })
-                            ),
-                            _react2.default.createElement(_video2.default, null)
+                            )
                         ),
                         _react2.default.createElement(
                             "div",
                             { className: "jp-poster-container" },
                             _react2.default.createElement(_poster2.default, null),
-                            _react2.default.createElement(
-                                _title2.default,
-                                null,
-                                this.props.jPlayer.media.title
-                            )
+                            _react2.default.createElement(_title2.default, null)
                         ),
                         _react2.default.createElement(
-                            _controls2.default,
-                            null,
+                            "div",
+                            { className: "jp-controls" },
+                            _react2.default.createElement(_keyControl2.default, null),
                             _react2.default.createElement(
                                 _play2.default,
                                 null,
                                 _react2.default.createElement("i", { className: "fa fa-play" })
-                            ),
-                            _react2.default.createElement(
-                                "div",
-                                { className: "jp-volume-controls" },
-                                _react2.default.createElement(
-                                    _mute2.default,
-                                    null,
-                                    _react2.default.createElement("i", { className: this.state.muteClassName })
-                                ),
-                                _react2.default.createElement(
-                                    _volumeBar2.default,
-                                    null,
-                                    _react2.default.createElement(_volumeBarValue2.default, null)
-                                )
                             ),
                             _react2.default.createElement(
                                 _fullScreen2.default,
@@ -221,22 +192,34 @@
                                 _react2.default.createElement(_playbackRateBarValue2.default, null)
                             ),
                             _react2.default.createElement(
+                                "div",
+                                { className: "jp-volume-controls" },
+                                _react2.default.createElement(
+                                    _mute2.default,
+                                    null,
+                                    _react2.default.createElement("i", { className: this.state.muteClassName })
+                                ),
+                                _react2.default.createElement(
+                                    _volumeBar2.default,
+                                    null,
+                                    _react2.default.createElement(_volumeBarValue2.default, null)
+                                )
+                            ),
+                            _react2.default.createElement(
                                 _progress2.default,
                                 null,
-                                _react2.default.createElement(_playBar2.default, null)
+                                _react2.default.createElement(
+                                    _seekBar2.default,
+                                    null,
+                                    _react2.default.createElement(_playBar2.default, null),
+                                    _react2.default.createElement(_buffer2.default, null),
+                                    _react2.default.createElement(_currentTime2.default, null),
+                                    _react2.default.createElement(_duration2.default, null)
+                                )
                             )
                         )
                     ),
-                    _react2.default.createElement(
-                        _browserUnsupported2.default,
-                        null,
-                        _react2.default.createElement(
-                            "h2",
-                            null,
-                            "Browser Unsupported"
-                        ),
-                        "To play the media you will need to update your browser to a more recent version."
-                    )
+                    _react2.default.createElement(_browserUnsupported2.default, null)
                 );
             }
         }], [{
@@ -258,18 +241,40 @@
         cssSelectorAncestor: "jp-container-footer-player",
         smoothPlayBar: false,
         muted: true,
-        keyEnabled: true,
         globalVolume: false,
         autoplay: false,
         logErrors: true,
         media: {
             title: "Cro Magnon Man",
             artist: "The Stark Palace",
-            mp3: "http://www.davidgagne.net/m/song.mp3",
+            mp3: "http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3",
             poster: "http://wallpapercave.com/wp/Mb4UPsY.png",
             free: true
         }
     };
 
     (0, _index2.default)(Player, jPlayerOptions);
+
+    // onShuffleClick = (event) => {
+    //     event.preventDefault();
+
+    //     this.context.shuffle(!this.props.shuffled);
+    //     this.context.blur(event.target);
+    // }
+    // onPreviousClick = (event) => {
+    //     event.preventDefault();
+
+    //     this.context.previous();
+    //     this.context.blur(event.target);
+    // }
+    // onNextClick = (event) => {
+    //     event.preventDefault();
+
+    //     this.context.next();
+    //     this.context.blur(event.target);
+    // }
+    // onVideoPlayClick = () => this.props.dispatch(play())
+    // shuffle: (<a className={classNames.SHUFFLE} onClick={props.onShuffleClick}>{props.children}</a>),
+    // previous: (<a className={classNames.PREVIOUS} onClick={props.onPreviousClick}>{props.children}</a>),
+    // next: (<a className={classNames.NEXT} onClick={props.onNextClick}>{props.children}</a>)
 });

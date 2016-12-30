@@ -9,5 +9,5 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(mapStateToProps)(
-    ({title, attributes, ...props}) => <div className={classNames.TITLE} {...attributes}>{title}</div>
+    ({title, attributes}) => <div className={classNames.TITLE} {...attributes}>{title}</div>
 );

@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {keys, classNames} from "../util/constants";
-import {getOffset, getWidth, addUniqueToArray, removeFromArrayByValue, updateObjectByKey, limitValue, convertTime} from "../util/index";
+import {getOffset, getWidth, limitValue, convertTime} from "../util/index";
 import actions, {playHead} from "../actions/jPlayerActions";
 
 const mapStateToProps = (state, ownProps) => ({

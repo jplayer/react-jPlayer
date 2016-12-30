@@ -2,9 +2,7 @@ import {actionTypes} from "../util/constants";
 import generator from "./generator";
 
 export default {    
-    updateOption: generator(actionTypes.jPlayer.UPDATE_OPTION, "key", "value"),
-    addUniqueToArray: generator(actionTypes.jPlayer.ARRAY_ADD_UNIQUE, "key", "value"),
-    removeFromArrayByValue: generator(actionTypes.jPlayer.ARRAY_REMOVE_BY_VALUE, "key", "value")
+    updateOption: generator(actionTypes.jPlayer.UPDATE_OPTION, "key", "value")
 }
 
 export const setMedia = generator(actionTypes.jPlayer.SET_MEDIA, "media");

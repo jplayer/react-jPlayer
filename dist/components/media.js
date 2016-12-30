@@ -89,8 +89,10 @@
         return target;
     };
 
-    var mapStateToProps = function mapStateToProps(state) {
-        return _extends({}, state.jPlayer);
+    var mapStateToProps = function mapStateToProps(state, ownProps) {
+        return _extends({}, state.jPlayer, {
+            attributes: ownProps
+        });
     };
 
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
@@ -101,20 +103,43 @@
 
             var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this, props));
 
-            _this.updatePlayHeadPercent = function (playHeadPercent) {
-                var currentPercentRelative = 0;
-                var currentTime = 0;
+            _this.updateMediaStatus = function () {
+                var seekPercent = 0,
+                    durationText = "";
+
+                var remaining = _this.currentMedia.duration - _this.currentMedia.currentTime;
 
                 if (_this.currentMedia.seekable.length > 0) {
-                    currentTime = playHeadPercent * _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1) / 100;
-                    currentPercentRelative = 100 * currentTime / _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1);
+                    seekPercent = 100 * _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1) / _this.currentMedia.duration;
                 }
 
-                _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentRelative", currentPercentRelative));
-                // this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
-                _this.props.dispatch(_jPlayerActions2.default.updateOption("currentTime", currentTime));
-                // this.props.dispatch(actions.updateOption("remaining", this.currentMedia.duration - this.currentMedia.currentTime));
-                // this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
+                if (_this.props.remainingDuration) {
+                    durationText = (remaining > 0 ? "-" : "") + (0, _index.convertTime)(remaining);
+                } else {
+                    durationText = (0, _index.convertTime)(_this.currentMedia.duration);
+                }
+
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("durationText", durationText));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("currentTimeText", (0, _index.convertTime)(_this.currentMedia.currentTime)));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("seekPercent", seekPercent));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentRelative", _this.getCurrentPercentRelative()));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentAbsolute", 100 * _this.currentMedia.currentTime / _this.currentMedia.duration));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("currentTime", _this.currentMedia.currentTime));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("remaining", remaining));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("duration", _this.currentMedia.duration));
+                _this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRate", _this.currentMedia.playbackRate));
+                // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth));
+                // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight));
+                // this.props.dispatch(updateOption("ended", this.currentMedia.ended));
+            };
+
+            _this.getCurrentPercentRelative = function () {
+                var currentPercentRelative = 0;
+
+                if (_this.currentMedia.seekable.length > 0) {
+                    currentPercentRelative = 100 * _this.currentMedia.currentTime / _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1);
+                }
+                return currentPercentRelative;
             };
 
             _this._updateCurrentMedia = function (nextProps) {
@@ -127,7 +152,13 @@
                 }
 
                 if (nextProps.playHeadPercent !== _this.props.playHeadPercent) {
-                    _this.updatePlayHeadPercent(nextProps.playHeadPercent);
+                    //TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
+                    //Hasn't fully loaded the song????
+                    if (_this.currentMedia.seekable.length > 0) {
+                        _this.currentMedia.currentTime = nextProps.playHeadPercent * _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1) / 100;
+                        //Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
+                        _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentRelative", _this.getCurrentPercentRelative()));
+                    }
                 }
 
                 if (nextProps.paused !== _this.props.paused) {
@@ -147,26 +178,40 @@
 
             _this.events = {
                 onProgress: function onProgress() {
+                    var bufferedTimeRanges = [];
+
+                    for (var i = 0; i < _this.currentMedia.buffered.length; i++) {
+                        bufferedTimeRanges.push({
+                            start: _this.currentMedia.buffered.start(i),
+                            end: _this.currentMedia.buffered.end(i)
+                        });
+                    }
+
+                    _this.props.dispatch(_jPlayerActions2.default.updateOption("bufferedTimeRanges", bufferedTimeRanges));
+                    _this.updateMediaStatus();
                     _this.props.onProgress();
                 },
                 onTimeUpdate: function onTimeUpdate() {
-                    var currentPercentRelative = 0;
-                    var seekPercent = 0;
-
-                    if (_this.currentMedia.seekable.length > 0) {
-                        currentPercentRelative = 100 * _this.currentMedia.currentTime / _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1);
-                        seekPercent = 100 * _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1) / _this.currentMedia.duration;
-                    }
-
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentRelative", currentPercentRelative));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentAbsolute", 100 * _this.currentMedia.currentTime / _this.currentMedia.duration));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("currentTime", _this.currentMedia.currentTime));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("remaining", _this.currentMedia.duration - _this.currentMedia.currentTime));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("seekPercent", seekPercent));
+                    _this.updateMediaStatus();
                     _this.props.onTimeUpdate();
                 },
                 onDurationChange: function onDurationChange() {
+                    _this.updateMediaStatus();
                     _this.props.onDurationChange();
+                },
+                onRateChange: function onRateChange() {
+                    var playbackRateText = _this.currentMedia.playbackRate.toFixed((0, _index.limitValue)(_this.props.playbackRateTextDigits, 0, 20));
+
+                    _this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRateText", playbackRateText));
+                    _this.props.onRateChange();
+                },
+                onSeeking: function onSeeking() {
+                    _this.props.dispatch(_jPlayerActions2.default.updateOption("seeking", true));
+                    _this.props.onSeeking();
+                },
+                onSeeked: function onSeeked() {
+                    _this.props.dispatch(_jPlayerActions2.default.updateOption("seeking", false));
+                    _this.props.onSeeked();
                 },
                 onPlay: function onPlay() {
                     //When the autoPlay option is true
@@ -176,7 +221,7 @@
                 onEnded: function onEnded() {
                     // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
                     _this.props.dispatch((0, _jPlayerActions.pause)());
-                    _this._updateMediaStatus();
+                    _this.updateMediaStatus();
 
                     if (_this.props.loop === "loop") {
                         _this.props.onRepeat();
@@ -190,30 +235,10 @@
                 onPlaying: _this.props.onPlaying,
                 onPause: _this.props.onPause,
                 onWaiting: _this.props.onWaiting,
-                onSeeking: _this.props.onSeeking,
-                onSeeked: _this.props.onSeeked,
                 onSuspend: _this.props.onSuspend,
                 onVolumeChange: _this.props.onVolumeChange,
-                onRateChange: _this.props.onRateChange,
                 onLoadStart: _this.props.onLoadStart,
-                onLoadedMetadata: function onLoadedMetadata() {
-                    var currentPercentRelative = 0;
-                    var seekPercent = 0;
-
-                    if (_this.currentMedia.seekable.length > 0) {
-                        currentPercentRelative = 100 * _this.currentMedia.currentTime / _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1);
-                        seekPercent = 100 * _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1) / _this.currentMedia.duration;
-                    }
-
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentRelative", currentPercentRelative));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("currentPercentAbsolute", 100 * _this.currentMedia.currentTime / _this.currentMedia.duration));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("currentTime", _this.currentMedia.currentTime));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("remaining", _this.currentMedia.duration - _this.currentMedia.currentTime));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("seekPercent", seekPercent));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("duration", _this.currentMedia.duration));
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRate", _this.currentMedia.playbackRate));
-                    _this.props.onLoadedMetadata();
-                },
+                onLoadedMetadata: _this.props.onLoadedMetadata,
                 onAbort: _this.props.onAbort,
                 onEmptied: _this.props.onEmptied,
                 onStalled: _this.props.onStalled,
@@ -236,19 +261,6 @@
             key: "componentDidMount",
             value: function componentDidMount() {
                 this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRateEnabled", (0, _index.testPlaybackRate)(this.currentMedia)));
-                if (this.props.nativeVideoControls) {
-                    this.setState(function (state) {
-                        return _jPlayerActions2.default.removeFromArrayByValue(state.videoClass, _constants.classNames.HIDDEN);
-                    });
-                    this.setState({ videoStyle: {
-                            //width: this.props.width, 
-                            //height: this.props.height
-                        } });
-                } else {
-                    this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "videoClass", (0, _index.addUniqueToArray)(state.videoClass, _constants.classNames.HIDDEN));
-                    });
-                }
             }
         }, {
             key: "render",
@@ -257,7 +269,7 @@
 
                 return _react2.default.createElement(
                     "div",
-                    { className: "jp-jplayer", style: this.state.playerStyle },
+                    _extends({ className: _constants.classNames.JPLAYER, style: this.state.playerStyle }, this.props.attributes),
                     _react2.default.Children.map(this.props.children, function (child) {
                         return _react2.default.cloneElement(child, _extends({}, _this2.events, {
                             setCurrentMedia: function setCurrentMedia(ref) {
@@ -289,29 +301,17 @@
                     onError: function onError() {
                         return null;
                     },
-                    onLoadedMetadata: function onLoadedMetadata() {
+                    onRateChange: function onRateChange() {
+                        return null;
+                    },
+                    onSeeking: function onSeeking() {
+                        return null;
+                    },
+                    onSeeked: function onSeeked() {
                         return null;
                     }
                 };
             }
-            // _updateMediaStatus = () => {
-            // 	let ct = 0, cpa = 0, sp = 0, cpr = 0;
-
-
-            // 	if((typeof this.currentMedia.seekable === "object") && (this.currentMedia.seekable.length > 0)) {
-            // 		sp = (duration > 0) ? 100 * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / duration : 100;
-            // 		 // Duration conditional for iOS duration bug. ie., seekable.end is a NaN in that case.
-            // 	} else {
-            // 		sp = 100;
-            // 		cpr = cpa;
-            // 	}
-
-
-            //     // this.props.dispatch(actions.updateOption("videoWidth", this.currentMedia.videoWidth));
-            //     // this.props.dispatch(actions.updateOption("videoHeight", this.currentMedia.videoHeight));
-            //     // this.props.dispatch(actions.updateOption("ended", this.currentMedia.ended));
-            // }
-
         }]);
 
         return _class2;

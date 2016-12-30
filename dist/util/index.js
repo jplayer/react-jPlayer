@@ -16,7 +16,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.limitValue = exports.validString = exports.absoluteMediaUrls = exports.qualifyURL = exports.escapeHtml = exports.nativeFeatures = exports.testCanPlayType = exports.testPlaybackRate = exports.getDocMode = exports.uaPlatform = exports.uaBrowser = exports.focusInstance = exports.uaBlocklist = exports.isFunction = exports.getHeight = exports.getWidth = exports.getOffset = exports.urlNotSetError = exports.urlNotSupportedError = exports.noFormatSupportedError = exports.updateOption = exports.removeFromArrayByIndex = exports.removeFromArrayByValue = exports.updateObjectByKey = exports.addUniqueToArray = undefined;
+	exports.convertTime = exports.limitValue = exports.validString = exports.absoluteMediaUrls = exports.qualifyURL = exports.escapeHtml = exports.nativeFeatures = exports.testCanPlayType = exports.testPlaybackRate = exports.getDocMode = exports.uaPlatform = exports.uaBrowser = exports.focusInstance = exports.uaBlocklist = exports.isFunction = exports.getHeight = exports.getWidth = exports.getOffset = exports.urlNotSetError = exports.urlNotSupportedError = exports.noFormatSupportedError = exports.updateOption = exports.removeFromArrayByIndex = exports.removeFromArrayByValue = exports.updateObjectByKey = exports.addUniqueToArray = undefined;
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -46,19 +46,33 @@
 		return target;
 	};
 
+	function _toConsumableArray(arr) {
+		if (Array.isArray(arr)) {
+			for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+				arr2[i] = arr[i];
+			}
+
+			return arr2;
+		} else {
+			return Array.from(arr);
+		}
+	}
+
 	var addUniqueToArray = exports.addUniqueToArray = function addUniqueToArray() {
 		var existingArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 		var value = arguments[1];
 
-		var found = existingArray.some(function (v) {
+		var newArray = [].concat(_toConsumableArray(existingArray));
+		var found = newArray.some(function (v) {
 			return v === value;
 		});
 
 		if (!found) {
-			return existingArray.concat(value);
+			newArray.push(value);
+			return newArray;
 		}
 
-		return existingArray;
+		return newArray;
 	};
 
 	var updateObjectByKey = exports.updateObjectByKey = function updateObjectByKey(object, key, value) {
@@ -334,5 +348,24 @@
 
 	var limitValue = exports.limitValue = function limitValue(value, min, max) {
 		return value < min ? min : value > max ? max : value;
+	};
+
+	var convertTime = exports.convertTime = function convertTime(s) {
+		s = s && typeof s === "number" ? s : 0;
+
+		var myTime = new Date(s * 1000),
+		    hour = myTime.getUTCHours(),
+		    min = _constants.timeFormats.showHour ? myTime.getUTCMinutes() : myTime.getUTCMinutes() + hour * 60,
+		    sec = _constants.timeFormats.showMin ? myTime.getUTCSeconds() : myTime.getUTCSeconds() + min * 60,
+		    strHour = _constants.timeFormats.padHour && hour < 10 ? "0" + hour : hour,
+		    strMin = _constants.timeFormats.padMin && min < 10 ? "0" + min : min,
+		    strSec = _constants.timeFormats.padSec && sec < 10 ? "0" + sec : sec;
+
+		var strTime = "";
+		strTime += _constants.timeFormats.showHour ? strHour + _constants.timeFormats.sepHour : "";
+		strTime += _constants.timeFormats.showMin ? strMin + _constants.timeFormats.sepMin : "";
+		strTime += _constants.timeFormats.showSec ? strSec + _constants.timeFormats.sepSec : "";
+
+		return strTime;
 	};
 });

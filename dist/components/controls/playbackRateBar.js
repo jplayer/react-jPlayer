@@ -25,6 +25,20 @@
         };
     }
 
+    var _extends = Object.assign || function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i];
+
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+
+        return target;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -73,32 +87,46 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var mapStateToProps = function mapStateToProps(state) {
+    var mapStateToProps = function mapStateToProps(state, ownProps) {
         return {
             verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
             minPlaybackRate: state.jPlayer.minPlaybackRate,
             maxPlaybackRate: state.jPlayer.maxPlaybackRate,
             playbackRate: state.jPlayer.playbackRate,
-            playbackRateEnabled: state.jPlayer.playbackRateEnabled
+            playbackRateEnabled: state.jPlayer.playbackRateEnabled,
+            barDrag: state.jPlayer.barDrag,
+            attributes: ownProps
         };
     };
 
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
         _inherits(_class2, _React$Component);
 
-        function _class2(props) {
+        function _class2() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
             _classCallCheck(this, _class2);
 
-            var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
 
-            _this.onPlaybackRateBarClick = function (e) {
-                // Using e.currentTarget to enable multiple playbackRate bars
-                var bar = e.currentTarget,
-                    offset = (0, _index.getOffset)(bar),
+            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _class2.__proto__ || Object.getPrototypeOf(_class2)).call.apply(_ref, [this].concat(args))), _this), _this.onPlaybackRateBarClick = function (e) {
+                return _this.movePlaybackRate(e);
+            }, _this.onPlaybackRateMouseMove = function (e) {
+                return _this.props.barDrag && _this.dragging ? _this.movePlaybackRate(e) : null;
+            }, _this.onPlaybackRateMouseDown = function () {
+                return _this.dragging = true;
+            }, _this.onPlaybackRateMouseUp = function () {
+                return _this.dragging = false;
+            }, _this.movePlaybackRate = function (e) {
+                var offset = (0, _index.getOffset)(_this.playbackRateBar),
                     x = e.pageX - offset.left,
-                    w = (0, _index.getWidth)(bar),
-                    y = (0, _index.getHeight)(bar) - e.pageY + offset.top,
-                    h = (0, _index.getHeight)(bar),
+                    w = (0, _index.getWidth)(_this.playbackRateBar),
+                    y = (0, _index.getHeight)(_this.playbackRateBar) - e.pageY + offset.top,
+                    h = (0, _index.getHeight)(_this.playbackRateBar),
                     ratio,
                     playbackRateValue;
 
@@ -110,37 +138,32 @@
 
                 playbackRateValue = ratio * (_this.props.maxPlaybackRate - _this.props.minPlaybackRate) + _this.props.minPlaybackRate;
                 _this.props.dispatch((0, _jPlayerActions.playbackRate)(playbackRateValue));
-            };
-
-            _this._updatePlaybackRateBarStyles = function (nextProps) {
-                if (nextProps.playbackRateEnabled) {
-                    _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "playbackRateBarClass", (0, _index.removeFromArrayByValue)(state.playbackRateBarClass, _constants.classNames.HIDDEN));
-                    });
-                } else {
-                    _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "playbackRateBarClass", (0, _index.addUniqueToArray)(state.playbackRateBarClass, _constants.classNames.HIDDEN));
-                    });
-                }
-            };
-
-            _this.state = {
-                playbackRateBarClass: [_constants.classNames.PLAYBACK_RATE_BAR]
-            };
-            return _this;
+            }, _temp), _possibleConstructorReturn(_this, _ret);
         }
 
         _createClass(_class2, [{
-            key: "componentWillReceiveProps",
-            value: function componentWillReceiveProps(nextProps) {
-                this._updatePlaybackRateBarStyles(nextProps);
+            key: "componentWillMount",
+            value: function componentWillMount() {
+                document.addEventListener("mouseup", this.onPlaybackRateMouseUp);
+                document.addEventListener("mousemove", this.onPlaybackRateMouseMove);
+            }
+        }, {
+            key: "componentWillUnMount",
+            value: function componentWillUnMount() {
+                document.removeEventListener("mouseup", this.onPlaybackRateMouseUp);
+                document.removeEventListener("mousemove", this.onPlaybackRateMouseMove);
             }
         }, {
             key: "render",
             value: function render() {
+                var _this2 = this;
+
                 return _react2.default.createElement(
                     "div",
-                    { className: this.state.playbackRateBarClass.join(" "), onClick: this.onPlaybackRateBarClick },
+                    _extends({ ref: function ref(_ref2) {
+                            return _this2.playbackRateBar = _ref2;
+                        }, className: _constants.classNames.PLAYBACK_RATE_BAR, onClick: this.onPlaybackRateBarClick, onMouseDown: this.onPlaybackRateMouseDown
+                    }, this.props.attributes),
                     this.props.children
                 );
             }

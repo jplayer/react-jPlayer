@@ -30,74 +30,45 @@ import VolumeBarValue from "../components/controls/volumeBarValue";
 import Duration from "../components/duration";
 import CurrentTime from "../components/currentTime";
 
-class Player extends React.Component {
-    constructor(props){
-        super();
-        
-        this.state = {
-            muteClassName: "fa fa-volume-up"
-        };
-    }
-    static get defaultProps() {
-        return {
-            jPlayer: {
-                media: {}
-            }
-        }
-    }
-    onVolumeChange = () => {
-        if (this.props.jPlayer.muted) {
-            this.setState({muteClassName: "fa fa-volume-off"});
-        }
-        else if (this.props.jPlayer.volume < 0.5) {
-            this.setState({muteClassName: "fa fa-volume-down"});
-        }
-        else {
-            this.setState({muteClassName: "fa fa-volume-up"});
-        }
-    }
-    render() {
-        return (
-            <JPlayer>
-                <Gui>
-                    <Media onVolumeChange={this.onVolumeChange}>
-                        <Audio>
-                            <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-                        </Audio>
-                    </Media>
-                    <div className="jp-poster-container">
-                        <Poster />
-                        <Title />
-                    </div>
-                    <div className="jp-controls">
-                        <KeyControl />
-                        <Play><i className="fa fa-play"></i></Play>
-                        <FullScreen><i className="fa fa-expand"></i></FullScreen>
-                        <Repeat><i className="fa fa-repeat"></i></Repeat>
-                        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
-                        <div className="jp-volume-controls">
-                            <Mute><i className={this.state.muteClassName}></i></Mute>
-                            <VolumeBar><VolumeBarValue /></VolumeBar>
-                        </div>
-                        <Progress>
-                            <SeekBar>
-                                <PlayBar />
-                                <Buffer />
-                                <CurrentTime />
-                                <Duration />  
-                            </SeekBar>  
-                        </Progress>
-                    </div>
-                </Gui>             
-                <BrowserUnsupported /> 
-            </JPlayer>
-        );
-    }
-}
+const ExamplePlayer = () => (
+    <JPlayer className="jp-default">
+        <Gui>
+            <Media>
+                <Audio>
+                    <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+                </Audio>
+            </Media>
+            <div className="jp-poster-container">
+                <Poster />
+                <Title />
+            </div>
+            <div className="jp-controls">
+                <KeyControl />
+                <Play><i className="fa">{/*Icon set in css*/}</i></Play>
+                <FullScreen><i className="fa fa-expand"></i></FullScreen>
+                <Repeat><i className="fa fa-repeat"></i></Repeat>
+                <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
+                <div className="jp-volume-controls">
+                    <Mute><i className="fa">{/*Icon set in css*/}</i></Mute>
+                    <VolumeBar><VolumeBarValue /></VolumeBar>
+                </div>
+                <Progress>
+                    <SeekBar>
+                        <PlayBar />
+                        <Buffer />
+                        <CurrentTime />
+                        <Duration />  
+                    </SeekBar>  
+                </Progress>
+            </div>
+        </Gui>             
+        <BrowserUnsupported /> 
+    </JPlayer>
+);
+
+const SELECTOR = "jplayer-footer-player";
 
 const jPlayerOptions = {
-    jPlayerSelector: "jplayer-footer-player",
-    cssSelectorAncestor: "jp-container-footer-player",
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,
@@ -112,7 +83,7 @@ const jPlayerOptions = {
     }
 };
 
-renderjPlayer(Player, jPlayerOptions);
+renderjPlayer(SELECTOR, ExamplePlayer, jPlayerOptions);
 
 // onShuffleClick = (event) => {
 //     event.preventDefault();

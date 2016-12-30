@@ -52,20 +52,15 @@
     }
 
     var Audio = function Audio(_ref) {
-        var setCurrentMedia = _ref.setCurrentMedia,
-            events = _ref.events,
-            children = _ref.children,
-            props = _objectWithoutProperties(_ref, ["setCurrentMedia", "events", "children"]);
+        var children = _ref.children,
+            setCurrentMedia = _ref.setCurrentMedia,
+            props = _objectWithoutProperties(_ref, ["children", "setCurrentMedia"]);
 
         return _react2.default.createElement(
             "audio",
-            _extends({ ref: setCurrentMedia }, events, props),
+            _extends({ ref: setCurrentMedia }, props),
             children
         );
-    };
-
-    Audio.contextTypes = {
-        setCurrentMedia: _react2.default.PropTypes.func
     };
 
     exports.default = Audio;

@@ -5,7 +5,7 @@ import screenfull from "screenfull";
 import {default as setClassNames} from "classnames";
 
 import {classNames, keys, formats, timeFormats, loopOptions, errors, errorMessages, errorHints} from "../util/constants";
-import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
+import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, updateOption} from "../util/index";
 import actions, {setMedia, clearMedia} from "../actions/jPlayerActions";
 
 const mapStateToProps = (state, ownProps) => ({
@@ -18,9 +18,7 @@ export default connect(mapStateToProps)(
         constructor(props) {
             super(props);
             
-            this.state = {
-                [keys.PLAYER_CLASS]: [],
-            };
+            this.state = {};
 		
 			this.timeFormats = merge(timeFormats, this.props.timeFormats);
         }
@@ -72,53 +70,23 @@ export default connect(mapStateToProps)(
                 console.error(nextProps.error);
             }
         }
-        _updatePlayerStyles = (nextProps) => {
-            if(!nextProps.paused) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.PLAYING)));
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.PLAYING)));
-            }
-            if(nextProps.fullScreen) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.FULL_SCREEN)));
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.FULL_SCREEN)));
-            }
-            if(nextProps.noVolume) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.NO_VOLUME)));;
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.NO_VOLUME)));;
-            }
-            if(nextProps.muted) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.MUTED)));;
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.MUTED)));;
-            }
-            if (nextProps.seeking) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.SEEKING)));;
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.SEEKING)));;
-            }
-            if(nextProps.loop === loopOptions.LOOP) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.LOOPED)));;
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.LOOPED)));;
-            }
-            // if(nextProps.loop === loopOptions.LOOP) {
-            //     this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.LOOPED)));;
-            // } else if (nextProps.loop === loopOptions.LOOP_PLAYLIST) {
-            //     this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.LOOPED)));;
-            //     this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.LOOPED_PLAYLIST)));;
-            // } else {
-            //     this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.LOOPED_PLAYLIST)));;
-            // }
-            if (nextProps.shuffled) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, classNames.states.SHUFFLED)));;
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", removeFromArrayByValue(state.playerClass, classNames.states.SHUFFLED)));;
-            }
+        playerClasses = () => {
+            return setClassNames(this.props.attributes.className, {
+                "jp-video": this.props.mediaSettings.video,
+                "jp-video-270p": this.props.sizeCssClass !== undefined,
+                "jp-video-full": this.props.sizeFullCssClass !== undefined,
+                "jp-audio": !this.props.mediaSettings.video,
+                [classNames.states.PLAYING]: !this.props.paused,
+                [classNames.states.FULL_SCREEN]: this.props.fullScreen,
+                [classNames.states.MUTED]: this.props.muted,
+                [classNames.states.VOLUME_LOW]: !this.props.muted && this.props.volume < 0.5,
+                [classNames.states.VOLUME_HIGH]: !this.props.muted && this.props.volume >= 0.5,
+                [classNames.states.SEEKING]: this.props.seeking,
+                [classNames.states.LOOPED]: this.props.loop === loopOptions.LOOP,
+                [classNames.states.SHUFFLED]: this.props.shuffled
+            });
         }
         componentWillReceiveProps(nextProps) {
-            this._updatePlayerStyles(nextProps);
 			this._updateSize(nextProps);
             this._logErrors(nextProps);
         }
@@ -133,25 +101,14 @@ export default connect(mapStateToProps)(
 		}
         componentDidMount() {
             if (Object.keys(this.props.media).length) {
-                this.props.dispatch(setMedia(this.props.media));   
-            }
-            
-            if(this.props.mediaSettings.video) {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-video")));;
-                if (this.props.sizeCssClass !== undefined) {
-                    this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-video-270p")));;
-                }
-
-                if (this.props.sizeFullCssClass !== undefined) {
-                    this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-video-full")));;
-                }
-            } else {
-                this.setState(state => updateObjectByKey(state, "playerClass", addUniqueToArray(state.playerClass, "jp-audio")));;
+                this.props.dispatch(setMedia(this.props.media));
             }
         }
         render() {
+            const playerClasses = this.playerClasses();
+
             return (
-                <div id={this.props.cssSelectorAncestor} className={this.state[keys.PLAYER_CLASS].join(" ")} {...this.props.attributes}>
+                <div {...this.props.attributes} className={playerClasses}>
                     {this.props.children}
                 </div>
             );
@@ -192,8 +149,6 @@ export const statusDefaultValues = {
 };
 
 export const jPlayerDefaultOptions = {
-    jPlayerSelector: "jplayer_1",
-    cssSelectorAncestor: "jp_container_1",
     preload: "metadata", // HTML5 Spec values: none, metadata, auto.
     captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
     minPlaybackRate: 0.5,

@@ -25,6 +25,20 @@
         };
     }
 
+    var _extends = Object.assign || function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i];
+
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+
+        return target;
+    };
+
     function _defineProperty(obj, key, value) {
         if (key in obj) {
             Object.defineProperty(obj, key, {
@@ -121,11 +135,31 @@
             value: function render() {
                 return _react2.default.createElement(
                     "div",
-                    { className: this.state.noSolutionClass.join(" ") },
+                    _extends({ className: this.state.noSolutionClass.join(" ") }, this.props),
                     this.props.children
                 );
             }
         }], [{
+            key: "defaultProps",
+            get: function get() {
+                return {
+                    children: _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "h2",
+                            null,
+                            "Browser Unsupported"
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            null,
+                            "To play the media you will need to update your browser to a more recent version."
+                        )
+                    )
+                };
+            }
+        }, {
             key: "propTypes",
             get: function get() {
                 return {

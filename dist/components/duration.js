@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../util/constants"], factory);
+        define(["exports", "react", "react-redux", "../util/constants", "../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../util/constants"));
+        factory(exports, require("react"), require("react-redux"), require("../util/constants"), require("../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constants);
-        global.poster = mod.exports;
+        factory(mod.exports, global.react, global.reactRedux, global.constants, global.jPlayerActions);
+        global.duration = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constants) {
+})(this, function (exports, _react, _reactRedux, _constants, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -89,29 +89,48 @@
 
     var mapStateToProps = function mapStateToProps(state, ownProps) {
         return {
-            mediaSettings: state.jPlayer.mediaSettings,
-            media: state.jPlayer.media,
-            src: state.jPlayer.posterSrc,
+            toggleDuration: state.jPlayer.toggleDuration,
+            captureDuration: state.jPlayer.captureDuration,
+            durationText: state.jPlayer.durationText,
             attributes: ownProps
         };
     };
 
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
-        _inherits(_class, _React$Component);
+        _inherits(_class2, _React$Component);
 
-        function _class() {
-            _classCallCheck(this, _class);
+        function _class2() {
+            var _ref;
 
-            return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+            var _temp, _this, _ret;
+
+            _classCallCheck(this, _class2);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _class2.__proto__ || Object.getPrototypeOf(_class2)).call.apply(_ref, [this].concat(args))), _this), _this.onDurationClick = function (e) {
+                if (_this.props.toggleDuration) {
+                    if (_this.props.captureDuration) {
+                        e.stopPropagation();
+                    }
+                    _this.props.dispatch((0, _jPlayerActions.duration)());
+                }
+            }, _temp), _possibleConstructorReturn(_this, _ret);
         }
 
-        _createClass(_class, [{
+        _createClass(_class2, [{
             key: "render",
             value: function render() {
-                return _react2.default.createElement("img", _extends({ className: _constants.classNames.POSTER, src: this.props.src, onClick: this.props.onClick }, this.props.attributes));
+                return _react2.default.createElement(
+                    "div",
+                    _extends({ className: _constants.classNames.DURATION, onClick: this.onDurationClick }, this.props.attributes),
+                    this.props.durationText
+                );
             }
         }]);
 
-        return _class;
+        return _class2;
     }(_react2.default.Component));
 });

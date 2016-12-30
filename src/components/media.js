@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import actions, {pause} from "../actions/jPlayerActions";
 import {urlNotSupportedError} from "../util/index";
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
-import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, limitValue, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey} from "../util/index";
+import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, limitValue, updateOption} from "../util/index";
 
 const mapStateToProps = (state, ownProps) => ({
     ...state.jPlayer,
@@ -172,16 +172,13 @@ export default connect(mapStateToProps)(
         }
         componentWillReceiveProps(nextProps) {
             this._updateCurrentMedia(nextProps);
-            // if (prevProps.width !== nextProps.width || prevProps.height !== nextProps.height) {
-            // 	this.setState({playerStyle: {width: nextProps.width, height: nextProps.height}});
-            // }
         }
         componentDidMount() {
             this.props.dispatch(actions.updateOption("playbackRateEnabled", testPlaybackRate(this.currentMedia)));  
         }
         render() {
             return (
-                <div className={classNames.JPLAYER} style={this.state.playerStyle} {...this.props.attributes}>
+                <div className={classNames.JPLAYER} {...this.props.attributes}>
                     {React.Children.map(this.props.children, child => React.cloneElement(child,
                         {
                             ...this.events,

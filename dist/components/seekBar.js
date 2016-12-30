@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["exports", "react", "react-redux", "../../util/index", "../../util/constants", "../../actions/jPlayerActions"], factory);
+        define(["exports", "react", "react-redux", "../util/constants", "../util/index", "../actions/jPlayerActions"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"), require("react-redux"), require("../../util/index"), require("../../util/constants"), require("../../actions/jPlayerActions"));
+        factory(exports, require("react"), require("react-redux"), require("../util/constants"), require("../util/index"), require("../actions/jPlayerActions"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.index, global.constants, global.jPlayerActions);
-        global.volumeBar = mod.exports;
+        factory(mod.exports, global.react, global.reactRedux, global.constants, global.index, global.jPlayerActions);
+        global.seekBar = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _index, _constants, _jPlayerActions) {
+})(this, function (exports, _react, _reactRedux, _constants, _index, _jPlayerActions) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -18,6 +18,8 @@
     });
 
     var _react2 = _interopRequireDefault(_react);
+
+    var _jPlayerActions2 = _interopRequireDefault(_jPlayerActions);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -89,9 +91,14 @@
 
     var mapStateToProps = function mapStateToProps(state, ownProps) {
         return {
-            verticalVolume: state.jPlayer.verticalVolume,
-            noVolume: state.jPlayer.noVolume,
-            muted: state.jPlayer.muted,
+            seekPercent: state.jPlayer.seekPercent,
+            seeking: state.jPlayer.seeking,
+            remaining: state.jPlayer.remaining,
+            media: state.jPlayer.media,
+            currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
+            currentPercentRelative: state.jPlayer.currentPercentRelative,
+            smoothPlayBar: state.jPlayer.smoothPlayBar,
+            playHeadPercent: state.jPlayer.playHeadPercent,
             barDrag: state.jPlayer.barDrag,
             attributes: ownProps
         };
@@ -111,37 +118,35 @@
                 args[_key] = arguments[_key];
             }
 
-            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _class2.__proto__ || Object.getPrototypeOf(_class2)).call.apply(_ref, [this].concat(args))), _this), _this.onVolumeBarClick = function (e) {
-                return _this.moveVolumeBar(e);
-            }, _this.onVolumeBarMouseMove = function (e) {
-                return _this.props.barDrag && _this.dragging ? _this.moveVolumeBar(e) : null;
-            }, _this.onVolumeBarMouseDown = function () {
+            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _class2.__proto__ || Object.getPrototypeOf(_class2)).call.apply(_ref, [this].concat(args))), _this), _this.onSeekBarClick = function (e) {
+                return _this.movePlayHead(e);
+            }, _this.onSeekBarMouseMove = function (e) {
+                return _this.props.barDrag && _this.dragging ? _this.movePlayHead(e) : null;
+            }, _this.onSeekBarMouseDown = function () {
                 return _this.dragging = true;
-            }, _this.onVolumeBarMouseUp = function () {
+            }, _this.onSeekBarMouseUp = function () {
                 return _this.dragging = false;
-            }, _this.moveVolumeBar = function (e) {
-                var offset = (0, _index.getOffset)(_this.volumeBar),
+            }, _this.movePlayHead = function (e) {
+                var offset = (0, _index.getOffset)(_this.seekBar),
                     x = e.pageX - offset.left,
-                    w = (0, _index.getWidth)(_this.volumeBar),
-                    y = (0, _index.getHeight)(_this.volumeBar) - e.pageY + offset.top,
-                    h = (0, _index.getHeight)(_this.volumeBar);
+                    w = (0, _index.getWidth)(_this.seekBar),
+                    percentage = 100 * x / w;
 
-                _this.props.verticalVolume ? _this.props.dispatch((0, _jPlayerActions.volume)(y / h)) : _this.props.dispatch((0, _jPlayerActions.volume)(x / w));
-                _this.props.dispatch((0, _jPlayerActions.mute)(false));
+                _this.props.dispatch((0, _jPlayerActions.playHead)(percentage));
             }, _temp), _possibleConstructorReturn(_this, _ret);
         }
 
         _createClass(_class2, [{
             key: "componentWillMount",
             value: function componentWillMount() {
-                document.addEventListener("mouseup", this.onVolumeBarMouseUp);
-                document.addEventListener("mousemove", this.onVolumeBarMouseMove);
+                document.addEventListener("mouseup", this.onSeekBarMouseUp);
+                document.addEventListener("mousemove", this.onSeekBarMouseMove);
             }
         }, {
             key: "componentWillUnMount",
             value: function componentWillUnMount() {
-                document.removeEventListener("mouseup", this.onVolumeBarMouseUp);
-                document.removeEventListener("mousemove", this.onVolumeBarMouseMove);
+                document.removeEventListener("mouseup", this.onSeekBarMouseUp);
+                document.removeEventListener("mousemove", this.onSeekBarMouseMove);
             }
         }, {
             key: "render",
@@ -151,9 +156,9 @@
                 return _react2.default.createElement(
                     "div",
                     _extends({ ref: function ref(_ref2) {
-                            return _this2.volumeBar = _ref2;
-                        }, className: _constants.classNames.VOLUME_BAR, onClick: this.onVolumeBarClick, onMouseDown: this.onVolumeBarMouseDown
-                    }, this.props.attributes),
+                            return _this2.seekBar = _ref2;
+                        }, className: _constants.classNames.SEEK_BAR, style: { width: this.props.seekPercent + "%" }, onClick: this.onSeekBarClick,
+                        onMouseDown: this.onSeekBarMouseDown }, this.props.attributes),
                     this.props.children
                 );
             }

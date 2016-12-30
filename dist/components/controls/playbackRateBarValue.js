@@ -25,6 +25,20 @@
         };
     }
 
+    var _extends = Object.assign || function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i];
+
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+
+        return target;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -73,13 +87,14 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var mapStateToProps = function mapStateToProps(state) {
+    var mapStateToProps = function mapStateToProps(state, ownProps) {
         return {
             verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
             minPlaybackRate: state.jPlayer.minPlaybackRate,
             maxPlaybackRate: state.jPlayer.maxPlaybackRate,
             playbackRate: state.jPlayer.playbackRate,
-            playbackRateEnabled: state.jPlayer.playbackRateEnabled
+            playbackRateEnabled: state.jPlayer.playbackRateEnabled,
+            attributes: ownProps
         };
     };
 
@@ -92,28 +107,18 @@
             var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
 
             _this._updatePlaybackRateBarValueStyles = function (nextProps) {
-                var playbackRate = nextProps.playbackRate,
-                    ratio = (playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
-                if (nextProps.playbackRateEnabled) {
-                    _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "playbackRateBarValueClass", (0, _index.removeFromArrayByValue)(state.playbackRateBarValueClass, _constants.classNames.HIDDEN));
-                    });
+                var ratio = (nextProps.playbackRate - nextProps.minPlaybackRate) / (nextProps.maxPlaybackRate - nextProps.minPlaybackRate);
 
-                    var playbackRateBarValue = ratio * 100 + "%";
+                var playbackRateBarValue = ratio * 100 + "%";
 
-                    _this.setState({ playbackRateBarValueStyle: {
-                            width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
-                            height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
-                        } });
-                } else {
-                    _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "playbackRateBarValueClass", (0, _index.addUniqueToArray)(state.playbackRateBarValueClass, _constants.classNames.HIDDEN));
-                    });
-                }
+                _this.setState({ playbackRateBarValueStyle: {
+                        width: !nextProps.verticalPlaybackRate ? playbackRateBarValue : null,
+                        height: nextProps.verticalPlaybackRate ? playbackRateBarValue : null
+                    } });
             };
 
             _this.state = {
-                playbackRateBarValueClass: [_constants.classNames.PLAYBACK_RATE_BAR_VALUE]
+                playbackRateBarValueClass: []
             };
             return _this;
         }
@@ -126,7 +131,7 @@
         }, {
             key: "render",
             value: function render() {
-                return _react2.default.createElement("div", { className: this.state.playbackRateBarValueClass.join(" "), style: this.state.playbackRateBarValueStyle });
+                return _react2.default.createElement("div", _extends({ className: _constants.classNames.PLAYBACK_RATE_BAR_VALUE, style: this.state.playbackRateBarValueStyle }, this.props.attributes));
             }
         }]);
 

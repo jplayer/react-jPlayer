@@ -77,14 +77,19 @@
 	};
 
 	var classNames = exports.classNames = {
+		JPLAYER: "jp-jplayer",
 		MUTE: "jp-mute",
 		VOLUME_BAR: "jp-volume-bar",
 		VOLUME_BAR_VALUE: "jp-volume-bar-value",
 		VOLUME_MAX: "jp-volume-max",
 		PLAYBACK_RATE_BAR: "jp-playback-rate-bar",
 		PLAYBACK_RATE_BAR_VALUE: "jp-playback-rate-bar-value",
+		BUFFER_BAR: "jp-buffer-bar",
+		PROGRESS: "jp-progress",
 		SEEK_BAR: "jp-seek-bar",
+		PLAY_BAR: "jp-play-bar",
 		SEEKING: "jp-seeking-bg",
+		GUI: "jp-gui",
 		NO_SOLUTION: "jp-no-solution",
 		PLAY: "jp-play",
 		PAUSE: "jp-pause",

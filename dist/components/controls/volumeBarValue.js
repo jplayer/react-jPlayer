@@ -25,6 +25,20 @@
         };
     }
 
+    var _extends = Object.assign || function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i];
+
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+
+        return target;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -73,45 +87,34 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var mapStateToProps = function mapStateToProps(state) {
+    var mapStateToProps = function mapStateToProps(state, ownProps) {
         return {
             verticalVolume: state.jPlayer.verticalVolume,
             noVolume: state.jPlayer.noVolume,
             muted: state.jPlayer.muted,
-            volume: state.jPlayer.volume
+            volume: state.jPlayer.volume,
+            attributes: ownProps
         };
     };
 
     exports.default = (0, _reactRedux.connect)(mapStateToProps)(function (_React$Component) {
         _inherits(_class2, _React$Component);
 
-        function _class2(props) {
+        function _class2() {
             _classCallCheck(this, _class2);
 
             var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
 
             _this._updateVolumeBarValueStyles = function (nextProps) {
-                if (nextProps.noVolume) {
-                    _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "volumeBarValueClass", (0, _index.addUniqueToArray)(state.volumeBarValueClass, _constants.classNames.HIDDEN));
-                    });
-                } else {
-                    var volumeBarValue = nextProps.muted ? 0 : nextProps.volume * 100 + "%";
+                var volumeBarValue = nextProps.muted ? 0 : nextProps.volume * 100 + "%";
 
-                    _this.setState({ volumeBarValueStyle: {
-                            width: !nextProps.verticalVolume ? volumeBarValue : null,
-                            height: nextProps.verticalVolume ? volumeBarValue : null
-                        } });
-
-                    _this.setState(function (state) {
-                        return (0, _index.updateObjectByKey)(state, "volumeBarValueClass", (0, _index.removeFromArrayByValue)(state.volumeBarValueClass, _constants.classNames.HIDDEN));
-                    });
-                }
+                _this.setState({ volumeBarValueStyle: {
+                        width: !nextProps.verticalVolume ? volumeBarValue : null,
+                        height: nextProps.verticalVolume ? volumeBarValue : null
+                    } });
             };
 
-            _this.state = {
-                volumeBarValueClass: [_constants.classNames.VOLUME_BAR_VALUE]
-            };
+            _this.state = {};
             return _this;
         }
 
@@ -128,7 +131,7 @@
         }, {
             key: "render",
             value: function render() {
-                return _react2.default.createElement("div", { className: this.state.volumeBarValueClass.join(" "), style: this.state.volumeBarValueStyle });
+                return _react2.default.createElement("div", _extends({ className: _constants.classNames.VOLUME_BAR_VALUE, style: this.state.volumeBarValueStyle }, this.props.attributes));
             }
         }]);
 

@@ -4,27 +4,6 @@ import get from "lodash/get";
 import set from "lodash/set";
 import {formats, browser, errors, hints, timeFormats} from "./constants";
 
-export const addUniqueToArray = (existingArray = [], value) => {
-	const newArray = [...existingArray];
-    const found = newArray.some(v => v === value);
-            
-    if (!found) {
-		newArray.push(value);
-		return newArray;
-    }
-
-    return newArray;
-}
-
-export const updateObjectByKey = (object, key, value) => {
-	var newObject = {...object};
-	set(newObject, key, value);
-	return newObject;
-}
-
-export const removeFromArrayByValue = (existingArray = [], value) => existingArray.filter(v => v !== value);
-export const removeFromArrayByIndex = (existingArray = [], value) => existingArray.filter((_, i) => i !== action.value);
-
 export const updateOption = (existingObject, newValues) => ({
     ...existingObject, 
     ...newValues

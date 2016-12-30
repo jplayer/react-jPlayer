@@ -3,8 +3,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 
 import {actionTypes, classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes} from "../util/constants";
-import {testCanPlayType, absoluteMediaUrls, validString, limitValue, addUniqueToArray, removeFromArrayByValue, updateOption, updateObjectByKey, 
-    urlNotSetError, noFormatSupportedError} from "../util/index";
+import {testCanPlayType, absoluteMediaUrls, validString, limitValue, updateOption, urlNotSetError, noFormatSupportedError} from "../util/index";
 import {statusDefaultValues} from "../containers/jPlayer";
 
 const clearMedia = (state) => {
@@ -136,10 +135,6 @@ const fullScreen = (state, {fullScreen, element = state.cssSelectorAncestor}) =>
 
 export default (state={}, action) => {
     switch (action.type) {
-        case actionTypes.jPlayer.ARRAY_ADD_UNIQUE:
-            return updateObjectByKey(state, action.key, addUniqueToArray(get(state, action.key), action.value));
-        case actionTypes.jPlayer.ARRAY_REMOVE_BY_VALUE:
-            return updateObjectByKey(state, action.key, removeFromArrayByValue(get(state, action.key), action.value));
         case actionTypes.jPlayer.UPDATE_OPTION:
             return updateOption(state, {[action.key]: action.value});
         case actionTypes.jPlayer.CLEAR_MEDIA:

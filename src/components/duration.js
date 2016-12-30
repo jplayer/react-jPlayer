@@ -12,17 +12,16 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(mapStateToProps)(
-    class extends React.Component {
-        onDurationClick = (e) => {
-            if(this.props.toggleDuration) {
-                if(this.props.captureDuration) {
+    (props) => {
+        const onDurationClick = (e) => {
+            if(props.toggleDuration) {
+                if(props.captureDuration) {
                     e.stopPropagation();
                 }
-                this.props.dispatch(duration());
+                props.dispatch(duration());
             }
         }
-        render() {
-            return <div className={classNames.DURATION} onClick={this.onDurationClick} {...this.props.attributes}>{this.props.durationText}</div>
-        }
+
+        return <div className={classNames.DURATION} onClick={onDurationClick} {...props.attributes}>{props.durationText}</div>
     }
 );
