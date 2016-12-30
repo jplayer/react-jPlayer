@@ -66,7 +66,7 @@ const ExamplePlayer = () => (
     </JPlayer>
 );
 
-const SELECTOR = "jplayer-footer-player";
+const SELECTOR = "jPlayer-example";
 
 const jPlayerOptions = {
     smoothPlayBar: false,

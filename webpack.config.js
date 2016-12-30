@@ -7,7 +7,7 @@ module.exports = {
     context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
     entry: {
-        example: "./src/examples/jPlayerDemo.js"
+        example: "./src/examples/single/jPlayerDemo.js"
     },
     output: {
         path: "./dist/examples/",
