@@ -1,29 +1,8 @@
 {
-  "name": "react-jplayer-dev",
+  "name": "jplayer-single",
   "version": "0.0.1",
-  "description": "Audio & Video library for React",
-  "author": "Martin Dawson <u1356770@unimail.hud.ac.uk>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MartinDawson/react-jPlayer.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MartinDawson/react-jPlayer/issues"
-  },
-  "keywords": [
-    "react-component",
-    "react",
-    "jPlayer",
-    "audio",
-    "video"
-  ],
-  "homepage": "https://github.com/MartinDawson/react-jPlayer",
-  "license": "MIT",
-  "options": {
-    "mocha": "--require scripts/mocha_runner test/**/*.js"
-  },
   "scripts": {
-    "dev": "webpack-dev-server --progress --inline --content-base ./src",
+    "dev": "webpack-dev-server --progress --inline --content-base ./",
     "prepublish": "babel src --out-dir ./dist --copy-files",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
@@ -74,10 +53,5 @@
     "react-motion": "^0.4.4",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0"
-  },
-  "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "test": "test"
   }
 }

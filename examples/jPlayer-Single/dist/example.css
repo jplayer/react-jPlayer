@@ -1,0 +1,176 @@
+.jp-hidden {
+  display: none;
+}
+.jp-gui {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.jp-no-solution {
+  display: none;
+}
+.jp-state-full-screen {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+.jp-state-full-screen .jp-poster {
+  z-index: -1;
+  max-width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  position: fixed;
+}
+.jp-controls a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+}
+.jp-controls a:hover {
+  color: #1a1a1a;
+}
+.jp-default {
+  font-family: "Source Sans Pro", sans-serif;
+}
+.jp-default .jp-gui {
+  height: 42px;
+  background-color: #e5e5e5;
+  position: relative;
+}
+.jp-default .jp-gui .jp-controls {
+  height: 100%;
+  position: relative;
+  margin: auto;
+  font-size: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.jp-default .jp-gui .jp-controls .jp-progress {
+  background-color: #a1c1f4;
+  height: 100%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 300px;
+  font-size: 20px;
+}
+.jp-default .jp-gui .jp-controls .jp-progress .jp-current-time {
+  padding: 0 12px;
+  position: absolute;
+}
+.jp-default .jp-gui .jp-controls .jp-progress .jp-duration {
+  padding: 0 12px;
+  position: absolute;
+  right: 0;
+}
+.jp-default .jp-gui .jp-controls .jp-progress .jp-buffer-bar {
+  height: 100%;
+  width: 100%;
+}
+.jp-default .jp-gui .jp-controls .jp-progress .jp-seek-bar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  height: 100%;
+}
+.jp-default .jp-gui .jp-controls .jp-progress .jp-seek-bar .jp-play-bar {
+  background-color: #71a6fc;
+  height: 100%;
+  position: absolute;
+}
+.jp-default .jp-gui .jp-controls > * {
+  position: absolute;
+}
+.jp-default .jp-gui .jp-controls .jp-play {
+  left: 625px;
+}
+.jp-default.jp-default .jp-gui .jp-controls .jp-play i:before {
+  content: "\F04B";
+}
+.jp-state-playing.jp-default .jp-gui .jp-controls .jp-play i:before {
+  content: "\F04C";
+}
+.jp-default .jp-gui .jp-controls .jp-repeat {
+  left: 755px;
+}
+.jp-default .jp-gui .jp-controls .jp-full-screen {
+  right: 758px;
+}
+.jp-default .jp-gui .jp-controls .jp-volume-controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  right: 610px;
+}
+.jp-default .jp-gui .jp-controls .jp-volume-controls .jp-mute {
+  display: inline-block;
+}
+.jp-state-muted.jp-default .jp-gui .jp-controls .jp-volume-controls .jp-mute i:before {
+  content: "\F026";
+}
+.jp-state-volume-low.jp-default .jp-gui .jp-controls .jp-volume-controls .jp-mute i:before {
+  content: "\F027";
+}
+.jp-state-volume-high.jp-default .jp-gui .jp-controls .jp-volume-controls .jp-mute i:before {
+  content: "\F028";
+}
+.jp-default .jp-gui .jp-controls .jp-volume-controls .jp-volume-bar {
+  margin-left: 10px;
+  background-color: #a1c1f4;
+  cursor: pointer;
+  width: 100px;
+  display: inline-block;
+  border-radius: 1px;
+}
+.jp-default .jp-gui .jp-controls .jp-volume-controls .jp-volume-bar .jp-volume-bar-value {
+  background-color: #71a6fc;
+  height: 6px;
+}
+.jp-default .jp-gui .jp-controls .jp-playback-rate-bar {
+  background-color: #a1c1f4;
+  cursor: pointer;
+  left: 670px;
+  width: 60px;
+  height: 100%;
+}
+.jp-default .jp-gui .jp-controls .jp-playback-rate-bar .jp-playback-rate-bar-value {
+  background-color: #71a6fc;
+  height: 100%;
+}
+.jp-default .jp-gui .jp-poster-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  left: 385px;
+  height: 100%;
+}
+.jp-default .jp-gui .jp-poster-container .jp-title {
+  margin-left: 10px;
+  font-weight: bold;
+  display: inline-block;
+}
+.jp-default .jp-gui .jp-poster-container .jp-poster {
+  max-height: 100%;
+  display: inline-block;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJleGFtcGxlLmNzcyIsInNvdXJjZVJvb3QiOiIifQ==*/
