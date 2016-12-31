@@ -1,15 +1,11 @@
 var debug = process.env.NODE_ENV !== "production";
-var webpack = require("webpack");
-var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-    context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
-    entry: {
-        "examples/jPlayerSingle/dist/jPlayerSingle": "./examples/jPlayerSingle/src/index.js"
-    },
     output: {
+        path: "./dist/",
+        publicPath: "/dist/",
         filename: "[name].bundle.js"
     },
     module: {

@@ -1,0 +1,7 @@
+{
+  "name": "jplayer-single",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --inline --content-base ./public"
+  }
+}

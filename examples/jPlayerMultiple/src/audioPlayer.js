@@ -1,10 +1,8 @@
 import React from "react";
-
-import "../../../src/less/default/jPlayer.less";
-import render, {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
+import {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
      Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration, CurrentTime} from "../../../src/index";
 
-const AudioPlayer = () => (
+const AudioPLayer = () => (
     <JPlayer className="jp-default">
         <Gui>
             <Media>
@@ -40,7 +38,7 @@ const AudioPlayer = () => (
     </JPlayer>
 );
 
-const jPlayerOptions = {
+export const options = {
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,
@@ -55,29 +53,4 @@ const jPlayerOptions = {
     }
 };
 
-const SELECTOR = "audio-player";
-
-render(SELECTOR, AudioPlayer, jPlayerOptions);
-
-// onShuffleClick = (event) => {
-//     event.preventDefault();
-
-//     this.context.shuffle(!this.props.shuffled);
-//     this.context.blur(event.target);
-// }
-// onPreviousClick = (event) => {
-//     event.preventDefault();
-
-//     this.context.previous();
-//     this.context.blur(event.target);
-// }
-// onNextClick = (event) => {
-//     event.preventDefault();
-
-//     this.context.next();
-//     this.context.blur(event.target);
-// }
-// onVideoPlayClick = () => this.props.dispatch(play())
-// shuffle: (<a className={classNames.SHUFFLE} onClick={props.onShuffleClick}>{props.children}</a>),
-// previous: (<a className={classNames.PREVIOUS} onClick={props.onPreviousClick}>{props.children}</a>),
-// next: (<a className={classNames.NEXT} onClick={props.onNextClick}>{props.children}</a>)
+export default AudioPLayer;
