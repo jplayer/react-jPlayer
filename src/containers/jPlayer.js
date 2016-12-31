@@ -148,12 +148,12 @@ export const statusDefaultValues = {
     videoHeight: 0, // Intrinsic height of the video in pixels.
     readyState: 0,
     networkState: 0,
-    ended: 0,
-	src: ""
+    ended: 0
 };
 
 export const jPlayerDefaultOptions = {
     preload: "metadata", // HTML5 Spec values: none, metadata, auto.
+    globalPause: true,
     captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.	
     minPlaybackRate: 0.5,
     maxPlaybackRate: 4,
@@ -165,5 +165,4 @@ export const jPlayerDefaultOptions = {
     volume: 0.8, // The volume. Number 0 to 1
     barDrag: true,
     playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
-    media: {}
 };

@@ -166,7 +166,7 @@ export default connect(mapStateToProps)(
             this.currentMedia.playbackRate = nextProps.playbackRate;
 			this.currentMedia.preload = nextProps.preload;
             this.currentMedia.volume = nextProps.volume;
-            this.currentMedia.muted = nextProps.muted; 
+            this.currentMedia.muted = nextProps.muted;
             this.currentMedia.autoplay = nextProps.autoplay;
             this.currentMedia.loop = nextProps.loop === "loop" ? true : false;
         }

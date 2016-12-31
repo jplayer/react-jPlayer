@@ -17,12 +17,13 @@ const clearMedia = (state) => {
     });
 }
 
-const setMedia = (state, action) => {
+const setMedia = (state, media) => {
     let	supported = false,
-        newState = updateOption(state, clearMedia(newState));
-
+        newState = updateOption(state, clearMedia(newState)),
+        originalSrc = media.src;
+    
     // Convert all media URLs to absolute URLs.
-    const media = absoluteMediaUrls(action.media);
+    media = absoluteMediaUrls(media);
 
     for (var priority in newState.mediaSettings.formats) {
         const format = newState.mediaSettings.formats[priority];
@@ -39,7 +40,7 @@ const setMedia = (state, action) => {
             // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
             }
             if(newState.mediaSettings.playableFormat[format] && media[format]) {
-                newState.originalSrc = action.media[format]; 
+                newState.originalSrc =originalSrc; 
                 newState.src = media[format];
                 newState.formatType = format;
                 newState.format = {[format]: true};
@@ -140,7 +141,7 @@ export default (state={}, action) => {
         case actionTypes.jPlayer.CLEAR_MEDIA:
             return clearMedia(state);         
         case actionTypes.jPlayer.SET_MEDIA: 
-            return setMedia(state, action);
+            return setMedia(state, action.media);
         case actionTypes.jPlayer.PLAY: 
             return play(state, action);
         case actionTypes.jPlayer.PAUSE: 

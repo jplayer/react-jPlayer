@@ -38,7 +38,7 @@ const AudioPlayerTwo = () => (
     </JPlayer>
 );
 
-export const options = {
+AudioPlayerTwo.options = {
     selector: "audio-player-two",
     smoothPlayBar: false,
     muted: true,

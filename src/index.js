@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Provider, connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import store from "./store";
+import {createStore, bindActionCreators} from "redux";
 import merge from "lodash.merge";
 
 import "./less/jPlayer.less";
 import * as jPlayerActions from "./actions/jPlayerActions";
+import reducer from "./reducers";
 import {defaultValues, jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
 import JPlayer from "./containers/jPlayer";
 import Media from "./components/media";
@@ -33,24 +33,23 @@ import Duration from "./components/duration";
 import CurrentTime from "./components/currentTime";
 
 const mapStateToProps = (state, ownProps) => ({
-    jPlayer: state.jPlayer, 
-    jPlaylist: state.jPlaylist
+    ...state.jPlayer, 
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(jPlayerActions, dispatch);
+const mapDispatchToProps = (dispatch) => ({jPlayer: bindActionCreators(jPlayerActions, dispatch)});
 
-export default (WrappedComponent, jPlayerOptions) => {
+export default (WrappedComponent) => {
     WrappedComponent = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
 
-    const initialState = {
-        jPlayer: merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, jPlayerOptions)
-    };
+    const store = createStore(reducer, {
+        jPlayer: merge(defaultValues, statusDefaultValues, jPlayerDefaultOptions, WrappedComponent.options)
+    });
     
     ReactDOM.render(
-    <Provider store={store(initialState)}>
+    <Provider store={store}>
         <WrappedComponent />
     </Provider>,
-    document.getElementById(jPlayerOptions.selector));
+    document.getElementById(WrappedComponent.options.selector));
 }
 
 export {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlayBar, Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,
