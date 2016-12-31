@@ -23,7 +23,7 @@
     "mocha": "--require scripts/mocha_runner test/**/*.js"
   },
   "scripts": {
-    "dev": "webpack-dev-server --progress --inline --content-base ./src",
+    "dev": "webpack-dev-server --progress --inline --content-base ./examples",
     "prepublish": "babel src --out-dir ./dist --copy-files",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",

@@ -7,7 +7,7 @@ module.exports = {
     context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
     entry: {
-        "jPlayerSingle/dist/jPlayerSingle": "./jPlayerSingle/src/index.js"
+        "examples/jPlayerSingle/dist/jPlayerSingle": "./examples/jPlayerSingle/src/index.js"
     },
     output: {
         filename: "[name].bundle.js"
