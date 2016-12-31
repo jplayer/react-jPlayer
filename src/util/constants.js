@@ -60,6 +60,7 @@ export const hints = {
 };
 
 export const classNames = {
+	MEDIA: "jp-media",
 	JPLAYER: "jp-jplayer",
 	MUTE: "jp-mute",
 	VOLUME_BAR: "jp-volume-bar",

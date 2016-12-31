@@ -41,6 +41,7 @@ const AudioPlayer = () => (
 );
 
 const jPlayerOptions = {
+    selector: "audio-player",
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,
@@ -55,9 +56,7 @@ const jPlayerOptions = {
     }
 };
 
-const SELECTOR = "audio-player";
-
-render(SELECTOR, AudioPlayer, jPlayerOptions);
+render(AudioPlayer, jPlayerOptions);
 
 // onShuffleClick = (event) => {
 //     event.preventDefault();

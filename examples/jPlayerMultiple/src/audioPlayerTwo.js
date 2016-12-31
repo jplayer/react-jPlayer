@@ -39,6 +39,7 @@ const AudioPlayerTwo = () => (
 );
 
 export const options = {
+    selector: "audio-player-two",
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,

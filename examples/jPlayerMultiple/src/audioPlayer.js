@@ -39,6 +39,7 @@ const AudioPLayer = () => (
 );
 
 export const options = {
+    selector: "audio-player",
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,

@@ -71,7 +71,7 @@ export default connect(mapStateToProps)(
             }
         }
         playerClasses = () => {
-            return setClassNames(this.props.attributes.className, {
+            return setClassNames(classNames.JPLAYER, this.props.attributes.className, {
                 "jp-video": this.props.mediaSettings.video,
                 "jp-video-270p": this.props.sizeCssClass !== undefined,
                 "jp-video-full": this.props.sizeFullCssClass !== undefined,
@@ -86,6 +86,7 @@ export default connect(mapStateToProps)(
                 [classNames.states.SHUFFLED]: this.props.shuffled
             });
         }
+        toggleFullScreen = () => this.props.dispatch(actions.updateOption("fullScreen", screenfull.isFullscreen))
         componentWillReceiveProps(nextProps) {
 			this._updateSize(nextProps);
             this._logErrors(nextProps);
@@ -97,12 +98,15 @@ export default connect(mapStateToProps)(
 			// 	focusInstance = this;
 			// }
 
-            document.addEventListener(screenfull.raw.fullscreenchange, () => this.props.dispatch(actions.updateOption("fullScreen", screenfull.isFullscreen)));
+            document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
 		}
         componentDidMount() {
             if (Object.keys(this.props.media).length) {
                 this.props.dispatch(setMedia(this.props.media));
             }
+        }
+        componentWillUnmount() {
+            document.removeEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
         }
         render() {
             const playerClasses = this.playerClasses();

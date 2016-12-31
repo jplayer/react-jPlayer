@@ -128,8 +128,8 @@ const loop = (state, action) => updateOption(state, {
     loop: action.loop
 });
 
-const fullScreen = (state, {fullScreen, element = state.cssSelectorAncestor}) => {
-    fullScreen ? screenfull.request(document.getElementById(element)) : screenfull.exit();
+const fullScreen = (state, {fullScreen, element = state.selector}) => {
+    fullScreen ? screenfull.request(document.getElementById(element).getElementsByClassName(classNames.JPLAYER)[0]) : screenfull.exit();
     return state;
 }
 

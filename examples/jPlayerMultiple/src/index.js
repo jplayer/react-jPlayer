@@ -1,7 +1,7 @@
 import "../../../src/less/default/jPlayer.less";
 import render from "../../../src/index";
 import AudioPlayer, {options as audioPlayerOptions} from "./audioPlayer";
-import AudioPlayerTwo, {options as audioPlayerTwoOptions} from "./audioPlayer";
+import AudioPlayerTwo, {options as audioPlayerTwoOptions} from "./audioPlayerTwo";
 
-render("audio-player", AudioPlayer, audioPlayerOptions);
-render("audio-player-two", AudioPlayerTwo, audioPlayerTwoOptions);
+render(AudioPlayer, audioPlayerOptions);
+render(AudioPlayerTwo, audioPlayerTwoOptions);

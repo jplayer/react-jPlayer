@@ -178,7 +178,7 @@ export default connect(mapStateToProps)(
         }
         render() {
             return (
-                <div className={classNames.JPLAYER} {...this.props.attributes}>
+                <div className={classNames.MEDIA} {...this.props.attributes}>
                     {React.Children.map(this.props.children, child => React.cloneElement(child,
                         {
                             ...this.events,

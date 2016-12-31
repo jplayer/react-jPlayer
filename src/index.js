@@ -39,7 +39,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(jPlayerActions, dispatch);
 
-export default (selector, WrappedComponent, jPlayerOptions) => {
+export default (WrappedComponent, jPlayerOptions) => {
     WrappedComponent = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
 
     const initialState = {
@@ -50,7 +50,7 @@ export default (selector, WrappedComponent, jPlayerOptions) => {
     <Provider store={store(initialState)}>
         <WrappedComponent />
     </Provider>,
-    document.getElementById(selector));
+    document.getElementById(jPlayerOptions.selector));
 }
 
 export {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlayBar, Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,
