@@ -4,24 +4,24 @@ import {connect} from "react-redux";
 import {classNames} from "../util/constants";
 import {duration} from "../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    toggleDuration: state.jPlayer.toggleDuration,
-    captureDuration: state.jPlayer.captureDuration,
-    durationText: state.jPlayer.durationText,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    toggleDuration: jPlayers[selector].toggleDuration,
+    captureDuration: jPlayers[selector].captureDuration,
+    durationText: jPlayers[selector].durationText,
+    attributes: ownProps,
+    selector
 });
 
-export default connect(mapStateToProps)(
-    (props) => {
-        const onDurationClick = (e) => {
-            if(props.toggleDuration) {
-                if(props.captureDuration) {
-                    e.stopPropagation();
-                }
-                props.dispatch(duration());
+const Duration = (props) => {
+    const onDurationClick = (e) => {
+        if(props.toggleDuration) {
+            if(props.captureDuration) {
+                e.stopPropagation();
             }
+            props.dispatch(duration(props.selector));
         }
-
-        return <div className={classNames.DURATION} onClick={onDurationClick} {...props.attributes}>{props.durationText}</div>
     }
-);
+    return <div className={classNames.DURATION} onClick={onDurationClick} {...props.attributes}>{props.durationText}</div>
+}
+
+export default connect(mapStateToProps)(Duration);

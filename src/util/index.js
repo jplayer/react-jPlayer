@@ -4,7 +4,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 import {formats, browser, errors, hints, timeFormats} from "./constants";
 
-export const updateOption = (existingObject, newValues) => ({
+export const updateObject = (existingObject, newValues) => ({
     ...existingObject, 
     ...newValues
 });

@@ -4,16 +4,14 @@ import {connect} from "react-redux";
 import {keys, classNames} from "../../util/constants";
 import {mute, volume} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    verticalVolume: state.jPlayer.verticalVolume,
-    muted: state.jPlayer.muted,
-    volume: state.jPlayer.volume,
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    verticalVolume: jPlayers[selector].verticalVolume,
+    muted: jPlayers[selector].muted,
+    volume: jPlayers[selector].volume,
     attributes: ownProps
 });
 
-export default connect(mapStateToProps)(
-    (props) => <div className={classNames.VOLUME_BAR_VALUE} style={style(props)} {...props.attributes} />
-);
+const VolumeBarValue = (props) => <div className={classNames.VOLUME_BAR_VALUE} style={style(props)} {...props.attributes} />;
 
 const style = (props) => {
     const volumeBarValuePercentage = `${props.muted ? 0 : (props.volume * 100)}%`;
@@ -23,3 +21,5 @@ const style = (props) => {
         height: props.verticalVolume ? volumeBarValuePercentage : null
     };
 }
+
+export default connect(mapStateToProps)(VolumeBarValue);

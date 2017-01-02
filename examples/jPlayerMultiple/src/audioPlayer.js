@@ -3,10 +3,6 @@ import {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlaybackBar, Buffer,
      Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration, CurrentTime} from "../../../src/index";
 
 class AudioPlayer extends React.Component {
-    componentDidMount() {
-        debugger
-        var p = this.props;
-    }
     render() {
         return (
             <JPlayer className="jp-default">
@@ -18,7 +14,7 @@ class AudioPlayer extends React.Component {
                     </Media>
                     <div className="jp-poster-container">
                         <Poster />
-                        <Title />
+                        <Title selector={this.props.selector} />
                     </div>
                     <div className="jp-controls">
                         <KeyControl />
@@ -53,7 +49,7 @@ AudioPlayer.options = {
     globalVolume: false,
     autoplay: false,
     logErrors: true,
-     media: {
+    media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",
         mp3: "http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3",

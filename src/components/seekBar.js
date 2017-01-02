@@ -5,17 +5,18 @@ import {keys, classNames} from "../util/constants";
 import {getOffset, getWidth, limitValue, convertTime} from "../util/index";
 import actions, {playHead} from "../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    seekPercent: state.jPlayer.seekPercent,
-    seeking: state.jPlayer.seeking,
-    remaining: state.jPlayer.remaining,
-    media: state.jPlayer.media,
-    currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
-    currentPercentRelative: state.jPlayer.currentPercentRelative,
-    smoothPlayBar: state.jPlayer.smoothPlayBar,
-    playHeadPercent: state.jPlayer.playHeadPercent,
-    barDrag: state.jPlayer.barDrag,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    seekPercent: jPlayers[selector].seekPercent,
+    seeking: jPlayers[selector].seeking,
+    remaining: jPlayers[selector].remaining,
+    media: jPlayers[selector].media,
+    currentPercentAbsolute: jPlayers[selector].currentPercentAbsolute,
+    currentPercentRelative: jPlayers[selector].currentPercentRelative,
+    smoothPlayBar: jPlayers[selector].smoothPlayBar,
+    playHeadPercent: jPlayers[selector].playHeadPercent,
+    barDrag: jPlayers[selector].barDrag,
+    attributes: ownProps,
+    selector
 });
 
 export default connect(mapStateToProps)(
@@ -30,7 +31,7 @@ export default connect(mapStateToProps)(
                 w = getWidth(this.seekBar),
                 percentage = 100 * x / w;
             
-            this.props.dispatch(playHead(percentage));
+            this.props.dispatch(playHead(percentage, this.props.selector));
         }
         componentWillMount() {
             document.addEventListener("mouseup", this.onSeekBarMouseUp);

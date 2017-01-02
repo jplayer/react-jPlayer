@@ -4,19 +4,15 @@ import {connect} from "react-redux";
 import {classNames} from "../../util/constants";
 import {play, pause} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    paused: state.jPlayer.paused,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    paused: jPlayers[selector].paused,
+    attributes: ownProps,
+    selector
 });
 
-export default connect(mapStateToProps)(
-    class extends React.Component {
-        constructor(props) {
-            super();
-        }
-        onPlayClick = () => this.props.paused ? this.props.dispatch(play()) : this.props.dispatch(pause())
-        render() {
-            return <a className={classNames.PLAY} onClick={this.onPlayClick} {...this.props.attributes}>{this.props.children}</a>
-        }
-    }  
-);
+const Play = (props) => {
+    const onPlayClick = () => props.paused ? props.dispatch(play(props.selector)) : props.dispatch(pause(props.selector))
+    return <a className={classNames.PLAY} onClick={onPlayClick} {...props.attributes}>{props.children}</a>
+}
+
+export default connect(mapStateToProps)(Play);

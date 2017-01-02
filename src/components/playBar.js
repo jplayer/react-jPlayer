@@ -4,20 +4,20 @@ import {Motion, spring} from "react-motion";
 
 import {classNames} from "../util/constants";
 
-const mapStateToProps = (state, ownProps) => ({
-    smoothPlayBar: state.jPlayer.smoothPlayBar,
-    currentPercentAbsolute: state.jPlayer.currentPercentAbsolute,
-    currentPercentRelative: state.jPlayer.currentPercentRelative,
-    currentTime: state.jPlayer.currentTime,
-    duration: state.jPlayer.duration,
-    playHeadPercent: state.jPlayer.playHeadPercent,
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    smoothPlayBar: jPlayers[selector].smoothPlayBar,
+    currentPercentAbsolute: jPlayers[selector].currentPercentAbsolute,
+    currentPercentRelative: jPlayers[selector].currentPercentRelative,
+    currentTime: jPlayers[selector].currentTime,
+    duration: jPlayers[selector].duration,
+    playHeadPercent: jPlayers[selector].playHeadPercent,
     attributes: ownProps
 });
 
-export default connect(mapStateToProps)(
-    (props) => (
-        <Motion style={{smoothWidth: spring(props.currentPercentAbsolute, [250])}}>
-            {values => <div className={classNames.PLAY_BAR} style={{width: props.smoothPlayBar ? `${values.smoothWidth}%` : `${props.currentPercentRelative}%`}} {...props.attributes} />}
-        </Motion>
-    )
+const PlayBar = (props) => (
+    <Motion style={{smoothWidth: spring(props.currentPercentAbsolute, [250])}}>
+        {values => <div className={classNames.PLAY_BAR} style={{width: props.smoothPlayBar ? `${values.smoothWidth}%` : `${props.currentPercentRelative}%`}} {...props.attributes} />}
+    </Motion>
 );
+
+export default connect(mapStateToProps)(PlayBar);

@@ -5,8 +5,9 @@ import merge from "lodash.merge";
 import {keys, classNames, keyIgnoreElementNames, loopOptions} from "../util/constants";
 import {play, pause, mute, volume, loop, fullScreen} from "../actions/jPlayerActions";
 
-const mapStateToProps = (state) => ({
-    ...state.jPlayer
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}) => ({
+    ...jPlayers[selector],
+    selector
 });
 
 export default connect(mapStateToProps)(
@@ -17,34 +18,34 @@ export default connect(mapStateToProps)(
             this.keyBindings = merge({}, {
                 play: {
 					key: 80, // p
-					fn: () => this.props.paused ? this.props.dispatch(play()) : this.props.dispatch(pause())
+					fn: () => this.props.paused ? this.props.dispatch(play(this.props.selector)) : this.props.dispatch(pause(this.props.selector))
 				},
 				fullScreen: {
 					key: 70, // f
 					fn: () => {
 						if(this.props.mediaSettings.available && this.props.mediaSettings.video || this.props.audioFullScreen) {
-							this.fullScreen(!this.props.fullScreen);
+							this.fullScreen(!this.props.fullScreen, this.props.selector);
 						}
 					}
 				},
 				mute: {
 					key: 77, // m
-					fn: () => this.props.dispatch(mute(!this.props.muted))
+					fn: () => this.props.dispatch(mute(!this.props.muted, this.props.selector))
 				},
 				volumeUp: {
 					key: 190, // .
 					fn: () => {
-                        this.props.dispatch(volume(this.props.volume + 0.1));
-                        this.props.dispatch(mute(false));
+                        this.props.dispatch(volume(this.props.volume + 0.1, this.props.selector));
+                        this.props.dispatch(mute(false, this.props.selector));
                     }
 				},
 				volumeDown: {
 					key: 188, // ,
-					fn: () =>  this.props.dispatch(volume(this.props.volume - 0.1))
+					fn: () =>  this.props.dispatch(volume(this.props.volume - 0.1, this.props.selector))
 				},
 				loop: {
 					key: 76, // l
-					fn: () => this.props.loop === loopOptions.LOOP ? this.props.dispatch(loop(loopOptions.OFF)) : this.props.dispatch(loop(loopOptions.LOOP))
+					fn: () => this.props.loop === loopOptions.LOOP ? this.props.dispatch(loop(loopOptions.OFF, this.props.selector)) : this.props.dispatch(loop(loopOptions.LOOP, this.props.selector))
 				}
             }, this.props.keyBindings);
         }

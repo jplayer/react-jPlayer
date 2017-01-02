@@ -4,16 +4,15 @@ import {connect} from "react-redux";
 import {classNames} from "../../util/constants";
 import {fullScreen} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    fullScreen: state.jPlayer.fullScreen,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    fullScreen: jPlayers[selector].fullScreen,
+    attributes: ownProps,
+    selector
 });
 
-export default connect(mapStateToProps)(
-    class extends React.Component {
-        onFullScreenClick = () => this.props.dispatch(fullScreen(!this.props.fullScreen))
-        render() {
-            return <a className={classNames.FULL_SCREEN} onClick={this.onFullScreenClick} {...this.props.attributes}>{this.props.children}</a>
-        }
-    }  
-);
+const FullScreen = (props) => {
+    const onFullScreenClick = () => props.dispatch(fullScreen(!props.fullScreen, props.selector))
+    return <a className={classNames.FULL_SCREEN} onClick={onFullScreenClick} {...props.attributes}>{props.children}</a>
+}
+
+export default connect(mapStateToProps)(FullScreen);

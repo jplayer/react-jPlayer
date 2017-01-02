@@ -6,9 +6,10 @@ import {urlNotSupportedError} from "../util/index";
 import {classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes, errors, errorMessages, errorHints} from "../util/constants";
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, convertTime, limitValue, updateOption} from "../util/index";
 
-const mapStateToProps = (state, ownProps) => ({
-    ...state.jPlayer,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    ...jPlayers[selector],
+    attributes: ownProps,
+    selector
 });
 
 export default connect(mapStateToProps)(
@@ -29,7 +30,7 @@ export default connect(mapStateToProps)(
                         });
                     }
 
-                    this.props.dispatch(actions.updateOption("bufferedTimeRanges", bufferedTimeRanges));
+                    this.props.dispatch(actions.updateOption("bufferedTimeRanges", bufferedTimeRanges, this.props.selector));
                     this.updateMediaStatus();
                     this.props.onProgress();
                 },
@@ -44,25 +45,25 @@ export default connect(mapStateToProps)(
                 onRateChange: () => {
                     const playbackRateText = this.currentMedia.playbackRate.toFixed(limitValue(this.props.playbackRateTextDigits, 0, 20));
                     
-                    this.props.dispatch(actions.updateOption("playbackRateText", playbackRateText));
+                    this.props.dispatch(actions.updateOption("playbackRateText", playbackRateText, this.props.selector));
                     this.props.onRateChange();
                 },
                 onSeeking: () => {
-                    this.props.dispatch(actions.updateOption("seeking", true));
+                    this.props.dispatch(actions.updateOption("seeking", true, this.props.selector));
                     this.props.onSeeking();
                 },
                 onSeeked: () => {
-                    this.props.dispatch(actions.updateOption("seeking", false));
+                    this.props.dispatch(actions.updateOption("seeking", false, this.props.selector));
                     this.props.onSeeked();
                 },
                 onPlay: () => {
                     //When the autoPlay option is true
-                    this.props.dispatch(actions.updateOption("paused", false));
+                    this.props.dispatch(actions.updateOption("paused", false, this.props.selector));
                     this.props.onPlay();
                 },
                 onEnded: () => {
                     // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
-                    this.props.dispatch(pause());
+                    this.props.dispatch(pause(this.props.selector));
                     this.updateMediaStatus();
                     
                     if (this.props.loop === "loop") {	
@@ -71,7 +72,7 @@ export default connect(mapStateToProps)(
                     this.props.onEnded();
                 },
                 onError: () => {
-                    this.props.dispatch(actions.updateOption("error", urlNotSupportedError(this.props.originalSrc)));    
+                    this.props.dispatch(actions.updateOption("error", urlNotSupportedError(this.props.originalSrc), this.props.selector));    
                     this.props.onError();
                 },
                 onPlaying: this.props.onPlaying,
@@ -118,18 +119,18 @@ export default connect(mapStateToProps)(
                 durationText = convertTime(this.currentMedia.duration);
             }
 
-            this.props.dispatch(actions.updateOption("durationText", durationText));
-            this.props.dispatch(actions.updateOption("currentTimeText", convertTime(this.currentMedia.currentTime)));
-            this.props.dispatch(actions.updateOption("seekPercent", seekPercent));
-            this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative()));
-            this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration));
-            this.props.dispatch(actions.updateOption("currentTime", this.currentMedia.currentTime));
-            this.props.dispatch(actions.updateOption("remaining", remaining));          
-            this.props.dispatch(actions.updateOption("duration", this.currentMedia.duration));
-            this.props.dispatch(actions.updateOption("playbackRate", this.currentMedia.playbackRate));
-            // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth));
-            // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight));
-            // this.props.dispatch(updateOption("ended", this.currentMedia.ended));
+            this.props.dispatch(actions.updateOption("durationText", durationText, this.props.selector));
+            this.props.dispatch(actions.updateOption("currentTimeText", convertTime(this.currentMedia.currentTime), this.props.selector));
+            this.props.dispatch(actions.updateOption("seekPercent", seekPercent, this.props.selector));
+            this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative(), this.props.selector));
+            this.props.dispatch(actions.updateOption("currentPercentAbsolute", 100 * this.currentMedia.currentTime / this.currentMedia.duration, this.props.selector));
+            this.props.dispatch(actions.updateOption("currentTime", this.currentMedia.currentTime, this.props.selector));
+            this.props.dispatch(actions.updateOption("remaining", remaining, this.props.selector));          
+            this.props.dispatch(actions.updateOption("duration", this.currentMedia.duration, this.props.selector));
+            this.props.dispatch(actions.updateOption("playbackRate", this.currentMedia.playbackRate, this.props.selector));
+            // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth, this.props.selector));
+            // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight, this.props.selector));
+            // this.props.dispatch(updateOption("ended", this.currentMedia.ended, this.props.selector));
         }
         getCurrentPercentRelative = () => {
             let currentPercentRelative = 0;
@@ -154,7 +155,7 @@ export default connect(mapStateToProps)(
                 if (this.currentMedia.seekable.length > 0) {
                     this.currentMedia.currentTime = nextProps.playHeadPercent * this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100;
                     //Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-                    this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative()));
+                    this.props.dispatch(actions.updateOption("currentPercentRelative", this.getCurrentPercentRelative(), this.props.selector));
                 }
             }
             
@@ -174,7 +175,7 @@ export default connect(mapStateToProps)(
             this._updateCurrentMedia(nextProps);
         }
         componentDidMount() {
-            this.props.dispatch(actions.updateOption("playbackRateEnabled", testPlaybackRate(this.currentMedia)));  
+            this.props.dispatch(actions.updateOption("playbackRateEnabled", testPlaybackRate(this.currentMedia), this.props.selector));  
         }
         render() {
             return (

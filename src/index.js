@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Provider, connect} from "react-redux";
-import {createStore, bindActionCreators} from "redux";
+import {createStore, combineReducers} from "redux";
 import merge from "lodash.merge";
 
 import "./less/jPlayer.less";
-import * as jPlayerActions from "./actions/jPlayerActions";
-import reducer from "./reducers";
+import jPlayerReducer from "./reducers/jPlayerReducer";
 import {defaultValues, jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
+import SelectorWrapper from "./selectorWrapper";
 import JPlayer from "./containers/jPlayer";
 import Media from "./components/media";
 import Gui from "./components/gui";
@@ -32,24 +32,27 @@ import VolumeBarValue from "./components/controls/volumeBarValue";
 import Duration from "./components/duration";
 import CurrentTime from "./components/currentTime";
 
-const mapStateToProps = (state, ownProps) => ({
-    ...state.jPlayer, 
-});
-
-const mapDispatchToProps = (dispatch) => ({jPlayer: bindActionCreators(jPlayerActions, dispatch)});
-
-export default (WrappedComponent) => {
-    WrappedComponent = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
-
-    const store = createStore(reducer, {
-        jPlayer: merge(defaultValues, statusDefaultValues, jPlayerDefaultOptions, WrappedComponent.options)
+export default (WrappedPlayers) => {
+    const initialState = {jPlayers: {}};
+    WrappedPlayers.forEach(WrappedPlayer => {
+        initialState.jPlayers[WrappedPlayer.options.selector] = {
+            ...merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, WrappedPlayer.options),
+        }
     });
-    
+
+    const store = createStore(combineReducers({jPlayers: jPlayerReducer}), initialState);
+
     ReactDOM.render(
     <Provider store={store}>
-        <WrappedComponent />
+        <div>
+            {WrappedPlayers.map(WrappedPlayer => (
+                <SelectorWrapper key={WrappedPlayer.options.selector} selector={WrappedPlayer.options.selector}>
+                    <WrappedPlayer />
+                </SelectorWrapper>
+            ))}
+        </div>
     </Provider>,
-    document.getElementById(WrappedComponent.options.selector));
+    document.getElementById("app"));
 }
 
 export {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlayBar, Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,

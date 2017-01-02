@@ -5,12 +5,13 @@ import {getWidth, getHeight, getOffset} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
 import {mute, volume} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    verticalVolume: state.jPlayer.verticalVolume,
-    noVolume: state.jPlayer.noVolume,
-    muted: state.jPlayer.muted,
-    barDrag: state.jPlayer.barDrag,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    verticalVolume: jPlayers[selector].verticalVolume,
+    noVolume: jPlayers[selector].noVolume,
+    muted: jPlayers[selector].muted,
+    barDrag: jPlayers[selector].barDrag,
+    attributes: ownProps,
+    selector
 });
 
 export default connect(mapStateToProps)(
@@ -26,7 +27,7 @@ export default connect(mapStateToProps)(
                 y = getHeight(this.volumeBar) - e.pageY + offset.top,
                 h = getHeight(this.volumeBar);
 
-            this.props.verticalVolume ? this.props.dispatch(volume(y/h)) : this.props.dispatch(volume(x/w))
+            this.props.verticalVolume ? this.props.dispatch(volume(y/h, this.props.selector)) : this.props.dispatch(volume(x/w, this.props.selector))
             this.props.dispatch(mute(false));
         }
         componentWillMount() {

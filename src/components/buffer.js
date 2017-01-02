@@ -4,10 +4,10 @@ import {Motion, spring} from "react-motion";
 
 import {classNames} from "../util/constants";
 
-const mapStateToProps = (state, ownProps) => ({
-    bufferedTimeRanges: state.jPlayer.bufferedTimeRanges,
-    duration: state.jPlayer.duration,
-    bufferColour: state.jPlayer.bufferColour,
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    bufferedTimeRanges: jPlayers[selector].bufferedTimeRanges,
+    duration: jPlayers[selector].duration,
+    bufferColour: jPlayers[selector].bufferColour,
     attributes: ownProps
 });
 

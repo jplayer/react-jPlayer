@@ -4,19 +4,15 @@ import {connect} from "react-redux";
 import {classNames} from "../../util/constants";
 import {mute} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    muted: state.jPlayer.muted,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    muted: jPlayers[selector].muted,
+    attributes: ownProps,
+    selector
 });
 
-export default connect(mapStateToProps)(
-    class extends React.Component {
-        constructor(props) {
-            super();
-        }
-        onMuteClick = () => this.props.dispatch(mute(!this.props.muted))
-        render() {
-            return <a className={classNames.MUTE} onClick={this.onMuteClick} {...this.props.attributes}>{this.props.children}</a>
-        }
-    }  
-);
+const Mute = (props) => {
+    const onMuteClick = () => props.dispatch(mute(!props.muted, props.selector))
+    return <a className={classNames.MUTE} onClick={onMuteClick} {...props.attributes}>{props.children}</a>
+}
+
+export default connect(mapStateToProps)(Mute);

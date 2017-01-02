@@ -3,5 +3,4 @@ import createJPlayer from "../../../src/index";
 import AudioPlayer from "./audioPlayer";
 import AudioPlayerTwo from "./audioPlayerTwo";
 
-createJPlayer(AudioPlayer);
-createJPlayer(AudioPlayerTwo);
+createJPlayer([AudioPlayer, AudioPlayerTwo]);

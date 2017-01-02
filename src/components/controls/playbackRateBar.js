@@ -5,18 +5,20 @@ import {getWidth, getHeight, getOffset} from "../../util/index";
 import {keys, classNames} from "../../util/constants";
 import {playbackRate} from "../../actions/jPlayerActions";
 
-const mapStateToProps = (state, ownProps) => ({
-    verticalPlaybackRate: state.jPlayer.verticalPlaybackRate,
-    minPlaybackRate: state.jPlayer.minPlaybackRate,
-    maxPlaybackRate: state.jPlayer.maxPlaybackRate,
-    playbackRate: state.jPlayer.playbackRate,
-    playbackRateEnabled: state.jPlayer.playbackRateEnabled,
-    barDrag: state.jPlayer.barDrag,
-    attributes: ownProps
+const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
+    verticalPlaybackRate: jPlayers[selector].verticalPlaybackRate,
+    minPlaybackRate: jPlayers[selector].minPlaybackRate,
+    maxPlaybackRate: jPlayers[selector].maxPlaybackRate,
+    playbackRate: jPlayers[selector].playbackRate,
+    playbackRateEnabled: jPlayers[selector].playbackRateEnabled,
+    barDrag: jPlayers[selector].barDrag,
+    attributes: ownProps,
+    selector
 });
 
 export default connect(mapStateToProps)(
     class extends React.Component {
+
         onPlaybackRateBarClick = (e) => this.movePlaybackRate(e)
         onPlaybackRateMouseMove = (e) => this.props.barDrag && this.dragging ? this.movePlaybackRate(e) : null
         onPlaybackRateMouseDown = () => this.dragging = true
@@ -37,7 +39,7 @@ export default connect(mapStateToProps)(
             }
 
             playbackRateValue = ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate) + this.props.minPlaybackRate;
-            this.props.dispatch(playbackRate(playbackRateValue));
+            this.props.dispatch(playbackRate(playbackRateValue, this.props.selector));
         }
         componentWillMount() {
             document.addEventListener("mouseup", this.onPlaybackRateMouseUp);

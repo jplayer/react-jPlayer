@@ -3,7 +3,7 @@ import get from "lodash/get";
 import set from "lodash/set";
 
 import {actionTypes, classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes} from "../util/constants";
-import {testCanPlayType, absoluteMediaUrls, validString, limitValue, updateOption, urlNotSetError, noFormatSupportedError} from "../util/index";
+import {testCanPlayType, absoluteMediaUrls, validString, limitValue, updateObject, urlNotSetError, noFormatSupportedError} from "../util/index";
 import {statusDefaultValues} from "../containers/jPlayer";
 
 const clearMedia = (state) => {
@@ -11,7 +11,7 @@ const clearMedia = (state) => {
     //     this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_CLASS, classNames.HIDDEN)));
     // }
 
-    return updateOption(state, {
+    return updateObject(state, {
         seeking: false,
         ...statusDefaultValues
     });
@@ -19,7 +19,7 @@ const clearMedia = (state) => {
 
 const setMedia = (state, media) => {
     let	supported = false,
-        newState = updateOption(state, clearMedia(newState)),
+        newState = updateObject(state, clearMedia(newState)),
         originalSrc = media.src;
     
     // Convert all media URLs to absolute URLs.
@@ -64,17 +64,17 @@ const setMedia = (state, media) => {
         newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(", ")}'}`);
     }
     
-    return updateOption(state, newState);
+    return updateObject(state, newState);
 }
 
 const play = (state, action) => {
     if(state.srcSet) {
-        return updateOption(state, {
+        return updateObject(state, {
             paused: false,
             newTime: !isNaN(action.time) ? action.time : state.currentTime 
         });
     } else {
-        return updateOption(state, {
+        return updateObject(state, {
             error: urlNotSetError(play.name)
         });
     }
@@ -82,12 +82,12 @@ const play = (state, action) => {
 
 const pause = (state, action) => {
     if(state.srcSet) {
-        return updateOption(state, {
+        return updateObject(state, {
             paused: true,
             newTime: !isNaN(action.time) ? action.time : state.currentTime 
         });
     } else {
-        return updateOption(state, {
+        return updateObject(state, {
             error: urlNotSetError(pause.name)
         });
     }
@@ -98,34 +98,34 @@ const playHead = (state, action) => {
     const limitedPercent = limitValue(action.percent, 0, 100);
 
     if(state.srcSet) {
-        return updateOption(state, {
+        return updateObject(state, {
             playHeadPercent: limitedPercent
         });
     } else {
-        return updateOption(state, {
+        return updateObject(state, {
             error: urlNotSetError(playHead.name)
         });
     }
     return state;
 }
 
-const volume = (state, action) => updateOption(state, {
+const volume = (state, action) => updateObject(state, {
     volume: limitValue(action.volume, 0, 1)
 });
 
-const mute = (state, action) => updateOption(state, {
+const mute = (state, action) => updateObject(state, {
     muted: action.mute
 });
 
-const duration = (state, action) => updateOption(state, {
+const duration = (state, action) => updateObject(state, {
     remainingDuration: !action.remainingDuration
 });
 
-const playbackRate = (state, action) => updateOption(state, {
+const playbackRate = (state, action) => updateObject(state, {
     playbackRate: limitValue(action.playbackRate, state.minPlaybackRate, state.maxPlaybackRate)
 });
 
-const loop = (state, action) => updateOption(state, {
+const loop = (state, action) => updateObject(state, {
     loop: action.loop
 });
 
@@ -135,32 +135,53 @@ const fullScreen = (state, {fullScreen, element = state.selector}) => {
 }
 
 export default (state={}, action) => {
+    const currentPlayer = state[action.selector];
+    let newState = {...state};
+debugger
     switch (action.type) {
         case actionTypes.jPlayer.UPDATE_OPTION:
-            return updateOption(state, {[action.key]: action.value});
+            newState = updateObject(currentPlayer, {[action.key]: action.value});
+            break;
+        case actionTypes.jPlayer.UPDATE_SELECTOR:
+            return updateObject(newState, {currentSelector: action.newSelector}); 
         case actionTypes.jPlayer.CLEAR_MEDIA:
-            return clearMedia(state);         
-        case actionTypes.jPlayer.SET_MEDIA: 
-            return setMedia(state, action.media);
+            newState = clearMedia(currentPlayer);
+            break;
+        case actionTypes.jPlayer.SET_MEDIA:
+            newState = setMedia(currentPlayer, action.media);
+            break;
         case actionTypes.jPlayer.PLAY: 
-            return play(state, action);
-        case actionTypes.jPlayer.PAUSE: 
-            return pause(state, action);
+            newState = play(currentPlayer, action);
+            break;
+        case actionTypes.jPlayer.PAUSE:
+            newState = pause(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.PLAY_HEAD:
-            return playHead(state, action);
+            newState = playHead(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.VOLUME:
-            return volume(state, action);
+            newState = volume(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.MUTE:
-            return mute(state, action);
+            newState = mute(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.DURATION:
-            return duration(state, action);
+            newState = duration(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.PLAYBACK_RATE:
-            return playbackRate(state, action);
+            newState = playbackRate(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.LOOP:
-            return loop(state, action);
+            newState = loop(currentPlayer, action);
+            break;
         case actionTypes.jPlayer.FULL_SCREEN: 
-            return fullScreen(state, action);
+            newState = fullScreen(currentPlayer, action);
+            break;
         default:
             return state;
     }
+
+    return updateObject(state, {
+        [action.selector]: newState
+    });
 }
