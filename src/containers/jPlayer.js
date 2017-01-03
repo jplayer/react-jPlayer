@@ -7,14 +7,12 @@ import {default as setClassNames} from "classnames";
 import {classNames, keys, formats, timeFormats, loopOptions, errors, errorMessages, errorHints} from "../util/constants";
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, updateOption} from "../util/index";
 import actions, {setMedia, clearMedia} from "../actions/jPlayerActions";
+import jPlayerConnect from "../jPlayerConnect";
 
-const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, {...ownProps}) => {
-    return {
-        ...jPlayers[selector],
-        attributes: ownProps,
-        selector
-    };
-}
+export const mapStateToProps = ({jPlayers}, ownProps) => ({
+    ...jPlayers[ownProps.id],
+    attributes: ownProps
+});
 
 class JPlayer extends React.Component {
     constructor(props) {
@@ -26,8 +24,19 @@ class JPlayer extends React.Component {
     }
     static get propTypes() {
         return {
-            stateClass: React.PropTypes.objectOf(React.PropTypes.string)
+            stateClass: React.PropTypes.objectOf(React.PropTypes.string),
+            id: React.PropTypes.string.isRequired
         }
+    }
+    static get childContextTypes() {
+        return {
+            id: React.PropTypes.string
+        }
+    }
+    getChildContext() {
+        return {
+            id: this.props.id
+        };
     }
     setFormats = () => {
         const mediaSettings = merge({}, this.props.mediaSettings);
@@ -56,7 +65,7 @@ class JPlayer extends React.Component {
             };
         });
 
-        this.props.dispatch(actions.updateOption("mediaSettings", mediaSettings, this.props.selector));
+        this.props.dispatch(actions.updateOption("mediaSettings", mediaSettings, this.props.id));
     }
     _updateSize = (nextProps) => {
         // Video html resized if necessary at this time, or if native video controls being used.
@@ -88,7 +97,7 @@ class JPlayer extends React.Component {
             [classNames.states.SHUFFLED]: this.props.shuffled
         });
     }
-    toggleFullScreen = () => this.props.dispatch(actions.updateOption("fullScreen", screenfull.isFullscreen, this.props.selector))
+    toggleFullScreen = () => this.props.dispatch(actions.updateOption("fullScreen", screenfull.isFullscreen, this.props.id))
     componentWillReceiveProps(nextProps) {
         this._updateSize(nextProps);
         this._logErrors(nextProps);
@@ -103,7 +112,7 @@ class JPlayer extends React.Component {
         document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
     }
     componentDidMount() {
-        this.props.dispatch(setMedia(this.props.media, this.props.selector));
+        this.props.dispatch(setMedia(this.props.media, this.props.id));
     }
     componentWillUnmount() {
         document.removeEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
@@ -118,7 +127,9 @@ class JPlayer extends React.Component {
         );
     }
 }
+
 export default connect(mapStateToProps)(JPlayer);
+
 export const defaultValues = {
     mediaSettings: {
 		video: false,

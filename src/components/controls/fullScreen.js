@@ -2,17 +2,17 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {classNames} from "../../util/constants";
+import {mapStateToProps} from "../../util/index";
 import {fullScreen} from "../../actions/jPlayerActions";
+import jPlayerConnect from "../../jPlayerConnect";
 
-const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
-    fullScreen: jPlayers[selector].fullScreen,
-    attributes: ownProps,
-    selector
+const mapJPlayerProps = (jPlayers, id) => ({
+    fullScreen: jPlayers[id].fullScreen
 });
 
 const FullScreen = (props) => {
-    const onFullScreenClick = () => props.dispatch(fullScreen(!props.fullScreen, props.selector))
+    const onFullScreenClick = () => props.dispatch(fullScreen(!props.fullScreen, props.id))
     return <a className={classNames.FULL_SCREEN} onClick={onFullScreenClick} {...props.attributes}>{props.children}</a>
 }
 
-export default connect(mapStateToProps)(FullScreen);
+export default connect(mapStateToProps)(jPlayerConnect(FullScreen, mapJPlayerProps));

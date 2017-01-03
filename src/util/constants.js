@@ -2,7 +2,7 @@ import {uaBrowser, uaPlatform, getDocMode} from "./index";
 
 export const actionTypes = {
 	jPlayer: {
-		UPDATE_SELECTOR: "UPDATE_SELECTOR",
+		UPDATE_id: "UPDATE_id",
 		UPDATE_OPTION: "UPDATE_OPTION",
 		ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
     	ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",

@@ -2,20 +2,13 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {classNames} from "../util/constants";
+import {mapStateToProps} from "../util/index";
+import jPlayerConnect from "../jPlayerConnect";
 
-const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => {return({
-    title: jPlayers[selector].media.title,
-    attributes: ownProps
-});}
+const mapJPlayerProps = (jPlayers, id) => ({
+    title: jPlayers[id].media.title
+});
 
-//const Title = ({title, attributes}) => {debugger; return <div className={classNames.TITLE} {...attributes}>{title}</div>; }
-class Title extends React.Component {
-    componentWillReceiveProps(nextProps) {
-debugger;
-    }
-    render() {
-        return <div className={classNames.TITLE} {...this.props.attributes}>{this.props.title}</div>; 
-    }
-}
+const Title = ({title, attributes}) => <div className={classNames.TITLE} {...attributes}>{title}</div>;
 
-export default connect(mapStateToProps)(Title);
+export default connect(mapStateToProps)(jPlayerConnect(Title, mapJPlayerProps));

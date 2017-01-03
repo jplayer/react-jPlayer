@@ -2,70 +2,70 @@ import {actionTypes} from "../util/constants";
 import generator from "./generator";
 
 export default {
-    updateOption: (key, value, selector) => ({
+    updateOption: (key, value, id) => ({
         type: actionTypes.jPlayer.UPDATE_OPTION,
         key,
         value,
-        selector
+        id
     }),
-    updateSelector: (newSelector) => ({
-        type: actionTypes.jPlayer.UPDATE_SELECTOR,
-        newSelector
+    updateid: (newid) => ({
+        type: actionTypes.jPlayer.UPDATE_id,
+        newid
     })
 }
 
-export const setMedia = (media, selector) => ({
+export const setMedia = (media, id) => ({
     type: actionTypes.jPlayer.SET_MEDIA,
-    selector,
+    id,
     media
 });
-export const clearMedia = (selector) => ({
+export const clearMedia = (id) => ({
     type: actionTypes.jPlayer.CLEAR_MEDIA,
-    selector
+    id
 });
-export const play = (selector, time) => ({
+export const play = (id, time) => ({
     type: actionTypes.jPlayer.PLAY,
     time,
-    selector
+    id
 });
-export const pause = (selector, time) => ({
+export const pause = (id, time) => ({
     type: actionTypes.jPlayer.PAUSE,
-    selector,
+    id,
     time
 });
-export const playHead = (percent, selector) => ({
+export const playHead = (percent, id) => ({
     type: actionTypes.jPlayer.PLAY_HEAD,
     percent,
-    selector
+    id
 });
-export const volume = (volume, selector) => ({
+export const volume = (volume, id) => ({
     type: actionTypes.jPlayer.VOLUME,
-    selector,
+    id,
     volume
 });
-export const mute = (mute, selector) => ({
+export const mute = (mute, id) => ({
     type: actionTypes.jPlayer.MUTE,
     mute,
-    selector
+    id
 });
-export const duration = (selector, remainingDuration) => ({
+export const duration = (id, remainingDuration) => ({
     type: actionTypes.jPlayer.DURATION,
     remainingDuration,
-    selector
+    id
 });
-export const playbackRate = (playbackRate, selector) => ({
+export const playbackRate = (playbackRate, id) => ({
     type: actionTypes.jPlayer.PLAYBACK_RATE,
     playbackRate,
-    selector
+    id
 });
-export const loop = (loop, selector) => ({
+export const loop = (loop, id) => ({
     type: actionTypes.jPlayer.LOOP,
     loop,
-    selector
+    id
 });
-export const fullScreen = (fullScreen, selector, element) => ({
+export const fullScreen = (fullScreen, id, element) => ({
     type: actionTypes.jPlayer.FULL_SCREEN,
     fullScreen,
     element,
-    selector
+    id
 });

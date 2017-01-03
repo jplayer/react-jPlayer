@@ -162,9 +162,9 @@
 	        }
 	    };
 	
-	    var SELECTOR = "audio-player";
+	    var id = "audio-player";
 	
-	    (0, _index2.default)(SELECTOR, AudioPlayer, jPlayerOptions);
+	    (0, _index2.default)(id, AudioPlayer, jPlayerOptions);
 	
 	    // onShuffleClick = (event) => {
 	    //     event.preventDefault();
@@ -4356,7 +4356,7 @@
 	        return (0, _redux.bindActionCreators)(jPlayerActions, dispatch);
 	    };
 	
-	    exports.default = function (selector, WrappedComponent, jPlayerOptions) {
+	    exports.default = function (id, WrappedComponent, jPlayerOptions) {
 	        WrappedComponent = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(WrappedComponent);
 	
 	        var initialState = {
@@ -4367,7 +4367,7 @@
 	            _reactRedux.Provider,
 	            { store: (0, _store2.default)(initialState) },
 	            _react2.default.createElement(WrappedComponent, null)
-	        ), document.getElementById(selector));
+	        ), document.getElementById(id));
 	    };
 	
 	    exports.JPlayer = _jPlayer2.default;
@@ -13731,8 +13731,8 @@
 	    // `form.getElementsByName`, but that will only return direct children
 	    // and won't include inputs that use the HTML5 `form=` attribute. Since
 	    // the input might not even be in a form, let's just use the global
-	    // `querySelectorAll` to ensure we don't miss anything.
-	    var group = queryRoot.querySelectorAll('input[name=' + JSON.stringify('' + name) + '][type="radio"]');
+	    // `queryidAll` to ensure we don't miss anything.
+	    var group = queryRoot.queryidAll('input[name=' + JSON.stringify('' + name) + '][type="radio"]');
 	
 	    for (var i = 0; i < group.length; i++) {
 	      var otherNode = group[i];
@@ -19612,7 +19612,7 @@
 	  xHeight: 'x-height',
 	  x1: 0,
 	  x2: 0,
-	  xChannelSelector: 'xChannelSelector',
+	  xChannelid: 'xChannelid',
 	  xlinkActuate: 'xlink:actuate',
 	  xlinkArcrole: 'xlink:arcrole',
 	  xlinkHref: 'xlink:href',
@@ -19628,7 +19628,7 @@
 	  y: 0,
 	  y1: 0,
 	  y2: 0,
-	  yChannelSelector: 'yChannelSelector',
+	  yChannelid: 'yChannelid',
 	  z: 0,
 	  zoomAndPan: 'zoomAndPan'
 	};
@@ -30285,7 +30285,7 @@
 	    var fullScreen = function fullScreen(state, _ref) {
 	        var fullScreen = _ref.fullScreen,
 	            _ref$element = _ref.element,
-	            element = _ref$element === undefined ? state.cssSelectorAncestor : _ref$element;
+	            element = _ref$element === undefined ? state.cssidAncestor : _ref$element;
 	
 	        fullScreen ? _screenfull2.default.request(document.getElementById(element)) : _screenfull2.default.exit();
 	        return state;

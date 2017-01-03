@@ -3,15 +3,16 @@ import {connect} from "react-redux";
 import {Motion, spring} from "react-motion";
 
 import {classNames} from "../util/constants";
+import {mapStateToProps} from "../util/index";
+import jPlayerConnect from "../jPlayerConnect";
 
-const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
-    smoothPlayBar: jPlayers[selector].smoothPlayBar,
-    currentPercentAbsolute: jPlayers[selector].currentPercentAbsolute,
-    currentPercentRelative: jPlayers[selector].currentPercentRelative,
-    currentTime: jPlayers[selector].currentTime,
-    duration: jPlayers[selector].duration,
-    playHeadPercent: jPlayers[selector].playHeadPercent,
-    attributes: ownProps
+const mapJPlayerProps = (jPlayers, id) => ({
+    smoothPlayBar: jPlayers[id].smoothPlayBar,
+    currentPercentAbsolute: jPlayers[id].currentPercentAbsolute,
+    currentPercentRelative: jPlayers[id].currentPercentRelative,
+    currentTime: jPlayers[id].currentTime,
+    duration: jPlayers[id].duration,
+    playHeadPercent: jPlayers[id].playHeadPercent
 });
 
 const PlayBar = (props) => (
@@ -20,4 +21,4 @@ const PlayBar = (props) => (
     </Motion>
 );
 
-export default connect(mapStateToProps)(PlayBar);
+export default connect(mapStateToProps)(jPlayerConnect(PlayBar, mapJPlayerProps));

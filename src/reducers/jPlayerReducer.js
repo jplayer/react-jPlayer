@@ -129,21 +129,21 @@ const loop = (state, action) => updateObject(state, {
     loop: action.loop
 });
 
-const fullScreen = (state, {fullScreen, element = state.selector}) => {
-    fullScreen ? screenfull.request(document.getElementById(element).getElementsByClassName(classNames.JPLAYER)[0]) : screenfull.exit();
+const fullScreen = (state, {fullScreen, element = state.id}) => {
+    fullScreen ? screenfull.request(document.getElementById(element)) : screenfull.exit();
     return state;
 }
 
 export default (state={}, action) => {
-    const currentPlayer = state[action.selector];
+    const currentPlayer = state[action.id];
     let newState = {...state};
-debugger
+
     switch (action.type) {
         case actionTypes.jPlayer.UPDATE_OPTION:
             newState = updateObject(currentPlayer, {[action.key]: action.value});
             break;
-        case actionTypes.jPlayer.UPDATE_SELECTOR:
-            return updateObject(newState, {currentSelector: action.newSelector}); 
+        case actionTypes.jPlayer.UPDATE_id:
+            return updateObject(newState, {currentid: action.newid}); 
         case actionTypes.jPlayer.CLEAR_MEDIA:
             newState = clearMedia(currentPlayer);
             break;
@@ -182,6 +182,6 @@ debugger
     }
 
     return updateObject(state, {
-        [action.selector]: newState
+        [action.id]: newState
     });
 }

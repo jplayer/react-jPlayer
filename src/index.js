@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Provider, connect} from "react-redux";
-import {createStore, combineReducers} from "redux";
+import {createStore, combineReducers, bindActionCreators} from "redux";
 import merge from "lodash.merge";
 
 import "./less/jPlayer.less";
 import jPlayerReducer from "./reducers/jPlayerReducer";
+import * as jPlayerActions from "./actions/jPlayerActions";
 import {defaultValues, jPlayerDefaultOptions, statusDefaultValues} from "./containers/jPlayer";
-import SelectorWrapper from "./selectorWrapper";
 import JPlayer from "./containers/jPlayer";
 import Media from "./components/media";
 import Gui from "./components/gui";
@@ -32,12 +32,35 @@ import VolumeBarValue from "./components/controls/volumeBarValue";
 import Duration from "./components/duration";
 import CurrentTime from "./components/currentTime";
 
+const mapStateToProps = ({jPlayers}, {id}) => {
+    const otherPlayers = {};
+
+    for (var key in jPlayers) {
+        const jPlayer = jPlayers[key];
+
+        if (key !== id) {
+            otherPlayers[key] = jPlayer;
+        }
+    }
+    
+    return {
+        ...jPlayers[id],
+        jPlayers: otherPlayers
+    }
+};
+
+const mapDispatchToProps = (dispatch) => ({functions: bindActionCreators(jPlayerActions, dispatch)});
+
 export default (WrappedPlayers) => {
     const initialState = {jPlayers: {}};
-    WrappedPlayers.forEach(WrappedPlayer => {
-        initialState.jPlayers[WrappedPlayer.options.selector] = {
-            ...merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, WrappedPlayer.options),
-        }
+    let ConnectedPlayers = [];
+    WrappedPlayers.forEach(wrappedPlayer => {
+        const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(wrappedPlayer);
+
+        initialState.jPlayers[wrappedPlayer.options.id] = {
+            ...merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, wrappedPlayer.options),
+        }     
+        ConnectedPlayers.push(<ConnectedPlayer key={wrappedPlayer.options.id} id={wrappedPlayer.options.id} />);
     });
 
     const store = createStore(combineReducers({jPlayers: jPlayerReducer}), initialState);
@@ -45,11 +68,7 @@ export default (WrappedPlayers) => {
     ReactDOM.render(
     <Provider store={store}>
         <div>
-            {WrappedPlayers.map(WrappedPlayer => (
-                <SelectorWrapper key={WrappedPlayer.options.selector} selector={WrappedPlayer.options.selector}>
-                    <WrappedPlayer />
-                </SelectorWrapper>
-            ))}
+            {ConnectedPlayers}
         </div>
     </Provider>,
     document.getElementById("app"));

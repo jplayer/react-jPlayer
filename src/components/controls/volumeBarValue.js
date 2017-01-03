@@ -2,13 +2,14 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {keys, classNames} from "../../util/constants";
+import {mapStateToProps} from "../../util/index";
 import {mute, volume} from "../../actions/jPlayerActions";
+import jPlayerConnect from "../../jPlayerConnect";
 
-const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
-    verticalVolume: jPlayers[selector].verticalVolume,
-    muted: jPlayers[selector].muted,
-    volume: jPlayers[selector].volume,
-    attributes: ownProps
+const mapJPlayerProps = (jPlayers, id) => ({
+    verticalVolume: jPlayers[id].verticalVolume,
+    muted: jPlayers[id].muted,
+    volume: jPlayers[id].volume,
 });
 
 const VolumeBarValue = (props) => <div className={classNames.VOLUME_BAR_VALUE} style={style(props)} {...props.attributes} />;
@@ -22,4 +23,4 @@ const style = (props) => {
     };
 }
 
-export default connect(mapStateToProps)(VolumeBarValue);
+export default connect(mapStateToProps)(jPlayerConnect(VolumeBarValue, mapJPlayerProps));

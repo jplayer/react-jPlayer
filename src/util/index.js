@@ -4,6 +4,11 @@ import get from "lodash/get";
 import set from "lodash/set";
 import {formats, browser, errors, hints, timeFormats} from "./constants";
 
+export const mapStateToProps = ({jPlayers}, ownProps) => ({
+    jPlayers,
+    attributes: ownProps
+});
+
 export const updateObject = (existingObject, newValues) => ({
     ...existingObject, 
     ...newValues

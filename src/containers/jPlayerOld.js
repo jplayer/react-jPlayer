@@ -41,8 +41,8 @@
 // 		static get propTypes() {
 // 			return {
 // 				updateOptions: React.PropTypes.func.isRequired,
-// 				jPlayerSelector: React.PropTypes.string,
-// 				cssSelectorAncestor: React.PropTypes.string,
+// 				jPlayerid: React.PropTypes.string,
+// 				cssidAncestor: React.PropTypes.string,
 // 				controls: React.PropTypes.objectOf(React.PropTypes.element),
 // 				supplied: React.PropTypes.arrayOf(React.PropTypes.string),
 // 				preload: React.PropTypes.string,
@@ -162,7 +162,7 @@
 // 		}
 // 		render() {
 // 			return (
-// 				<PlayerContainer mediaSettings={this.props.mediaSettings} cssSelectorAncestor={this.props.cssSelectorAncestor} sizeClass={this.sizeClass} paused={this.props.paused}
+// 				<PlayerContainer mediaSettings={this.props.mediaSettings} cssidAncestor={this.props.cssidAncestor} sizeClass={this.sizeClass} paused={this.props.paused}
 // 				fullWindow={this.props.fullWindow} noVolume={this.props.noVolume} muted={this.props.muted} seeking={this.props.seeking} loop={this.props.loop} shuffled={this.props.shuffled}
 // 				noFullWindow={this.props.noFullWindow}>
 // 					{this.props.children}

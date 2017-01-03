@@ -41,7 +41,7 @@ const AudioPlayer = () => (
 );
 
 const jPlayerOptions = {
-    selector: "audio-player",
+    id: "audio-player",
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,

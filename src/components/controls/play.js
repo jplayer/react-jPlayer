@@ -2,17 +2,17 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {classNames} from "../../util/constants";
+import {mapStateToProps} from "../../util/index";
 import {play, pause} from "../../actions/jPlayerActions";
+import jPlayerConnect from "../../jPlayerConnect";
 
-const mapStateToProps = ({jPlayers, selector=jPlayers.currentSelector}, ownProps) => ({
-    paused: jPlayers[selector].paused,
-    attributes: ownProps,
-    selector
+const mapJPlayerProps = (jPlayers, id) => ({
+    paused: jPlayers[id].paused
 });
 
 const Play = (props) => {
-    const onPlayClick = () => props.paused ? props.dispatch(play(props.selector)) : props.dispatch(pause(props.selector))
+    const onPlayClick = () => props.paused ? props.dispatch(play(props.id)) : props.dispatch(pause(props.id))
     return <a className={classNames.PLAY} onClick={onPlayClick} {...props.attributes}>{props.children}</a>
 }
 
-export default connect(mapStateToProps)(Play);
+export default connect(mapStateToProps)(jPlayerConnect(Play, mapJPlayerProps));

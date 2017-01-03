@@ -44,7 +44,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
             });
 
             this.props.updateOption("onPlay", () => {
-                //actions.updateOthersOption(this.props.jPlayerSelector, true, "paused");
+                //actions.updateOthersOption(this.props.jPlayerid, true, "paused");
                // this._trigger(this.props.onPlay);
             });
 

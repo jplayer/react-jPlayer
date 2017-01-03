@@ -5,7 +5,7 @@ import {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlaybackBar, Buffer,
 class AudioPlayerTwo extends React.Component {
     render() {
         return (
-            <JPlayer className="jp-default">
+            <JPlayer className="jp-default" id={this.props.id}>
                 <Gui>
                     <Media>
                         <Audio>
@@ -14,7 +14,7 @@ class AudioPlayerTwo extends React.Component {
                     </Media>
                     <div className="jp-poster-container">
                         <Poster />
-                        <Title selector={this.props.selector}/>
+                        <Title />
                     </div>
                     <div className="jp-controls">
                         <KeyControl />
@@ -43,7 +43,7 @@ class AudioPlayerTwo extends React.Component {
 }
 
 AudioPlayerTwo.options = {
-    selector: "audio-player-two",
+    id: "audio-player-two",
     smoothPlayBar: false,
     muted: true,
     globalVolume: false,
