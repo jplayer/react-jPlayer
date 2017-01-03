@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import merge from "lodash.merge";
 
 import {keys, classNames, keyIgnoreElementNames, loopOptions} from "../util/constants";
-import {play, pause, mute, volume, loop, fullScreen} from "../actions/jPlayerActions";
+import {play, pause, mute, volume, loop, fullScreen, focus} from "../actions/jPlayerActions";
 import {mapStateToProps} from "../util/index";
 import jPlayerConnect from "../jPlayerConnect";
 
@@ -50,7 +50,7 @@ class KeyControl extends React.Component {
         }, this.props.keyBindings);
     }
     onKeyDown = (event) => {
-        if (keyIgnoreElementNames.some(name => name.toUpperCase() === event.target.nodeName.toUpperCase())) {
+        if (keyIgnoreElementNames.some(name => name.toUpperCase() === event.target.nodeName.toUpperCase()) || !this.props.focus) {
             return;
         }
 

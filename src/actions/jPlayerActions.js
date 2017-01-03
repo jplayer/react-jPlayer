@@ -7,10 +7,6 @@ export default {
         key,
         value,
         id
-    }),
-    updateid: (newid) => ({
-        type: actionTypes.jPlayer.UPDATE_id,
-        newid
     })
 }
 
@@ -67,5 +63,9 @@ export const fullScreen = (fullScreen, id, element) => ({
     type: actionTypes.jPlayer.FULL_SCREEN,
     fullScreen,
     element,
+    id
+});
+export const focus = (id) => ({
+    type: actionTypes.jPlayer.FOCUS,
     id
 });

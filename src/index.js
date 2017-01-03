@@ -51,10 +51,11 @@ const mapStateToProps = ({jPlayers}, {id}) => {
 
 const mapDispatchToProps = (dispatch) => ({functions: bindActionCreators(jPlayerActions, dispatch)});
 
-export default (WrappedPlayers) => {
+export default (wrappedPlayers) => {
     const initialState = {jPlayers: {}};
     let ConnectedPlayers = [];
-    WrappedPlayers.forEach(wrappedPlayer => {
+
+    wrappedPlayers.forEach(wrappedPlayer => {
         const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(wrappedPlayer);
 
         initialState.jPlayers[wrappedPlayer.options.id] = {

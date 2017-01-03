@@ -1,5 +1,5 @@
 import React from "react";
-import {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
+import {JPlayer, Media, Gui, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
      Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration, CurrentTime} from "../../../src/index";
 
 class AudioPlayer extends React.Component {
@@ -17,7 +17,6 @@ class AudioPlayer extends React.Component {
                         <Title />
                     </div>
                     <div className="jp-controls">
-                        <KeyControl />
                         <Play><i className="fa">{/*Icon set in css*/}</i></Play>
                         <FullScreen><i className="fa fa-expand"></i></FullScreen>
                         <Repeat><i className="fa fa-repeat"></i></Repeat>
@@ -49,6 +48,7 @@ AudioPlayer.options = {
     globalVolume: false,
     autoplay: false,
     logErrors: true,
+    keyEnabled: true,
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",

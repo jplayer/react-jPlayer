@@ -19,7 +19,7 @@ const clearMedia = (state) => {
 
 const setMedia = (state, media) => {
     let	supported = false,
-        newState = updateObject(state, clearMedia(newState)),
+        newState = clearMedia(state),
         originalSrc = media.src;
     
     // Convert all media URLs to absolute URLs.
@@ -134,16 +134,24 @@ const fullScreen = (state, {fullScreen, element = state.id}) => {
     return state;
 }
 
+const focus = (state, currentId) => {
+    const newState = {...state}; 
+
+    for (var key in newState) {
+        const jPlayer = newState[key];
+        key === currentId && jPlayer.keyEnabled ? jPlayer.focus = true : jPlayer.focus = false;
+    }
+    return updateObject(state, newState);
+}
+
 export default (state={}, action) => {
     const currentPlayer = state[action.id];
-    let newState = {...state};
+    let newState = focus(state, action.id);
 
     switch (action.type) {
         case actionTypes.jPlayer.UPDATE_OPTION:
             newState = updateObject(currentPlayer, {[action.key]: action.value});
             break;
-        case actionTypes.jPlayer.UPDATE_id:
-            return updateObject(newState, {currentid: action.newid}); 
         case actionTypes.jPlayer.CLEAR_MEDIA:
             newState = clearMedia(currentPlayer);
             break;

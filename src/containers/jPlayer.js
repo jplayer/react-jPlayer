@@ -8,6 +8,7 @@ import {classNames, keys, formats, timeFormats, loopOptions, errors, errorMessag
 import {testPlaybackRate, uaBlocklist, testCanPlayType, absoluteMediaUrls, updateOption} from "../util/index";
 import actions, {setMedia, clearMedia} from "../actions/jPlayerActions";
 import jPlayerConnect from "../jPlayerConnect";
+import KeyControl from "../components/keyControl";
 
 export const mapStateToProps = ({jPlayers}, ownProps) => ({
     ...jPlayers[ownProps.id],
@@ -123,6 +124,7 @@ class JPlayer extends React.Component {
         return (
             <div {...this.props.attributes} className={playerClasses}>
                 {this.props.children}
+                {this.props.keyEnabled && <KeyControl />}
             </div>
         );
     }
