@@ -149,10 +149,8 @@ const focus = (state, currentId) => {
     return updateObject(state, newState);
 }
 
-export default (state={}, action) => {
-    let currentPlayer = {...state[action.id]};
-
-    switch (action.type) {
+const switchOnAction = (actionType) => {
+    switch (actionType) {
         case actionTypes.jPlayer.UPDATE_OPTION:
             currentPlayer = updateObject(currentPlayer, {[action.key]: action.value});
             break;
@@ -194,7 +192,18 @@ export default (state={}, action) => {
         default:
             return state;
     }
+}
 
+export default (state={}, action) => {
+    let currentPlayer = {...state[action.id]};
+
+    Object.keys(state).forEach(key => {
+        var jPlayer = state[key];
+
+        jPlayer.global.forEach(actionType => {
+            switchOnAction(actionType);
+        });
+    });
     state = updateObject(state, {
         [action.id]: currentPlayer 
     });
