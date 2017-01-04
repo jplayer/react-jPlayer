@@ -45,7 +45,7 @@ AudioPlayer.options = {
     id: "audio-player",
     smoothPlayBar: false,
     muted: true,
-    globalVolume: false,
+    globalVolume: true,
     autoplay: false,
     logErrors: true,
     keyEnabled: true,

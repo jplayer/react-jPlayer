@@ -45,7 +45,7 @@ AudioPlayerTwo.options = {
     id: "audio-player-two",
     smoothPlayBar: false,
     muted: true,
-    globalVolume: false,
+    globalVolume: true,
     autoplay: false,
     logErrors: true,
     keyEnabled: true,

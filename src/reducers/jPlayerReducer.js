@@ -135,61 +135,69 @@ const fullScreen = (state, {fullScreen, element = state.id}) => {
 }
 
 const focus = (state, currentId) => {
-    const newState = {...state}; 
+    let newState = {...state};
+    const firstKeyEnabledPlayer = Object.keys(state).filter(key => state[key].keyEnabled).shift();
 
-    for (var key in newState) {
-        const jPlayer = newState[key];
-        key === currentId && jPlayer.keyEnabled ? jPlayer.focus = true : jPlayer.focus = false;
+    if (newState[currentId].keyEnabled) {
+        Object.keys(newState).forEach(key => newState[key].focus = false);
+        newState[currentId].focus = true;
     }
+    else {
+        newState[firstKeyEnabledPlayer].focus = true;
+    }
+
     return updateObject(state, newState);
 }
 
 export default (state={}, action) => {
-    const currentPlayer = state[action.id];
-    let newState = focus(state, action.id);
+    let currentPlayer = {...state[action.id]};
 
     switch (action.type) {
         case actionTypes.jPlayer.UPDATE_OPTION:
-            newState = updateObject(currentPlayer, {[action.key]: action.value});
+            currentPlayer = updateObject(currentPlayer, {[action.key]: action.value});
             break;
         case actionTypes.jPlayer.CLEAR_MEDIA:
-            newState = clearMedia(currentPlayer);
+            currentPlayer = clearMedia(currentPlayer);
             break;
         case actionTypes.jPlayer.SET_MEDIA:
-            newState = setMedia(currentPlayer, action.media);
+            currentPlayer = setMedia(currentPlayer, action.media);
             break;
         case actionTypes.jPlayer.PLAY: 
-            newState = play(currentPlayer, action);
+            currentPlayer = play(currentPlayer, action);
             break;
         case actionTypes.jPlayer.PAUSE:
-            newState = pause(currentPlayer, action);
+            currentPlayer = pause(currentPlayer, action);
             break;
         case actionTypes.jPlayer.PLAY_HEAD:
-            newState = playHead(currentPlayer, action);
+            currentPlayer = playHead(currentPlayer, action);
             break;
         case actionTypes.jPlayer.VOLUME:
-            newState = volume(currentPlayer, action);
+            currentPlayer = volume(currentPlayer, action);
             break;
         case actionTypes.jPlayer.MUTE:
-            newState = mute(currentPlayer, action);
+            currentPlayer = mute(currentPlayer, action);
             break;
         case actionTypes.jPlayer.DURATION:
-            newState = duration(currentPlayer, action);
+            currentPlayer = duration(currentPlayer, action);
             break;
         case actionTypes.jPlayer.PLAYBACK_RATE:
-            newState = playbackRate(currentPlayer, action);
+            currentPlayer = playbackRate(currentPlayer, action);
             break;
         case actionTypes.jPlayer.LOOP:
-            newState = loop(currentPlayer, action);
+            currentPlayer = loop(currentPlayer, action);
             break;
         case actionTypes.jPlayer.FULL_SCREEN: 
-            newState = fullScreen(currentPlayer, action);
+            currentPlayer = fullScreen(currentPlayer, action);
             break;
+        case actionTypes.jPlayer.FOCUS: 
+            return updateObject(state, focus(state, action.id));
         default:
             return state;
     }
 
-    return updateObject(state, {
-        [action.id]: newState
+    state = updateObject(state, {
+        [action.id]: currentPlayer 
     });
+
+    return updateObject(state, focus(state, action.id));
 }

@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 import {classNames} from "../../util/constants";
 import {mapStateToProps} from "../../util/index";
-import {fullScreen} from "../../actions/jPlayerActions";
+import {fullScreen, focus} from "../../actions/jPlayerActions";
 import jPlayerConnect from "../../jPlayerConnect";
 
 const mapJPlayerProps = (jPlayers, id) => ({
