@@ -138,7 +138,7 @@ class Media extends React.Component {
         return currentPercentRelative;
     }
     _updateCurrentMedia = (nextProps) => {
-        if (nextProps.src !== this.currentMedia.src) {
+        if (nextProps.src !== this.props.src) {
             this.currentMedia.src = nextProps.src;
         }
 

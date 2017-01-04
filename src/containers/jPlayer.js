@@ -78,7 +78,7 @@ class JPlayer extends React.Component {
         }
     }
     _logErrors = (nextProps) => {
-        if (nextProps.logErrors && nextProps.error !== this.props.error) {
+        if (nextProps.error !== this.props.error) {
             console.error(nextProps.error);
         }
     }

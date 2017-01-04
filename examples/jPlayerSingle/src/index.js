@@ -46,7 +46,6 @@ const jPlayerOptions = {
     muted: true,
     globalVolume: false,
     autoplay: false,
-    logErrors: true,
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",

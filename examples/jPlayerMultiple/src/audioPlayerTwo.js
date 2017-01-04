@@ -47,7 +47,6 @@ AudioPlayerTwo.options = {
     muted: true,
     globalVolume: true,
     autoplay: false,
-    logErrors: true,
     keyEnabled: true,
     media: {
         title: "Cro Magnon Man Two",
