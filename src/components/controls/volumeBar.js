@@ -27,7 +27,6 @@ class VolumeBar extends React.Component {
             h = getHeight(this.volumeBar);
 
         this.props.verticalVolume ? this.props.dispatch(volume(y/h, this.props.id)) : this.props.dispatch(volume(x/w, this.props.id))
-        this.props.dispatch(mute(false, this.props.id));
     }
     componentWillMount() {
         document.addEventListener("mouseup", this.onVolumeBarMouseUp);

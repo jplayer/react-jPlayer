@@ -36,7 +36,6 @@ class KeyControl extends React.Component {
                 key: 190, // .
                 fn: () => {
                     this.props.dispatch(volume(this.props.volume + 0.1, this.props.id));
-                    this.props.dispatch(mute(false, this.props.id));
                 }
             },
             volumeDown: {

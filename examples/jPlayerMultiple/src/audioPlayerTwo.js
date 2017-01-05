@@ -1,6 +1,7 @@
 import React from "react";
 import {JPlayer, Media, Gui, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
      Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration, CurrentTime} from "../../../src/index";
+import {actionTypes} from "../../../src/util/constants";
 
 class AudioPlayerTwo extends React.Component {
     render() {
@@ -45,9 +46,6 @@ AudioPlayerTwo.options = {
     id: "audio-player-two",
     smoothPlayBar: false,
     muted: true,
-    global: {
-        volume: true
-    },
     autoplay: false,
     keyEnabled: true,
     media: {

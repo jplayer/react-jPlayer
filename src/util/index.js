@@ -271,6 +271,7 @@ export const qualifyURL = (url) => {
 	return el.firstChild.href;
 }
 
+// Convert all media URLs to absolute URLs.
 export const absoluteMediaUrls = (media) => {
 	for (var type in media) {
 		var url = media[type];

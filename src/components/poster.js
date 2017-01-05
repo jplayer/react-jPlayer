@@ -6,7 +6,7 @@ import {mapStateToProps} from "../util/index";
 import jPlayerConnect from "../jPlayerConnect";
 
 const mapJPlayerProps = (jPlayers, id) => ({
-    src: jPlayers[id].posterSrc
+    src: jPlayers[id].media.poster
 });
 
 const Poster = ({src, attributes}) => <img className={classNames.POSTER} src={src} {...attributes} />;

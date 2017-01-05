@@ -3,8 +3,6 @@ import {uaBrowser, uaPlatform, getDocMode} from "./index";
 export const actionTypes = {
 	jPlayer: {
 		UPDATE_OPTION: "UPDATE_OPTION",
-		ARRAY_ADD_UNIQUE: "ARRAY_ADD_UNIQUE",
-    	ARRAY_REMOVE_BY_VALUE: "ARRAY_REMOVE_BY_VALUE",
 		SET_MEDIA: "SET_MEDIA",
 		CLEAR_MEDIA: "CLEAR_MEDIA",
 		PLAY: "PLAY",

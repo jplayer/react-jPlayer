@@ -35,7 +35,7 @@ class AudioPlayer extends React.Component {
                             </SeekBar>  
                         </Progress>
                     </div>
-                </Gui>             
+                </Gui>
                 <BrowserUnsupported /> 
             </JPlayer>
         );
@@ -46,7 +46,6 @@ AudioPlayer.options = {
     id: "audio-player",
     smoothPlayBar: false,
     muted: true,
-    global: [actionTypes.jPlayer.VOLUME],
     autoplay: false,
     keyEnabled: true,
     media: {

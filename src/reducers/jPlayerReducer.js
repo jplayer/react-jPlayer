@@ -18,53 +18,41 @@ const clearMedia = (state) => {
 }
 
 const setMedia = (state, media) => {
-    let	supported = false,
-        newState = clearMedia(state),
-        originalSrc = media.src;
-    
-    // Convert all media URLs to absolute URLs.
-    media = absoluteMediaUrls(media);
+    let	supported = false;
 
-    for (var priority in newState.mediaSettings.formats) {
-        const format = newState.mediaSettings.formats[priority];
+    state = updateObject(clearMedia(state), {media: absoluteMediaUrls(media)});
 
-        if(newState.mediaSettings.playableFormat[format] && validString(media[format])) { // Format supported in solution and url given for format.
-            if(newState.mediaSettings.video) {
-                newState.video = true;
+    for (var priority in state.mediaSettings.formats) {
+        const format = state.mediaSettings.formats[priority];
+
+        if(state.mediaSettings.playableFormat[format] && validString(media[format])) { // Format supported in solution and url given for format.
+            if(state.mediaSettings.video) {
+                state.video = true;
             // this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
             // if(this.props.nativeVideoControls) {
                 //     this.video.element().poster = validString(media.poster) ? media.poster : "";
                 // }
             } else {
-                newState.video = false;
+                state.video = false;
             // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
             }
-            if(newState.mediaSettings.playableFormat[format] && media[format]) {
-                newState.originalSrc =originalSrc; 
-                newState.src = media[format];
-                newState.formatType = format;
-                newState.format = {[format]: true};
+            if(state.mediaSettings.playableFormat[format] && media[format]) {
+                state.src = media[format];
+                state.formatType = format;
+                state.format = {[format]: true};
             }
             supported = true;
             break;
         }
     }
 
-    if(supported) {
-        if(!(newState.nativeVideoControls)) {
-            if(validString(media.poster)) {
-                newState.posterSrc = media.poster;
-            }
-        }
-
-        newState.titleText = media.title;          
-        newState.srcSet = true;
-        newState.paused = true;
+    if(supported) {  
+        state.srcSet = true;
+        state.paused = true;
     } else {
-        newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(", ")}'}`);
+        state.error = noFormatSupportedError(`{supplied: '${state.supplied.join(", ")}'}`);
     }
-    
-    return updateObject(state, newState);
+    return state;
 }
 
 const play = (state, action) => {
@@ -109,12 +97,12 @@ const playHead = (state, action) => {
     return state;
 }
 
-const volume = (state, action) => updateObject(state, {
-    volume: limitValue(action.volume, 0, 1)
+const volume = (state, volume) => updateObject(state, {
+    volume: limitValue(volume, 0, 1)
 });
 
-const mute = (state, action) => updateObject(state, {
-    muted: action.mute
+const mute = (state, mute) => updateObject(state, {
+    muted: mute
 });
 
 const duration = (state, action) => updateObject(state, {
@@ -135,78 +123,79 @@ const fullScreen = (state, {fullScreen, element = state.id}) => {
 }
 
 const focus = (state, currentId) => {
-    let newState = {...state};
     const firstKeyEnabledPlayer = Object.keys(state).filter(key => state[key].keyEnabled).shift();
 
-    if (newState[currentId].keyEnabled) {
-        Object.keys(newState).forEach(key => newState[key].focus = false);
-        newState[currentId].focus = true;
+    if (state[currentId].keyEnabled) {
+        Object.keys(state).forEach(key => state[key] = key === currentId ? updateObject(state[key], {focus: true}) : updateObject(state[key], {focus: false}));
+        return state;
     }
-    else {
-        newState[firstKeyEnabledPlayer].focus = true;
+    else if (state[firstKeyEnabledPlayer] !== undefined) {
+        var focusedPlayer = updateObject(state[firstKeyEnabledPlayer], {focus: true});
+        return updateObject(state, {[firstKeyEnabledPlayer]: focusedPlayer});
     }
-
-    return updateObject(state, newState);
 }
 
-const switchOnAction = (actionType) => {
+const isInitializing = (actionType) => !Object.keys(actionTypes.jPlayer).every(currentActionType => currentActionType !== actionType);
+
+const updatePlayer = (jPlayer={}, action, actionType=action.type) => {
     switch (actionType) {
         case actionTypes.jPlayer.UPDATE_OPTION:
-            currentPlayer = updateObject(currentPlayer, {[action.key]: action.value});
-            break;
+            return updateObject(jPlayer, {[action.key]: action.value});      
         case actionTypes.jPlayer.CLEAR_MEDIA:
-            currentPlayer = clearMedia(currentPlayer);
-            break;
+            return clearMedia(jPlayer);          
         case actionTypes.jPlayer.SET_MEDIA:
-            currentPlayer = setMedia(currentPlayer, action.media);
-            break;
+            return setMedia(jPlayer, action.media);          
         case actionTypes.jPlayer.PLAY: 
-            currentPlayer = play(currentPlayer, action);
-            break;
+            return play(jPlayer, action);         
         case actionTypes.jPlayer.PAUSE:
-            currentPlayer = pause(currentPlayer, action);
-            break;
+            return pause(jPlayer, action);       
         case actionTypes.jPlayer.PLAY_HEAD:
-            currentPlayer = playHead(currentPlayer, action);
-            break;
+            return playHead(jPlayer, action);
         case actionTypes.jPlayer.VOLUME:
-            currentPlayer = volume(currentPlayer, action);
-            break;
+            return volume(mute(jPlayer, action.volume > 0 ? false : true), action.volume);  
         case actionTypes.jPlayer.MUTE:
-            currentPlayer = mute(currentPlayer, action);
-            break;
+            return mute(jPlayer, action.mute);   
         case actionTypes.jPlayer.DURATION:
-            currentPlayer = duration(currentPlayer, action);
-            break;
+            return duration(jPlayer, action);          
         case actionTypes.jPlayer.PLAYBACK_RATE:
-            currentPlayer = playbackRate(currentPlayer, action);
-            break;
+            return playbackRate(jPlayer, action);          
         case actionTypes.jPlayer.LOOP:
-            currentPlayer = loop(currentPlayer, action);
-            break;
+            return loop(jPlayer, action);       
         case actionTypes.jPlayer.FULL_SCREEN: 
-            currentPlayer = fullScreen(currentPlayer, action);
-            break;
-        case actionTypes.jPlayer.FOCUS: 
-            return updateObject(state, focus(state, action.id));
+            return fullScreen(jPlayer, action);           
         default:
-            return state;
+            return jPlayer;
     }
 }
 
-export default (state={}, action) => {
-    let currentPlayer = {...state[action.id]};
+const jPlayerReducer = (state={}, action) => {
+    if (!isInitializing(action.type)) return state;
 
     Object.keys(state).forEach(key => {
         var jPlayer = state[key];
 
         jPlayer.global.forEach(actionType => {
-            switchOnAction(actionType);
+            if (key !== action.id && action.type === actionType) {
+                state = updateObject(state, {
+                    [key]: updatePlayer(state[key], action, actionType)
+                });
+            }
         });
     });
-    state = updateObject(state, {
-        [action.id]: currentPlayer 
-    });
 
-    return updateObject(state, focus(state, action.id));
+    switch (action.type) {
+        case actionTypes.jPlayer.FOCUS:
+            return updateObject(state, focus(state, action.id));
+        default:
+            state = updateObject(state, {
+                [action.id]: updatePlayer(state[action.id], action)
+            });
+
+            return jPlayerReducer(state, {
+                type: actionTypes.jPlayer.FOCUS,
+                id: action.id
+            });
+    }
 }
+
+export default jPlayerReducer;

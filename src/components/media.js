@@ -69,7 +69,7 @@ class Media extends React.Component {
                 this.props.onEnded();
             },
             onError: () => {
-                this.props.dispatch(actions.updateOption("error", urlNotSupportedError(this.props.originalSrc), this.props.id));    
+                this.props.dispatch(actions.updateOption("error", urlNotSupportedError(this.props.media.src), this.props.id));    
                 this.props.onError();
             },
             onPlaying: this.props.onPlaying,
