@@ -126,7 +126,7 @@ const focus = (state, currentId) => {
     const firstKeyEnabledPlayer = Object.keys(state).filter(key => state[key].keyEnabled).shift();
 
     if (state[currentId].keyEnabled) {
-        Object.keys(state).forEach(key => state[key] = key === currentId ? updateObject(state[key], {focus: true}) : updateObject(state[key], {focus: false}));
+        Object.keys(state).forEach((key) => state[key] = (key === currentId) ? updateObject(state[key], {focus: true}) : updateObject(state[key], {focus: false}));
         return state;
     }
     else if (state[firstKeyEnabledPlayer] !== undefined) {
@@ -144,7 +144,7 @@ const updatePlayer = (jPlayer={}, action, actionType=action.type) => {
         case actionTypes.jPlayer.CLEAR_MEDIA:
             return clearMedia(jPlayer);          
         case actionTypes.jPlayer.SET_MEDIA:
-            return setMedia(jPlayer, action.media);          
+            return setMedia(jPlayer, action.media);
         case actionTypes.jPlayer.PLAY: 
             return play(jPlayer, action);         
         case actionTypes.jPlayer.PAUSE:
