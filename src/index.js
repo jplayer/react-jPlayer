@@ -35,17 +35,17 @@ import CurrentTime from "./components/currentTime";
 const mapStateToProps = ({jPlayers}, {id}) => {
     const otherPlayers = {};
 
-    for (var key in jPlayers) {
-        const jPlayer = jPlayers[key];
+    Object.keys(jPlayers).forEach(key => key !== id ? otherPlayers[key] = jPlayers[key] : null);
 
-        if (key !== id) {
-            otherPlayers[key] = jPlayer;
+    if (Object.keys(otherPlayers).length) {
+        return {
+            ...jPlayers[id],
+            jPlayers: otherPlayers
         }
     }
-    
+
     return {
-        ...jPlayers[id],
-        jPlayers: otherPlayers
+        ...jPlayers[id]
     }
 };
 
