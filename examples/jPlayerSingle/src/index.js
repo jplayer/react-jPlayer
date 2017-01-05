@@ -1,51 +1,55 @@
 import React from "react";
 
 import "../../../src/less/default/jPlayer.less";
-import render, {JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
+import {JPlayer, Media, Gui, Progress, SeekBar, PlaybackBar, Buffer, BrowserUnsupported, Poster, Audio, Title, FullScreen,
      Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration, CurrentTime} from "../../../src/index";
+import createJPlayer from "../../../src/index";
 
-const AudioPlayer = () => (
-    <JPlayer className="jp-default">
-        <Gui>
-            <Media>
-                <Audio>
-                    <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-                </Audio>
-            </Media>
-            <div className="jp-poster-container">
-                <Poster />
-                <Title />
-            </div>
-            <div className="jp-controls">
-                <KeyControl />
-                <Play><i className="fa">{/*Icon set in css*/}</i></Play>
-                <FullScreen><i className="fa fa-expand"></i></FullScreen>
-                <Repeat><i className="fa fa-repeat"></i></Repeat>
-                <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
-                <div className="jp-volume-controls">
-                    <Mute><i className="fa">{/*Icon set in css*/}</i></Mute>
-                    <VolumeBar><VolumeBarValue /></VolumeBar>
-                </div>
-                <Progress>
-                    <SeekBar>
-                        <PlayBar />
-                        <Buffer />
-                        <CurrentTime />
-                        <Duration />  
-                    </SeekBar>  
-                </Progress>
-            </div>
-        </Gui>             
-        <BrowserUnsupported /> 
-    </JPlayer>
-);
+class AudioPlayer extends React.Component {
+    render() {
+        return (
+            <JPlayer className="jp-default" id={this.props.id}>
+                <Gui>
+                    <Media>
+                        <Audio>
+                            <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+                        </Audio>
+                    </Media>
+                    <div className="jp-poster-container">
+                        <Poster />
+                        <Title />
+                    </div>
+                    <div className="jp-controls">
+                        <Play><i className="fa">{/*Icon set in css*/}</i></Play>
+                        <FullScreen><i className="fa fa-expand"></i></FullScreen>
+                        <Repeat><i className="fa fa-repeat"></i></Repeat>
+                        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
+                        <div className="jp-volume-controls">
+                            <Mute><i className="fa">{/*Icon set in css*/}</i></Mute>
+                            <VolumeBar><VolumeBarValue /></VolumeBar>
+                        </div>
+                        <Progress>
+                            <SeekBar>
+                                <PlayBar />
+                                <Buffer />
+                                <CurrentTime />
+                                <Duration />  
+                            </SeekBar>  
+                        </Progress>
+                    </div>
+                </Gui>
+                <BrowserUnsupported /> 
+            </JPlayer>
+        );
+    }
+}
 
-const jPlayerOptions = {
+AudioPlayer.options = {
     id: "audio-player",
     smoothPlayBar: false,
     muted: true,
-    globalVolume: false,
     autoplay: false,
+    keyEnabled: true,
     media: {
         title: "Cro Magnon Man",
         artist: "The Stark Palace",
@@ -55,7 +59,7 @@ const jPlayerOptions = {
     }
 };
 
-render(AudioPlayer, jPlayerOptions);
+createJPlayer(AudioPlayer);
 
 // onShuffleClick = (event) => {
 //     event.preventDefault();

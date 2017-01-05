@@ -1,11 +1,11 @@
 var path = require("path");
-var sharedConfig = require("../shared.config");
+var exampleConfig = require("../example.config");
 
-Object.assign(sharedConfig, {
+Object.assign(exampleConfig, {
     context: __dirname,
     entry: {
         jPlayerMultiple: "./src/index.js"
     }
 })
 
-module.exports = sharedConfig;
+module.exports = exampleConfig;
