@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-const Audio = ({children, setCurrentMedia, ...props}) => (
-    <audio ref={setCurrentMedia} {...props}>
-        {children}
-    </audio>
+const Audio = ({ children, setCurrentMedia, ...props }) => (
+  <audio ref={setCurrentMedia} {...props}>
+    {children}
+  </audio>
 );
 
 export default Audio;

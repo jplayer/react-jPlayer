@@ -1,30 +1,30 @@
-import React from "react";
-import {keys, classNames} from "../util/constants";
+import React from 'react';
+import { keys, classNames } from '../util/constants';
 
 export default class extends React.Component {
-    constructor() {
-        super();
-        
-        this.state = {
-            [keys.NO_SOLUTION_CLASS]: [classNames.NO_SOLUTION],
-        };
-    }
-    static get defaultProps() {
-        return {
-            children: (
-                <div>
-                    <h2>Browser Unsupported</h2>
-                    <div>To play the media you will need to update your browser to a more recent version.</div>
-                </div>
-            )
-        }
-    }
-    static get propTypes() {
-        return {
-            noSolutionClass: React.PropTypes.arrayOf(React.PropTypes.string)
-        }
-    }
-    componentDidMount() {
+  constructor() {
+    super();
+
+    this.state = {
+      [keys.NO_SOLUTION_CLASS]: [classNames.NO_SOLUTION],
+    };
+  }
+  static get defaultProps() {
+    return {
+      children: (
+        <div>
+          <h2>Browser Unsupported</h2>
+          <div>To play the media you will need to update your browser to a more recent version.</div>
+        </div>
+            ),
+    };
+  }
+  static get propTypes() {
+    return {
+      noSolutionClass: React.PropTypes.arrayOf(React.PropTypes.string),
+    };
+  }
+  componentDidMount() {
         // If html is not being used by this browser, then media playback is not possible. Trigger an error event.
         // if(!this.html.used) {
         // 	this._error({
@@ -37,12 +37,12 @@ export default class extends React.Component {
         // } else {
         // 	this.setState(state => addUniqueToArray(state.noSolutionClass, constants.classNames.HIDDEN));
         // }
-    }
-    render() {
-        return (
-            <div className={this.state.noSolutionClass.join(" ")} {...this.props}>
-                {this.props.children}
-            </div>
-        );
-    }
+  }
+  render() {
+    return (
+      <div className={this.state.noSolutionClass.join(' ')} {...this.props}>
+        {this.props.children}
+      </div>
+    );
+  }
 }

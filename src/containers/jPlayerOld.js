@@ -21,7 +21,7 @@
 // import * as jPlayerActions from "../actions/jPlayerActions";
 
 // const mapStateToProps = (state) => ({
-// 	...state.jPlayer, 
+// 	...state.jPlayer,
 // 	shuffled: state.jPlaylist.shuffled,
 // 	playlistControls: state.jPlaylist.controls
 // });
@@ -33,9 +33,9 @@
 // 			super(props);
 
 // 			this.state = {
-                
+
 // 			};
-			
+
 // 		}
 
 // 		static get propTypes() {
@@ -58,8 +58,8 @@
 // 				maxPlaybackRate: React.PropTypes.number,
 // 				smoothPlayBar: React.PropTypes.bool,
 // 				fullScreen: React.PropTypes.bool,
-// 				fullWindow: React.PropTypes.bool,			
-// 				loop: React.PropTypes.string,				
+// 				fullWindow: React.PropTypes.bool,
+// 				loop: React.PropTypes.string,
 // 				noFullWindow: React.PropTypes.objectOf(React.PropTypes.string),
 // 				noVolume: React.PropTypes.objectOf(React.PropTypes.string),
 // 				timeFormat: React.PropTypes.shape({
@@ -74,29 +74,29 @@
 // 					sepSec: React.PropTypes.string
 // 				}),
 // 				keyEnabled: React.PropTypes.bool,
-// 				audioFullScreen: React.PropTypes.bool,		
+// 				audioFullScreen: React.PropTypes.bool,
 // 				verticalVolume: React.PropTypes.bool,
 // 				verticalPlaybackRate: React.PropTypes.bool,
 // 				globalVolume: React.PropTypes.bool, // Set to make volume and muted changes affect all jPlayer instances with this option enabled
 // 				sizeCssClass: React.PropTypes.string,
 // 				sizeFullCssClass: React.PropTypes.string,
 // 				shuffleAnimation: React.PropTypes.shape({
-// 					stiffness: React.PropTypes.number, 
-// 					damping: React.PropTypes.number, 
+// 					stiffness: React.PropTypes.number,
+// 					damping: React.PropTypes.number,
 // 					precision: React.PropTypes.number
 // 				}),
 // 				displayAnimation: React.PropTypes.shape({
-// 					stiffness: React.PropTypes.number, 
-// 					damping: React.PropTypes.number, 
+// 					stiffness: React.PropTypes.number,
+// 					damping: React.PropTypes.number,
 // 					precision: React.PropTypes.number
 // 				}),
 // 				removeAnimation: React.PropTypes.shape({
-// 					stiffness: React.PropTypes.number, 
-// 					damping: React.PropTypes.number, 
+// 					stiffness: React.PropTypes.number,
+// 					damping: React.PropTypes.number,
 // 					precision: React.PropTypes.number
 // 				}),
 // 				addAnimation: React.PropTypes.shape({
-// 					stiffness: React.PropTypes.number, 
+// 					stiffness: React.PropTypes.number,
 // 					damping: React.PropTypes.number,
 // 					precision: React.PropTypes.number
 // 				}),
@@ -156,8 +156,8 @@
 // 			duration: this.duration,
 // 			playbackRate: this.playbackRate
 // 		})
-		
-// 		componentWillMount() {			
+
+// 		componentWillMount() {
 // 			this._initBeforeRender();
 // 		}
 // 		render() {

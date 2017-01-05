@@ -1,5 +1,5 @@
-import {actionTypes} from "../util/constants";
-import {addUniqueToArray, removeFromArrayByValue, removeFromArrayByIndex, updateOption} from "../util/index";
+import { actionTypes } from '../util/constants';
+import { addUniqueToArray, removeFromArrayByValue, removeFromArrayByIndex, updateOption } from '../util/index';
 
 // export default (state={}, action) => {
 //     switch (action.type) {
