@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import actions, { pause } from '../actions/jPlayerActions';
 import { classes } from '../util/constants';
 import { mapStateToProps, urlNotSupportedError,
-        convertTime, limitValue } from '../util/index';
+        convertTime } from '../util/index';
 import jPlayerConnect from '../jPlayerConnect';
 
 const mapJPlayerProps = (jPlayers, id) => ({
