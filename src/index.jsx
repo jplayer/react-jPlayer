@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider, connect } from 'react-redux';
-import { createStore, combineReducers, bindActionCreators } from 'redux';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
 import merge from 'lodash.merge';
 
 import './less/jPlayer.less';
 import jPlayerReducer from './reducers/jPlayerReducer';
-import * as jPlayerActions from './actions/jPlayerActions';
-import { defaultValues, jPlayerDefaultOptions, statusDefaultValues } from './containers/jPlayer';
-import JPlayer from './containers/jPlayer';
+import WrappedPlayer from './wrappedPlayer';
+import JPlayer, { defaultValues, jPlayerDefaultOptions,
+  statusDefaultValues } from './containers/jPlayer';
 import Media from './components/media';
 import Gui from './components/gui';
 import KeyControl from './components/keyControl';
@@ -32,62 +32,6 @@ import VolumeBarValue from './components/controls/volumeBarValue';
 import Duration from './components/duration';
 import CurrentTime from './components/currentTime';
 
-const mapStateToProps = ({ jPlayers }, { id }) => {
-  const otherPlayers = {};
-
-  Object.keys(jPlayers).forEach((key) => {
-    if (key !== id) {
-      otherPlayers[key] = jPlayers[key];
-    }
-  });
-
-  if (Object.keys(otherPlayers).length) {
-    return {
-      ...jPlayers[id],
-      jPlayers: otherPlayers,
-    };
-  }
-
-  return {
-    ...jPlayers[id],
-  };
-};
-
-const mapDispatchToProps = dispatch => (
-  {
-    functions: bindActionCreators(jPlayerActions, dispatch),
-  }
-);
-
-class WrappedPlayer extends React.Component {
-  static get propTypes() {
-    return {
-      id: React.PropTypes.string,
-      children: React.PropTypes.element,
-    };
-  }
-  static get childContextTypes() {
-    return {
-      id: React.PropTypes.string,
-    };
-  }
-  constructor() {
-    super();
-
-    const childElement = React.Children.only(this.props.children).type;
-
-    this.ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(childElement);
-  }
-  getChildContext = () => ({
-    id: this.props.id,
-  });
-  render() {
-    const ConnectedPlayer = this.ConnectedPlayer;
-
-    return <ConnectedPlayer id={this.props.id} />;
-  }
-}
-
 export default (...players) => {
   const initialState = { jPlayers: {} };
 
@@ -104,8 +48,8 @@ export default (...players) => {
     <Provider store={store}>
       <div>
         {players.map(Player => (
-          <WrappedPlayer>
-            <Player id={Player.options.id} />
+          <WrappedPlayer key={Player.options.id} id={Player.options.id}>
+            <Player />
           </WrappedPlayer>
           ),
         )}

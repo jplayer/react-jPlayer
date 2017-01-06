@@ -20,8 +20,11 @@ class VolumeBar extends React.Component {
       verticalVolume: React.PropTypes.bool,
       dispatch: React.PropTypes.func,
       id: React.PropTypes.string,
-      attributes: React.PropTypes.node,
-      children: React.PropTypes.element,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.element),
+        React.PropTypes.element,
+      ]),
     };
   }
   componentWillMount() {
@@ -51,13 +54,13 @@ class VolumeBar extends React.Component {
   }
   render() {
     return (
-      <button
+      <div
         ref={ref => (this.volumeBar = ref)} className={classes.VOLUME_BAR}
         onClick={this.onVolumeBarClick} onMouseDown={this.onVolumeBarMouseDown}
         {...this.props.attributes}
       >
         {this.props.children}
-      </button>
+      </div>
     );
   }
 }

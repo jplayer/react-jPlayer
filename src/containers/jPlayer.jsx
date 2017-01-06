@@ -5,34 +5,44 @@ import screenfull from 'screenfull';
 import classNames from 'classnames';
 
 import { classes, formats, timeFormats, loopOptions } from '../util/constants';
-import { testCanPlayType } from '../util/index';
+import { mapStateToProps } from '../util/index';
 import actions, { setMedia } from '../actions/jPlayerActions';
 import KeyControl from '../components/keyControl';
+import jPlayerConnect from '../jPlayerConnect';
 
-export const mapStateToProps = ({ jPlayers }, ownProps) => ({
-  ...jPlayers[ownProps.id],
-  attributes: ownProps,
+const mapJPlayerProps = (jPlayers, id) => ({
+  timeFormats: jPlayers[id].timeFormats,
+  mediaSettings: jPlayers[id].mediaSettings,
+  media: jPlayers[id].media,
+  supplied: jPlayers[id].supplied,
+  error: jPlayers[id].error,
+  paused: jPlayers[id].paused,
+  fullScreen: jPlayers[id].fullScreen,
+  muted: jPlayers[id].muted,
+  volume: jPlayers[id].volume,
+  seeking: jPlayers[id].seeking,
+  loop: jPlayers[id].loop,
+  shuffled: jPlayers[id].shuffled,
+  keyEnabled: jPlayers[id].keyEnabled,
 });
 
 class JPlayer extends React.Component {
   static get propTypes() {
     return {
-      id: React.PropTypes.string.isRequired,
+      id: React.PropTypes.string,
       timeFormats: React.PropTypes.object,
       mediaSettings: React.PropTypes.shape({
-        video: React.propTypes.bool,
-        formats: React.propTypes.array,
-        available: React.propTypes.bool,
-        playableFormat: React.propTypes.array,
+        video: React.PropTypes.bool,
+        formats: React.PropTypes.array,
+        available: React.PropTypes.string,
+        playableFormat: React.PropTypes.objectOf(React.PropTypes.string),
       }),
       media: React.PropTypes.shape({
-        media: {
-          title: React.PropTypes.string,
-          artist: React.PropTypes.string,
-          mp3: React.PropTypes.string,
-          poster: React.PropTypes.string,
-          free: React.PropTypes.bool,
-        },
+        title: React.PropTypes.string,
+        artist: React.PropTypes.string,
+        mp3: React.PropTypes.string,
+        poster: React.PropTypes.string,
+        free: React.PropTypes.bool,
       }),
       supplied: React.PropTypes.arrayOf(React.PropTypes.string),
       error: React.PropTypes.shape({
@@ -41,15 +51,18 @@ class JPlayer extends React.Component {
         hint: React.PropTypes.string,
       }),
       dispatch: React.PropTypes.func,
-      attributes: React.PropTypes.node,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
       paused: React.PropTypes.bool,
       fullScreen: React.PropTypes.bool,
       muted: React.PropTypes.bool,
       volume: React.PropTypes.number,
-      seeking: React.PropTypes.number,
+      seeking: React.PropTypes.bool,
       loop: React.PropTypes.string,
       shuffled: React.PropTypes.bool,
-      children: React.PropTypes.element,
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.element),
+        React.PropTypes.element,
+      ]),
       keyEnabled: React.PropTypes.bool,
     };
   }
@@ -96,7 +109,7 @@ class JPlayer extends React.Component {
     const mediaElement = document.createElement(mediaSettings.video ? 'video' : 'audio');
 
     mediaSettings.formats.forEach((format) => {
-      mediaSettings.available = mediaElement.canPlayType && testCanPlayType(mediaElement); // Test is for IE9 on Win Server 2008.
+      mediaSettings.available = mediaElement.canPlayType(formats.mp3.CODEC);
       mediaSettings.playableFormat = {
         [format]: mediaSettings.available && mediaElement.canPlayType(formats[format].CODEC),
       };
@@ -148,14 +161,14 @@ class JPlayer extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(JPlayer);
+export default connect(mapStateToProps)(jPlayerConnect(JPlayer, mapJPlayerProps));
 
 export const defaultValues = {
   mediaSettings: {
     video: false,
     formats: [], // Order defines priority.
-    available: false,
-    playableFormat: [],
+    available: '',
+    playableFormat: {},
   },
 };
 
@@ -194,7 +207,6 @@ export const jPlayerDefaultOptions = {
   bufferColour: '#dddddd', // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
   volume: 0.8, // The volume. Number 0 to 1
   barDrag: true,
-  playbackRateText: 1, // The number of digits to appear after the decimal point
   media: {},
   global: [],
 };

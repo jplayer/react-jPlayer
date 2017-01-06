@@ -19,7 +19,8 @@
     "rules": {
         "max-len": ["error", { "code": 100, "ignoreComments": true }],
         "no-console": "off",
-        "no-debugger": "warn"
+        "no-debugger": "warn",
+        "jsx-a11y/no-static-element-interactions": "off"
     },
     "plugins": [
         "react"

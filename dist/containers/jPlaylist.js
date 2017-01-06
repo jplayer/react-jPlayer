@@ -468,7 +468,7 @@
                     };
                 }
             }, {
-                key: "propTypes",
+                key: "PropTypes",
                 get: function get() {
                     return {
                         updateOptions: _react2.default.PropTypes.func.isRequired,

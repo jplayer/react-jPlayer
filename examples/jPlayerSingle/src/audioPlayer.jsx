@@ -1,6 +1,6 @@
 import React from 'react';
 
-import createJPlayer, { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
+import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration,
   CurrentTime } from '../../../src/index';
@@ -55,7 +55,7 @@ AudioPlayer.options = {
   },
 };
 
-createJPlayer(AudioPlayer);
+export default AudioPlayer;
 
 /*
 onShuffleClick = (event) => {

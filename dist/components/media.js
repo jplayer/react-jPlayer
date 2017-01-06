@@ -200,9 +200,9 @@
                     _this.props.onDurationChange();
                 },
                 onRateChange: function onRateChange() {
-                    var playbackRateText = _this.currentMedia.playbackRate.toFixed((0, _index.limitValue)(_this.props.playbackRateText, 0, 20));
+                    var playbackRateFixed = _this.currentMedia.playbackRate.toFixed((0, _index.limitValue)(_this.props.playbackRateFixed, 0, 20));
 
-                    _this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRateText", playbackRateText, _this.props.id));
+                    _this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRateFixed", playbackRateFixed, _this.props.id));
                     _this.props.onRateChange();
                 },
                 onSeeking: function onSeeking() {

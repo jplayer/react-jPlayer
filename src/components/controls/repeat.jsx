@@ -16,15 +16,18 @@ const Repeat = (props) => {
                                     : props.dispatch(loop(loopOptions.LOOP, props.id))
   );
   return (
-    <button className={classes.REPEAT} onClick={onRepeatClick} {...props.attributes}>
+    <a className={classes.REPEAT} onClick={onRepeatClick} {...props.attributes}>
       {props.children}
-    </button>
+    </a>
   );
 };
 
 Repeat.propTypes = {
-  children: React.PropTypes.element,
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]),
   loop: React.PropTypes.bool,
   dispatch: React.PropTypes.func,
   id: React.PropTypes.string,

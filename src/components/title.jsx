@@ -16,7 +16,7 @@ const Title = ({ title, attributes }) => (
 );
 
 Title.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
   title: React.PropTypes.string,
 };
 

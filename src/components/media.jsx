@@ -20,7 +20,6 @@ class Media extends React.Component {
       onPlay: () => null,
       onEnded: () => null,
       onError: () => null,
-      onRateChange: () => null,
       onSeeking: () => null,
       onSeeked: () => null,
     };
@@ -51,25 +50,18 @@ class Media extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      playbackRateText: React.PropTypes.string,
       loop: React.PropTypes.bool,
-      media: React.PropTypes.shapre({
-        media: {
-          title: React.PropTypes.string,
-          artist: React.PropTypes.string,
-          mp3: React.PropTypes.string,
-          poster: React.PropTypes.string,
-          free: React.PropTypes.bool,
-        },
-      }),
       remainingDuration: React.PropTypes.number,
       id: React.PropTypes.string,
       src: React.PropTypes.string,
-      newTime: React.PropTypes.string,
+      newTime: React.PropTypes.number,
       playHeadPercent: React.PropTypes.number,
       paused: React.PropTypes.bool,
-      attributes: React.PropTypes.node,
-      children: React.PropTypes.element,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.element),
+        React.PropTypes.element,
+      ]),
     };
   }
   constructor(props) {
@@ -101,14 +93,6 @@ class Media extends React.Component {
         this.updateMediaStatus();
         this.props.onDurationChange();
       },
-      onRateChange: () => {
-        const playbackRateText = this.currentMedia.playbackRate.toFixed(
-          limitValue(this.props.playbackRateText, 0, 20));
-
-        this.props.dispatch(actions.updateOption('playbackRateText',
-                playbackRateText, this.props.id));
-        this.props.onRateChange();
-      },
       onSeeking: () => {
         this.props.dispatch(actions.updateOption('seeking', true, this.props.id));
         this.props.onSeeking();
@@ -133,9 +117,10 @@ class Media extends React.Component {
       },
       onError: () => {
         this.props.dispatch(actions.updateOption('error',
-                urlNotSupportedError(this.props.media.src), this.props.id));
+                urlNotSupportedError(this.props.src), this.props.id));
         this.props.onError();
       },
+      onRateChange: this.props.onRateChange,
       onPlaying: this.props.onPlaying,
       onPause: this.props.onPause,
       onWaiting: this.props.onWaiting,

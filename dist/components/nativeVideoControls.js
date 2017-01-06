@@ -171,7 +171,7 @@
                 }
             }
         }], [{
-            key: "propTypes",
+            key: "PropTypes",
             get: function get() {
                 return {
                     nativeVideoControls: _react2.default.PropTypes.objectOf(_react2.default.PropTypes.string)

@@ -245,7 +245,7 @@
                 );
             }
         }], [{
-            key: "propTypes",
+            key: "PropTypes",
             get: function get() {
                 return {
                     stateClass: _react2.default.PropTypes.objectOf(_react2.default.PropTypes.string),
@@ -309,7 +309,7 @@
         bufferColour: "#dddddd", // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
         volume: 0.8, // The volume. Number 0 to 1
         barDrag: true,
-        playbackRateText: 1, //The number of digits to appear after the decimal point
+        playbackRateFixed: 1, //The number of digits to appear after the decimal point
         media: {},
         global: []
     };

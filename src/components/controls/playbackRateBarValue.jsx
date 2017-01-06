@@ -31,7 +31,7 @@ const PlaybackRateBarValue = (props) => {
 };
 
 PlaybackRateBarValue.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
   verticalPlaybackRate: React.PropTypes.bool,
   minPlaybackRate: React.PropTypes.number,
   maxPlaybackRate: React.PropTypes.number,

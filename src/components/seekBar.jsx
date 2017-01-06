@@ -24,9 +24,12 @@ class SeekBar extends React.Component {
       barDrag: React.PropTypes.bool,
       dispatch: React.PropTypes.func,
       id: React.PropTypes.string,
-      attributes: React.PropTypes.node,
       seekPercent: React.PropTypes.number,
-      children: React.PropTypes.element,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.element),
+        React.PropTypes.element,
+      ]),
     };
   }
   componentWillMount() {
@@ -51,13 +54,13 @@ class SeekBar extends React.Component {
   }
   render() {
     return (
-      <button
+      <div
         ref={ref => (this.seekBar = ref)} className={classes.SEEK_BAR}
         style={{ width: `${this.props.seekPercent}%` }} onClick={this.onSeekBarClick}
         onMouseDown={this.onSeekBarMouseDown} {...this.props.attributes}
       >
         {this.props.children}
-      </button>
+      </div>
     );
   }
 }

@@ -1,8 +1,7 @@
 import screenfull from 'screenfull';
 
 import { actionTypes } from '../util/constants';
-import { absoluteMediaUrls, limitValue,
-  updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
+import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 import { statusDefaultValues } from '../containers/jPlayer';
 
 const clearMedia = state =>
@@ -17,11 +16,10 @@ const clearMedia = state =>
 
 const setMedia = (state, { media }) => {
   let supported = false;
-  let newState = { ...state };
-
-  newState = updateObject(clearMedia(newState), {
-    media: absoluteMediaUrls(media),
-  });
+  const newState = {
+    ...state,
+    ...updateObject(clearMedia(state)),
+  };
 
   newState.mediaSettings.formats.forEach((priority) => {
     const format = newState.mediaSettings.formats[priority];
@@ -122,17 +120,22 @@ const fullScreen = (state, { fullScreenValue, element = state.id }) => {
 };
 
 const focus = (state, { id }) => {
-  const firstKeyEnabledPlayer = Object.keys(state).filter(key => state[key].keyEnabled).shift();
+  const newState = { ...state };
+  const firstKeyEnabledPlayer = Object.keys(state).filter(key => newState[key].keyEnabled).shift();
 
-  debugger;
-  if (state[id].keyEnabled) {
-    Object.keys(state).forEach(key => ((key === id) ? updateObject(state[key], { focus: true })
-            : updateObject(state[key], { focus: false })));
-  } else if (state[firstKeyEnabledPlayer] !== undefined) {
-    const focusedPlayer = updateObject(state[firstKeyEnabledPlayer], { focus: true });
-    return updateObject(state, { [firstKeyEnabledPlayer]: focusedPlayer });
+  if (newState[id].keyEnabled) {
+    Object.keys(state).forEach((key) => {
+      if (key === id) {
+        newState[key] = updateObject(newState[key], { focus: true });
+      } else {
+        newState[key] = updateObject(newState[key], { focus: false });
+      }
+    });
+  } else if (newState[firstKeyEnabledPlayer] !== undefined) {
+    const focusedPlayer = updateObject(newState[firstKeyEnabledPlayer], { focus: true });
+    return updateObject(newState, { [firstKeyEnabledPlayer]: focusedPlayer });
   }
-  return state;
+  return newState;
 };
 
 const isInitializing = actionType => (

@@ -7,7 +7,10 @@ const Audio = ({ children, setCurrentMedia, ...attributes }) => (
 );
 
 Audio.propTypes = {
-  children: React.PropTypes.element,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]),
   setCurrentMedia: React.PropTypes.func,
 };
 

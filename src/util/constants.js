@@ -134,7 +134,6 @@ export const noVolumes = {
   PLAYBOOK: /playbook/,
 };
 
-// 'MPEG-4 support' : canPlayType('video/mp4; codecs="mp4v.20.8"')
 export const formats = {
   mp3: {
     CODEC: 'audio/mpeg',

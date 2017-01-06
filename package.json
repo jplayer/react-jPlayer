@@ -68,6 +68,7 @@
     "classnames": "^2.2.5",
     "lodash.merge": "^4.6.0",
     "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "react-motion": "^0.4.4",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",

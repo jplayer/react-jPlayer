@@ -17,8 +17,11 @@ const mapJPlayerProps = (jPlayers, id) => ({
 class PlaybackRateBar extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.node,
-      children: React.PropTypes.element,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.element),
+        React.PropTypes.element,
+      ]),
       barDrag: React.PropTypes.bool,
       verticalPlaybackRate: React.PropTypes.bool,
       minPlaybackRate: React.PropTypes.number,
@@ -62,13 +65,13 @@ class PlaybackRateBar extends React.Component {
   }
   render() {
     return (
-      <button
+      <div
         ref={ref => (this.playbackRateBar = ref)} className={classes.PLAYBACK_RATE_BAR}
         onClick={this.onPlaybackRateBarClick} onMouseDown={this.onPlaybackRateMouseDown}
         {...this.props.attributes}
       >
         {this.props.children}
-      </button>
+      </div>
     );
   }
 }

@@ -15,7 +15,7 @@ const Poster = ({ src, attributes }) => (
 
 Poster.propTypes = {
   src: React.PropTypes.string,
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
 };
 
 export default connect(mapStateToProps)(jPlayerConnect(Poster, mapJPlayerProps));

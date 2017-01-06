@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default (WrappedComponent, propsCallback) => {
-  const jPlayerList = ({ jPlayers, attributes, dispatch, children }, { id }) => (
+  const jPlayerConnect = ({ jPlayers, attributes, dispatch, children }, { id }) => (
     <WrappedComponent
       {...propsCallback(jPlayers, id)} attributes={attributes}
       id={id} dispatch={dispatch}
@@ -10,16 +10,19 @@ export default (WrappedComponent, propsCallback) => {
     </WrappedComponent>
   );
 
-  jPlayerList.contextTypes = {
+  jPlayerConnect.contextTypes = {
     id: React.PropTypes.string,
   };
 
-  jPlayerList.propTypes = {
-    jPlayers: React.PropTypes.shape,
-    attributes: React.PropTypes.element,
+  jPlayerConnect.propTypes = {
+    jPlayers: React.PropTypes.objectOf(React.PropTypes.any),
+    attributes: React.PropTypes.objectOf(React.PropTypes.node),
     dispatch: React.PropTypes.func,
-    children: React.PropTypes.element,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.arrayOf(React.PropTypes.element),
+      React.PropTypes.element,
+    ]),
   };
 
-  return jPlayerList;
+  return jPlayerConnect;
 };

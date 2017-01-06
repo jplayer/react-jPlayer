@@ -22,14 +22,14 @@ const Duration = (props) => {
     }
   };
   return (
-    <button className={classes.DURATION} onClick={onDurationClick} {...props.attributes}>
+    <div className={classes.DURATION} onClick={onDurationClick} {...props.attributes}>
       {props.durationText}
-    </button>
+    </div>
   );
 };
 
 Duration.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
   toggleDuration: React.PropTypes.bool,
   captureDuration: React.PropTypes.bool,
   dispatch: React.PropTypes.func,

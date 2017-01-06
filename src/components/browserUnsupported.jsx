@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, classes } from '../util/constants';
+import { classes } from '../util/constants';
 
 export default class extends React.Component {
   static get defaultProps() {

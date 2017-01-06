@@ -15,15 +15,18 @@ const FullScreen = (props) => {
     props.dispatch(fullScreen(!props.fullScreen, props.id));
   };
   return (
-    <button className={classes.FULL_SCREEN} onClick={onFullScreenClick} {...props.attributes}>
+    <a className={classes.FULL_SCREEN} onClick={onFullScreenClick} {...props.attributes}>
       {props.children}
-    </button>
+    </a>
   );
 };
 
 FullScreen.propTypes = {
-  attributes: React.PropTypes.node,
-  children: React.PropTypes.element,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]),
   id: React.PropTypes.string,
   fullScreen: React.PropTypes.func,
   dispatch: React.PropTypes.func,

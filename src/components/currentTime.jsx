@@ -9,12 +9,13 @@ const mapJPlayerProps = (jPlayers, id) => ({
   currentTimeText: jPlayers[id].currentTimeText,
 });
 
-const CurrentTime = ({ currentTimeText, ...attributes }) => (
+const CurrentTime = ({ currentTimeText, attributes }) => (
   <div className={classes.CURRENT_TIME} {...attributes}>{currentTimeText}</div>
 );
 
 CurrentTime.propTypes = {
   currentTimeText: React.PropTypes.string,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
 };
 
 export default connect(mapStateToProps)(jPlayerConnect(CurrentTime, mapJPlayerProps));

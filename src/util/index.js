@@ -37,9 +37,6 @@ export const getOffset = el => (
 export const getWidth = el => el.getBoundingClientRect().width;
 export const getHeight = el => el.getBoundingClientRect().height;
 
-// The codec type is irrelevant.
-export const testCanPlayType = media => media.canPlayType(formats.mp3.CODEC);
-
 export const limitValue = (value, min, max) => {
   if (value < min) {
     return min;

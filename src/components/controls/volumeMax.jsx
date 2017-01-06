@@ -19,15 +19,18 @@ const VolumeMax = (props) => {
     }
   };
   return (
-    <button className={classes.VOLUME_MAX} onClick={onClick} {...props.attributes}>
+    <a className={classes.VOLUME_MAX} onClick={onClick} {...props.attributes}>
       {props.children}
-    </button>
+    </a>
   );
 };
 
 VolumeMax.propTypes = {
-  attributes: React.PropTypes.node,
-  children: React.PropTypes.element,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]),
   id: React.PropTypes.string,
   dispatch: React.PropTypes.func,
   muted: React.PropTypes.bool,

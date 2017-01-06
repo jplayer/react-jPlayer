@@ -26,7 +26,7 @@ const VolumeBarValue = (props) => {
 };
 
 VolumeBarValue.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
   muted: React.PropTypes.bool,
   volume: React.PropTypes.number,
   verticalVolume: React.PropTypes.bool,

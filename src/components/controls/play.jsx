@@ -15,15 +15,18 @@ const Play = (props) => {
     props.paused ? props.dispatch(play(props.id)) : props.dispatch(pause(props.id))
   );
   return (
-    <button className={classes.PLAY} onClick={onPlayClick} {...props.attributes}>
+    <a className={classes.PLAY} onClick={onPlayClick} {...props.attributes}>
       {props.children}
-    </button>
+    </a>
   );
 };
 
 Play.propTypes = {
-  attributes: React.PropTypes.node,
-  children: React.PropTypes.element,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]),
   id: React.PropTypes.string,
   dispatch: React.PropTypes.func,
   paused: React.PropTypes.bool,

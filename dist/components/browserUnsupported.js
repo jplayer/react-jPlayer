@@ -160,7 +160,7 @@
                 };
             }
         }, {
-            key: "propTypes",
+            key: "PropTypes",
             get: function get() {
                 return {
                     noSolutionClass: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string)

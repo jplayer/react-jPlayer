@@ -29,7 +29,7 @@ const PlayBar = props => (
 );
 
 PlayBar.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
   currentPercentAbsolute: React.PropTypes.number,
   currentPercentRelative: React.PropTypes.number,
   smoothPlayBar: React.PropTypes.bool,

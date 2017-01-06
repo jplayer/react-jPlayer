@@ -19,7 +19,7 @@ class Buffer extends React.Component {
         end: React.PropTypes.number,
       })),
       bufferColour: React.PropTypes.string,
-      attributes: React.PropTypes.node,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
     };
   }
   componentWillReceiveProps(nextProps) {

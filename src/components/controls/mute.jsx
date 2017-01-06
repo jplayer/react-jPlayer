@@ -13,15 +13,18 @@ const mapJPlayerProps = (jPlayers, id) => ({
 const Mute = (props) => {
   const onMuteClick = () => props.dispatch(mute(!props.muted, props.id));
   return (
-    <button className={classes.MUTE} onClick={onMuteClick} {...props.attributes}>
+    <a className={classes.MUTE} onClick={onMuteClick} {...props.attributes}>
       {props.children}
-    </button>
+    </a>
   );
 };
 
 Mute.propTypes = {
-  attributes: React.PropTypes.node,
-  children: React.PropTypes.element,
+  attributes: React.PropTypes.objectOf(React.PropTypes.node),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]),
   id: React.PropTypes.string,
   dispatch: React.PropTypes.func,
   muted: React.PropTypes.bool,
