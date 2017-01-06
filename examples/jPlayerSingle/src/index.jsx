@@ -78,7 +78,7 @@ onNextClick = (event) => {
     this.context.blur(event.target);
 }
 onVideoPlayClick = () => this.props.dispatch(play())
-shuffle: (<a className={classNames.SHUFFLE} onClick={props.onShuffleClick}>{props.children}</a>),
-previous: (<a className={classNames.PREVIOUS} onClick={props.onPreviousClick}>{props.children}</a>),
-next: (<a className={classNames.NEXT} onClick={props.onNextClick}>{props.children}</a>);
+shuffle: (<a className={classes.SHUFFLE} onClick={props.onShuffleClick}>{props.children}</a>),
+previous: (<a className={classes.PREVIOUS} onClick={props.onPreviousClick}>{props.children}</a>),
+next: (<a className={classes.NEXT} onClick={props.onNextClick}>{props.children}</a>);
 */

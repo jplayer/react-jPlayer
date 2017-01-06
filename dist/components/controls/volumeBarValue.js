@@ -50,7 +50,7 @@
     };
 
     var VolumeBarValue = function VolumeBarValue(props) {
-        return _react2.default.createElement("div", _extends({ className: _constants.classNames.VOLUME_BAR_VALUE, style: style(props) }, props.attributes));
+        return _react2.default.createElement("div", _extends({ className: _constants.classes.VOLUME_BAR_VALUE, style: style(props) }, props.attributes));
     };
 
     var style = function style(props) {

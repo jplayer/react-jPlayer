@@ -53,7 +53,7 @@
         };
         return _react2.default.createElement(
             "a",
-            _extends({ className: _constants.classNames.REPEAT, onClick: onRepeatClick }, props.attributes),
+            _extends({ className: _constants.classes.REPEAT, onClick: onRepeatClick }, props.attributes),
             props.children
         );
     };

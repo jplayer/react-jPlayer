@@ -52,7 +52,7 @@
             attributes = _ref.attributes;
         return _react2.default.createElement(
             "div",
-            _extends({ className: _constants.classNames.CURRENT_TIME }, attributes),
+            _extends({ className: _constants.classes.CURRENT_TIME }, attributes),
             currentTimeText
         );
     };

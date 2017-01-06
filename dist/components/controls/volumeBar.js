@@ -152,7 +152,7 @@
                     "div",
                     _extends({ ref: function ref(_ref2) {
                             return _this2.volumeBar = _ref2;
-                        }, className: _constants.classNames.VOLUME_BAR, onClick: this.onVolumeBarClick, onMouseDown: this.onVolumeBarMouseDown
+                        }, className: _constants.classes.VOLUME_BAR, onClick: this.onVolumeBarClick, onMouseDown: this.onVolumeBarMouseDown
                     }, this.props.attributes),
                     this.props.children
                 );

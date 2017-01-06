@@ -35,7 +35,11 @@ import CurrentTime from './components/currentTime';
 const mapStateToProps = ({ jPlayers }, { id }) => {
   const otherPlayers = {};
 
-  Object.keys(jPlayers).forEach(key => key !== id ? otherPlayers[key] = jPlayers[key] : null);
+  Object.keys(jPlayers).forEach((key) => {
+    if (key !== id) {
+      otherPlayers[key] = jPlayers[key];
+    }
+  });
 
   if (Object.keys(otherPlayers).length) {
     return {
@@ -49,7 +53,11 @@ const mapStateToProps = ({ jPlayers }, { id }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({ functions: bindActionCreators(jPlayerActions, dispatch) });
+const mapDispatchToProps = dispatch => (
+  {
+    functions: bindActionCreators(jPlayerActions, dispatch),
+  }
+);
 
 export default (...wrappedPlayers) => {
   const initialState = { jPlayers: {} };
@@ -59,9 +67,12 @@ export default (...wrappedPlayers) => {
     const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(wrappedPlayer);
 
     initialState.jPlayers[wrappedPlayer.options.id] = {
-      ...merge({}, defaultValues, statusDefaultValues, jPlayerDefaultOptions, wrappedPlayer.options),
+      ...merge({}, defaultValues, statusDefaultValues,
+              jPlayerDefaultOptions, wrappedPlayer.options),
     };
-    ConnectedPlayers.push(<ConnectedPlayer key={wrappedPlayer.options.id} id={wrappedPlayer.options.id} />);
+    ConnectedPlayers.push(
+      <ConnectedPlayer key={wrappedPlayer.options.id} id={wrappedPlayer.options.id} />,
+    );
   });
 
   const store = createStore(combineReducers({ jPlayers: jPlayerReducer }), initialState);
@@ -75,5 +86,7 @@ export default (...wrappedPlayers) => {
     document.getElementById('app'));
 };
 
-export { JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlayBar, Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,
-        Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration, CurrentTime };
+export { JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlayBar,
+   Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,
+    Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
+    VolumeBar, VolumeBarValue, Duration, CurrentTime };

@@ -57,7 +57,7 @@
         };
         return _react2.default.createElement(
             "a",
-            _extends({ className: _constants.classNames.VOLUME_MAX, onClick: onClick }, props.attributes),
+            _extends({ className: _constants.classes.VOLUME_MAX, onClick: onClick }, props.attributes),
             props.children
         );
     };

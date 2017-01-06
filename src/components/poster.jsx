@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { keys, classNames } from '../util/constants';
+import { classes } from '../util/constants';
 import { mapStateToProps } from '../util/index';
 import jPlayerConnect from '../jPlayerConnect';
 
@@ -9,6 +9,13 @@ const mapJPlayerProps = (jPlayers, id) => ({
   src: jPlayers[id].media.poster,
 });
 
-const Poster = ({ src, attributes }) => <img className={classNames.POSTER} src={src} {...attributes} />;
+const Poster = ({ src, attributes }) => (
+  <img className={classes.POSTER} role="presentation" src={src} {...attributes} />
+);
+
+Poster.propTypes = {
+  src: React.PropTypes.string,
+  attributes: React.PropTypes.node,
+};
 
 export default connect(mapStateToProps)(jPlayerConnect(Poster, mapJPlayerProps));

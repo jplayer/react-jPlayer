@@ -158,7 +158,7 @@
                     "div",
                     _extends({ ref: function ref(_ref2) {
                             return _this2.seekBar = _ref2;
-                        }, className: _constants.classNames.SEEK_BAR, style: { width: this.props.seekPercent + "%" }, onClick: this.onSeekBarClick,
+                        }, className: _constants.classes.SEEK_BAR, style: { width: this.props.seekPercent + "%" }, onClick: this.onSeekBarClick,
                         onMouseDown: this.onSeekBarMouseDown }, this.props.attributes),
                     this.props.children
                 );

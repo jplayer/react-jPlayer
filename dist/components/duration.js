@@ -60,7 +60,7 @@
         };
         return _react2.default.createElement(
             "div",
-            _extends({ className: _constants.classNames.DURATION, onClick: onDurationClick }, props.attributes),
+            _extends({ className: _constants.classes.DURATION, onClick: onDurationClick }, props.attributes),
             props.durationText
         );
     };

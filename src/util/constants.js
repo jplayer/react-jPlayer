@@ -1,5 +1,3 @@
-import { uaBrowser, uaPlatform, getDocMode } from './index';
-
 export const actionTypes = {
   jPlayer: {
     UPDATE_OPTION: 'UPDATE_OPTION',
@@ -19,7 +17,7 @@ export const actionTypes = {
   jPlaylist: {
     UPDATE_OPTION: 'UPDATE_OPTION',
     ARRAY_ADD_UNIQUE: 'ARRAY_ADD_UNIQUE',
-    	ARRAY_REMOVE_BY_VALUE: 'ARRAY_REMOVE_BY_VALUE',
+    ARRAY_REMOVE_BY_VALUE: 'ARRAY_REMOVE_BY_VALUE',
     ARRAY_REMOVE_BY_INDEX: 'ARRAY_REMOVE_BY_INDEX',
   },
 
@@ -47,7 +45,8 @@ export const keys = {
 };
 
 export const errors = {
-  FORMAT_NO_SUPPORT: 'It is not possible to play any media format provided on this browser using your current options.',
+  FORMAT_NO_SUPPORT: 'It is not possible to play any media format' +
+  'provided on this browser using your current options.',
   URL_NO_SUPPORT: 'The media URL could not be loaded.',
   URL_NOT_SET: 'Attempted to issue media playback commands while no media url is set.',
 };
@@ -55,10 +54,11 @@ export const errors = {
 export const hints = {
   FORMAT_NO_SUPPORT: 'Video or audio formats defined in the supplied option may be missing.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
-  URL_NOT_SET: 'Pass the media through the options or use the setMedia() action that is passed into the component props.',
+  URL_NOT_SET: 'Pass the media through the options or use the setMedia()' +
+  'action that is passed into the component props.',
 };
 
-export const classNames = {
+export const classes = {
   MEDIA: 'jp-media',
   JPLAYER: 'jp-jplayer',
   MUTE: 'jp-mute',
@@ -219,22 +219,3 @@ export const timeFormats = {
 };
 
 export const keyIgnoreElementNames = ['A', 'INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
-
-export const browser = {};
-export const platform = {};
-
-const browserMatch = uaBrowser(navigator.userAgent);
-const platformMatch = uaPlatform(navigator.userAgent);
-
-if (browserMatch.browser) {
-  browser[browserMatch.browser] = true;
-  browser.version = browserMatch.version;
-}
-
-if (platformMatch.platform) {
-  platform[platformMatch.platform] = true;
-  platform.mobile = !platformMatch.tablet;
-  platform.tablet = !!platformMatch.tablet;
-}
-
-browser.documentMode = getDocMode();

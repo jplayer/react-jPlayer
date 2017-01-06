@@ -60,7 +60,7 @@
 
     var clearMedia = function clearMedia(state) {
         // if(!nextProps.nativeVideoControls) {
-        //     this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_CLASS, classNames.HIDDEN)));
+        //     this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_CLASS, classes.HIDDEN)));
         // }
 
         return (0, _index.updateObject)(state, _extends({
@@ -80,13 +80,13 @@
                 // Format supported in solution and url given for format.
                 if (state.mediaSettings.video) {
                     state.video = true;
-                    // this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
+                    // this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
                     // if(this.props.nativeVideoControls) {
                     //     this.video.element().poster = validString(media.poster) ? media.poster : "";
                     // }
                 } else {
                     state.video = false;
-                    // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
+                    // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
                 }
                 if (state.mediaSettings.playableFormat[format] && media[format]) {
                     state.src = media[format];

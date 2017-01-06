@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { classNames } from '../util/constants';
+import { classes } from '../util/constants';
 import { duration } from '../actions/jPlayerActions';
 import { mapStateToProps } from '../util/index';
 import jPlayerConnect from '../jPlayerConnect';
@@ -21,7 +21,20 @@ const Duration = (props) => {
       props.dispatch(duration(props.id));
     }
   };
-  return <div className={classNames.DURATION} onClick={onDurationClick} {...props.attributes}>{props.durationText}</div>;
+  return (
+    <button className={classes.DURATION} onClick={onDurationClick} {...props.attributes}>
+      {props.durationText}
+    </button>
+  );
+};
+
+Duration.propTypes = {
+  attributes: React.PropTypes.node,
+  toggleDuration: React.PropTypes.bool,
+  captureDuration: React.PropTypes.bool,
+  dispatch: React.PropTypes.func,
+  id: React.PropTypes.string,
+  durationText: React.PropTypes.string,
 };
 
 export default connect(mapStateToProps)(jPlayerConnect(Duration, mapJPlayerProps));

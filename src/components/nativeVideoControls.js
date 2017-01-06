@@ -65,11 +65,11 @@
 //       this.setState({ videoControls: this.props.nativeVideoControls });
 //             // For when option changed. The poster image is not updated, as it is dealt with in setMedia(). Acceptable degradation since seriously doubt these options will change on the fly. Can again review later.
 //       if (this.props.nativeVideoControls && this.props.require.video) {
-//         this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classNames.HIDDEN);
+//         this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classes.HIDDEN);
 //         this.assignStyle({ width: this.props.width, height: this.props.height }, 'videoStyle');
 //       } else if (this.props.waitForPlay && this.props.video) {
-//         this.props.removeClass(keys.POSTER_CLASS, classNames.HIDDEN);
-//         this.props.removeClass(keys.VIDEO_CLASS, classNames.HIDDEN);
+//         this.props.removeClass(keys.POSTER_CLASS, classes.HIDDEN);
+//         this.props.removeClass(keys.VIDEO_CLASS, classes.HIDDEN);
 //       }
 //     }
 //   }

@@ -53,7 +53,7 @@
         };
         return _react2.default.createElement(
             "a",
-            _extends({ className: _constants.classNames.PLAY, onClick: onPlayClick }, props.attributes),
+            _extends({ className: _constants.classes.PLAY, onClick: onPlayClick }, props.attributes),
             props.children
         );
     };

@@ -57,7 +57,7 @@
             _reactMotion.Motion,
             { style: { smoothWidth: (0, _reactMotion.spring)(props.currentPercentAbsolute, [250]) } },
             function (values) {
-                return _react2.default.createElement("div", _extends({ className: _constants.classNames.PLAY_BAR, style: { width: props.smoothPlayBar ? values.smoothWidth + "%" : props.currentPercentRelative + "%" } }, props.attributes));
+                return _react2.default.createElement("div", _extends({ className: _constants.classes.PLAY_BAR, style: { width: props.smoothPlayBar ? values.smoothWidth + "%" : props.currentPercentRelative + "%" } }, props.attributes));
             }
         );
     };

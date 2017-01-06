@@ -57,7 +57,7 @@
 
         return _react2.default.createElement(
             "div",
-            _extends({ className: _constants.classNames.PROGRESS }, props),
+            _extends({ className: _constants.classes.PROGRESS }, props),
             children
         );
     };

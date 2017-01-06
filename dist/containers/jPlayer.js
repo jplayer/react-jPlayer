@@ -180,12 +180,12 @@
             _this.playerClasses = function () {
                 var _setClassNames;
 
-                return (0, _classnames2.default)(_constants.classNames.JPLAYER, _this.props.attributes.className, (_setClassNames = {
+                return (0, _classnames2.default)(_constants.classes.JPLAYER, _this.props.attributes.className, (_setClassNames = {
                     "jp-video": _this.props.mediaSettings.video,
                     "jp-video-270p": _this.props.sizeCssClass !== undefined,
                     "jp-video-full": _this.props.sizeFullCssClass !== undefined,
                     "jp-audio": !_this.props.mediaSettings.video
-                }, _defineProperty(_setClassNames, _constants.classNames.states.PLAYING, !_this.props.paused), _defineProperty(_setClassNames, _constants.classNames.states.FULL_SCREEN, _this.props.fullScreen), _defineProperty(_setClassNames, _constants.classNames.states.MUTED, _this.props.muted), _defineProperty(_setClassNames, _constants.classNames.states.VOLUME_LOW, !_this.props.muted && _this.props.volume < 0.5), _defineProperty(_setClassNames, _constants.classNames.states.VOLUME_HIGH, !_this.props.muted && _this.props.volume >= 0.5), _defineProperty(_setClassNames, _constants.classNames.states.SEEKING, _this.props.seeking), _defineProperty(_setClassNames, _constants.classNames.states.LOOPED, _this.props.loop === _constants.loopOptions.LOOP), _defineProperty(_setClassNames, _constants.classNames.states.SHUFFLED, _this.props.shuffled), _setClassNames));
+                }, _defineProperty(_setClassNames, _constants.classes.states.PLAYING, !_this.props.paused), _defineProperty(_setClassNames, _constants.classes.states.FULL_SCREEN, _this.props.fullScreen), _defineProperty(_setClassNames, _constants.classes.states.MUTED, _this.props.muted), _defineProperty(_setClassNames, _constants.classes.states.VOLUME_LOW, !_this.props.muted && _this.props.volume < 0.5), _defineProperty(_setClassNames, _constants.classes.states.VOLUME_HIGH, !_this.props.muted && _this.props.volume >= 0.5), _defineProperty(_setClassNames, _constants.classes.states.SEEKING, _this.props.seeking), _defineProperty(_setClassNames, _constants.classes.states.LOOPED, _this.props.loop === _constants.loopOptions.LOOP), _defineProperty(_setClassNames, _constants.classes.states.SHUFFLED, _this.props.shuffled), _setClassNames));
             };
 
             _this.toggleFullScreen = function () {
@@ -309,7 +309,7 @@
         bufferColour: "#dddddd", // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
         volume: 0.8, // The volume. Number 0 to 1
         barDrag: true,
-        playbackRateTextDigits: 1, //The number of digits to appear after the decimal point
+        playbackRateText: 1, //The number of digits to appear after the decimal point
         media: {},
         global: []
     };

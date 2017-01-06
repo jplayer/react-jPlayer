@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { keys, classNames } from '../util/constants';
-import { mapStateToProps, getOffset, getWidth, limitValue, convertTime } from '../util/index';
-import actions, { playHead } from '../actions/jPlayerActions';
+import { classes } from '../util/constants';
+import { mapStateToProps, getOffset, getWidth } from '../util/index';
+import { playHead } from '../actions/jPlayerActions';
 import jPlayerConnect from '../jPlayerConnect';
 
 const mapJPlayerProps = (jPlayers, id) => ({
@@ -19,21 +19,31 @@ const mapJPlayerProps = (jPlayers, id) => ({
 });
 
 class SeekBar extends React.Component {
-  onSeekBarClick = e => this.movePlayHead(e)
-  onSeekBarMouseMove = e => this.props.barDrag && this.dragging ? this.movePlayHead(e) : null
-  onSeekBarMouseDown = () => this.dragging = true
-  onSeekBarMouseUp = () => this.dragging = false
-  movePlayHead = (e) => {
-    let offset = getOffset(this.seekBar),
-      x = e.pageX - offset.left,
-      w = getWidth(this.seekBar),
-      percentage = 100 * x / w;
-
-    this.props.dispatch(playHead(percentage, this.props.id));
+  static get propTypes() {
+    return {
+      barDrag: React.PropTypes.bool,
+      dispatch: React.PropTypes.func,
+      id: React.PropTypes.string,
+      attributes: React.PropTypes.node,
+      seekPercent: React.PropTypes.number,
+      children: React.PropTypes.element,
+    };
   }
   componentWillMount() {
     document.addEventListener('mouseup', this.onSeekBarMouseUp);
     document.addEventListener('mousemove', this.onSeekBarMouseMove);
+  }
+  onSeekBarClick = e => this.movePlayHead(e)
+  onSeekBarMouseMove = e => (this.props.barDrag && this.dragging ? this.movePlayHead(e) : null)
+  onSeekBarMouseDown = () => (this.dragging = true)
+  onSeekBarMouseUp = () => (this.dragging = false)
+  movePlayHead = (e) => {
+    const offset = getOffset(this.seekBar);
+    const x = e.pageX - offset.left;
+    const w = getWidth(this.seekBar);
+    const percentage = 100 * (x / w);
+
+    this.props.dispatch(playHead(percentage, this.props.id));
   }
   componentWillUnMount() {
     document.removeEventListener('mouseup', this.onSeekBarMouseUp);
@@ -41,12 +51,13 @@ class SeekBar extends React.Component {
   }
   render() {
     return (
-      <div
-        ref={ref => this.seekBar = ref} className={classNames.SEEK_BAR} style={{ width: `${this.props.seekPercent}%` }} onClick={this.onSeekBarClick}
+      <button
+        ref={ref => (this.seekBar = ref)} className={classes.SEEK_BAR}
+        style={{ width: `${this.props.seekPercent}%` }} onClick={this.onSeekBarClick}
         onMouseDown={this.onSeekBarMouseDown} {...this.props.attributes}
       >
         {this.props.children}
-      </div>
+      </button>
     );
   }
 }

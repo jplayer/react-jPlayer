@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { classNames } from '../../util/constants';
+import { classes } from '../../util/constants';
 import { mapStateToProps } from '../../util/index';
 import { fullScreen } from '../../actions/jPlayerActions';
 import jPlayerConnect from '../../jPlayerConnect';
@@ -15,7 +15,7 @@ const FullScreen = (props) => {
     props.dispatch(fullScreen(!props.fullScreen, props.id));
   };
   return (
-    <button className={classNames.FULL_SCREEN} onClick={onFullScreenClick} {...props.attributes}>
+    <button className={classes.FULL_SCREEN} onClick={onFullScreenClick} {...props.attributes}>
       {props.children}
     </button>
   );

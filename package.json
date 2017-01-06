@@ -47,6 +47,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.6.0",
+    "eslint-config-defaults": "^9.0.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "jsdom": "^8.5.0",
     "less": "^2.7.1",
@@ -59,17 +60,18 @@
     "react-motion": "^0.4.4",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
-    "screenfull": "^3.0.2",
     "style-loader": "^0.13.1",
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
     "babel-runtime": "^6.6.1",
     "classnames": "^2.2.5",
+    "lodash.merge": "^4.6.0",
     "react": "^15.4.1",
     "react-motion": "^0.4.4",
     "react-redux": "^4.4.5",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "screenfull": "^3.0.2"
   },
   "directories": {
     "doc": "docs",

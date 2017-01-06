@@ -52,7 +52,7 @@
             attributes = _ref.attributes;
         return _react2.default.createElement(
             "div",
-            _extends({ className: _constants.classNames.TITLE }, attributes),
+            _extends({ className: _constants.classes.TITLE }, attributes),
             title
         );
     };

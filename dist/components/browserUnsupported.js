@@ -110,7 +110,7 @@
 
             var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
 
-            _this.state = _defineProperty({}, _constants.keys.NO_SOLUTION_CLASS, [_constants.classNames.NO_SOLUTION]);
+            _this.state = _defineProperty({}, _constants.keys.NO_SOLUTION_CLASS, [_constants.classes.NO_SOLUTION]);
             return _this;
         }
 
@@ -125,9 +125,9 @@
                 // 		message: constants.errorMessages.NO_SOLUTION,
                 // 		hint: constants.errorHints.NO_SOLUTION
                 // 	});
-                // 	this.setState(state => removeFromArrayByValue(state.noSolutionClass, constants.classNames.HIDDEN));
+                // 	this.setState(state => removeFromArrayByValue(state.noSolutionClass, constants.classes.HIDDEN));
                 // } else {
-                // 	this.setState(state => addUniqueToArray(state.noSolutionClass, constants.classNames.HIDDEN));
+                // 	this.setState(state => addUniqueToArray(state.noSolutionClass, constants.classes.HIDDEN));
                 // }
             }
         }, {

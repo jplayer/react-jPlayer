@@ -379,7 +379,7 @@
                     var method = _this.props.fullScreen ? _this.props.removeFromArrayByValue : _this.props.addUniqueToArray;
 
                     _this.setState(function (state) {
-                        return method(state.detailsClass, constants.classNames.HIDDEN);
+                        return method(state.detailsClass, constants.classes.HIDDEN);
                     });
                     // this._trigger(this.props.onResize);
                 });
@@ -410,7 +410,7 @@
                 // Put the title in its initial display state
                 if (!_this.props.fullScreen) {
                     _this.setState(function (state) {
-                        return addUniqueToArray(state.detailsClass, constants.classNames.HIDDEN);
+                        return addUniqueToArray(state.detailsClass, constants.classes.HIDDEN);
                     });
                 }
                 return _this;

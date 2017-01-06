@@ -163,7 +163,7 @@
                     "div",
                     _extends({ ref: function ref(_ref2) {
                             return _this2.playbackRateBar = _ref2;
-                        }, className: _constants.classNames.PLAYBACK_RATE_BAR, onClick: this.onPlaybackRateBarClick, onMouseDown: this.onPlaybackRateMouseDown
+                        }, className: _constants.classes.PLAYBACK_RATE_BAR, onClick: this.onPlaybackRateBarClick, onMouseDown: this.onPlaybackRateMouseDown
                     }, this.props.attributes),
                     this.props.children
                 );

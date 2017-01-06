@@ -140,7 +140,7 @@
 
                 return _react2.default.createElement("canvas", _extends({ ref: function ref(_ref2) {
                         return _this2.canvas = _ref2;
-                    }, className: _constants.classNames.BUFFER_BAR }, this.props.attributes));
+                    }, className: _constants.classes.BUFFER_BAR }, this.props.attributes));
             }
         }]);
 

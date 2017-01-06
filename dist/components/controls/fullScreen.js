@@ -53,7 +53,7 @@
         };
         return _react2.default.createElement(
             "a",
-            _extends({ className: _constants.classNames.FULL_SCREEN, onClick: onFullScreenClick }, props.attributes),
+            _extends({ className: _constants.classes.FULL_SCREEN, onClick: onFullScreenClick }, props.attributes),
             props.children
         );
     };

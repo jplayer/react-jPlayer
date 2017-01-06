@@ -57,7 +57,7 @@
 
     return _react2.default.createElement(
       "div",
-      _extends({ className: _constants.classNames.GUI }, attributes),
+      _extends({ className: _constants.classes.GUI }, attributes),
       children
     );
   };

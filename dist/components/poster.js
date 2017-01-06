@@ -50,7 +50,7 @@
     var Poster = function Poster(_ref) {
         var src = _ref.src,
             attributes = _ref.attributes;
-        return _react2.default.createElement("img", _extends({ className: _constants.classNames.POSTER, src: src }, attributes));
+        return _react2.default.createElement("img", _extends({ className: _constants.classes.POSTER, src: src }, attributes));
     };
 
     exports.default = (0, _reactRedux.connect)(_index.mapStateToProps)((0, _jPlayerConnect2.default)(Poster, mapJPlayerProps));

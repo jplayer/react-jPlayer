@@ -1,14 +1,13 @@
 import screenfull from 'screenfull';
-import get from 'lodash/get';
-import set from 'lodash/set';
 
-import { actionTypes, classNames, keys, formats, timeFormats, loopOptions, noFullWindows, noVolumes } from '../util/constants';
-import { testCanPlayType, absoluteMediaUrls, validString, limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
+import { actionTypes } from '../util/constants';
+import { absoluteMediaUrls, limitValue,
+  updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 import { statusDefaultValues } from '../containers/jPlayer';
 
 const clearMedia = state =>
     // if(!nextProps.nativeVideoControls) {
-    //     this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_CLASS, classNames.HIDDEN)));
+    //     this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_CLASS, classes.HIDDEN)));
     // }
 
    updateObject(state, {
@@ -17,41 +16,43 @@ const clearMedia = state =>
    });
 
 const setMedia = (state, { media }) => {
-  let	supported = false;
+  let supported = false;
+  let newState = { ...state };
 
-  state = updateObject(clearMedia(state), { media: absoluteMediaUrls(media) });
+  newState = updateObject(clearMedia(newState), {
+    media: absoluteMediaUrls(media),
+  });
 
-  for (const priority in state.mediaSettings.formats) {
-    const format = state.mediaSettings.formats[priority];
+  newState.mediaSettings.formats.forEach((priority) => {
+    const format = newState.mediaSettings.formats[priority];
 
-    if (state.mediaSettings.playableFormat[format] && validString(media[format])) { // Format supported in solution and url given for format.
-      if (state.mediaSettings.video) {
-        state.video = true;
-            // this.setState(state => reducer.removeFromArrayByValue(state, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
+    if (newState.mediaSettings.playableFormat[format] && !supported) {
+      if (newState.mediaSettings.video) {
+        newState.video = true;
+            // this.setnewState(newState => reducer.removeFromArrayByValue(newState, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
             // if(this.props.nativeVideoControls) {
-                //     this.video.element().poster = validString(media.poster) ? media.poster : "";
+                //     this.video.element().poster = media.poster;
                 // }
       } else {
-        state.video = false;
-            // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classNames.HIDDEN)));
+        newState.video = false;
+            // this.setnewState(newState => reducer.addUniqueToArray(newState, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
       }
-      if (state.mediaSettings.playableFormat[format] && media[format]) {
-        state.src = media[format];
-        state.formatType = format;
-        state.format = { [format]: true };
+      if (newState.mediaSettings.playableFormat[format] && media[format]) {
+        newState.src = media[format];
+        newState.formatType = format;
+        newState.format = { [format]: true };
       }
       supported = true;
-      break;
     }
-  }
+  });
 
   if (supported) {
-    state.srcSet = true;
-    state.paused = true;
+    newState.srcSet = true;
+    newState.paused = true;
   } else {
-    state.error = noFormatSupportedError(`{supplied: '${state.supplied.join(', ')}'}`);
+    newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(', ')}'}`);
   }
-  return state;
+  return newState;
 };
 
 const play = (state, { time }) => {
@@ -60,11 +61,10 @@ const play = (state, { time }) => {
       paused: false,
       newTime: !isNaN(time) ? time : state.currentTime,
     });
-  } else {
-    return updateObject(state, {
-      error: urlNotSetError(play.name),
-    });
   }
+  return updateObject(state, {
+    error: urlNotSetError(play.name),
+  });
 };
 
 const pause = (state, { time }) => {
@@ -73,12 +73,10 @@ const pause = (state, { time }) => {
       paused: true,
       newTime: !isNaN(time) ? time : state.currentTime,
     });
-  } else {
-    return updateObject(state, {
-      error: urlNotSetError(pause.name),
-    });
   }
-  return state;
+  return updateObject(state, {
+    error: urlNotSetError(pause.name),
+  });
 };
 
 const playHead = (state, { percent }) => {
@@ -88,12 +86,10 @@ const playHead = (state, { percent }) => {
     return updateObject(state, {
       playHeadPercent: limitedPercent,
     });
-  } else {
-    return updateObject(state, {
-      error: urlNotSetError(playHead.name),
-    });
   }
-  return state;
+  return updateObject(state, {
+    error: urlNotSetError(playHead.name),
+  });
 };
 
 const volume = (state, volumeValue) => updateObject(state, {
@@ -117,23 +113,31 @@ const loop = (state, { loopValue }) => updateObject(state, {
 });
 
 const fullScreen = (state, { fullScreenValue, element = state.id }) => {
-  fullScreenValue ? screenfull.request(document.getElementById(element)) : screenfull.exit();
+  if (fullScreenValue) {
+    screenfull.request(document.getElementById(element));
+  } else {
+    screenfull.exit();
+  }
   return state;
 };
 
 const focus = (state, { id }) => {
   const firstKeyEnabledPlayer = Object.keys(state).filter(key => state[key].keyEnabled).shift();
 
+  debugger;
   if (state[id].keyEnabled) {
-    Object.keys(state).forEach(key => state[key] = (key === id) ? updateObject(state[key], { focus: true }) : updateObject(state[key], { focus: false }));
-    return state;
+    Object.keys(state).forEach(key => ((key === id) ? updateObject(state[key], { focus: true })
+            : updateObject(state[key], { focus: false })));
   } else if (state[firstKeyEnabledPlayer] !== undefined) {
     const focusedPlayer = updateObject(state[firstKeyEnabledPlayer], { focus: true });
     return updateObject(state, { [firstKeyEnabledPlayer]: focusedPlayer });
   }
+  return state;
 };
 
-const isInitializing = actionType => !Object.keys(actionTypes.jPlayer).every(currentActionType => currentActionType !== actionType);
+const isInitializing = actionType => (
+  !Object.keys(actionTypes.jPlayer).every(currentActionType => currentActionType !== actionType)
+);
 
 const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
   switch (actionType) {
@@ -150,7 +154,7 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
     case actionTypes.jPlayer.PLAY_HEAD:
       return playHead(jPlayer, action);
     case actionTypes.jPlayer.VOLUME:
-      return volume(mute(jPlayer, action > 0 ? false : true), action);
+      return volume(mute(jPlayer, action > 0), action);
     case actionTypes.jPlayer.MUTE:
       return mute(jPlayer, action);
     case actionTypes.jPlayer.DURATION:
@@ -168,14 +172,15 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
 
 const jPlayerReducer = (state = {}, action) => {
   if (!isInitializing(action.type)) return state;
+  let newState = { ...state };
 
-  Object.keys(state).forEach((key) => {
-    const jPlayer = state[key];
+  Object.keys(newState).forEach((key) => {
+    const jPlayer = newState[key];
 
     jPlayer.global.forEach((actionType) => {
       if (key !== action.id && action.type === actionType) {
-        state = updateObject(state, {
-          [key]: updatePlayer(state[key], action, actionType),
+        newState = updateObject(newState, {
+          [key]: updatePlayer(newState[key], action, actionType),
         });
       }
     });
@@ -183,13 +188,13 @@ const jPlayerReducer = (state = {}, action) => {
 
   switch (action.type) {
     case actionTypes.jPlayer.FOCUS:
-      return updateObject(state, focus(state, action));
+      return updateObject(newState, focus(newState, action));
     default:
-      state = updateObject(state, {
-        [action.id]: updatePlayer(state[action.id], action),
+      newState = updateObject(newState, {
+        [action.id]: updatePlayer(newState[action.id], action),
       });
 
-      return jPlayerReducer(state, {
+      return jPlayerReducer(newState, {
         type: actionTypes.jPlayer.FOCUS,
         id: action.id,
       });

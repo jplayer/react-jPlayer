@@ -200,7 +200,7 @@
                     _this.props.onDurationChange();
                 },
                 onRateChange: function onRateChange() {
-                    var playbackRateText = _this.currentMedia.playbackRate.toFixed((0, _index.limitValue)(_this.props.playbackRateTextDigits, 0, 20));
+                    var playbackRateText = _this.currentMedia.playbackRate.toFixed((0, _index.limitValue)(_this.props.playbackRateText, 0, 20));
 
                     _this.props.dispatch(_jPlayerActions2.default.updateOption("playbackRateText", playbackRateText, _this.props.id));
                     _this.props.onRateChange();
@@ -266,7 +266,7 @@
 
                 return _react2.default.createElement(
                     "div",
-                    _extends({ className: _constants.classNames.MEDIA }, this.props.attributes),
+                    _extends({ className: _constants.classes.MEDIA }, this.props.attributes),
                     _react2.default.Children.map(this.props.children, function (child) {
                         return _react2.default.cloneElement(child, _extends({}, _this2.events, {
                             setCurrentMedia: function setCurrentMedia(ref) {

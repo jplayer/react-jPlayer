@@ -16,7 +16,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.platform = exports.browser = exports.keyIgnoreElementNames = exports.timeFormats = exports.formats = exports.noVolumes = exports.noFullWindows = exports.loopOptions = exports.classNames = exports.hints = exports.errors = exports.keys = exports.actionTypes = undefined;
+	exports.platform = exports.browser = exports.keyIgnoreElementNames = exports.timeFormats = exports.formats = exports.noVolumes = exports.noFullWindows = exports.loopOptions = exports.classes = exports.hints = exports.errors = exports.keys = exports.actionTypes = undefined;
 	var actionTypes = exports.actionTypes = {
 		jPlayer: {
 			UPDATE_OPTION: "UPDATE_OPTION",
@@ -75,7 +75,7 @@
 		URL_NOT_SET: "Pass the media through the options or use the setMedia() action that is passed into the component props."
 	};
 
-	var classNames = exports.classNames = {
+	var classes = exports.classes = {
 		MEDIA: "jp-media",
 		JPLAYER: "jp-jplayer",
 		MUTE: "jp-mute",

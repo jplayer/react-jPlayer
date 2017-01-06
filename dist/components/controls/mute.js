@@ -53,7 +53,7 @@
         };
         return _react2.default.createElement(
             "a",
-            _extends({ className: _constants.classNames.MUTE, onClick: onMuteClick }, props.attributes),
+            _extends({ className: _constants.classes.MUTE, onClick: onMuteClick }, props.attributes),
             props.children
         );
     };

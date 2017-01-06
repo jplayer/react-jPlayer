@@ -52,7 +52,7 @@
     };
 
     var PlaybackRateBarValue = function PlaybackRateBarValue(props) {
-        return _react2.default.createElement("div", _extends({ className: _constants.classNames.PLAYBACK_RATE_BAR_VALUE, style: style(props) }, props.attributes));
+        return _react2.default.createElement("div", _extends({ className: _constants.classes.PLAYBACK_RATE_BAR_VALUE, style: style(props) }, props.attributes));
     };
 
     var style = function style(props) {

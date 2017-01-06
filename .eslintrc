@@ -17,7 +17,8 @@
     },
     "extends": "airbnb",
     "rules": {
-        "max-len": ["error", { "code": 100, "ignoreComments": true }]
+        "max-len": ["error", { "code": 100, "ignoreComments": true }],
+        "no-console": "off"
     },
     "plugins": [
         "react"
