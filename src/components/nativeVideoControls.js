@@ -28,7 +28,7 @@
 //     };
 //   }
 //   fullscreenAddEventListeners = () => {
-//     const	fs = nativeFeatures.fullscreen;
+//     const fs = nativeFeatures.fullscreen;
 
 //     if (fs.api.fullscreenEnabled) {
 //       if (fs.event.fullscreenchange) {
