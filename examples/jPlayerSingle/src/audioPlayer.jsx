@@ -1,6 +1,5 @@
 import React from 'react';
 
-import '../../../src/less/default/jPlayer.less';
 import createJPlayer, { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   PlaybackRateBarValue, VolumeBar, VolumeBarValue, Duration,

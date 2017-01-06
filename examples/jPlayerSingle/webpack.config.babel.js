@@ -1,6 +1,6 @@
 import exampleConfig from '../example.config';
 
-module.exports = {
+export default {
   ...exampleConfig,
   context: __dirname,
   entry: {
