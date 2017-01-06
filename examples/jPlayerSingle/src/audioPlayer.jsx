@@ -6,7 +6,7 @@ import createJPlayer, { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserU
   CurrentTime } from '../../../src/index';
 
 const AudioPlayer = () => (
-  <JPlayer className="jp-default" id={this.props.id}>
+  <JPlayer className="jp-default">
     <Gui>
       <Media>
         <Audio>

@@ -35,4 +35,7 @@ export default {
     new ExtractTextPlugin('[name].css'),
   ],
   postcss: () => [autoprefixer],
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
 };

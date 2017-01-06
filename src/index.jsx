@@ -59,20 +59,43 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default (...wrappedPlayers) => {
+class WrappedPlayer extends React.Component {
+  static get propTypes() {
+    return {
+      id: React.PropTypes.string,
+      children: React.PropTypes.element,
+    };
+  }
+  static get childContextTypes() {
+    return {
+      id: React.PropTypes.string,
+    };
+  }
+  constructor() {
+    super();
+
+    const childElement = React.Children.only(this.props.children).type;
+
+    this.ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(childElement);
+  }
+  getChildContext = () => ({
+    id: this.props.id,
+  });
+  render() {
+    const ConnectedPlayer = this.ConnectedPlayer;
+
+    return <ConnectedPlayer id={this.props.id} />;
+  }
+}
+
+export default (...players) => {
   const initialState = { jPlayers: {} };
-  const ConnectedPlayers = [];
 
-  wrappedPlayers.forEach((wrappedPlayer) => {
-    const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(wrappedPlayer);
-
+  players.forEach((wrappedPlayer) => {
     initialState.jPlayers[wrappedPlayer.options.id] = {
       ...merge({}, defaultValues, statusDefaultValues,
               jPlayerDefaultOptions, wrappedPlayer.options),
     };
-    ConnectedPlayers.push(
-      <ConnectedPlayer key={wrappedPlayer.options.id} id={wrappedPlayer.options.id} />,
-    );
   });
 
   const store = createStore(combineReducers({ jPlayers: jPlayerReducer }), initialState);
@@ -80,7 +103,12 @@ export default (...wrappedPlayers) => {
   ReactDOM.render(
     <Provider store={store}>
       <div>
-        {ConnectedPlayers}
+        {players.map(Player => (
+          <WrappedPlayer>
+            <Player id={Player.options.id} />
+          </WrappedPlayer>
+          ),
+        )}
       </div>
     </Provider>,
     document.getElementById('app'));

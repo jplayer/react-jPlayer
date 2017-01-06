@@ -53,22 +53,12 @@ class JPlayer extends React.Component {
       keyEnabled: React.PropTypes.bool,
     };
   }
-  static get childContextTypes() {
-    return {
-      id: React.PropTypes.string,
-    };
-  }
   constructor(props) {
     super(props);
 
     this.state = {};
 
     this.timeFormats = merge(timeFormats, this.props.timeFormats);
-  }
-  getChildContext() {
-    return {
-      id: this.props.id,
-    };
   }
   componentWillMount() {
     this.setFormats();
