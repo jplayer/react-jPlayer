@@ -28,7 +28,7 @@ FullScreen.propTypes = {
     React.PropTypes.element,
   ]),
   id: React.PropTypes.string,
-  fullScreen: React.PropTypes.func,
+  fullScreen: React.PropTypes.bool,
   dispatch: React.PropTypes.func,
 };
 

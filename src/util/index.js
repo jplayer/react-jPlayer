@@ -50,9 +50,10 @@ export const limitValue = (value, min, max) => {
 
 export const convertTime = (seconds) => {
   const myTime = new Date(seconds * 1000);
+
   const hour = myTime.getUTCHours();
-  const min = timeFormats.showHour ? myTime.getUTCMinutes() : (myTime.getUTCMinutes() * 60) + hour;
-  const sec = timeFormats.showMin ? myTime.getUTCSeconds() : (myTime.getUTCSeconds() * 60) + min;
+  const min = timeFormats.showHour ? myTime.getUTCMinutes() : myTime.getUTCMinutes() + (hour * 60);
+  const sec = timeFormats.showMin ? myTime.getUTCSeconds() : myTime.getUTCSeconds() + (min * 60);
   const strHour = (timeFormats.padHour && hour < 10) ? `0${hour}` : hour;
   const strMin = (timeFormats.padMin && min < 10) ? `0${min}` : min;
   const strSec = (timeFormats.padSec && sec < 10) ? `0${sec}` : sec;

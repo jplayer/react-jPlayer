@@ -27,7 +27,7 @@ class KeyControl extends React.Component {
       fullScreen: React.PropTypes.bool,
       muted: React.PropTypes.bool,
       volume: React.PropTypes.number,
-      loop: React.PropTypes.bool,
+      loop: React.PropTypes.string,
       keyBindings: React.PropTypes.object,
       focus: React.PropTypes.bool,
     };

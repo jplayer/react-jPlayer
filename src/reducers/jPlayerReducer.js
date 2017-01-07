@@ -21,7 +21,7 @@ const setMedia = (state, { media }) => {
     ...updateObject(clearMedia(state)),
   };
 
-  newState.mediaSettings.formats.forEach((priority) => {
+  newState.mediaSettings.formats.forEach((_, priority) => {
     const format = newState.mediaSettings.formats[priority];
 
     if (newState.mediaSettings.playableFormat[format] && !supported) {
@@ -90,11 +90,11 @@ const playHead = (state, { percent }) => {
   });
 };
 
-const volume = (state, volumeValue) => updateObject(state, {
+const volume = (state, { volumeValue }) => updateObject(state, {
   volume: limitValue(volumeValue, 0, 1),
 });
 
-const mute = (state, muteValue) => updateObject(state, {
+const mute = (state, { muteValue }) => updateObject(state, {
   muted: muteValue,
 });
 
@@ -157,7 +157,7 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
     case actionTypes.jPlayer.PLAY_HEAD:
       return playHead(jPlayer, action);
     case actionTypes.jPlayer.VOLUME:
-      return volume(mute(jPlayer, action > 0), action);
+      return volume(mute(jPlayer, { muteValue: action.volumeValue <= 0 }), action);
     case actionTypes.jPlayer.MUTE:
       return mute(jPlayer, action);
     case actionTypes.jPlayer.DURATION:

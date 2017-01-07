@@ -50,7 +50,7 @@ class Media extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      loop: React.PropTypes.bool,
+      loop: React.PropTypes.string,
       remainingDuration: React.PropTypes.number,
       id: React.PropTypes.string,
       src: React.PropTypes.string,
@@ -73,12 +73,12 @@ class Media extends React.Component {
       onProgress: () => {
         const bufferedTimeRanges = [];
 
-        this.currentMedia.buffered.forEach((_, i) => {
+        for (let i = 0; i < this.currentMedia.buffered.length; i += 1) {
           bufferedTimeRanges.push({
             start: this.currentMedia.buffered.start(i),
             end: this.currentMedia.buffered.end(i),
           });
-        });
+        }
 
         this.props.dispatch(actions.updateOption('bufferedTimeRanges',
                 bufferedTimeRanges, this.props.id));

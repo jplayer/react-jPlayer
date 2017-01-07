@@ -28,7 +28,7 @@ Repeat.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
   ]),
-  loop: React.PropTypes.bool,
+  loop: React.PropTypes.string,
   dispatch: React.PropTypes.func,
   id: React.PropTypes.string,
 };
