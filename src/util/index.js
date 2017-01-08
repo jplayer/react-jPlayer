@@ -1,9 +1,13 @@
-import { formats, errors, hints, timeFormats } from './constants';
+import React from 'react';
+import { compose, getContext } from 'recompose';
+import { connect } from 'react-redux';
 
-export const mapStateToProps = ({ jPlayers }, ownProps) => ({
-  jPlayers,
-  attributes: ownProps,
-});
+import { errors, hints, timeFormats } from './constants';
+
+export const connectWithId = (...args) => compose(
+  getContext({ id: React.PropTypes.string }),
+  connect(...args),
+);
 
 export const updateObject = (existingObject, newValues) => ({
   ...existingObject,

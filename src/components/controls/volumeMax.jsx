@@ -1,29 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { classes } from '../../util/constants';
-import { mapStateToProps } from '../../util/index';
-import { mute, volume } from '../../actions/jPlayerActions';
-import jPlayerConnect from '../../jPlayerConnect';
 
-const mapJPlayerProps = (jPlayers, id) => ({
-  muted: jPlayers[id].muted,
-});
-
-const VolumeMax = (props) => {
-  const onClick = () => {
-    props.dispatch(volume(1));
-
-    if (props.muted) {
-      props.dispatch(mute(false, props.id));
-    }
-  };
-  return (
-    <a className={classes.VOLUME_MAX} onClick={onClick} {...props.attributes}>
-      {props.children}
-    </a>
-  );
-};
+const VolumeMax = ({ onClick, children, attributes }) => (
+  <a className={classes.VOLUME_MAX} onClick={onClick} {...attributes}>
+    {children}
+  </a>
+);
 
 VolumeMax.propTypes = {
   attributes: React.PropTypes.objectOf(React.PropTypes.node),
@@ -31,9 +14,7 @@ VolumeMax.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
   ]),
-  id: React.PropTypes.string,
-  dispatch: React.PropTypes.func,
-  muted: React.PropTypes.bool,
+  onClick: React.PropTypes.func,
 };
 
-export default connect(mapStateToProps)(jPlayerConnect(VolumeMax, mapJPlayerProps));
+export default VolumeMax;

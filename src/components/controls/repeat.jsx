@@ -1,26 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-import { classes, loopOptions } from '../../util/constants';
-import { mapStateToProps } from '../../util/index';
-import { loop } from '../../actions/jPlayerActions';
-import jPlayerConnect from '../../jPlayerConnect';
+import { classes } from '../../util/constants';
 
-const mapJPlayerProps = (jPlayers, id) => ({
-  loop: jPlayers[id].loop,
-});
-
-const Repeat = (props) => {
-  const onRepeatClick = () => (
-    props.loop === loopOptions.LOOP ? props.dispatch(loop(loopOptions.OFF, props.id))
-                                    : props.dispatch(loop(loopOptions.LOOP, props.id))
-  );
-  return (
-    <a className={classes.REPEAT} onClick={onRepeatClick} {...props.attributes}>
-      {props.children}
-    </a>
-  );
-};
+const Repeat = ({ onClick, children, attributes }) => (
+  <a className={classes.REPEAT} onClick={onClick} {...attributes}>
+    {children}
+  </a>
+);
 
 Repeat.propTypes = {
   attributes: React.PropTypes.objectOf(React.PropTypes.node),
@@ -28,9 +14,7 @@ Repeat.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
   ]),
-  loop: React.PropTypes.string,
-  dispatch: React.PropTypes.func,
-  id: React.PropTypes.string,
+  onClick: React.PropTypes.func,
 };
 
-export default connect(mapStateToProps)(jPlayerConnect(Repeat, mapJPlayerProps));
+export default Repeat;

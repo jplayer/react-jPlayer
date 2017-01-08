@@ -1,31 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { classes } from '../../util/constants';
-import { mapStateToProps } from '../../util/index';
-import jPlayerConnect from '../../jPlayerConnect';
 
-const mapJPlayerProps = (jPlayers, id) => ({
-  verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
-  minPlaybackRate: jPlayers[id].minPlaybackRate,
-  maxPlaybackRate: jPlayers[id].maxPlaybackRate,
-  playbackRate: jPlayers[id].playbackRate,
-});
-
-const PlaybackRateBarValue = (props) => {
+const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
+    verticalPlaybackRate, attributes }) => {
   const style = () => {
-    const ratio = (props.playbackRate - props.minPlaybackRate)
-                  / (props.maxPlaybackRate - props.minPlaybackRate);
+    const ratio = (playbackRate - minPlaybackRate)
+                  / (maxPlaybackRate - minPlaybackRate);
     const playbackRateBarValue = `${ratio * 100}%`;
 
     return {
-      width: !props.verticalPlaybackRate ? playbackRateBarValue : null,
-      height: props.verticalPlaybackRate ? playbackRateBarValue : null,
+      width: !verticalPlaybackRate ? playbackRateBarValue : null,
+      height: verticalPlaybackRate ? playbackRateBarValue : null,
     };
   };
   return (
     <div
-      className={classes.PLAYBACK_RATE_BAR_VALUE} style={style(props)} {...props.attributes}
+      className={classes.PLAYBACK_RATE_BAR_VALUE} style={style()} {...attributes}
     />
   );
 };
@@ -38,4 +29,4 @@ PlaybackRateBarValue.propTypes = {
   playbackRate: React.PropTypes.number,
 };
 
-export default connect(mapStateToProps)(jPlayerConnect(PlaybackRateBarValue, mapJPlayerProps));
+export default PlaybackRateBarValue;

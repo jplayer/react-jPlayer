@@ -1,15 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import actions, { pause } from '../actions/jPlayerActions';
 import { classes } from '../util/constants';
-import { mapStateToProps, urlNotSupportedError,
-        convertTime } from '../util/index';
-import jPlayerConnect from '../jPlayerConnect';
-
-const mapJPlayerProps = (jPlayers, id) => ({
-  ...jPlayers[id],
-});
+import { urlNotSupportedError, convertTime } from '../util/index';
 
 class Media extends React.Component {
   static get defaultProps() {
@@ -237,4 +230,4 @@ class Media extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(jPlayerConnect(Media, mapJPlayerProps));
+export default Media;

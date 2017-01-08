@@ -1,28 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { classes } from '../../util/constants';
-import { mapStateToProps } from '../../util/index';
-import jPlayerConnect from '../../jPlayerConnect';
 
-const mapJPlayerProps = (jPlayers, id) => ({
-  verticalVolume: jPlayers[id].verticalVolume,
-  muted: jPlayers[id].muted,
-  volume: jPlayers[id].volume,
-});
-
-
-
-const VolumeBarValue = (props) => {
+const VolumeBarValue = ({ muted, volume, verticalVolume, attributes }) => {
   const style = () => {
-    const volumeBarValuePercentage = `${props.muted ? 0 : (props.volume * 100)}%`;
+    const volumeBarValuePercentage = `${muted ? 0 : (volume * 100)}%`;
 
     return {
-      width: !props.verticalVolume ? volumeBarValuePercentage : null,
-      height: props.verticalVolume ? volumeBarValuePercentage : null,
+      width: !verticalVolume ? volumeBarValuePercentage : null,
+      height: verticalVolume ? volumeBarValuePercentage : null,
     };
   };
-  return <div className={classes.VOLUME_BAR_VALUE} style={style()} {...props.attributes} />;
+  return <div className={classes.VOLUME_BAR_VALUE} style={style()} {...attributes} />;
 };
 
 VolumeBarValue.propTypes = {
@@ -32,4 +21,4 @@ VolumeBarValue.propTypes = {
   verticalVolume: React.PropTypes.bool,
 };
 
-export default connect(mapStateToProps)(jPlayerConnect(VolumeBarValue, mapJPlayerProps));
+export default VolumeBarValue;

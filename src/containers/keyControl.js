@@ -1,13 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import merge from 'lodash.merge';
 
 import { keyIgnoreElementNames, loopOptions } from '../util/constants';
 import { play, pause, mute, volume, loop } from '../actions/jPlayerActions';
-import { mapStateToProps } from '../util/index';
-import jPlayerConnect from '../jPlayerConnect';
+import { connectWithId } from '../util/index';
 
-const mapJPlayerProps = (jPlayers, id) => ({
+const mapStateToProps = ({ jPlayers }, id) => ({
   ...jPlayers[id],
 });
 
@@ -97,4 +95,4 @@ class KeyControl extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(jPlayerConnect(KeyControl, mapJPlayerProps));
+export default connectWithId(mapStateToProps)(KeyControl);

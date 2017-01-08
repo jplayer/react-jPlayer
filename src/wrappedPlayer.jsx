@@ -4,24 +4,24 @@ import { bindActionCreators } from 'redux';
 
 import * as jPlayerActions from './actions/jPlayerActions';
 
-const mapStateToProps = ({ jPlayers }, { id }) => {
+const mapStateToProps = (state, { id }) => {
   const otherPlayers = {};
 
-  Object.keys(jPlayers).forEach((key) => {
+  Object.keys(state.jPlayers).forEach((key) => {
     if (key !== id) {
-      otherPlayers[key] = jPlayers[key];
+      otherPlayers[key] = state.jPlayers[key];
     }
   });
 
   if (Object.keys(otherPlayers).length) {
     return {
-      ...jPlayers[id],
+      ...state.jPlayers[id],
       jPlayers: otherPlayers,
     };
   }
 
   return {
-    ...jPlayers[id],
+    ...state.jPlayers[id],
   };
 };
 

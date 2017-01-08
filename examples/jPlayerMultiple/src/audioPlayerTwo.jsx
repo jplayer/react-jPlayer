@@ -3,8 +3,8 @@ import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported, Pos
     Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Duration, CurrentTime } from '../../../src/index';
 
-const AudioPlayer = () => (
-  <JPlayer className="jp-default" id={this.props.id}>
+const AudioPlayerTwo = () => (
+  <JPlayer className="jp-default">
     <Gui>
       <Media>
         <Audio>
@@ -38,14 +38,14 @@ const AudioPlayer = () => (
   </JPlayer>
 );
 
-AudioPlayer.options = {
+AudioPlayerTwo.options = {
   id: 'audio-player-two',
   smoothPlayBar: false,
   muted: true,
   autoplay: false,
   keyEnabled: true,
   media: {
-    title: 'Cro Magnon Man',
+    title: 'Cro Magnon Man Two',
     artist: 'The Stark Palace',
     mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
     poster: 'http://wallpapercave.com/wp/Mb4UPsY.png',
@@ -53,4 +53,4 @@ AudioPlayer.options = {
   },
 };
 
-export default AudioPlayer;
+export default AudioPlayerTwo;
