@@ -1,4 +1,0 @@
---require babel-register
---require test/util/dom.js
---require expect
---compilers jsx:babel-register
