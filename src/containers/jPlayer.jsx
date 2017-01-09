@@ -15,6 +15,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   loop: jPlayers[id].loop,
   shuffled: jPlayers[id].shuffled,
   keyEnabled: jPlayers[id].keyEnabled,
+  id,
   children,
   attributes,
 });

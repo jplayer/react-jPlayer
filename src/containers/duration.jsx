@@ -2,11 +2,10 @@ import { duration } from '../actions/jPlayerActions';
 import { connectWithId } from '../util/index';
 import Duration from '../components/duration';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   toggleDuration: jPlayers[id].toggleDuration,
   captureDuration: jPlayers[id].captureDuration,
   durationText: jPlayers[id].durationText,
-  children,
   attributes,
 });
 
@@ -19,7 +18,7 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
       dispatch(duration(id));
     }
   },
-  children: stateProps.children,
+  durationText: stateProps.durationText,
   attributes: stateProps.attributes,
 });
 

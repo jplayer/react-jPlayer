@@ -110,9 +110,9 @@ const loop = (state, { loopValue }) => updateObject(state, {
   loop: loopValue,
 });
 
-const fullScreen = (state, { fullScreenValue, element = state.id }) => {
+const fullScreen = (state, { fullScreenValue, id }) => {
   if (fullScreenValue) {
-    screenfull.request(document.getElementById(element));
+    screenfull.request(document.getElementById(id));
   } else {
     screenfull.exit();
   }

@@ -134,7 +134,7 @@ class JPlayer extends React.Component {
     const playerClasses = this.playerClasses();
 
     return (
-      <div {...this.props.attributes} className={playerClasses}>
+      <div {...this.props.attributes} id={this.props.id} className={playerClasses}>
         {this.props.children}
         {this.props.keyEnabled && <KeyControl />}
       </div>

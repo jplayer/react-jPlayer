@@ -57,10 +57,9 @@ export const loop = (loopValue, id) => ({
   loopValue,
   id,
 });
-export const fullScreen = (fullScreenValue, id, element) => ({
+export const fullScreen = (fullScreenValue, id) => ({
   type: actionTypes.jPlayer.FULL_SCREEN,
   fullScreenValue,
-  element,
   id,
 });
 export const focus = id => ({

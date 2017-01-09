@@ -1,11 +1,10 @@
 import { connectWithId } from '../util/index';
 import Buffer from '../components/buffer';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   bufferedTimeRanges: jPlayers[id].bufferedTimeRanges,
   duration: jPlayers[id].duration,
   bufferColour: jPlayers[id].bufferColour,
-  children,
   attributes,
 });
 
