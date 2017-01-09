@@ -2,24 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run ES6 Tests",
-      "type": "node",
       "request": "launch",
-      "cwd": "${workspaceRoot}",
+      "name": "Debug Mocha Test",
+      "type": "node",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "args": [
-          "./test/**/*.spec.js",
-          "--require", "babel-register",
-          "--require", "test/util/dom.js",
-          "--compilers", "jsx:babel-register",
-          "-u", "tdd",
-          "--timeout", "999999",
-          "--colors"
-      ],
-      "runtimeArgs": [
-          "--nolazy"
-      ],
-      "sourceMaps": true
+        "test/**/*.spec.js",
+        "--require", "babel-register"
+        ],
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": null,
+      "env": { }
     }
   ]
 }
