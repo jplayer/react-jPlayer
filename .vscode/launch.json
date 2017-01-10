@@ -4,15 +4,17 @@
     {
       "request": "launch",
       "name": "Debug Mocha Test",
-      "type": "node",
+      "type": "node2",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "args": [
-        "test/**/*.spec.js",
-        "--require", "babel-register"
-        ],
+        "test/**/*.spec.jsx",
+        "--colors",
+        "--no-timeouts",
+        "--inspect"
+      ],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": null,
-      "env": { }
+      "env": {}
     }
   ]
 }

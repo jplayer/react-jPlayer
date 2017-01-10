@@ -29,7 +29,8 @@ describe('shallow: <FullScreen />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('custom attributes override existing', () => { 
+  it('custom attributes override existing', () => {
+    var e = element.prop('data-test');
     var p = element.prop('data-test');
     expect(p).toBe(attributes['data-test']);
   });
