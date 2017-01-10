@@ -2,12 +2,14 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-export const customAttributeTests = (component, element) => {
+export const customAttributeTests = (component, elementSelector) => {
   const attributes = {
     'data-test': 'test',
     className: 'jp-full-screen-test',
   };
-  React.cloneElement(component, attributes);
+ 
+  const shallowComponent = shallow(React.cloneElement(component, { attributes }));
+  const element = shallowComponent.find(elementSelector);
 
   it('custom conflicting attributes get overwritten', () => {
     expect(element.hasClass(attributes.className)).toBeFalsy();
@@ -23,16 +25,13 @@ export const controlTests = (component, elementSelector) => {
     onClick: () => null,
   };
   const spy = expect.spyOn(functions, 'onClick');
-  let element;
-
-  beforeEach(() => {
-    const Component = React.createElement(component, {
-      onClick: functions.onClick,
-    }, <i className="fa fa-expand" />);
-
-    shallow(Component);
-    element = Component.find(elementSelector);
-  });
+  const Component = component;
+  const controlComponent = (
+    <Component onClick={functions.onClick}>
+      <i className="fa fa-icon" />
+    </Component>
+  );
+  const element = shallow(controlComponent).find(elementSelector);
 
   it('calls handler on click', () => {
     element.simulate('click');
@@ -43,5 +42,5 @@ export const controlTests = (component, elementSelector) => {
     expect(element.children()).toExist();
   });
 
-  customAttributeTests(component, element);
+  customAttributeTests(controlComponent, elementSelector);
 };
