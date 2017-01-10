@@ -113,7 +113,7 @@ class JPlayer extends React.Component {
       console.error(nextProps.error);
     }
   }
-  playerClasses = () => classNames(classes.JPLAYER, this.props.attributes.className, {
+  playerClasses = () => classNames(classes.JPLAYER, {
     'jp-video': this.props.mediaSettings.video,
     // 'jp-video-270p': this.props.sizeCssClass !== undefined,
     // 'jp-video-full': this.props.sizeFullCssClass !== undefined,

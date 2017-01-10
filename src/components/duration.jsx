@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../util/constants';
 
 const Duration = ({ durationText, onClick, attributes }) => (
-  <div className={classes.DURATION} onClick={onClick} {...attributes}>
+  <div {...attributes} className={classes.DURATION} onClick={onClick}>
     {durationText}
   </div>
 );

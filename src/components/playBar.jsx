@@ -8,9 +8,9 @@ const PlayBar = ({ currentPercentAbsolute, currentPercentRelative,
     <Motion style={{ smoothWidth: spring(currentPercentAbsolute, [250]) }}>
       {values => (
         <div
-          className={classes.PLAY_BAR}
+          {...attributes} className={classes.PLAY_BAR}
           style={{ width: smoothPlayBar ? `${values.smoothWidth}%`
-                  : `${currentPercentRelative}%` }} {...attributes}
+                  : `${currentPercentRelative}%` }}
         />
         )
       }

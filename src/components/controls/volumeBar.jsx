@@ -44,9 +44,8 @@ class VolumeBar extends React.Component {
   render() {
     return (
       <div
-        ref={ref => (this.volumeBar = ref)} className={classes.VOLUME_BAR}
-        onClick={this.onClick} onMouseDown={this.onMouseDown}
-        {...this.props.attributes}
+        {...this.props.attributes} ref={ref => (this.volumeBar = ref)}
+        className={classes.VOLUME_BAR} onClick={this.onClick} onMouseDown={this.onMouseDown}
       >
         {this.props.children}
       </div>

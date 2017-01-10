@@ -218,7 +218,7 @@ class Media extends React.Component {
   }
   render() {
     return (
-      <div className={classes.MEDIA} {...this.props.attributes}>
+      <div {...this.props.attributes} className={classes.MEDIA}>
         {React.Children.map(this.props.children, child => React.cloneElement(child,
           {
             ...this.events,

@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../util/constants';
 
 const Progress = ({ children, ...attributes }) => (
-  <div className={classes.PROGRESS} {...attributes}>
+  <div {...attributes} className={classes.PROGRESS}>
     {children}
   </div>
 );

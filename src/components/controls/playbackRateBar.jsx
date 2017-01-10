@@ -52,9 +52,9 @@ class PlaybackRateBar extends React.Component {
   render() {
     return (
       <div
-        ref={ref => (this.playbackRateBar = ref)} className={classes.PLAYBACK_RATE_BAR}
-        onClick={this.onClick}
-        onMouseDown={this.onMouseDown} {...this.props.attributes}
+        {...this.props.attributes} ref={ref => (this.playbackRateBar = ref)}
+        className={classes.PLAYBACK_RATE_BAR} onClick={this.onClick}
+        onMouseDown={this.onMouseDown}
       >
         {this.props.children}
       </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../util/constants';
 
 const CurrentTime = ({ currentTimeText, attributes }) => (
-  <div className={classes.CURRENT_TIME} {...attributes}>
+  <div {...attributes} className={classes.CURRENT_TIME}>
     {currentTimeText}
   </div>
 );

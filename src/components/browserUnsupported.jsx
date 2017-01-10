@@ -35,7 +35,7 @@ export default class extends React.Component {
   }
   render() {
     return (
-      <div className={classes.NO_SOLUTION} {...this.props}>
+      <div {...this.props.attributes} className={classes.NO_SOLUTION}>
         {this.props.children}
       </div>
     );

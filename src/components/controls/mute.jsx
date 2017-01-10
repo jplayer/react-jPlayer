@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const Mute = ({ onClick, children, attributes }) => (
-  <a className={classes.MUTE} onClick={onClick} {...attributes}>
+  <a {...attributes} className={classes.MUTE} onClick={onClick}>
     {children}
   </a>
 );

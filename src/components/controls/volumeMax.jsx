@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const VolumeMax = ({ onClick, children, attributes }) => (
-  <a className={classes.VOLUME_MAX} onClick={onClick} {...attributes}>
+  <a {...attributes} className={classes.VOLUME_MAX} onClick={onClick}>
     {children}
   </a>
 );

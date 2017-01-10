@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const Repeat = ({ onClick, children, attributes }) => (
-  <a className={classes.REPEAT} onClick={onClick} {...attributes}>
+  <a {...attributes} className={classes.REPEAT} onClick={onClick}>
     {children}
   </a>
 );

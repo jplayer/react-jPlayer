@@ -39,9 +39,9 @@ class SeekBar extends React.Component {
   render() {
     return (
       <div
-        ref={ref => (this.seekBar = ref)} className={classes.SEEK_BAR}
+        {...this.props.attributes} ref={ref => (this.seekBar = ref)} className={classes.SEEK_BAR}
         style={{ width: `${this.props.seekPercent}%` }} onClick={this.onClick}
-        onMouseDown={this.onMouseDown} {...this.props.attributes}
+        onMouseDown={this.onMouseDown}
       >
         {this.props.children}
       </div>

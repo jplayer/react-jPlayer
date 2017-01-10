@@ -17,7 +17,7 @@ describe('shallow: <FullScreen />', () => {
 
   beforeEach(() => {
     Component = shallow(
-      <FullScreen onClick={functions.onClick} {...attributes}>
+      <FullScreen onClick={functions.onClick} attributes={attributes}>
         <i className="fa fa-expand" />
       </FullScreen>,
     );
@@ -30,8 +30,7 @@ describe('shallow: <FullScreen />', () => {
   });
 
   it('custom attributes override existing', () => {
-    var p = element.prop('data-test');
-    expect(p).toBe(attributes['data-test']);
+    expect(element.prop('data-test')).toBe(attributes['data-test']);
   });
 
   it('renders childen', () => {

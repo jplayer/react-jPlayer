@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../util/constants';
 
 const Poster = ({ src, attributes }) => (
-  <img className={classes.POSTER} role="presentation" src={src} {...attributes} />
+  <img {...attributes} className={classes.POSTER} role="presentation" src={src} />
 );
 
 Poster.propTypes = {

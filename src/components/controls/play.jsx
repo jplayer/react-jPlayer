@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const Play = ({ onClick, children, attributes }) => (
-  <a className={classes.PLAY} onClick={onClick} {...attributes}>
+  <a {...attributes} className={classes.PLAY} onClick={onClick}>
     {children}
   </a>
 );

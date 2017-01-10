@@ -34,8 +34,8 @@ class Buffer extends React.Component {
   render() {
     return (
       <canvas
-        ref={ref => (this.canvas = ref)} className={classes.BUFFER_BAR}
-        {...this.props.attributes}
+        {...this.props.attributes} ref={ref => (this.canvas = ref)}
+        className={classes.BUFFER_BAR}
       />
     );
   }

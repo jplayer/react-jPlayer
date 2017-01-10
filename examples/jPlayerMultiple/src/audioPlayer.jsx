@@ -4,7 +4,7 @@ import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported, Pos
     VolumeBar, VolumeBarValue, Duration, CurrentTime } from '../../../src/index';
 
 const AudioPlayer = () => (
-  <JPlayer className="jp-default">
+  <JPlayer data-type="jp-default">
     <Gui>
       <Media>
         <Audio>

@@ -2,7 +2,7 @@ import React from 'react';
 import { classes } from '../util/constants';
 
 const Gui = ({ children, ...attributes }) => (
-  <div className={classes.GUI} {...attributes}>
+  <div {...attributes} className={classes.GUI}>
     {children}
   </div>
 );
