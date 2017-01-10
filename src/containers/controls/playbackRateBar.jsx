@@ -1,6 +1,6 @@
 import { connectWithId } from '../../util/index';
 import { playbackRate } from '../../actions/jPlayerActions';
-import PlaybackRateBar from '../../components/controls/playbackRateBar';
+import PlaybackRateBar from '../../components/controls/values/playbackRateBar';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,

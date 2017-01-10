@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import VolumeBarValue from '../../components/controls/volumeBarValue';
+import VolumeBarValue from '../../components/controls/values/volumeBar';
 
 const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   verticalVolume: jPlayers[id].verticalVolume,
