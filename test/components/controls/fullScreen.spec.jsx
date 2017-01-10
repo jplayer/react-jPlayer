@@ -12,6 +12,7 @@ describe('shallow: <FullScreen />', () => {
   };
   const attributes = {
     'data-test': 'test',
+    className: 'jp-full-screen-test',
   };
   const spy = expect.spyOn(functions, 'onClick');
 
@@ -24,12 +25,16 @@ describe('shallow: <FullScreen />', () => {
     element = Component.find('a');
   });
 
-  it('calls onClick handler on click', () => {
+  it('calls handler on click', () => {
     element.simulate('click');
     expect(spy).toHaveBeenCalled();
   });
 
-  it('custom attributes override existing', () => {
+  it('custom conflicting attributes get overwritten', () => {
+    expect(element.hasClass(attributes.className)).toBeFalsy();
+  });
+
+  it('custom non-conflicting attributes get rendered', () => {
     expect(element.prop('data-test')).toBe(attributes['data-test']);
   });
 
