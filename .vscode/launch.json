@@ -8,9 +8,7 @@
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "args": [
         "test/**/*.spec.jsx",
-        "--colors",
-        "--no-timeouts",
-        "--inspect"
+        "--colors"
       ],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": null,
