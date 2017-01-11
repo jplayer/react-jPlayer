@@ -2,23 +2,23 @@ import React from 'react';
 import expect from 'expect';
 import { mount } from 'enzyme';
 import { customAttributeTests, barDraggingTests } from '../../common';
-import PlaybackRateBar from '../../../src/components/controls/playbackRateBar';
-import PlaybackRateBarValue from '../../../src/components/controls/values/playbackRateBar';
+import VolumeBar from '../../../src/components/controls/volumeBar';
+import VolumeBarValue from '../../../src/components/controls/values/volumeBar';
 
-describe('<PlaybackRateBar />', () => {
+describe('<VolumeBar />', () => {
   const elementSelector = 'div';
   const component = (
-    <PlaybackRateBar>
-      <PlaybackRateBarValue />
-    </PlaybackRateBar>
+    <VolumeBar>
+      <VolumeBarValue />
+    </VolumeBar>
   );
   const wrapper = mount(component);
   const props = {
-    barValueFn: 'playbackRate',
+    barValueFn: 'volume',
   };
 
   it('renders child', () => {
-    expect(wrapper.find(PlaybackRateBarValue).length).toBeTruthy();
+    expect(wrapper.find(VolumeBarValue).length).toBeTruthy();
   });
 
   barDraggingTests(wrapper, props);
