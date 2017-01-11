@@ -28,7 +28,7 @@ import Repeat from './containers/controls/repeat';
 import PlaybackRateBar from './containers/controls/playbackRateBar';
 import PlaybackRateBarValue from './containers/controls/values/playbackRateBar';
 import VolumeBar from './containers/controls/volumeBar';
-import VolumeBarValue from './containers/controls/values/volumeBarValue';
+import VolumeBarValue from './containers/controls/values/volumeBar';
 import Duration from './containers/duration';
 import CurrentTime from './containers/currentTime';
 
