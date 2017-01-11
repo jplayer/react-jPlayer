@@ -3,23 +3,23 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../../common';
-import FullScreen from '../../../src/components/controls/fullScreen';
+import Play from '../../../src/components/controls/play';
 
-describe('<FullScreen />', () => {
+describe('<Play />', () => {
   const functions = {
     onClick: () => null,
   };
   const elementSelector = 'a';
   const spy = expect.spyOn(functions, 'onClick');
   const controlComponent = (
-    <FullScreen onClick={functions.onClick}>
-      <i className="fa fa-fullScreen" />
-    </FullScreen>
+    <Play onClick={functions.onClick}>
+      <i className="fa fa-play" />
+    </Play>
   );
   const element = shallow(controlComponent).find(elementSelector);
 
   it('renders child', () => {
-    expect(element.find('.fa-fullScreen').length).toBeTruthy();
+    expect(element.find('.fa-play').length).toBeTruthy();
   });
 
   it('calls handler on click', () => {
