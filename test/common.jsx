@@ -20,9 +20,9 @@ export const customAttributeTests = (component) => {
   });
 
   it('custom non-conflicting attributes get rendered', () => {
-    attributes['data-@@jPlayerReact-test'] = 'test';
+    attributes['data-jPlayerReact-test'] = 'test';
     wrapper.setProps({ attributes });
-    expect(wrapper.prop('data-@@jPlayerReact-test')).toBe(attributes['data-@@jPlayerReact-test']);
+    expect(wrapper.prop('data-jPlayerReact-test')).toBe(attributes['data-jPlayerReact-test']);
   });
 };
 

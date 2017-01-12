@@ -1,5 +1,6 @@
 import { connectWithId } from '../util/index';
 import JPlayer from '../components/jPlayer';
+import actions, { setMedia } from '../actions/jPlayerActions';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   timeFormats: jPlayers[id].timeFormats,
@@ -18,6 +19,11 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   id,
   children,
   attributes,
+});
+
+export const mapDispatchToProps = (dispatch, { id }) => ({
+  setMedia: media => dispatch(setMedia(media, id)),
+  updateOption: (key, value) => dispatch(actions.updateOption(key, value)),
 });
 
 export default connectWithId(mapStateToProps)(JPlayer);

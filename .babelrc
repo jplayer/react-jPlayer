@@ -7,5 +7,6 @@
     "plugins": [
         "transform-es2015-modules-umd"
     ],
-    "retainLines": true
+    "retainLines": true,
+    "sourceMaps": true
 }

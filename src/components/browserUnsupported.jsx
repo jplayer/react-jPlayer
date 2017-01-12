@@ -16,7 +16,11 @@ export default class extends React.Component {
   }
   static get propTypes() {
     return {
-      children: React.PropTypes.node,
+      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.element),
+        React.PropTypes.element,
+      ]),
     };
   }
   componentDidMount() {

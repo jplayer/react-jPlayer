@@ -2,6 +2,7 @@
   "name": "jplayer-examples",
   "version": "0.0.1",
   "dependencies": {
+    "webpack": "^1.14.0",
     "autoprefixer": "^6.6.1",
     "extract-text-webpack-plugin": "^1.0.1"
   }

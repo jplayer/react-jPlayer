@@ -4,7 +4,6 @@ import screenfull from 'screenfull';
 import classNames from 'classnames';
 
 import { classes, formats, timeFormats, loopOptions } from '../util/constants';
-import actions, { setMedia } from '../actions/jPlayerActions';
 import KeyControl from '../containers/keyControl';
 
 class JPlayer extends React.Component {
@@ -25,13 +24,14 @@ class JPlayer extends React.Component {
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
       }),
+      updateOption: React.PropTypes.func,
+      setMedia: React.PropTypes.func,
       supplied: React.PropTypes.arrayOf(React.PropTypes.string),
       error: React.PropTypes.shape({
         context: React.PropTypes.string,
         message: React.PropTypes.string,
         hint: React.PropTypes.string,
       }),
-      dispatch: React.PropTypes.func,
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
       paused: React.PropTypes.bool,
       fullScreen: React.PropTypes.bool,
@@ -54,13 +54,8 @@ class JPlayer extends React.Component {
 
     this.timeFormats = merge(timeFormats, this.props.timeFormats);
   }
-  componentWillMount() {
-    this.setFormats();
-
-    document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
-  }
   componentDidMount() {
-    this.props.dispatch(setMedia(this.props.media, this.props.id));
+    this.props.setMedia(this.props.media);
   }
   componentWillReceiveProps(nextProps) {
     this.updateSize(nextProps);
@@ -96,7 +91,7 @@ class JPlayer extends React.Component {
       };
     });
 
-    this.props.dispatch(actions.updateOption('mediaSettings', mediaSettings, this.props.id));
+    this.props.updateOption('mediaSettings', mediaSettings);
   }
   updateSize = () => {
         // Video html resized if necessary at this time, or if native video controls being used.
@@ -128,8 +123,14 @@ class JPlayer extends React.Component {
     [classes.states.SHUFFLED]: this.props.shuffled,
   })
   toggleFullScreen = () => (
-    this.props.dispatch(actions.updateOption('fullScreen', screenfull.isFullscreen, this.props.id))
+    this.props.updateOption('fullScreen', screenfull.isFullscreen)
   )
+  componentWillMount() {
+    this.setFormats();
+    var p = classNames;
+
+    document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
+  }
   render() {
     const playerClasses = this.playerClasses();
 

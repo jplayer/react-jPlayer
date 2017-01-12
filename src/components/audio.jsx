@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Audio = ({ children, setCurrentMedia, attributes }) => (
-  <audio {...attributes} ref={setCurrentMedia} title="hello">
+  <audio {...attributes} ref={setCurrentMedia}>
     {children}
   </audio>
 );
