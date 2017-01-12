@@ -20,7 +20,7 @@ const propagateToGlobal = (window) => {
   });
 };
 
-global.document.request = 3;
+global.document.webkitExitFullscreen = () => null;
 
 // take all properties of the window object and also attach it to the
 // mocha global object

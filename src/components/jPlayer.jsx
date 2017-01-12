@@ -127,7 +127,6 @@ class JPlayer extends React.Component {
   )
   componentWillMount() {
     this.setFormats();
-    var p = classNames;
 
     document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
   }
