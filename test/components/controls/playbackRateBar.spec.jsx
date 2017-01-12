@@ -6,7 +6,6 @@ import PlaybackRateBar from '../../../src/components/controls/playbackRateBar';
 import PlaybackRateBarValue from '../../../src/components/controls/values/playbackRateBar';
 
 describe('<PlaybackRateBar />', () => {
-  const elementSelector = 'div';
   const component = (
     <PlaybackRateBar>
       <PlaybackRateBarValue />
@@ -22,5 +21,5 @@ describe('<PlaybackRateBar />', () => {
   });
 
   barDraggingTests(wrapper, props);
-  customAttributeTests(component, elementSelector);
+  customAttributeTests(component);
 });

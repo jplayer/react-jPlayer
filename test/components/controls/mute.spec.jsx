@@ -9,23 +9,22 @@ describe('<Mute />', () => {
   const functions = {
     onClick: () => null,
   };
-  const elementSelector = 'a';
   const spy = expect.spyOn(functions, 'onClick');
   const controlComponent = (
     <Mute onClick={functions.onClick}>
       <i className="fa fa-mute" />
     </Mute>
   );
-  const element = shallow(controlComponent).find(elementSelector);
+  const wrapper = shallow(controlComponent);
 
   it('renders child', () => {
-    expect(element.find('.fa-mute').length).toBeTruthy();
+    expect(wrapper.find('.fa-mute').length).toBeTruthy();
   });
 
   it('calls handler on click', () => {
-    element.simulate('click');
+    wrapper.simulate('click');
     expect(spy).toHaveBeenCalled();
   });
 
-  customAttributeTests(controlComponent, elementSelector);
+  customAttributeTests(controlComponent);
 });

@@ -6,7 +6,6 @@ import VolumeBar from '../../../src/components/controls/volumeBar';
 import VolumeBarValue from '../../../src/components/controls/values/volumeBar';
 
 describe('<VolumeBar />', () => {
-  const elementSelector = 'div';
   const component = (
     <VolumeBar>
       <VolumeBarValue />
@@ -22,5 +21,5 @@ describe('<VolumeBar />', () => {
   });
 
   barDraggingTests(wrapper, props);
-  customAttributeTests(component, elementSelector);
+  customAttributeTests(component);
 });

@@ -7,11 +7,11 @@ const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
   const style = () => {
     const ratio = (playbackRate - minPlaybackRate)
                   / (maxPlaybackRate - minPlaybackRate);
-    const playbackRateBarValue = `${ratio * 100}%`;
+    const playbackRateBarPercentage = `${ratio * 100}%`;
 
     return {
-      width: !verticalPlaybackRate ? playbackRateBarValue : null,
-      height: verticalPlaybackRate ? playbackRateBarValue : null,
+      width: !verticalPlaybackRate ? playbackRateBarPercentage : null,
+      height: verticalPlaybackRate ? playbackRateBarPercentage : null,
     };
   };
   return (

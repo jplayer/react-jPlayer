@@ -2,21 +2,27 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-export const customAttributeTests = (component, elementSelector) => {
-  const attributes = {
-    'data-test': 'test',
-    className: 'jp-test',
-  };
+export const customAttributeTests = (component) => {
+  let attributes;
+  const wrapper = shallow(React.cloneElement(component));
 
-  const shallowComponent = shallow(React.cloneElement(component, { attributes }));
-  const element = shallowComponent.find(elementSelector);
+  beforeEach(() => {
+    attributes = {};
+  });
 
   it('custom conflicting attributes get overwritten', () => {
-    expect(element.hasClass(attributes.className)).toBeFalsy();
+    Object.keys(wrapper.props()).forEach((key) => {
+      const val = '@@jPlayerReact-test';
+      attributes[key] = val;
+      wrapper.setProps({ attributes });
+      expect(wrapper.prop(key)).toNotBe(val);
+    });
   });
 
   it('custom non-conflicting attributes get rendered', () => {
-    expect(element.prop('data-test')).toBe(attributes['data-test']);
+    attributes['data-@@jPlayerReact-test'] = 'test';
+    wrapper.setProps({ attributes });
+    expect(wrapper.prop('data-@@jPlayerReact-test')).toBe(attributes['data-@@jPlayerReact-test']);
   });
 };
 
