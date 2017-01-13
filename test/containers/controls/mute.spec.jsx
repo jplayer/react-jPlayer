@@ -3,18 +3,18 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 
-import FullScreenContainer from '../../../src/containers/controls/fullScreen';
-import FullScreen from '../../../src/components/controls/fullScreen';
-import { fullScreen } from '../../../src/actions/jPlayerActions';
+import MuteContainer from '../../../src/containers/controls/mute';
+import Mute from '../../../src/components/controls/mute';
+import { mute } from '../../../src/actions/jPlayerActions';
 
-describe('FullScreen Container', () => {
+describe('Mute Container', () => {
   const children = <i />;
   const attributes = {
     className: 'test',
   };
   const store = configureMockStore()({
     jPlayers: {
-      'audio-player-one': { fullScreen: true },
+      'audio-player-one': { muted: true },
     },
   });
   let dispatchSpy;
@@ -23,23 +23,23 @@ describe('FullScreen Container', () => {
   beforeEach(() => {
     dispatchSpy = expect.spyOn(store, 'dispatch');
     wrapper = shallow(
-      <FullScreenContainer className={attributes.className}>
+      <MuteContainer className={attributes.className}>
         {children}
-      </FullScreenContainer>,
+      </MuteContainer>,
       { context: { id: 'audio-player-one' } },
       ).shallow({ context: { store } });
   });
 
-  it('onClick toggles fullScreen', () => {
+  it('onClick toggles mute', () => {
     const current = 'audio-player-one';
 
     wrapper.simulate('click');
-    expect(dispatchSpy).toHaveBeenCalledWith(fullScreen(
-      !store.getState().jPlayers[current].fullScreen,
+    expect(dispatchSpy).toHaveBeenCalledWith(mute(
+      !store.getState().jPlayers[current].muted,
       current,
     ));
   });
-  it('renders component', () => expect(wrapper.type()).toBe(FullScreen));
+  it('renders component', () => expect(wrapper.type()).toBe(Mute));
   it('maps children', () => expect(wrapper.prop('children')).toBe(children));
   it('maps attributes', () => expect(wrapper.prop('attributes')).toEqual(attributes));
 });
