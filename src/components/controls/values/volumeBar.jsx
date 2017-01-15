@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { classes } from '../../../util/constants';
+import { classes, defaultOptions } from '../../../util/constants';
 
-const VolumeBarValue = ({ muted, volume, verticalVolume, attributes }) => {
+const VolumeBarValue = ({ muted, volume, verticalVolume, ...attributes }) => {
   const style = () => {
     const volumeBarValuePercentage = `${muted ? 0 : (volume * 100)}%`;
 
@@ -14,10 +14,13 @@ const VolumeBarValue = ({ muted, volume, verticalVolume, attributes }) => {
   return <div {...attributes} className={classes.VOLUME_BAR_VALUE} style={style()} />;
 };
 
+VolumeBarValue.defaultProps = {
+  verticalVolume: defaultOptions.verticalVolume,
+};
+
 VolumeBarValue.propTypes = {
-  attributes: React.PropTypes.objectOf(React.PropTypes.node),
-  muted: React.PropTypes.bool,
-  volume: React.PropTypes.number,
+  muted: React.PropTypes.bool.isRequired,
+  volume: React.PropTypes.number.isRequired,
   verticalVolume: React.PropTypes.bool,
 };
 

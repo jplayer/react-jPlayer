@@ -1,17 +1,16 @@
 import { connectWithId } from '../../util/index';
-import { volume } from '../../actions/jPlayerActions';
+import { setVolume } from '../../actions/jPlayerActions';
 import VolumeBar from '../../components/controls/volumeBar';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   verticalVolume: jPlayers[id].verticalVolume,
   barDrag: jPlayers[id].barDrag,
   children,
-  attributes,
+  ...attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  volume: volumeValue => dispatch(volume(volumeValue, id)),
-  ...stateProps,
+const mapDispatchToProps = ({ dispatch }, { id }) => ({
+  volume: newVolume => dispatch(setVolume(newVolume, id)),
 });
 
-export default connectWithId(mapStateToProps, null, mergeProps)(VolumeBar);
+export default connectWithId(mapStateToProps, mapDispatchToProps)(VolumeBar);

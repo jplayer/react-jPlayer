@@ -1,19 +1,23 @@
 import React from 'react';
 
 import { getWidth, getOffset } from '../util/index';
-import { classes } from '../util/constants';
+import { classes, defaultOptions } from '../util/constants';
 
 class SeekBar extends React.Component {
   static get propTypes() {
     return {
-      seekPercent: React.PropTypes.number,
-      playHead: React.PropTypes.func,
+      seekPercent: React.PropTypes.number.isRequired,
+      playHead: React.PropTypes.func.isRequired,
       barDrag: React.PropTypes.bool,
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
+      ]).isRequired,
+    };
+  }
+  static get defaultProps() {
+    return {
+      barDrag: defaultOptions.barDrag,
     };
   }
   componentWillMount() {

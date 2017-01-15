@@ -5,7 +5,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   verticalVolume: jPlayers[id].verticalVolume,
   muted: jPlayers[id].muted,
   volume: jPlayers[id].volume,
-  attributes,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps)(VolumeBarValue);

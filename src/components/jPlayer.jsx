@@ -3,13 +3,14 @@ import merge from 'lodash.merge';
 import screenfull from 'screenfull';
 import classNames from 'classnames';
 
-import { classes, formats, timeFormats, loopOptions } from '../util/constants';
+import { classes, defaultOptions, statusDefaultValues,
+  formats, loopOptions } from '../util/constants';
 import KeyControl from '../containers/keyControl';
 
 class JPlayer extends React.Component {
   static get propTypes() {
     return {
-      id: React.PropTypes.string,
+      id: React.PropTypes.string.isRequired,
       timeFormats: React.PropTypes.object,
       mediaSettings: React.PropTypes.shape({
         video: React.PropTypes.bool,
@@ -24,27 +25,36 @@ class JPlayer extends React.Component {
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
       }),
-      updateOption: React.PropTypes.func,
-      setMedia: React.PropTypes.func,
+      updateOption: React.PropTypes.func.isRequired,
+      setMedia: React.PropTypes.func.isRequired,
       supplied: React.PropTypes.arrayOf(React.PropTypes.string),
       error: React.PropTypes.shape({
         context: React.PropTypes.string,
-        message: React.PropTypes.string,
+        message: React.PropTypes.string.isRequired,
         hint: React.PropTypes.string,
       }),
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      paused: React.PropTypes.bool,
-      fullScreen: React.PropTypes.bool,
-      muted: React.PropTypes.bool,
-      volume: React.PropTypes.number,
-      seeking: React.PropTypes.bool,
+      paused: React.PropTypes.bool.isRequired,
+      fullScreen: React.PropTypes.bool.isRequired,
+      muted: React.PropTypes.bool.isRequired,
+      volume: React.PropTypes.number.isRequired,
+      seeking: React.PropTypes.bool.isRequired,
       loop: React.PropTypes.string,
-      shuffled: React.PropTypes.bool,
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
+      ]).isRequired,
       keyEnabled: React.PropTypes.bool,
+    };
+  }
+  static get defaultProps() {
+    return {
+      timeFormats: defaultOptions.timeFormats,
+      mediaSettings: defaultOptions.mediaSettings,
+      error: statusDefaultValues.error,
+      media: defaultOptions.media,
+      supplied: defaultOptions.supplied,
+      loop: defaultOptions.media,
+      keyEnabled: defaultOptions.keyEnabled,
     };
   }
   constructor(props) {
@@ -52,7 +62,12 @@ class JPlayer extends React.Component {
 
     this.state = {};
 
-    this.timeFormats = merge(timeFormats, this.props.timeFormats);
+    this.timeFormats = merge(defaultOptions.timeFormats, this.props.timeFormats);
+  }
+  componentWillMount() {
+    this.setFormats();
+
+    document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
   }
   componentDidMount() {
     this.props.setMedia(this.props.media);
@@ -120,21 +135,15 @@ class JPlayer extends React.Component {
     [classes.states.VOLUME_HIGH]: !this.props.muted && this.props.volume >= 0.5,
     [classes.states.SEEKING]: this.props.seeking,
     [classes.states.LOOPED]: this.props.loop === loopOptions.LOOP,
-    [classes.states.SHUFFLED]: this.props.shuffled,
   })
   toggleFullScreen = () => (
     this.props.updateOption('fullScreen', screenfull.isFullscreen)
   )
-  componentWillMount() {
-    this.setFormats();
-
-    document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
-  }
   render() {
     const playerClasses = this.playerClasses();
 
     return (
-      <div {...this.props.attributes} id={this.props.id} className={playerClasses}>
+      <div {...this.props} id={this.props.id} className={playerClasses}>
         {this.props.children}
         {this.props.keyEnabled && <KeyControl />}
       </div>

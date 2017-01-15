@@ -5,7 +5,7 @@ import { keyIgnoreElementNames } from '../util/constants';
 class KeyControl extends React.Component {
   static get propTypes() {
     return {
-      focus: React.PropTypes.bool,
+      focus: React.PropTypes.bool.isRequired,
     };
   }
   componentWillMount() {

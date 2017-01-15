@@ -1,5 +1,6 @@
 import { connectWithId } from '../util/index';
 import Media from '../components/media';
+import actions, { pause } from '../actions/jPlayerActions';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   loop: jPlayers[id].loop,
@@ -16,7 +17,12 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   autoplay: jPlayers[id].autoplay,
   id,
   children,
-  attributes,
+  ...attributes,
 });
 
-export default connectWithId(mapStateToProps)(Media);
+const mapDispatchToProps = ({ dispatch }, { id }) => ({
+  updateOption: (key, value) => dispatch(actions.updateOption(key, value, id)),
+  pause: () => dispatch(pause(id)),
+});
+
+export default connectWithId(mapStateToProps, mapDispatchToProps)(Media);

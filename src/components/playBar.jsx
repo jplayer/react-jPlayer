@@ -1,10 +1,10 @@
 import React from 'react';
 import { Motion, spring } from 'react-motion';
 
-import { classes } from '../util/constants';
+import { classes, defaultOptions } from '../util/constants';
 
 const PlayBar = ({ currentPercentAbsolute, currentPercentRelative,
-  smoothPlayBar, attributes }) => (
+  smoothPlayBar, ...attributes }) => (
     <Motion style={{ smoothWidth: spring(currentPercentAbsolute, [250]) }}>
       {values => (
         <div
@@ -17,10 +17,13 @@ const PlayBar = ({ currentPercentAbsolute, currentPercentRelative,
     </Motion>
 );
 
+PlayBar.defaultProps = {
+  smoothPlayBar: defaultOptions.smoothPlayBar,
+};
+
 PlayBar.propTypes = {
-  attributes: React.PropTypes.objectOf(React.PropTypes.node),
-  currentPercentAbsolute: React.PropTypes.number,
-  currentPercentRelative: React.PropTypes.number,
+  currentPercentAbsolute: React.PropTypes.number.isRequired,
+  currentPercentRelative: React.PropTypes.number.isRequired,
   smoothPlayBar: React.PropTypes.bool,
 };
 

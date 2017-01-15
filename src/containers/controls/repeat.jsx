@@ -1,22 +1,19 @@
 import { connectWithId } from '../../util/index';
-import { loop } from '../../actions/jPlayerActions';
+import { setLoop } from '../../actions/jPlayerActions';
 import Repeat from '../../components/controls/repeat';
 import { loopOptions } from '../../util/constants';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   loop: jPlayers[id].loop,
-  children,
-  attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
+const mergeProps = ({ loop }, { dispatch }, { id, children, ...attributes }) => ({
   onClick: () => {
-    const loopOption = stateProps.loop === loopOptions.LOOP ? loopOptions.OFF
-                                                            : loopOptions.LOOP;
-    dispatch(loop(loopOption, id));
+    const loopOption = loop === loopOptions.LOOP ? loopOptions.OFF : loopOptions.LOOP;
+    dispatch(setLoop(loopOption, id));
   },
-  children: stateProps.children,
-  attributes: stateProps.attributes,
+  children,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(Repeat);

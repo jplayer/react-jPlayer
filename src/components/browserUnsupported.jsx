@@ -16,11 +16,10 @@ export default class extends React.Component {
   }
   static get propTypes() {
     return {
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
+      ]).isRequired,
     };
   }
   componentDidMount() {
@@ -39,7 +38,7 @@ export default class extends React.Component {
   }
   render() {
     return (
-      <div {...this.props.attributes} className={classes.NO_SOLUTION}>
+      <div {...this.props} className={classes.NO_SOLUTION}>
         {this.props.children}
       </div>
     );

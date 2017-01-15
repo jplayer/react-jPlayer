@@ -8,7 +8,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   currentTime: jPlayers[id].currentTime,
   duration: jPlayers[id].duration,
   playHeadPercent: jPlayers[id].playHeadPercent,
-  attributes,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps)(PlayBar);

@@ -1,19 +1,24 @@
 import React from 'react';
 
 import { getWidth, getHeight, getOffset } from '../../util/index';
-import { classes } from '../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 
 class VolumeBar extends React.Component {
   static get propTypes() {
     return {
-      volume: React.PropTypes.func,
+      setVolume: React.PropTypes.func.isRequired,
       verticalVolume: React.PropTypes.bool,
       barDrag: React.PropTypes.bool,
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
+      ]).isRequired,
+    };
+  }
+  static get defaultProps() {
+    return {
+      verticalVolume: defaultOptions.verticalVolume,
+      barDrag: defaultOptions.barDrag,
     };
   }
   componentWillMount() {
@@ -32,9 +37,9 @@ class VolumeBar extends React.Component {
     const h = getHeight(this.volumeBar);
 
     if (this.props.verticalVolume) {
-      this.props.volume(y / h);
+      this.props.setVolume(y / h);
     } else {
-      this.props.volume(x / w);
+      this.props.setVolume(x / w);
     }
   }
   componentWillUnMount() {
@@ -44,7 +49,7 @@ class VolumeBar extends React.Component {
   render() {
     return (
       <div
-        {...this.props.attributes} ref={ref => (this.volumeBar = ref)}
+        {...this.props} ref={ref => (this.volumeBar = ref)}
         className={classes.VOLUME_BAR} onClick={this.onClick} onMouseDown={this.onMouseDown}
       >
         {this.props.children}

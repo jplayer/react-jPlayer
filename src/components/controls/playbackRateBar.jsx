@@ -1,21 +1,28 @@
 import React from 'react';
 
 import { getWidth, getHeight, getOffset } from '../../util/index';
-import { classes } from '../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 
 class PlaybackRateBar extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
-      playbackRate: React.PropTypes.func,
+      ]).isRequired,
+      setPlaybackRate: React.PropTypes.func.isRequired,
       verticalPlaybackRate: React.PropTypes.bool,
       minPlaybackRate: React.PropTypes.number,
       maxPlaybackRate: React.PropTypes.number,
       barDrag: React.PropTypes.bool,
+    };
+  }
+  static get defaultProps() {
+    return {
+      verticalPlaybackRate: defaultOptions.verticalPlaybackRate,
+      minPlaybackRate: defaultOptions.minPlaybackRate,
+      maxPlaybackRate: defaultOptions.maxPlaybackRate,
+      barDrag: defaultOptions.barDrag,
     };
   }
   componentWillMount() {
@@ -43,7 +50,7 @@ class PlaybackRateBar extends React.Component {
     const playbackRateValue = (ratio * (this.props.maxPlaybackRate - this.props.minPlaybackRate))
                               + this.props.minPlaybackRate;
 
-    this.props.playbackRate(playbackRateValue);
+    this.props.setPlaybackRate(playbackRateValue);
   };
   componentWillUnMount() {
     document.removeEventListener('mouseup', this.onMouseUp);
@@ -52,7 +59,7 @@ class PlaybackRateBar extends React.Component {
   render() {
     return (
       <div
-        {...this.props.attributes} ref={ref => (this.playbackRateBar = ref)}
+        {...this.props} ref={ref => (this.playbackRateBar = ref)}
         className={classes.PLAYBACK_RATE_BAR} onClick={this.onClick}
         onMouseDown={this.onMouseDown}
       >

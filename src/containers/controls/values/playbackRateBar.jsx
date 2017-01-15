@@ -6,7 +6,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   minPlaybackRate: jPlayers[id].minPlaybackRate,
   maxPlaybackRate: jPlayers[id].maxPlaybackRate,
   playbackRate: jPlayers[id].playbackRate,
-  attributes,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps)(PlaybackRateBarValue);

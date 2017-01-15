@@ -27,42 +27,42 @@ export const pause = (id, time) => ({
   id,
   time,
 });
-export const playHead = (percent, id) => ({
+export const setPlayHead = (percent, id) => ({
   type: actionTypes.jPlayer.PLAY_HEAD,
   percent,
   id,
 });
-export const volume = (volumeValue, id) => ({
+export const setVolume = (volumeValue, id) => ({
   type: actionTypes.jPlayer.VOLUME,
   id,
   volumeValue,
 });
-export const mute = (muteValue, id) => ({
+export const setMute = (muteValue, id) => ({
   type: actionTypes.jPlayer.MUTE,
   muteValue,
   id,
 });
-export const duration = (id, remainingDuration) => ({
+export const setDuration = (id, remainingDuration) => ({
   type: actionTypes.jPlayer.DURATION,
   remainingDuration,
   id,
 });
-export const playbackRate = (playbackRateValue, id) => ({
+export const setPlaybackRate = (playbackRateValue, id) => ({
   type: actionTypes.jPlayer.PLAYBACK_RATE,
   playbackRateValue,
   id,
 });
-export const loop = (loopValue, id) => ({
+export const setLoop = (loopValue, id) => ({
   type: actionTypes.jPlayer.LOOP,
   loopValue,
   id,
 });
-export const fullScreen = (fullScreenValue, id) => ({
+export const setFullScreen = (fullScreenValue, id) => ({
   type: actionTypes.jPlayer.FULL_SCREEN,
   fullScreenValue,
   id,
 });
-export const focus = id => ({
+export const setFocus = id => ({
   type: actionTypes.jPlayer.FOCUS,
   id,
 });

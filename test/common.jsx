@@ -1,6 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
+import configureMockStore from 'redux-mock-store';
 
 export const customAttributeTests = (component) => {
   let attributes;
@@ -63,3 +64,16 @@ export const barDraggingTests = (wrapper, { barValueFn }) => {
     expect(instance.dragging).toBeFalsy();
   });
 };
+
+export const mockStore = (...states) => configureMockStore()(() => {
+  const jPlayers = {};
+
+  states.forEach((state, i) => {
+    const current = i + 1;
+    jPlayers[`audio-player-${current}`] = state;
+  });
+
+  return {
+    jPlayers,
+  };
+});

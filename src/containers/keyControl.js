@@ -1,11 +1,11 @@
 import merge from 'lodash.merge';
 
 import { loopOptions } from '../util/constants';
-import { play, pause, mute, volume, loop, fullScreen } from '../actions/jPlayerActions';
+import { play, pause, setMute, setVolume, setLoop, setFullScreen } from '../actions/jPlayerActions';
 import { connectWithId } from '../util/index';
 import KeyControl from '../components/keyControl';
 
-const mapStateToProps = ({ jPlayers }, id) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   paused: jPlayers[id].paused,
   mediaSettings: jPlayers[id].mediaSettings,
   audioFullScreen: jPlayers[id].audioFullScreen,
@@ -30,29 +30,29 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
       fn: () => {
         if ((stateProps.mediaSettings.available && stateProps.mediaSettings.video)
             || stateProps.audioFullScreen) {
-          dispatch(fullScreen(!stateProps.fullScreen, id));
+          dispatch(setFullScreen(!stateProps.fullScreen, id));
         }
       },
     },
     mute: {
       key: 77, // m
-      fn: () => dispatch(mute(!stateProps.muted, id)),
+      fn: () => dispatch(setMute(!stateProps.muted, id)),
     },
     volumeUp: {
       key: 190, // .
       fn: () => {
-        dispatch(volume(stateProps.volume + 0.1, id));
+        dispatch(setVolume(stateProps.volume + 0.1, id));
       },
     },
     volumeDown: {
       key: 188, // ,
-      fn: () => dispatch(volume(stateProps.volume - 0.1, id)),
+      fn: () => dispatch(setVolume(stateProps.volume - 0.1, id)),
     },
     loop: {
       key: 76, // l
       fn: () => (stateProps.loop === loopOptions.LOOP ?
-                  dispatch(loop(loopOptions.OFF, id)) :
-                  dispatch(loop(loopOptions.LOOP, id))),
+                  dispatch(setLoop(loopOptions.OFF, id)) :
+                  dispatch(setLoop(loopOptions.LOOP, id))),
     },
   }, stateProps.keyBindings),
 });

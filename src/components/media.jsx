@@ -1,25 +1,11 @@
 import React from 'react';
 
-import actions, { pause } from '../actions/jPlayerActions';
-import { classes } from '../util/constants';
+import { classes, loopOptions } from '../util/constants';
 import { urlNotSupportedError, convertTime } from '../util/index';
 
 class Media extends React.Component {
-  static get defaultProps() {
-    return {
-      onProgress: () => null,
-      onTimeUpdate: () => null,
-      onDurationChange: () => null,
-      onPlay: () => null,
-      onEnded: () => null,
-      onError: () => null,
-      onSeeking: () => null,
-      onSeeked: () => null,
-    };
-  }
   static get propTypes() {
     return {
-      dispatch: React.PropTypes.func,
       onProgress: React.PropTypes.func,
       onTimeUpdate: React.PropTypes.func,
       onDurationChange: React.PropTypes.func,
@@ -44,17 +30,47 @@ class Media extends React.Component {
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
       loop: React.PropTypes.string,
-      remainingDuration: React.PropTypes.number,
-      id: React.PropTypes.string,
-      src: React.PropTypes.string,
+      remainingDuration: React.PropTypes.number.isRequired,
+      id: React.PropTypes.string.isRequired,
+      src: React.PropTypes.string.isRequired,
       newTime: React.PropTypes.number,
-      playHeadPercent: React.PropTypes.number,
-      paused: React.PropTypes.bool,
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      playHeadPercent: React.PropTypes.number.isRequired,
+      paused: React.PropTypes.bool.isRequired,
+      updateOption: React.PropTypes.func.isRequired,
+      pause: React.PropTypes.func.isRequired,
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
+      ]).isRequired,
+    };
+  }
+  static get defaultProps() {
+    return {
+      onProgress: () => null,
+      onTimeUpdate: () => null,
+      onDurationChange: () => null,
+      onRateChange: () => null,
+      onSeeking: () => null,
+      onSeeked: () => null,
+      onPlay: () => null,
+      onRepeat: () => null,
+      onEnded: () => null,
+      onError: () => null,
+      onPlaying: () => null,
+      onPause: () => null,
+      onWaiting: () => null,
+      onSuspend: () => null,
+      onVolumeChange: () => null,
+      onLoadStart: () => null,
+      onLoadedMetadata: () => null,
+      onAbort: () => null,
+      onEmptied: () => null,
+      onStalled: () => null,
+      onLoadedData: () => null,
+      onCanPlay: () => null,
+      onCanPlayThrough: () => null,
+      loop: loopOptions.OFF,
+      newTime: 0,
     };
   }
   constructor(props) {
@@ -73,8 +89,7 @@ class Media extends React.Component {
           });
         }
 
-        this.props.dispatch(actions.updateOption('bufferedTimeRanges',
-                bufferedTimeRanges, this.props.id));
+        this.props.updateOption('bufferedTimeRanges', bufferedTimeRanges, this.props.id);
         this.updateMediaStatus();
         this.props.onProgress();
       },
@@ -87,20 +102,20 @@ class Media extends React.Component {
         this.props.onDurationChange();
       },
       onSeeking: () => {
-        this.props.dispatch(actions.updateOption('seeking', true, this.props.id));
+        this.props.updateOption('seeking', true, this.props.id);
         this.props.onSeeking();
       },
       onSeeked: () => {
-        this.props.dispatch(actions.updateOption('seeking', false, this.props.id));
+        this.props.updateOption('seeking', false, this.props.id);
         this.props.onSeeked();
       },
       onPlay: () => {
-        this.props.dispatch(actions.updateOption('paused', false, this.props.id));
+        this.props.updateOption('paused', false, this.props.id);
         this.props.onPlay();
       },
       onEnded: () => {
-                // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
-        this.props.dispatch(pause(this.props.id));
+        // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
+        this.props.pause(this.props.id);
         this.updateMediaStatus();
 
         if (this.props.loop === 'loop') {
@@ -109,8 +124,7 @@ class Media extends React.Component {
         this.props.onEnded();
       },
       onError: () => {
-        this.props.dispatch(actions.updateOption('error',
-                urlNotSupportedError(this.props.src), this.props.id));
+        this.props.updateOption('error', urlNotSupportedError(this.props.src), this.props.id);
         this.props.onError();
       },
       onRateChange: this.props.onRateChange,
@@ -161,20 +175,16 @@ class Media extends React.Component {
       durationText = convertTime(this.currentMedia.duration);
     }
 
-    this.props.dispatch(actions.updateOption('durationText', durationText, this.props.id));
-    this.props.dispatch(actions.updateOption('currentTimeText', currentTimeText, this.props.id));
-    this.props.dispatch(actions.updateOption('seekPercent', seekPercent, this.props.id));
-    this.props.dispatch(actions.updateOption('currentPercentRelative',
-            this.getCurrentPercentRelative(), this.props.id));
-    this.props.dispatch(actions.updateOption('currentPercentAbsolute',
-            currentPercentAbsolute, this.props.id));
-    this.props.dispatch(actions.updateOption('currentTime',
-            this.currentMedia.currentTime, this.props.id));
-    this.props.dispatch(actions.updateOption('remaining', remaining, this.props.id));
-    this.props.dispatch(actions.updateOption('duration',
-            this.currentMedia.duration, this.props.id));
-    this.props.dispatch(actions.updateOption('playbackRate',
-            this.currentMedia.playbackRate, this.props.id));
+    this.props.updateOption('durationText', durationText, this.props.id);
+    this.props.updateOption('currentTimeText', currentTimeText, this.props.id);
+    this.props.updateOption('seekPercent', seekPercent, this.props.id);
+    this.props.updateOption('currentPercentRelative',
+      this.getCurrentPercentRelative(), this.props.id);
+    this.props.updateOption('currentPercentAbsolute', currentPercentAbsolute, this.props.id);
+    this.props.updateOption('currentTime', this.currentMedia.currentTime, this.props.id);
+    this.props.updateOption('remaining', remaining, this.props.id);
+    this.props.updateOption('duration', this.currentMedia.duration, this.props.id);
+    this.props.updateOption('playbackRate', this.currentMedia.playbackRate, this.props.id);
     // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth, this.props.id));
     // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight, this.props.id));
     // this.props.dispatch(updateOption("ended", this.currentMedia.ended, this.props.id));
@@ -195,8 +205,8 @@ class Media extends React.Component {
         this.currentMedia.currentTime = nextProps.playHeadPercent *
                 (this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100);
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-        this.props.dispatch(actions.updateOption('currentPercentRelative',
-                this.getCurrentPercentRelative(), this.props.id));
+        this.props.updateOption('currentPercentRelative',
+          this.getCurrentPercentRelative(), this.props.id);
       }
     }
 
@@ -218,7 +228,7 @@ class Media extends React.Component {
   }
   render() {
     return (
-      <div {...this.props.attributes} className={classes.MEDIA}>
+      <div {...this.props} className={classes.MEDIA}>
         {React.Children.map(this.props.children, child => React.cloneElement(child,
           {
             ...this.events,

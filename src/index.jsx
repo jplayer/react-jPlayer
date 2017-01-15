@@ -12,8 +12,7 @@ import Progress from './components/progress';
 import Audio from './components/audio';
 import Video from './components/video';
 import BrowserUnsupported from './components/browserUnsupported';
-import JPlayer, { defaultValues, jPlayerDefaultOptions,
-  statusDefaultValues } from './containers/jPlayer';
+import JPlayer from './containers/jPlayer';
 import Media from './containers/media';
 import KeyControl from './containers/keyControl';
 import SeekBar from './containers/seekBar';
@@ -31,14 +30,14 @@ import VolumeBar from './containers/controls/volumeBar';
 import VolumeBarValue from './containers/controls/values/volumeBar';
 import Duration from './containers/duration';
 import CurrentTime from './containers/currentTime';
+import { defaultOptions, statusDefaultValues } from './util/constants';
 
 export default (...players) => {
   const initialState = { jPlayers: {} };
 
   players.forEach((wrappedPlayer) => {
     initialState.jPlayers[wrappedPlayer.options.id] = {
-      ...merge({}, defaultValues, statusDefaultValues,
-              jPlayerDefaultOptions, wrappedPlayer.options),
+      ...merge({}, statusDefaultValues, defaultOptions, wrappedPlayer.options),
     };
   });
 

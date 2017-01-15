@@ -77,7 +77,7 @@ const pause = (state, { time }) => {
   });
 };
 
-const playHead = (state, { percent }) => {
+const setPlayHead = (state, { percent }) => {
   const limitedPercent = limitValue(percent, 0, 100);
 
   if (state.srcSet) {
@@ -90,27 +90,27 @@ const playHead = (state, { percent }) => {
   });
 };
 
-const volume = (state, { volumeValue }) => updateObject(state, {
+const setVolume = (state, { volumeValue }) => updateObject(state, {
   volume: limitValue(volumeValue, 0, 1),
 });
 
-const mute = (state, { muteValue }) => updateObject(state, {
+const setMute = (state, { muteValue }) => updateObject(state, {
   muted: muteValue,
 });
 
-const duration = (state, { remainingDuration }) => updateObject(state, {
+const setDuration = (state, { remainingDuration }) => updateObject(state, {
   remainingDuration: !remainingDuration,
 });
 
-const playbackRate = (state, { playbackRateValue }) => updateObject(state, {
+const setPlaybackRate = (state, { playbackRateValue }) => updateObject(state, {
   playbackRate: limitValue(playbackRateValue, state.minPlaybackRate, state.maxPlaybackRate),
 });
 
-const loop = (state, { loopValue }) => updateObject(state, {
+const setLoop = (state, { loopValue }) => updateObject(state, {
   loop: loopValue,
 });
 
-const fullScreen = (state, { fullScreenValue, id }) => {
+const setFullScreen = (state, { fullScreenValue, id }) => {
   if (fullScreenValue) {
     screenfull.request(document.getElementById(id));
   } else {
@@ -119,7 +119,7 @@ const fullScreen = (state, { fullScreenValue, id }) => {
   return state;
 };
 
-const focus = (state, { id }) => {
+const setFocus = (state, { id }) => {
   const newState = { ...state };
   const firstKeyEnabledPlayer = Object.keys(state).filter(key => newState[key].keyEnabled).shift();
 
@@ -155,19 +155,19 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
     case actionTypes.jPlayer.PAUSE:
       return pause(jPlayer, action);
     case actionTypes.jPlayer.PLAY_HEAD:
-      return playHead(jPlayer, action);
+      return setPlayHead(jPlayer, action);
     case actionTypes.jPlayer.VOLUME:
-      return volume(mute(jPlayer, { muteValue: action.volumeValue <= 0 }), action);
+      return setVolume(setMute(jPlayer, { muteValue: action.volumeValue <= 0 }), action);
     case actionTypes.jPlayer.MUTE:
-      return mute(jPlayer, action);
+      return setMute(jPlayer, action);
     case actionTypes.jPlayer.DURATION:
-      return duration(jPlayer, action);
+      return setDuration(jPlayer, action);
     case actionTypes.jPlayer.PLAYBACK_RATE:
-      return playbackRate(jPlayer, action);
+      return setPlaybackRate(jPlayer, action);
     case actionTypes.jPlayer.LOOP:
-      return loop(jPlayer, action);
+      return setLoop(jPlayer, action);
     case actionTypes.jPlayer.FULL_SCREEN:
-      return fullScreen(jPlayer, action);
+      return setFullScreen(jPlayer, action);
     default:
       return jPlayer;
   }
@@ -191,7 +191,7 @@ const jPlayerReducer = (state = {}, action) => {
 
   switch (action.type) {
     case actionTypes.jPlayer.FOCUS:
-      return updateObject(newState, focus(newState, action));
+      return updateObject(newState, setFocus(newState, action));
     default:
       newState = updateObject(newState, {
         [action.id]: updatePlayer(newState[action.id], action),

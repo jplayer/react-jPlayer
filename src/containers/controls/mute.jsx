@@ -1,17 +1,15 @@
 import { connectWithId } from '../../util/index';
-import { mute } from '../../actions/jPlayerActions';
+import { setMute } from '../../actions/jPlayerActions';
 import Mute from '../../components/controls/mute';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   muted: jPlayers[id].muted,
-  children,
-  attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  onClick: () => dispatch(mute(!stateProps.muted, id)),
-  children: stateProps.children,
-  attributes: stateProps.attributes,
+const mergeProps = ({ muted }, { dispatch }, { id, children, ...attributes }) => ({
+  onClick: () => dispatch(setMute(!muted, id)),
+  children,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(Mute);

@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import { playbackRate } from '../../actions/jPlayerActions';
+import { setPlaybackRate } from '../../actions/jPlayerActions';
 import PlaybackRateBar from '../../components/controls/values/playbackRateBar';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
@@ -8,12 +8,11 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   maxPlaybackRate: jPlayers[id].maxPlaybackRate,
   barDrag: jPlayers[id].barDrag,
   children,
-  attributes,
+  ...attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  playbackRate: playbackRateValue => dispatch(playbackRate(playbackRateValue, id)),
-  ...stateProps,
+const mapDispatchToProps = ({ dispatch }, { id }) => ({
+  setPlaybackRate: newPlaybackRate => dispatch(setPlaybackRate(newPlaybackRate, id)),
 });
 
-export default connectWithId(mapStateToProps, null, mergeProps)(PlaybackRateBar);
+export default connectWithId(mapStateToProps, mapDispatchToProps)(PlaybackRateBar);

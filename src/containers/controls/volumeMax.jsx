@@ -1,23 +1,21 @@
 import { connectWithId } from '../../util/index';
-import { volume, mute } from '../../actions/jPlayerActions';
+import { setVolume, setMute } from '../../actions/jPlayerActions';
 import VolumeMax from '../../components/controls/volumeMax';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   muted: jPlayers[id].muted,
-  children,
-  attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
+const mergeProps = ({ muted }, { dispatch }, { id, children, ...attributes }) => ({
   onClick: () => {
-    dispatch(volume(1));
+    dispatch(setVolume(1, id));
 
-    if (stateProps.muted) {
-      dispatch(mute(false, id));
+    if (muted) {
+      dispatch(setMute(false, id));
     }
   },
-  children: stateProps.children,
-  attributes: stateProps.attributes,
+  children,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(VolumeMax);
