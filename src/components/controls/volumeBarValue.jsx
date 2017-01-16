@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes, defaultOptions } from '../../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 
 const VolumeBarValue = ({ muted, volume, verticalVolume, ...attributes }) => {
   const style = () => {
@@ -16,11 +16,13 @@ const VolumeBarValue = ({ muted, volume, verticalVolume, ...attributes }) => {
 
 VolumeBarValue.defaultProps = {
   verticalVolume: defaultOptions.verticalVolume,
+  muted: defaultOptions.muted,
+  volume: defaultOptions.volume,
 };
 
 VolumeBarValue.propTypes = {
-  muted: React.PropTypes.bool.isRequired,
-  volume: React.PropTypes.number.isRequired,
+  muted: React.PropTypes.bool,
+  volume: React.PropTypes.number,
   verticalVolume: React.PropTypes.bool,
 };
 

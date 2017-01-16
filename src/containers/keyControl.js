@@ -1,9 +1,9 @@
+import React from 'react';
 import merge from 'lodash.merge';
 
-import { loopOptions } from '../util/constants';
+import { keyIgnoreElementNames, loopOptions } from '../util/constants';
 import { play, pause, setMute, setVolume, setLoop, setFullScreen } from '../actions/jPlayerActions';
 import { connectWithId } from '../util/index';
-import KeyControl from '../components/keyControl';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   paused: jPlayers[id].paused,
@@ -56,5 +56,36 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
     },
   }, stateProps.keyBindings),
 });
+
+class KeyControl extends React.Component {
+  static get propTypes() {
+    return {
+      focus: React.PropTypes.bool.isRequired,
+    };
+  }
+  componentWillMount() {
+    document.addEventListener('keydown', this.onKeyDown);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  }
+  onKeyDown = (event) => {
+    if (keyIgnoreElementNames.some(name => name.toUpperCase()
+          === event.target.nodeName.toUpperCase()) || !this.props.focus) {
+      return;
+    }
+    Object.keys(this.keyBindings).forEach((key) => {
+      const keyBinding = this.keyBindings[key];
+
+      if (keyBinding.key === event.keyCode || keyBinding.key === event.key) {
+        event.preventDefault();
+        keyBinding.fn();
+      }
+    });
+  }
+  render() {
+    return null;
+  }
+}
 
 export default connectWithId(mapStateToProps, null, mergeProps)(KeyControl);

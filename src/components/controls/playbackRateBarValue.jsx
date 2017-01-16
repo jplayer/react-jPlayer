@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes, defaultOptions } from '../../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 
 const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
     verticalPlaybackRate, ...attributes }) => {
@@ -25,13 +25,14 @@ PlaybackRateBarValue.defaultProps = {
   verticalPlaybackRate: defaultOptions.verticalPlaybackRate,
   minPlaybackRate: defaultOptions.minPlaybackRate,
   maxPlaybackRate: defaultOptions.maxPlaybackRate,
+  playbackRate: defaultOptions.playbackRate,
 };
 
 PlaybackRateBarValue.propTypes = {
   verticalPlaybackRate: React.PropTypes.bool,
   minPlaybackRate: React.PropTypes.number,
   maxPlaybackRate: React.PropTypes.number,
-  playbackRate: React.PropTypes.number.isRequired,
+  playbackRate: React.PropTypes.number,
 };
 
 export default PlaybackRateBarValue;

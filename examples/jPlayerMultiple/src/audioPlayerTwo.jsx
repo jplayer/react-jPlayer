@@ -1,7 +1,7 @@
 import React from 'react';
 import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported, Poster, Audio,
-    Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar, PlaybackRateBarValue,
-    VolumeBar, VolumeBarValue, Duration, CurrentTime } from '../../../src/index';
+    Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
+    VolumeBar, Duration, CurrentTime } from '../../../src/index';
 
 const AudioPlayerTwo = () => (
   <JPlayer data-type="jp-default">
@@ -19,10 +19,10 @@ const AudioPlayerTwo = () => (
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
         <FullScreen><i className="fa fa-expand" /></FullScreen>
         <Repeat><i className="fa fa-repeat" /></Repeat>
-        <PlaybackRateBar><PlaybackRateBarValue /></PlaybackRateBar>
+        <PlaybackRateBar />
         <div className="jp-volume-controls">
           <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <VolumeBar><VolumeBarValue /></VolumeBar>
+          <VolumeBar />
         </div>
         <Progress>
           <SeekBar>

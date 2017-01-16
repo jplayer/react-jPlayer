@@ -2,9 +2,9 @@ import React from 'react';
 
 import { classes } from '../util/constants';
 
-const Duration = ({ durationText, onClick, ...attributes }) => (
+const Duration = ({ children, onClick, ...attributes }) => (
   <div {...attributes} className={classes.DURATION} onClick={onClick}>
-    {durationText}
+    {children}
   </div>
 );
 
@@ -14,7 +14,10 @@ Duration.defaultProps = {
 
 Duration.propTypes = {
   onClick: React.PropTypes.func,
-  durationText: React.PropTypes.string.isRequired,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]).isRequired,
 };
 
 export default Duration;

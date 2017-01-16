@@ -1,8 +1,8 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
-import { customAttributeTests } from '../../../common';
-import PlaybackRateBarValue from '../../../../src/components/controls/values/playbackRateBar';
+import { customAttributeTests } from '../../common';
+import PlaybackRateBarValue from '../../../src/components/controls/playbackRateBar';
 
 describe('<PlaybackRateBarValue />', () => {
   const elementSelector = 'div';

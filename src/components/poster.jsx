@@ -6,9 +6,13 @@ const Poster = ({ src, alt, ...attributes }) => (
   <img {...attributes} className={classes.POSTER} alt={alt} src={src} />
 );
 
+Poster.defaultProps = {
+  alt: '',
+};
+
 Poster.propTypes = {
   src: React.PropTypes.string.isRequired,
-  alt: React.PropTypes.isRequired,
+  alt: React.PropTypes.string,
 };
 
 export default Poster;

@@ -207,13 +207,17 @@ export const formats = {
 
 export const statusDefaultValues = {
   paused: true,
+  seeking: false,
   format: {},
   formatType: '',
+  src: '',
   waitForPlay: true, // Same as waitForLoad except in case where preloading.
   waitForLoad: true,
   srcSet: false,
   video: false, // True if playing a video
   seekPercent: 0,
+  remainingDuration: 0,
+  playHeadPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
   newTime: 0,
@@ -243,7 +247,11 @@ export const defaultOptions = {
   barDrag: true,
   media: {},
   global: [],
+  muted: false,
+  loop: loopOptions.OFF,
+  autoplay: false,
   smoothPlayBar: false,
+  fullScreen: false,
   verticalPlaybackRate: false,
   verticalVolume: false,
   keyEnabled: true,
