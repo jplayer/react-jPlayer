@@ -33,7 +33,7 @@ JPlayer.propTypes = {
     video: React.PropTypes.bool,
     formats: React.PropTypes.array,
     available: React.PropTypes.string,
-    playableFormat: React.PropTypes.objectOf(React.PropTypes.string),
+    supportedFormats: React.PropTypes.objectOf(React.PropTypes.string),
   }),
   paused: React.PropTypes.bool.isRequired,
   fullScreen: React.PropTypes.bool.isRequired,

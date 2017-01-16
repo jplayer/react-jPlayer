@@ -15,16 +15,17 @@ const clearMedia = state =>
    });
 
 const setMedia = (state, { media }) => {
-  let supported = false;
+  let foundSupported = false;
   const newState = {
     ...state,
     ...updateObject(clearMedia(state)),
   };
 
-  newState.mediaSettings.formats.forEach((_, priority) => {
-    const format = newState.mediaSettings.formats[priority];
+  Object.entries(newState.mediaSettings.supportedFormats).forEach((val) => {
+    const format = val[0];
+    const canPlay = val[1];
 
-    if (newState.mediaSettings.playableFormat[format] && !supported) {
+    if (!foundSupported) {
       if (newState.mediaSettings.video) {
         newState.video = true;
             // this.setnewState(newState => reducer.removeFromArrayByValue(newState, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
@@ -35,16 +36,15 @@ const setMedia = (state, { media }) => {
         newState.video = false;
             // this.setnewState(newState => reducer.addUniqueToArray(newState, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
       }
-      if (newState.mediaSettings.playableFormat[format] && media[format]) {
-        newState.src = media[format];
+      if (canPlay) {
+        newState.src = media.sources[format];
         newState.formatType = format;
-        newState.format = { [format]: true };
+        foundSupported = true;
       }
-      supported = true;
     }
   });
 
-  if (supported) {
+  if (foundSupported) {
     newState.srcSet = true;
     newState.paused = true;
   } else {

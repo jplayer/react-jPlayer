@@ -76,7 +76,7 @@
         for (var priority in state.mediaSettings.formats) {
             var format = state.mediaSettings.formats[priority];
 
-            if (state.mediaSettings.playableFormat[format] && (0, _index.validString)(media[format])) {
+            if (state.mediaSettings.supportedFormats[format] && (0, _index.validString)(media[format])) {
                 // Format supported in solution and url given for format.
                 if (state.mediaSettings.video) {
                     state.video = true;
@@ -88,7 +88,7 @@
                     state.video = false;
                     // this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
                 }
-                if (state.mediaSettings.playableFormat[format] && media[format]) {
+                if (state.mediaSettings.supportedFormats[format] && media[format]) {
                     state.src = media[format];
                     state.formatType = format;
                     state.format = _defineProperty({}, format, true);

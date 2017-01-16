@@ -47,7 +47,11 @@ AudioPlayerTwo.options = {
   media: {
     title: 'Cro Magnon Man Two',
     artist: 'The Stark Palace',
-    mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
+    sources: {
+      oga: 'http://jplayer.org/audio/ogg/Miaow-07-Bubble.ogg',
+      mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
+      m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
+    },
     poster: 'http://wallpapercave.com/wp/Mb4UPsY.png',
     free: true,
   },

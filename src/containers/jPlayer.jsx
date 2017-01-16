@@ -7,11 +7,17 @@ import { defaultOptions, statusDefaultValues, formats } from '../util/constants'
 import JPlayer from '../components/jPlayer';
 import actions, { setMedia } from '../actions/jPlayerActions';
 
+const formatPropTypes = {};
+
+Object.entries(formats).forEach((format) => {
+  const key = format[0];
+  formatPropTypes[key] = React.PropTypes.string;
+});
+
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   timeFormats: jPlayers[id].timeFormats,
   mediaSettings: jPlayers[id].mediaSettings,
   media: jPlayers[id].media,
-  supplied: jPlayers[id].supplied,
   error: jPlayers[id].error,
   paused: jPlayers[id].paused,
   fullScreen: jPlayers[id].fullScreen,
@@ -41,18 +47,17 @@ class JPlayerContainer extends React.Component {
         video: React.PropTypes.bool,
         formats: React.PropTypes.array,
         available: React.PropTypes.string,
-        playableFormat: React.PropTypes.objectOf(React.PropTypes.string),
+        supportedFormats: React.PropTypes.objectOf(React.PropTypes.string),
       }),
       media: React.PropTypes.shape({
         title: React.PropTypes.string,
         artist: React.PropTypes.string,
-        mp3: React.PropTypes.string,
+        sources: React.PropTypes.shape(formatPropTypes),
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
       }),
       updateOption: React.PropTypes.func.isRequired,
       setMedia: React.PropTypes.func.isRequired,
-      supplied: React.PropTypes.arrayOf(React.PropTypes.string),
       error: React.PropTypes.shape({
         context: React.PropTypes.string,
         message: React.PropTypes.string,
@@ -109,28 +114,20 @@ class JPlayerContainer extends React.Component {
     const mediaSettings = merge({}, this.props.mediaSettings);
 
     // Create the formats array, with prority based on the order of the supplied formats string
-    this.props.supplied.forEach((supplied) => {
-      const suppliedTrimmed = supplied.trim();
+    Object.keys(this.props.media.sources).forEach((supplied) => {
+      mediaSettings.video = formats[supplied].MEDIA === 'video';
 
-      mediaSettings.video = formats[suppliedTrimmed].MEDIA === 'video';
+      const duplicateFound = mediaSettings.formats.some(format => format === supplied);
 
-      if (formats[suppliedTrimmed]) { // Check format is valid.
-        const duplicateFound = mediaSettings.formats.some(format => format === suppliedTrimmed);
-
-        if (!duplicateFound) {
-          mediaSettings.formats.push(suppliedTrimmed);
-        }
+      if (!duplicateFound) {
+        mediaSettings.formats.push(supplied);
       }
     });
 
     const mediaElement = document.createElement(mediaSettings.video ? 'video' : 'audio');
 
-    mediaSettings.formats.forEach((format) => {
-      mediaSettings.available = mediaElement.canPlayType(formats.mp3.CODEC);
-      mediaSettings.playableFormat = {
-        [format]: mediaSettings.available && mediaElement.canPlayType(formats[format].CODEC),
-      };
-    });
+    mediaSettings.formats.forEach(format =>
+      (mediaSettings.supportedFormats[format] = mediaElement.canPlayType(formats[format].CODEC)));
 
     this.props.updateOption('mediaSettings', mediaSettings);
   }

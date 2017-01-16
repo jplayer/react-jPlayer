@@ -258,9 +258,8 @@ export const defaultOptions = {
   keyEnabled: true,
   mediaSettings: {
     video: false,
-    formats: [], // Order defines priority.
-    available: '',
-    playableFormat: {},
+    formats: [],
+    supportedFormats: {}, // Order defines priority.
   },
   timeFormats: {
     showHour: false,

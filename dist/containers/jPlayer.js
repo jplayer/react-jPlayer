@@ -155,7 +155,7 @@
 
                 mediaSettings.formats.forEach(function (format) {
                     mediaSettings.available = mediaElement.canPlayType && (0, _index.testCanPlayType)(mediaElement); // Test is for IE9 on Win Server 2008.
-                    mediaSettings.playableFormat = _defineProperty({}, format, mediaSettings.available && mediaElement.canPlayType(_constants.formats[format].CODEC));
+                    mediaSettings.supportedFormats = _defineProperty({}, format, mediaSettings.available && mediaElement.canPlayType(_constants.formats[format].CODEC));
                 });
 
                 _this.props.dispatch(_jPlayerActions2.default.updateOption("mediaSettings", mediaSettings, _this.props.id));
@@ -270,7 +270,7 @@
             video: false,
             formats: [], // Order defines priority.
             available: false,
-            playableFormat: []
+            supportedFormats: []
         }
     };
 
