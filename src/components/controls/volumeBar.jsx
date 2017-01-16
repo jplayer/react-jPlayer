@@ -14,7 +14,6 @@ const VolumeBar = ({ setVolumeBar, onClick, onMouseDown, children, ...attributes
 
 VolumeBar.defaultProps = {
   onMouseDown: () => null,
-  setPlaybackRate: React.PropTypes.func.isRequired,
   children: (<VolumeBarValue />),
 };
 

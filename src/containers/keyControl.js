@@ -61,6 +61,7 @@ class KeyControl extends React.Component {
   static get propTypes() {
     return {
       focus: React.PropTypes.bool.isRequired,
+      keyBindings: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
     };
   }
   componentWillMount() {
@@ -74,8 +75,8 @@ class KeyControl extends React.Component {
           === event.target.nodeName.toUpperCase()) || !this.props.focus) {
       return;
     }
-    Object.keys(this.keyBindings).forEach((key) => {
-      const keyBinding = this.keyBindings[key];
+    Object.keys(this.props.keyBindings).forEach((key) => {
+      const keyBinding = this.props.keyBindings[key];
 
       if (keyBinding.key === event.keyCode || keyBinding.key === event.key) {
         event.preventDefault();

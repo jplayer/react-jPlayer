@@ -4,7 +4,7 @@ import { connectWithId, getWidth, getHeight, getOffset } from '../../util/index'
 import { defaultOptions } from '../../util/constants';
 import { setPlaybackRate } from '../../actions/jPlayerActions';
 import PlaybackRateBar from '../../components/controls/playbackRateBar';
-import PlaybackRateBarValue from '../../components/controls/playbackRateBarValue';
+import PlaybackRateBarValue from './playbackRateBarValue';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
@@ -81,8 +81,8 @@ class PlaybackRateBarContainer extends React.Component {
   render() {
     return (
       <PlaybackRateBar
-        onClick={this.onClick} onMouseDown={this.onMouseDown} {...this.props.attributes}
-        setPlaybackRate={this.setPlaybackRate}
+        onClick={this.onClick} onMouseDown={this.onMouseDown}
+        setPlaybackRate={this.setPlaybackRate} {...this.props.attributes}
       >
         {this.props.children}
       </PlaybackRateBar>

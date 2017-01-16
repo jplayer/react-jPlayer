@@ -6,4 +6,6 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   ...attributes,
 });
 
-export default connectWithId(mapStateToProps)(CurrentTime);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({ ...ownProps, ...stateProps });
+
+export default connectWithId(mapStateToProps, null, mergeProps)(CurrentTime);

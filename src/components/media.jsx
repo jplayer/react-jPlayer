@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { classes } from '../util/constants';
-import Audio from '../components/audio';
-import Video from '../components/video';
 
 const Media = ({ events, setCurrentMedia, children, ...attributes }) => (
   <div {...attributes} className={classes.MEDIA}>
@@ -17,11 +15,11 @@ const Media = ({ events, setCurrentMedia, children, ...attributes }) => (
 
 Media.propTypes = {
   children: React.PropTypes.oneOfType([
-    React.PropTypes.instanceOf(Audio),
-    React.PropTypes.instanceOf(Video),
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
   ]).isRequired,
   setCurrentMedia: React.PropTypes.func,
-  events: {
+  events: React.PropTypes.shape({
     onProgress: React.PropTypes.func,
     onTimeUpdate: React.PropTypes.func,
     onDurationChange: React.PropTypes.func,
@@ -45,7 +43,7 @@ Media.propTypes = {
     onLoadedData: React.PropTypes.func,
     onCanPlay: React.PropTypes.func,
     onCanPlayThrough: React.PropTypes.func,
-  },
+  }).isRequired,
 };
 
 export default Media;

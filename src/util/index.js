@@ -54,7 +54,7 @@ export const limitValue = (value, min, max) => {
 
 export const convertTime = (seconds) => {
   const myTime = new Date(seconds * 1000);
-  const timeFormats = { defaultOptions };
+  const { timeFormats } = defaultOptions;
 
   const hour = myTime.getUTCHours();
   const min = timeFormats.showHour ? myTime.getUTCMinutes() : myTime.getUTCMinutes() + (hour * 60);

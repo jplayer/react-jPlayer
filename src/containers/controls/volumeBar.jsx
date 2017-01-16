@@ -4,7 +4,7 @@ import { connectWithId, getWidth, getHeight, getOffset } from '../../util/index'
 import { defaultOptions } from '../../util/constants';
 import { setVolume } from '../../actions/jPlayerActions';
 import VolumeBar from '../../components/controls/volumeBar';
-import VolumeBarValue from '../../components/controls/volumeBarValue';
+import VolumeBarValue from './volumeBarValue';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   verticalVolume: jPlayers[id].verticalVolume,
@@ -68,8 +68,8 @@ class VolumeBarContainer extends React.Component {
   render() {
     return (
       <VolumeBar
-        {...this.props.attributes} setVolumeBar={this.setVolumeBar}
-        onClick={this.onClick} onMouseDown={this.onMouseDown}
+        setVolumeBar={this.setVolumeBar} onClick={this.onClick}
+        onMouseDown={this.onMouseDown} {...this.props.attributes}
       >
         {this.props.children}
       </VolumeBar>

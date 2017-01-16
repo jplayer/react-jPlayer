@@ -86,7 +86,7 @@ const setPlayHead = (state, { percent }) => {
     });
   }
   return updateObject(state, {
-    error: urlNotSetError(playHead.name),
+    error: urlNotSetError(setPlayHead.name),
   });
 };
 

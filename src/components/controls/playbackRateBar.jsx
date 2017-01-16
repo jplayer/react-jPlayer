@@ -15,7 +15,6 @@ const PlaybackRateBar = ({ onClick, onMouseDown, setPlaybackRate, children, ...a
 
 PlaybackRateBar.defaultProps = {
   onMouseDown: () => null,
-  setPlaybackRate: React.PropTypes.func.isRequired,
   children: (<PlaybackRateBarValue />),
 };
 

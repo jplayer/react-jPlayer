@@ -230,6 +230,7 @@ export const statusDefaultValues = {
   networkState: 0,
   ended: 0,
   error: {},
+  bufferedTimeRanges: [],
 };
 
 export const defaultOptions = {

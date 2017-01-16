@@ -60,7 +60,7 @@ class SeekBarContainer extends React.Component {
       <SeekBar
         setSeekBar={this.setSeekBar} onClick={this.onClick}
         onMouseDown={this.onMouseDown} seekPercent={this.props.seekPercent}
-        attributes={this.props.attributes}
+        {...this.props.attributes}
       >
         {this.props.children}
       </SeekBar>

@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { defaultOptions, statusDefaultValues, loopOptions } from '../util/constants';
+import { defaultOptions, statusDefaultValues, classes, loopOptions } from '../util/constants';
 import KeyControl from '../containers/keyControl';
 
 const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
   volume, seeking, loop, id, keyEnabled, children, ...attributes }) => {
-  const classes = () => classNames(classes.JPLAYER, {
+  const playerClasses = () => classNames(classes.JPLAYER, {
     'jp-video': mediaSettings.video,
     'jp-audio': !mediaSettings.video,
     [classes.states.PLAYING]: !paused,
@@ -20,7 +20,7 @@ const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
     // 'jp-video-full': sizeFullCssClass !== undefined,
   });
   return (
-    <div {...attributes} id={id} className={classes()}>
+    <div {...attributes} id={id} className={playerClasses()}>
       {children}
       {keyEnabled && <KeyControl />}
     </div>

@@ -10,14 +10,12 @@ const Duration = ({ children, onClick, ...attributes }) => (
 
 Duration.defaultProps = {
   onClick: () => null,
+  children: '',
 };
 
 Duration.propTypes = {
   onClick: React.PropTypes.func,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
+  children: React.PropTypes.node,
 };
 
 export default Duration;
