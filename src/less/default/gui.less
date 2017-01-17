@@ -3,20 +3,7 @@
     height:42px;
     background-color: #e5e5e5;
     position: relative;
-    .jp-video& .jp-media {
-        position: relative;
-        display: inline-block;
-        overflow: hidden;
-        .jp-poster {
-            position: absolute;
-            top: 50%;
-            min-height: 100%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-        }
-    }
-    .jp-audio& .jp-poster-container {
+    .jp-title-container {
         display:flex;
         align-items:center;
         position:absolute;
@@ -27,7 +14,7 @@
             font-weight:bold;
             display:inline-block;
         }
-        .jp-poster {
+        .jp-audio& .jp-poster {
             max-height: 100%;
             display:inline-block;
         }

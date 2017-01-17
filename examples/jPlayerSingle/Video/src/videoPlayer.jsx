@@ -7,12 +7,14 @@ import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
 
 const VideoPlayer = () => (
   <JPlayer data-type="jp-default">
+    <div className="jp-media">
+      <Poster />
+      <Video />
+    </div>
     <Gui>
-      <div className="jp-media">
-        <Poster />
-        <Video />
+      <div className="jp-title-container">
+        <Title />
       </div>
-      <Title />
       <div className="jp-controls">
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
         <FullScreen><i className="fa fa-expand" /></FullScreen>

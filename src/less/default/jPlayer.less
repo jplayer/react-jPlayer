@@ -4,5 +4,18 @@
 
 [data-type="jp-default"] {
   @import "gui";
+  .jp-video& .jp-media {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      .jp-poster {
+          position: absolute;
+          top: 50%;
+          min-height: 100%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          min-width: 100%;
+      }
+  }
   font-family:"Source Sans Pro", sans-serif;
 }

@@ -57,7 +57,7 @@ const play = (state, { time }) => {
   if (state.srcSet) {
     return updateObject(state, {
       paused: false,
-      newTime: !isNaN(time) ? time : state.currentTime,
+      newTime: !isNaN(time) ? time : state.newTime,
     });
   }
   return updateObject(state, {
@@ -69,7 +69,7 @@ const pause = (state, { time }) => {
   if (state.srcSet) {
     return updateObject(state, {
       paused: true,
-      newTime: !isNaN(time) ? time : state.currentTime,
+      newTime: !isNaN(time) ? time : state.newTime,
     });
   }
   return updateObject(state, {

@@ -8,7 +8,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   loop: jPlayers[id].loop,
   remainingDuration: jPlayers[id].remainingDuration,
   src: jPlayers[id].src,
-  newTime: jPlayers[id].newTime,
+  currentTime: jPlayers[id].currentTime,
   playHeadPercent: jPlayers[id].playHeadPercent,
   paused: jPlayers[id].paused,
   defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
@@ -18,13 +18,14 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   muted: jPlayers[id].muted,
   autoplay: jPlayers[id].autoplay,
   title: jPlayers[id].media.title,
+  newTime: jPlayers[id].newTime,
   children,
   attributes,
 });
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({
   updateOption: (key, value) => dispatch(actions.updateOption(key, value, id)),
-  pause: () => dispatch(pause(id)),
+  pause: time => dispatch(pause(id, time)),
   ...stateProps,
 });
 
@@ -54,10 +55,11 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
+      forceMoveTime: React.PropTypes.bool,
       loop: React.PropTypes.string,
       remainingDuration: React.PropTypes.number.isRequired,
       src: React.PropTypes.string.isRequired,
-      newTime: React.PropTypes.number,
+      currentTime: React.PropTypes.number,
       playHeadPercent: React.PropTypes.number.isRequired,
       paused: React.PropTypes.bool.isRequired,
       updateOption: React.PropTypes.func.isRequired,
@@ -101,6 +103,7 @@ class MediaContainer extends React.Component {
       onLoadedData: () => null,
       onCanPlay: () => null,
       onCanPlayThrough: () => null,
+      forceMoveTime: defaultStatus.forceMoveTime,
       loop: loopOptions.OFF,
       autoplay: defaultOptions.autoplay,
       defaultPlaybackRate: defaultOptions.defaultPlaybackRate,
@@ -152,8 +155,8 @@ class MediaContainer extends React.Component {
         this.props.onPlay();
       },
       onEnded: () => {
-        // Pause otherwise a click on the progress bar will play from that point, when it shouldn't, since it stopped playback.
-        this.props.pause();
+        // Pause so that the play/pause button resets and the poster is shown again
+        this.props.pause(0);
         this.updateMediaStatus();
 
         if (this.props.loop === 'loop') {
@@ -232,8 +235,9 @@ class MediaContainer extends React.Component {
       this.currentMedia.src = nextProps.src;
     }
 
-    if (nextProps.newTime !== this.props.newTime) {
+    if (nextProps.newTime !== null) {
       this.currentMedia.currentTime = nextProps.newTime;
+      this.props.updateOption('newTime', null);
     }
 
     if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
