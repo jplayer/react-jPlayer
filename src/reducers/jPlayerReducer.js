@@ -27,13 +27,11 @@ const setMedia = (state, { media }) => {
 
     if (!foundSupported) {
       if (newState.mediaSettings.video) {
-        newState.video = true;
             // this.setnewState(newState => reducer.removeFromArrayByValue(newState, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
             // if(this.props.nativeVideoControls) {
                 //     this.video.element().poster = media.poster;
                 // }
       } else {
-        newState.video = false;
             // this.setnewState(newState => reducer.addUniqueToArray(newState, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
       }
       if (canPlay) {

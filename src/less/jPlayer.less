@@ -10,19 +10,19 @@
   display:none;
 }
 
-.jp-state-full-screen {
+.jp-jplayer.jp-state-full-screen {
   width: 100%;
-  position: fixed;
-  bottom: 0;
-
-  .jp-poster {
-    z-index: -1;
-    max-width: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
+  height: 100%;
+  background-color: black;
+  
+  .jp-gui {
     position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .jp-auido& .jp-media, .jp-video& .jp-media {
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
