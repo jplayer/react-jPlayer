@@ -1,5 +1,5 @@
 import React from 'react';
-import { connectWithId, getWidth, getOffset  } from '../util/index';
+import { connectWithId, getWidth, getOffset } from '../util/index';
 import { defaultOptions } from '../util/constants';
 import { setPlayHead } from '../actions/jPlayerActions';
 import SeekBar from '../components/seekBar';

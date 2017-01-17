@@ -9,6 +9,6 @@ const mapStateToProps = ({ jPlayers }, { id, alt, ...attributes }) => ({
   ...attributes,
 });
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({ ...ownProps, ...stateProps });
+const mergeProps = stateProps => ({ ...stateProps });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(Poster);
