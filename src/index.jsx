@@ -13,7 +13,6 @@ import Audio from './components/audio';
 import Video from './components/video';
 import BrowserUnsupported from './components/browserUnsupported';
 import JPlayer from './containers/jPlayer';
-import Media from './containers/media';
 import KeyControl from './containers/keyControl';
 import SeekBar from './containers/seekBar';
 import PlayBar from './containers/playBar';
@@ -57,7 +56,7 @@ export default (...players) => {
     document.getElementById('app'));
 };
 
-export { JPlayer, Media, Gui, KeyControl, Progress, SeekBar, PlayBar,
+export { JPlayer, Gui, KeyControl, Progress, SeekBar, PlayBar,
    Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Duration, CurrentTime };

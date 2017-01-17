@@ -52,7 +52,7 @@ class JPlayerContainer extends React.Component {
       media: React.PropTypes.shape({
         title: React.PropTypes.string,
         artist: React.PropTypes.string,
-        sources: React.PropTypes.shape(formatPropTypes),
+        sources: React.PropTypes.shape(formatPropTypes).isRequired,
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
       }),
@@ -104,7 +104,6 @@ class JPlayerContainer extends React.Component {
     this.props.setMedia(this.props.media);
   }
   componentWillReceiveProps(nextProps) {
-    this.updateSize(nextProps);
     this.logErrors(nextProps);
   }
   componentWillUnmount() {
@@ -130,16 +129,6 @@ class JPlayerContainer extends React.Component {
       (mediaSettings.supportedFormats[format] = mediaElement.canPlayType(formats[format].CODEC)));
 
     this.props.updateOption('mediaSettings', mediaSettings);
-  }
-  updateSize = () => {
-        // Video html resized if necessary at this time, or if native video controls being used.
-    // if (nextProps.mediaSettings.available && nextProps.mediaSettings.video
-    //  && (!nextProps.waitForPlay || nextProps.nativeVideoControls)) {
-    //   this.setState({ videoStyle: {
-    //      width: !this.props.width,
-    //      height: this.props.height
-    //   } });
-    // }
   }
   logErrors = (nextProps) => {
     if (nextProps.error !== this.props.error) {

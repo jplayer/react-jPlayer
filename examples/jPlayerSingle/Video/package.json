@@ -1,5 +1,5 @@
 {
-  "name": "jplayer-single",
+  "name": "jplayer-single-video",
   "version": "0.0.1",
   "scripts": {
     "dev": "webpack-dev-server --progress --inline --content-base ./public"

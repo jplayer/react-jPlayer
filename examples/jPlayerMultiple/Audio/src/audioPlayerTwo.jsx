@@ -1,7 +1,7 @@
 import React from 'react';
 import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported, Poster, Audio,
     Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-    VolumeBar, Duration, CurrentTime } from '../../../src/index';
+    VolumeBar, Duration, CurrentTime } from '../../../../src/index';
 
 const AudioPlayerTwo = () => (
   <JPlayer data-type="jp-default">

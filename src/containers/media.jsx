@@ -2,7 +2,6 @@ import React from 'react';
 
 import { connectWithId, urlNotSupportedError, convertTime } from '../util/index';
 import { loopOptions, defaultOptions } from '../util/constants';
-import Media from '../components/media';
 import actions, { pause } from '../actions/jPlayerActions';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
@@ -18,6 +17,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   volume: jPlayers[id].volume,
   muted: jPlayers[id].muted,
   autoplay: jPlayers[id].autoplay,
+  title: jPlayers[id].media.title,
   children,
   attributes,
 });
@@ -68,6 +68,7 @@ class MediaContainer extends React.Component {
       playbackRate: React.PropTypes.number,
       preload: React.PropTypes.string,
       volume: React.PropTypes.number,
+      title: React.PropTypes.string,
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
@@ -107,6 +108,7 @@ class MediaContainer extends React.Component {
       playbackRate: defaultOptions.playbackRate,
       preload: defaultOptions.preload,
       volume: defaultOptions.volume,
+      title: defaultOptions.media.title,
     };
   }
   constructor(props) {
@@ -263,12 +265,12 @@ class MediaContainer extends React.Component {
   }
   render() {
     return (
-      <Media
-        events={this.events} setCurrentMedia={this.setCurrentMedia}
-        {...this.props.attributes}
-      >
-        {this.props.children}
-      </Media>
+      React.cloneElement(React.Children.only(this.props.children),
+        {
+          ...this.events,
+          ref: this.setCurrentMedia,
+        },
+      )
     );
   }
 }

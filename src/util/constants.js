@@ -246,7 +246,9 @@ export const defaultOptions = {
   bufferColour: '#dddddd', // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
   volume: 0.8, // The volume. Number 0 to 1
   barDrag: true,
-  media: {},
+  media: {
+    title: '',
+  },
   global: [],
   muted: false,
   loop: loopOptions.OFF,

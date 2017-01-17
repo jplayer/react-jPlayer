@@ -2,11 +2,11 @@ import React from 'react';
 
 import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-  PlaybackRateBar, VolumeBar, VolumeBarValue, Duration,
-  CurrentTime } from '../../../src/index';
+  VolumeBar, Duration,
+  CurrentTime } from '../../../../src/index';
 
 const AudioPlayer = () => (
-  <JPlayer className="jp-default">
+  <JPlayer data-type="jp-default">
     <Gui>
       <Media>
         <Audio>
@@ -21,10 +21,10 @@ const AudioPlayer = () => (
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
         <FullScreen><i className="fa fa-expand" /></FullScreen>
         <Repeat><i className="fa fa-repeat" /></Repeat>
-        <PlaybackRateBar><PlaybackRateBar /></PlaybackRateBar>
+        <PlaybackRateBar />
         <div className="jp-volume-controls">
           <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <VolumeBar><VolumeBarValue /></VolumeBar>
+          <VolumeBar />
         </div>
         <Progress>
           <SeekBar>
@@ -49,7 +49,9 @@ AudioPlayer.options = {
   media: {
     title: 'Cro Magnon Man',
     artist: 'The Stark Palace',
-    mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
+    sources: {
+      mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
+    },
     poster: 'http://wallpapercave.com/wp/Mb4UPsY.png',
     free: true,
   },

@@ -1,4 +1,4 @@
-import exampleConfig from '../example.config';
+import exampleConfig from '../../example.config';
 
 export default {
   ...exampleConfig,
