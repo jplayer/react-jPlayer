@@ -263,7 +263,6 @@ export const defaultOptions = {
   mediaSettings: {
     video: false,
     formats: [],
-    supportedFormats: {}, // Order defines priority.
   },
   timeFormats: {
     showHour: false,

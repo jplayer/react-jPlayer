@@ -25,11 +25,7 @@ const mapStateToProps = (state, { id }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => (
-  {
-    functions: bindActionCreators(jPlayerActions, dispatch),
-  }
-);
+const mapDispatchToProps = dispatch => ({ ...bindActionCreators(jPlayerActions, dispatch) });
 
 class WrappedPlayer extends React.Component {
   static get propTypes() {

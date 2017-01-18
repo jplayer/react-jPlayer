@@ -60,8 +60,13 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
 class KeyControl extends React.Component {
   static get propTypes() {
     return {
-      focus: React.PropTypes.bool.isRequired,
+      focus: React.PropTypes.bool,
       keyBindings: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
+    };
+  }
+  static get defaultProps() {
+    return {
+      focus: false,
     };
   }
   componentWillMount() {

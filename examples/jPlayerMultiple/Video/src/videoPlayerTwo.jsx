@@ -38,13 +38,13 @@ const VideoPlayer = () => (
 );
 
 VideoPlayer.options = {
-  id: 'video-player',
+  id: 'video-player-two',
   muted: true,
   keyEnabled: true,
   media: {
     title: 'Big Buck Bunny Trailer',
     sources: {
-      m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
+      ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
     },
     poster: 'http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png',
   },

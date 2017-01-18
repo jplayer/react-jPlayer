@@ -21,6 +21,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   newTime: jPlayers[id].newTime,
   fullScreen: jPlayers[id].fullScreen,
   guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+  require: jPlayers[id].mediaSettings.require,
   children,
   attributes,
 });
@@ -79,7 +80,7 @@ class MediaContainer extends React.Component {
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]).isRequired,
+      ]),
     };
   }
   static get defaultProps() {
@@ -135,9 +136,8 @@ class MediaContainer extends React.Component {
             end: this.currentMedia.buffered.end(i),
           });
         }
-
-        this.props.updateOption('bufferedTimeRanges', bufferedTimeRanges);
         this.updateMediaStatus();
+        this.props.updateOption('bufferedTimeRanges', bufferedTimeRanges);    
         this.props.onProgress();
       },
       onTimeUpdate: () => {
@@ -190,8 +190,41 @@ class MediaContainer extends React.Component {
       onCanPlayThrough: this.props.onCanPlayThrough,
     };
   }
+  componentDidMount() {
+    this.currentMedia.src = this.props.src;
+
+    this.updateCurrentMedia(this.props);
+  }
   componentWillReceiveProps(nextProps) {
     this.updateCurrentMedia(nextProps);
+
+    if (nextProps.src !== this.props.src) {
+      this.currentMedia.src = nextProps.src;
+    }
+
+    if (nextProps.newTime !== null) {
+      this.currentMedia.currentTime = nextProps.newTime;
+      this.props.updateOption('newTime', null);
+    }
+
+    if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
+      // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
+      // Hasn't fully loaded the song????
+      if (this.currentMedia.seekable.length > 0) {
+        this.currentMedia.currentTime = nextProps.playHeadPercent *
+                (this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100);
+        // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
+        this.props.updateOption('currentPercentRelative', this.getCurrentPercentRelative());
+      }
+    }
+
+    if (nextProps.paused !== this.props.paused) {
+      if (nextProps.paused) {
+        this.currentMedia.pause();
+      } else {
+        this.currentMedia.play();
+      }
+    }
   }
   onMouseMove = () => {
     clearTimeout(this.props.guiFadeHoldTimeout);
@@ -246,42 +279,15 @@ class MediaContainer extends React.Component {
     // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight));
     // this.props.dispatch(updateOption("ended", this.currentMedia.ended));
   }
-  updateCurrentMedia = (nextProps) => {
-    if (nextProps.src !== this.props.src) {
-      this.currentMedia.src = nextProps.src;
-    }
-
-    if (nextProps.newTime !== null) {
-      this.currentMedia.currentTime = nextProps.newTime;
-      this.props.updateOption('newTime', null);
-    }
-
-    if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
-      // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
-      // Hasn't fully loaded the song????
-      if (this.currentMedia.seekable.length > 0) {
-        this.currentMedia.currentTime = nextProps.playHeadPercent *
-                (this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100);
-        // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-        this.props.updateOption('currentPercentRelative', this.getCurrentPercentRelative());
-      }
-    }
-
-    if (nextProps.paused !== this.props.paused) {
-      if (nextProps.paused) {
-        this.currentMedia.pause();
-      } else {
-        this.currentMedia.play();
-      }
-    }
-
-    this.currentMedia.defaultPlaybackRate = nextProps.defaultPlaybackRate;
-    this.currentMedia.playbackRate = nextProps.playbackRate;
-    this.currentMedia.preload = nextProps.preload;
-    this.currentMedia.volume = nextProps.volume;
-    this.currentMedia.muted = nextProps.muted;
-    this.currentMedia.autoplay = nextProps.autoplay;
-    this.currentMedia.loop = nextProps.loop === 'loop';
+  updateCurrentMedia = ({ defaultPlaybackRate, playbackRate, preload, volume,
+    muted, autoplay, loop }) => {
+    this.currentMedia.defaultPlaybackRate = defaultPlaybackRate;
+    this.currentMedia.playbackRate = playbackRate;
+    this.currentMedia.preload = preload;
+    this.currentMedia.volume = volume;
+    this.currentMedia.muted = muted;
+    this.currentMedia.autoplay = autoplay;
+    this.currentMedia.loop = loop === 'loop';
   }
   render() {
     return (

@@ -8,9 +8,9 @@ import './less/jPlayer.less';
 import jPlayerReducer from './reducers/jPlayerReducer';
 import WrappedPlayer from './wrappedPlayer';
 import Gui from './containers/gui';
+import Video from './containers/video';
+import Audio from './containers/audio';
 import Progress from './components/progress';
-import Audio from './components/audio';
-import Video from './components/video';
 import BrowserUnsupported from './components/browserUnsupported';
 import JPlayer from './containers/jPlayer';
 import KeyControl from './containers/keyControl';
@@ -57,6 +57,6 @@ export default (...players) => {
 };
 
 export { JPlayer, Gui, KeyControl, Progress, SeekBar, PlayBar,
-   Buffer, BrowserUnsupported, Poster, Audio, Video, Title, FullScreen,
+   Buffer, BrowserUnsupported, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Duration, CurrentTime };

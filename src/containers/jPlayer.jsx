@@ -55,7 +55,7 @@ class JPlayerContainer extends React.Component {
         sources: React.PropTypes.shape(formatPropTypes).isRequired,
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
-      }),
+      }).isRequired,
       updateOption: React.PropTypes.func.isRequired,
       setMedia: React.PropTypes.func.isRequired,
       error: React.PropTypes.shape({
@@ -96,8 +96,6 @@ class JPlayerContainer extends React.Component {
     this.timeFormats = merge(defaultOptions.timeFormats, this.props.timeFormats);
   }
   componentWillMount() {
-    this.setFormats();
-
     document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
   }
   componentDidMount() {
@@ -108,27 +106,6 @@ class JPlayerContainer extends React.Component {
   }
   componentWillUnmount() {
     document.removeEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
-  }
-  setFormats = () => {
-    const mediaSettings = merge({}, this.props.mediaSettings);
-
-    // Create the formats array, with prority based on the order of the supplied formats string
-    Object.keys(this.props.media.sources).forEach((supplied) => {
-      mediaSettings.video = formats[supplied].MEDIA === 'video';
-
-      const duplicateFound = mediaSettings.formats.some(format => format === supplied);
-
-      if (!duplicateFound) {
-        mediaSettings.formats.push(supplied);
-      }
-    });
-
-    const mediaElement = document.createElement(mediaSettings.video ? 'video' : 'audio');
-
-    mediaSettings.formats.forEach(format =>
-      (mediaSettings.supportedFormats[format] = mediaElement.canPlayType(formats[format].CODEC)));
-
-    this.props.updateOption('mediaSettings', mediaSettings);
   }
   logErrors = (nextProps) => {
     if (nextProps.error !== this.props.error) {

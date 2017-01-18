@@ -1,6 +1,6 @@
 import screenfull from 'screenfull';
 
-import { actionTypes } from '../util/constants';
+import { actionTypes, formats } from '../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 import { statusDefaultValues } from '../containers/jPlayer';
 
@@ -14,29 +14,47 @@ const clearMedia = state =>
      ...statusDefaultValues,
    });
 
+const updateFormats = (state, media) => {
+  const newMediaSettings = { ...state.mediaSettings };
+  const newFormats = [];
+
+  Object.keys(media.sources).forEach((supplied) => {
+    const mediaElement = document.createElement(formats[supplied].MEDIA);
+
+    newFormats.push({
+      supplied,
+      supported: mediaElement.canPlayType(formats[supplied].CODEC),
+    });
+  });
+
+  newMediaSettings.formats = newFormats;
+
+  return updateObject(state, {
+    mediaSettings: newMediaSettings,
+  });
+};
+
 const setMedia = (state, { media }) => {
   let foundSupported = false;
   const newState = {
     ...state,
-    ...updateObject(clearMedia(state)),
+    ...clearMedia(state),
+    ...updateFormats(state, media),
   };
 
-  Object.entries(newState.mediaSettings.supportedFormats).forEach((val) => {
-    const format = val[0];
-    const canPlay = val[1];
-
+  newState.mediaSettings.formats.forEach((format) => {
     if (!foundSupported) {
-      if (newState.mediaSettings.video) {
-            // this.setnewState(newState => reducer.removeFromArrayByValue(newState, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
-            // if(this.props.nativeVideoControls) {
-                //     this.video.element().poster = media.poster;
-                // }
-      } else {
-            // this.setnewState(newState => reducer.addUniqueToArray(newState, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
-      }
-      if (canPlay) {
-        newState.src = media.sources[format];
-        newState.formatType = format;
+      // if (newState.mediaSettings.video) {
+      //       // this.setnewState(newState => reducer.removeFromArrayByValue(newState, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
+      //       // if(this.props.nativeVideoControls) {
+      //           //     this.video.element().poster = media.poster;
+      //           // }
+      // } else {
+      //       // this.setnewState(newState => reducer.addUniqueToArray(newState, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
+      // }
+      if (format.supported) {
+        newState.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
+        newState.src = media.sources[format.supplied];
         foundSupported = true;
       }
     }
@@ -48,6 +66,8 @@ const setMedia = (state, { media }) => {
   } else {
     newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(', ')}'}`);
   }
+  newState.media = media;
+
   return newState;
 };
 
