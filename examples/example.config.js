@@ -29,6 +29,10 @@ export default {
           '!postcss-loader' +
           '!less-loader'),
       },
+      {
+        test: /(\.mp3$|\.jpg$|\.webm$)/,
+        loader: 'file-loader'
+      }
     ],
   },
   plugins: [

@@ -3,22 +3,26 @@ import React from 'react';
 import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration, CurrentTime } from '../../../../src/index';
+import mp3 from '../../../assets/Alan Walker - Fade.mp3';
+import audioPoster from '../../../assets/Alan Walker - Fade.jpg';
+import webmv from '../../../assets/Big Buck Bunny Trailer.webm';
+import videoPoster from '../../../assets/Big Buck Bunny Trailer.jpg';
 
 const medias = {
   video: {
     title: 'Big Buck Bunny Trailer',
     sources: {
-      m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
+      webmv,
     },
-    poster: 'http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png',
+    poster: videoPoster,
   },
   audio: {
-    title: 'Cro Magnon Man',
-    artist: 'The Stark Palace',
+    title: 'Fade',
+    artist: 'Alan Walker',
     sources: {
-      mp3: 'http://jplayer.org/audio/ogg/Miaow-07-Bubble.ogg',
+      mp3,
     },
-    poster: 'http://wallpapercave.com/wp/Mb4UPsY.png',
+    poster: audioPoster,
     free: true,
   },
 };
