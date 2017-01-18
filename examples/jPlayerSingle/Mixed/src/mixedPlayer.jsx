@@ -16,7 +16,7 @@ const medias = {
     title: 'Cro Magnon Man',
     artist: 'The Stark Palace',
     sources: {
-      mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
+      mp3: 'http://jplayer.org/audio/ogg/Miaow-07-Bubble.ogg',
     },
     poster: 'http://wallpapercave.com/wp/Mb4UPsY.png',
     free: true,

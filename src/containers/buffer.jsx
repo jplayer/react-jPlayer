@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connectWithId } from '../util/index';
-import { defaultOptions } from '../util/constants';
+import { defaultOptions, statusDefaultValues } from '../util/constants';
 import Buffer from '../components/buffer';
 
 const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
@@ -31,11 +31,17 @@ class BufferContainer extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
-      this.newCanvas(nextProps);
+      if (nextProps.bufferedTimeRanges.length === 0) {
+        this.clearBuffer();
+      }
+      this.fillBufferPartially(nextProps);
     }
   }
   setCanvas = ref => (this.canvas = ref)
-  newCanvas = ({ bufferedTimeRanges, bufferColour, duration }) => {
+  clearBuffer = () => (
+    this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height)
+  )
+  fillBufferPartially = ({ bufferedTimeRanges, bufferColour, duration }) => {
     const modifier = this.canvas.width / duration;
     const context = this.canvas.getContext('2d');
 

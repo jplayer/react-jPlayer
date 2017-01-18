@@ -137,7 +137,7 @@ class MediaContainer extends React.Component {
           });
         }
         this.updateMediaStatus();
-        this.props.updateOption('bufferedTimeRanges', bufferedTimeRanges);    
+        this.props.updateOption('bufferedTimeRanges', bufferedTimeRanges);
         this.props.onProgress();
       },
       onTimeUpdate: () => {
