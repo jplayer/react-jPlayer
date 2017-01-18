@@ -1,14 +1,34 @@
 import React from 'react';
+import { Motion, spring } from 'react-motion';
 
-import { classes } from '../util/constants';
+import { classes, statusDefaultValues } from '../util/constants';
 
-const Gui = ({ children, ...attributes }) => (
-  <div {...attributes} className={classes.GUI}>
-    {children}
-  </div>
+const Gui = ({ onMouseEnter, guiFadeOut, children, ...attributes }) => (
+  <Motion
+    defaultStyle={{ opacity: 1 }}
+    style={{ opacity: spring(guiFadeOut ? 0 : 1, [250]) }}
+  >
+    {values => (
+      <div
+        {...attributes} className={classes.GUI}
+        style={{ opacity: values.opacity }}
+        onMouseEnter={onMouseEnter}
+      >
+        {children}
+      </div>
+      )
+    }
+  </Motion>
 );
 
+Gui.defaultProps = {
+  onMouseEnter: null,
+  guiFadeOut: statusDefaultValues.guiFadeOut,
+};
+
 Gui.propTypes = {
+  onMouseEnter: React.PropTypes.func,
+  guiFadeOut: React.PropTypes.bool,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,

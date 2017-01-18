@@ -19,6 +19,8 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   autoplay: jPlayers[id].autoplay,
   title: jPlayers[id].media.title,
   newTime: jPlayers[id].newTime,
+  fullScreen: jPlayers[id].fullScreen,
+  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
   children,
   attributes,
 });
@@ -55,6 +57,8 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
+      guiFadeHoldTimeout: React.PropTypes.number,
+      fullScreen: React.PropTypes.bool,
       forceMoveTime: React.PropTypes.bool,
       loop: React.PropTypes.string,
       remainingDuration: React.PropTypes.number.isRequired,
@@ -103,6 +107,8 @@ class MediaContainer extends React.Component {
       onLoadedData: () => null,
       onCanPlay: () => null,
       onCanPlayThrough: () => null,
+      guiFadeHoldTimeout: null,
+      fullScreen: defaultStatus.fullScreen,
       forceMoveTime: defaultStatus.forceMoveTime,
       loop: loopOptions.OFF,
       autoplay: defaultOptions.autoplay,
@@ -186,6 +192,17 @@ class MediaContainer extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     this.updateCurrentMedia(nextProps);
+  }
+  onMouseMove = () => {
+    clearTimeout(this.props.guiFadeHoldTimeout);
+    this.props.updateOption('guiFadeHoldTimeout', setTimeout(() => {
+      if (this.props.fullScreen) {
+        console.log("guiFadeHoldTimeout")
+        this.props.updateOption('guiFadeOut', true);
+      }
+    }, 1000));
+
+    this.props.updateOption('guiFadeOut', false);
   }
   getCurrentPercentRelative = () => {
     let currentPercentRelative = 0;
@@ -272,6 +289,7 @@ class MediaContainer extends React.Component {
       React.cloneElement(React.Children.only(this.props.children),
         {
           ...this.events,
+          onMouseMove: this.onMouseMove,
           ref: this.setCurrentMedia,
         },
       )

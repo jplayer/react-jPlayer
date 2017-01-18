@@ -3,9 +3,12 @@ import React from 'react';
 import { defaultOptions } from '../util/constants';
 import Media from '../containers/media';
 
-const Video = ({ children, onClick, title, ...attributes }) => (
+const Video = ({ children, onMouseMove, onClick, title, ...attributes }) => (
   <Media>
-    <video {...attributes} onClick={onClick} title={title}>
+    <video
+      {...attributes} onClick={onClick} title={title}
+      onMouseMove={onMouseMove}
+    >
       {children}
     </video>
   </Media>
@@ -14,6 +17,7 @@ const Video = ({ children, onClick, title, ...attributes }) => (
 Video.defaultProps = {
   children: null,
   onClick: null,
+  onMouseMove: null,
   title: defaultOptions.media.title,
 };
 
@@ -22,6 +26,7 @@ Video.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
   ]),
+  onMouseMove: React.PropTypes.func,
   onClick: React.PropTypes.func,
   setCurrentMedia: React.PropTypes.func,
   title: React.PropTypes.string,

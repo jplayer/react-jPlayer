@@ -7,7 +7,7 @@ import merge from 'lodash.merge';
 import './less/jPlayer.less';
 import jPlayerReducer from './reducers/jPlayerReducer';
 import WrappedPlayer from './wrappedPlayer';
-import Gui from './components/gui';
+import Gui from './containers/gui';
 import Progress from './components/progress';
 import Audio from './components/audio';
 import Video from './components/video';

@@ -215,6 +215,7 @@ export const statusDefaultValues = {
   waitForLoad: true,
   srcSet: false,
   video: false, // True if playing a video
+  guiFadeOut: false,
   seekPercent: 0,
   remainingDuration: 0,
   playHeadPercent: 0,
