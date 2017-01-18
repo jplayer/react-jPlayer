@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connectWithId, urlNotSupportedError, convertTime } from '../util/index';
-import { loopOptions, defaultOptions } from '../util/constants';
+import { loopOptions, defaultOptions, statusDefaultValues } from '../util/constants';
 import actions, { pause } from '../actions/jPlayerActions';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
@@ -57,9 +57,9 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
+      guiFadeHoldTime: React.PropTypes.number,
       guiFadeHoldTimeout: React.PropTypes.number,
       fullScreen: React.PropTypes.bool,
-      forceMoveTime: React.PropTypes.bool,
       loop: React.PropTypes.string,
       remainingDuration: React.PropTypes.number.isRequired,
       src: React.PropTypes.string.isRequired,
@@ -107,9 +107,9 @@ class MediaContainer extends React.Component {
       onLoadedData: () => null,
       onCanPlay: () => null,
       onCanPlayThrough: () => null,
+      guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
       guiFadeHoldTimeout: null,
-      fullScreen: defaultStatus.fullScreen,
-      forceMoveTime: defaultStatus.forceMoveTime,
+      fullScreen: statusDefaultValues.fullScreen,
       loop: loopOptions.OFF,
       autoplay: defaultOptions.autoplay,
       defaultPlaybackRate: defaultOptions.defaultPlaybackRate,
@@ -195,13 +195,12 @@ class MediaContainer extends React.Component {
   }
   onMouseMove = () => {
     clearTimeout(this.props.guiFadeHoldTimeout);
+
     this.props.updateOption('guiFadeHoldTimeout', setTimeout(() => {
       if (this.props.fullScreen) {
-        console.log("guiFadeHoldTimeout")
         this.props.updateOption('guiFadeOut', true);
       }
-    }, 1000));
-
+    }, this.props.guiFadeHoldTime));
     this.props.updateOption('guiFadeOut', false);
   }
   getCurrentPercentRelative = () => {
