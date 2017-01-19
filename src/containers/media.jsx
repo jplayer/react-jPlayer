@@ -6,7 +6,7 @@ import actions, { pause } from '../actions/jPlayerActions';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   loop: jPlayers[id].loop,
-  remainingDuration: jPlayers[id].remainingDuration,
+  showRemainingDuration: jPlayers[id].showRemainingDuration,
   src: jPlayers[id].src,
   currentTime: jPlayers[id].currentTime,
   playHeadPercent: jPlayers[id].playHeadPercent,
@@ -62,7 +62,7 @@ class MediaContainer extends React.Component {
       guiFadeHoldTimeout: React.PropTypes.number,
       fullScreen: React.PropTypes.bool,
       loop: React.PropTypes.string,
-      remainingDuration: React.PropTypes.number.isRequired,
+      showRemainingDuration: React.PropTypes.bool.isRequired,
       src: React.PropTypes.string.isRequired,
       currentTime: React.PropTypes.number,
       playHeadPercent: React.PropTypes.number.isRequired,
@@ -261,7 +261,7 @@ class MediaContainer extends React.Component {
              this.currentMedia.duration);
     }
 
-    if (this.props.remainingDuration) {
+    if (this.props.showRemainingDuration) {
       durationText = (remaining > 0 ? '-' : '') + convertTime(remaining);
     } else {
       durationText = convertTime(this.currentMedia.duration);

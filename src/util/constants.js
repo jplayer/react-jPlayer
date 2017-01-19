@@ -238,7 +238,6 @@ export const statusDefaultValues = {
 export const defaultOptions = {
   preload: 'metadata', // HTML5 Spec values: none, metadata, auto.
   globalPause: true,
-  captureDuration: true, // When true, clicks on the duration are captured and no longer propagate up the DOM.
   minPlaybackRate: 0.5,
   maxPlaybackRate: 4,
   supplied: ['mp3'], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
@@ -253,6 +252,7 @@ export const defaultOptions = {
     title: '',
   },
   global: [],
+  showRemainingDuration: false,
   muted: false,
   loop: loopOptions.OFF,
   autoplay: false,

@@ -1,25 +1,11 @@
-import { duration } from '../actions/jPlayerActions';
 import { connectWithId } from '../util/index';
 import Duration from '../components/duration';
 
-const mapStateToProps = ({ jPlayers }, { id, children }) => ({
-  toggleDuration: jPlayers[id].toggleDuration,
-  captureDuration: jPlayers[id].captureDuration,
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   children: children || jPlayers[id].durationText,
-});
-
-const mergeProps = ({ toggleDuration, captureDuration, children },
-{ dispatch }, { id, ...attributes }) => ({
-  onClick: (e) => {
-    if (toggleDuration) {
-      if (captureDuration) {
-        e.stopPropagation();
-      }
-      dispatch(duration(id));
-    }
-  },
-  children,
   ...attributes,
 });
+
+const mergeProps = stateProps => ({ ...stateProps });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(Duration);

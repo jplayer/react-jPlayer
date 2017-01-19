@@ -38,7 +38,7 @@ const MixedPlayer = (props) => {
 
   return (
     <div>
-      <div onClick={changeMedia}>ChangeMedia</div>
+      <button onClick={changeMedia}>ChangeMedia</button>
       <JPlayer data-type="jp-default">
         <div className="jp-media">
           <Poster style={!props.mediaSettings.video && !props.fullScreen ? { width: '640px', height: '360px' } : null} />
@@ -78,6 +78,7 @@ const MixedPlayer = (props) => {
 MixedPlayer.options = {
   id: 'mixed-player',
   muted: true,
+  showRemainingDuration: true,
   keyEnabled: true,
   media: medias[mediaId],
 };
