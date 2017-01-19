@@ -27,8 +27,10 @@ import PlaybackRateBar from './containers/controls/playbackRateBar';
 import PlaybackRateBarValue from './containers/controls/playbackRateBarValue';
 import VolumeBar from './containers/controls/volumeBar';
 import VolumeBarValue from './containers/controls/volumeBarValue';
+import Download from './containers/controls/download';
 import Duration from './containers/duration';
 import CurrentTime from './containers/currentTime';
+
 import { defaultOptions, statusDefaultValues } from './util/constants';
 
 export default (...players) => {
@@ -59,4 +61,4 @@ export default (...players) => {
 export { JPlayer, Gui, KeyControl, Progress, SeekBar, PlayBar,
    Buffer, BrowserUnsupported, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
-    VolumeBar, VolumeBarValue, Duration, CurrentTime };
+    VolumeBar, VolumeBarValue, Download, Duration, CurrentTime };

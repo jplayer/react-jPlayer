@@ -62,6 +62,7 @@ export const classes = {
   MEDIA: 'jp-media',
   JPLAYER: 'jp-jplayer',
   MUTE: 'jp-mute',
+  DOWNLOAD: 'jp-download',
   VOLUME_BAR: 'jp-volume-bar',
   VOLUME_BAR_VALUE: 'jp-volume-bar-value',
   VOLUME_MAX: 'jp-volume-max',

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Duration, CurrentTime } from '../../../../src/index';
+  VolumeBar, Download, Duration, CurrentTime } from '../../../../src/index';
 import mp3 from '../../../assets/Alan Walker - Fade.mp3';
 import audioPoster from '../../../assets/Alan Walker - Fade.jpg';
 import webmv from '../../../assets/Big Buck Bunny Trailer.webm';
@@ -58,6 +58,7 @@ const MixedPlayer = (props) => {
               <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
               <VolumeBar />
             </div>
+            <Download><i className="fa fa-download"></i></Download>
             <Progress>
               <SeekBar>
                 <PlayBar />
