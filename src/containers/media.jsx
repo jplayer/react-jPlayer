@@ -20,8 +20,8 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   title: jPlayers[id].media.title,
   newTime: jPlayers[id].newTime,
   fullScreen: jPlayers[id].fullScreen,
-  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
   require: jPlayers[id].mediaSettings.require,
+  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
   children,
   attributes,
 });
@@ -227,14 +227,15 @@ class MediaContainer extends React.Component {
     }
   }
   onMouseMove = () => {
-    clearTimeout(this.props.guiFadeHoldTimeout);
-
-    this.props.updateOption('guiFadeHoldTimeout', setTimeout(() => {
-      if (this.props.fullScreen) {
-        this.props.updateOption('guiFadeOut', true);
-      }
-    }, this.props.guiFadeHoldTime));
-    this.props.updateOption('guiFadeOut', false);
+    if (this.props.fullScreen) {
+      clearTimeout(this.props.guiFadeHoldTimeout);
+      this.props.updateOption('guiFadeOut', false);
+      this.props.updateOption('guiFadeHoldTimeout', setTimeout(() => {
+        if (this.props.fullScreen) {
+          this.props.updateOption('guiFadeOut', true);
+        }
+      }, this.props.guiFadeHoldTime));
+    }
   }
   getCurrentPercentRelative = () => {
     let currentPercentRelative = 0;
@@ -294,8 +295,8 @@ class MediaContainer extends React.Component {
       React.cloneElement(React.Children.only(this.props.children),
         {
           ...this.events,
-          onMouseMove: this.onMouseMove,
           ref: this.setCurrentMedia,
+          onMouseMove: this.onMouseMove,
         },
       )
     );

@@ -3,15 +3,18 @@ import actions from '../actions/jPlayerActions';
 import Gui from '../components/gui';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
+  fullScreen: jPlayers[id].fullScreen,
   guiFadeOut: jPlayers[id].guiFadeOut,
   guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
 });
 
-const mergeProps = ({ guiFadeOut, guiFadeHoldTimeout }, { dispatch },
+const mergeProps = ({ fullScreen, guiFadeOut, guiFadeHoldTimeout }, { dispatch },
 { id, children, ...attributes }) => ({
   onMouseEnter: () => {
-    dispatch(actions.updateOption('guiFadeOut', false, id));
-    clearTimeout(guiFadeHoldTimeout);
+    if (fullScreen) {
+      dispatch(actions.updateOption('guiFadeOut', false, id));
+      clearTimeout(guiFadeHoldTimeout);
+    }
   },
   guiFadeOut,
   children,

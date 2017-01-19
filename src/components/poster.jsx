@@ -3,18 +3,19 @@ import classNames from 'classnames';
 
 import { classes } from '../util/constants';
 
-const Poster = ({ src, paused, currentTime, alt, ...attributes }) => {
-  const posterClasses = () => classNames(classes.POSTER, {
-    [classes.HIDDEN]: !paused || currentTime !== 0,
+const Poster = ({ src, video, paused, currentTime, alt, ...attributes }) => {
+  const posterClasses = classNames(classes.POSTER, {
+    [classes.HIDDEN]: video && (!paused || currentTime !== 0),
   });
-  return <img {...attributes} className={posterClasses()} alt={alt} src={src} />;
+  return <img {...attributes} className={posterClasses} alt={alt} src={src} />;
 };
 
 Poster.defaultProps = {
-  alt: '',
+  alt: null,
 };
 
 Poster.propTypes = {
+  video: React.PropTypes.bool.isRequired,
   currentTime: React.PropTypes.number.isRequired,
   paused: React.PropTypes.bool.isRequired,
   src: React.PropTypes.string.isRequired,

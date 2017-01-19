@@ -35,12 +35,13 @@ const MixedPlayer = (props) => {
 
     props.setMedia(medias[mediaId], props.id);
   };
+
   return (
     <div>
       <div onClick={changeMedia}>ChangeMedia</div>
       <JPlayer data-type="jp-default">
         <div className="jp-media">
-          <Poster />
+          <Poster style={!props.mediaSettings.video && !props.fullScreen ? { width: '640px', height: '360px' } : null} />
           <Video />
           <Audio />
         </div>

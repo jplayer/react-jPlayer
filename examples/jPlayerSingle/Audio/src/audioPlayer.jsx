@@ -4,16 +4,16 @@ import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration,
   CurrentTime } from '../../../../src/index';
+import mp3 from '../../../assets/Alan Walker - Fade.mp3';
+import poster from '../../../assets/Alan Walker - Fade.jpg';
 
 const AudioPlayer = () => (
   <JPlayer data-type="jp-default">
     <Gui>
-      <Media>
-        <Audio>
-          <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-        </Audio>
-      </Media>
-      <div className="jp-poster-container">
+      <Audio>
+        <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+      </Audio>
+      <div className="jp-title-container">
         <Poster />
         <Title />
       </div>
@@ -42,17 +42,15 @@ const AudioPlayer = () => (
 
 AudioPlayer.options = {
   id: 'audio-player',
-  smoothPlayBar: false,
   muted: true,
-  autoplay: false,
   keyEnabled: true,
   media: {
-    title: 'Cro Magnon Man',
-    artist: 'The Stark Palace',
+    title: 'Fade',
+    artist: 'Alan Walker',
     sources: {
-      mp3: 'http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3',
+      mp3,
     },
-    poster: 'http://wallpapercave.com/wp/Mb4UPsY.png',
+    poster,
     free: true,
   },
 };

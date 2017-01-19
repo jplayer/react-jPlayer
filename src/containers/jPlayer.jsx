@@ -26,6 +26,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   seeking: jPlayers[id].seeking,
   loop: jPlayers[id].loop,
   keyEnabled: jPlayers[id].keyEnabled,
+  currentTime: jPlayers[id].currentTime,
   id,
   children,
   attributes,
@@ -55,6 +56,10 @@ class JPlayerContainer extends React.Component {
         sources: React.PropTypes.shape(formatPropTypes).isRequired,
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
+        id: React.PropTypes.oneOfType([
+          React.PropTypes.number,
+          React.PropTypes.string,
+        ]),
       }).isRequired,
       updateOption: React.PropTypes.func.isRequired,
       setMedia: React.PropTypes.func.isRequired,
@@ -63,6 +68,7 @@ class JPlayerContainer extends React.Component {
         message: React.PropTypes.string,
         hint: React.PropTypes.string,
       }),
+      currentTime: React.PropTypes.number,
       paused: React.PropTypes.bool.isRequired,
       fullScreen: React.PropTypes.bool.isRequired,
       muted: React.PropTypes.bool.isRequired,
@@ -79,6 +85,7 @@ class JPlayerContainer extends React.Component {
   static get defaultProps() {
     return {
       attributes: {},
+      currentTime: statusDefaultValues.currentTime,
       timeFormats: defaultOptions.timeFormats,
       mediaSettings: defaultOptions.mediaSettings,
       error: statusDefaultValues.error,
@@ -106,6 +113,7 @@ class JPlayerContainer extends React.Component {
   }
   componentWillUnmount() {
     document.removeEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
+    window.removeEventListener('unload', this.unload);
   }
   logErrors = (nextProps) => {
     if (nextProps.error !== this.props.error) {
