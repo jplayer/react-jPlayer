@@ -2,11 +2,11 @@ import React from 'react';
 
 import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Download, Duration, CurrentTime } from '../../../../src/index';
-import mp3 from '../../../assets/Alan Walker - Fade.mp3';
-import audioPoster from '../../../assets/Alan Walker - Fade.jpg';
-import webmv from '../../../assets/Big Buck Bunny Trailer.webm';
-import videoPoster from '../../../assets/Big Buck Bunny Trailer.jpg';
+  VolumeBar, Download, Duration, CurrentTime } from '../../src/index';
+import mp3 from '../assets/Alan Walker - Fade.mp3';
+import audioPoster from '../assets/Alan Walker - Fade.jpg';
+import webmv from '../assets/Big Buck Bunny Trailer.webm';
+import videoPoster from '../assets/Big Buck Bunny Trailer.jpg';
 
 const medias = {
   video: {
@@ -38,7 +38,8 @@ const MixedPlayer = (props) => {
 
   return (
     <div>
-      <button onClick={changeMedia}>ChangeMedia</button>
+      <h1>Mixed Player</h1>
+      <button onClick={changeMedia}>Toggle Media</button>
       <JPlayer data-type="jp-default">
         <div className="jp-media">
           <Poster style={!props.mediaSettings.video && !props.fullScreen ? { width: '640px', height: '360px' } : null} />

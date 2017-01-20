@@ -43,27 +43,15 @@ const setMedia = (state, { media }) => {
   };
 
   newState.mediaSettings.formats.forEach((format) => {
-    if (!foundSupported) {
-      // if (newState.mediaSettings.video) {
-      //       // this.setnewState(newState => reducer.removeFromArrayByValue(newState, reducer.removeFromArrayByValue(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
-      //       // if(this.props.nativeVideoControls) {
-      //           //     this.video.element().poster = media.poster;
-      //           // }
-      // } else {
-      //       // this.setnewState(newState => reducer.addUniqueToArray(newState, reducer.addUniqueToArray(keys.VIDEO_PLAY_CLASS, classes.HIDDEN)));
-      // }
-      if (format.supported) {
-        newState.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
-        newState.src = media.sources[format.supplied];
-        foundSupported = true;
-      }
+    if (format.supported) {
+      newState.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
+      newState.src = media.sources[format.supplied];
+      newState.paused = true;
+      foundSupported = true;
     }
   });
 
-  if (foundSupported) {
-    newState.srcSet = true;
-    newState.paused = true;
-  } else {
+  if (!foundSupported) {
     newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(', ')}'}`);
   }
   newState.media = media;
@@ -72,7 +60,7 @@ const setMedia = (state, { media }) => {
 };
 
 const play = (state, { time }) => {
-  if (state.srcSet) {
+  if (state.src) {
     return updateObject(state, {
       paused: false,
       newTime: !isNaN(time) ? time : state.newTime,
@@ -84,7 +72,7 @@ const play = (state, { time }) => {
 };
 
 const pause = (state, { time }) => {
-  if (state.srcSet) {
+  if (state.src) {
     return updateObject(state, {
       paused: true,
       newTime: !isNaN(time) ? time : state.newTime,
@@ -98,7 +86,7 @@ const pause = (state, { time }) => {
 const setPlayHead = (state, { percent }) => {
   const limitedPercent = limitValue(percent, 0, 100);
 
-  if (state.srcSet) {
+  if (state.src) {
     return updateObject(state, {
       playHeadPercent: limitedPercent,
     });

@@ -4,6 +4,10 @@ import autoprefixer from 'autoprefixer';
 const debug = process.env.NODE_ENV !== 'production';
 
 export default {
+  context: __dirname,
+  entry: {
+    jPlayerExample: './src/index.js',
+  },
   devtool: debug ? 'inline-sourcemap' : null,
   output: {
     path: './dist/',
@@ -32,7 +36,7 @@ export default {
       {
         test: /(\.mp3$|\.jpg$|\.webm$)/,
         loader: 'file-loader'
-      }
+      },
     ],
   },
   plugins: [

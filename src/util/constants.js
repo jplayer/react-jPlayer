@@ -209,13 +209,7 @@ export const formats = {
 export const statusDefaultValues = {
   paused: true,
   seeking: false,
-  format: {},
-  formatType: '',
   src: '',
-  waitForPlay: true, // Same as waitForLoad except in case where preloading.
-  waitForLoad: true,
-  srcSet: false,
-  video: false, // True if playing a video
   guiFadeOut: false,
   seekPercent: 0,
   remainingDuration: 0,
@@ -226,10 +220,6 @@ export const statusDefaultValues = {
   currentTime: 0,
   duration: 0,
   remaining: 0,
-  videoWidth: 0, // Intrinsic width of the video in pixels.
-  videoHeight: 0, // Intrinsic height of the video in pixels.
-  readyState: 0,
-  networkState: 0,
   ended: 0,
   error: {},
   bufferedTimeRanges: [],
@@ -237,7 +227,6 @@ export const statusDefaultValues = {
 
 export const defaultOptions = {
   preload: 'metadata', // HTML5 Spec values: none, metadata, auto.
-  globalPause: true,
   minPlaybackRate: 0.5,
   maxPlaybackRate: 4,
   supplied: ['mp3'], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { defaultOptions } from '../util/constants';
+import { defaultOptions } from '../util/constants';  
 import Media from '../containers/media';
 
 const Audio = ({ children, require, title, ...attributes }) => (

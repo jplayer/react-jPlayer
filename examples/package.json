@@ -1,9 +1,19 @@
 {
   "name": "jplayer-examples",
   "version": "0.0.1",
-  "dependencies": {
-    "webpack": "^1.14.0",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --inline --content-base ./public"
+  },
+  "devDependencies": {
     "autoprefixer": "^6.6.1",
-    "extract-text-webpack-plugin": "^1.0.1"
+    "babel-register": "^6.18.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "react": "^15.4.1",
+    "react-json-pretty": "^1.3.1"
   }
 }
