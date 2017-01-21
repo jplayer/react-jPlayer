@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import './less/default/jPlayer.less';
 import * as jPlayerActions from './actions/jPlayerActions';
 
-const mapStateToProps = (state, { id }) => {
+const mapStateToProps = (state, { id, ...props }) => {
   const otherPlayers = {};
 
   Object.keys(state.jPlayers).forEach((key) => {
@@ -15,12 +16,14 @@ const mapStateToProps = (state, { id }) => {
 
   if (Object.keys(otherPlayers).length) {
     return {
+      ...props,
       ...state.jPlayers[id],
       jPlayers: otherPlayers,
     };
   }
 
   return {
+    ...props,
     ...state.jPlayers[id],
   };
 };
@@ -30,8 +33,8 @@ const mapDispatchToProps = dispatch => ({ ...bindActionCreators(jPlayerActions, 
 class WrappedPlayer extends React.Component {
   static get propTypes() {
     return {
-      id: React.PropTypes.string,
-      children: React.PropTypes.element,
+      id: React.PropTypes.string.isRequired,
+      player: React.PropTypes.func.isRequired,
     };
   }
   static get childContextTypes() {
@@ -42,17 +45,16 @@ class WrappedPlayer extends React.Component {
   constructor(props) {
     super(props);
 
-    const childElement = React.Children.only(this.props.children).type;
-
-    this.ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(childElement);
+    this.ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(this.props.player);
   }
   getChildContext = () => ({
     id: this.props.id,
   });
   render() {
+    const { id, player, ...props } = this.props; // eslint-disable-line no-unused-vars
     const ConnectedPlayer = this.ConnectedPlayer;
 
-    return <ConnectedPlayer id={this.props.id} />;
+    return <ConnectedPlayer id={id} {...props} />;
   }
 }
 

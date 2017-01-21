@@ -1,12 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-import merge from 'lodash.merge';
-
 import './less/jPlayer.less';
-import jPlayerReducer from './reducers/jPlayerReducer';
-import WrappedPlayer from './wrappedPlayer';
 import Gui from './containers/gui';
 import Video from './containers/video';
 import Audio from './containers/audio';
@@ -30,33 +22,6 @@ import VolumeBarValue from './containers/controls/volumeBarValue';
 import Download from './containers/controls/download';
 import Duration from './containers/duration';
 import CurrentTime from './containers/currentTime';
-
-import { defaultOptions, statusDefaultValues } from './util/constants';
-
-export default (...players) => {
-  const initialState = { jPlayers: {} };
-
-  players.forEach((wrappedPlayer) => {
-    initialState.jPlayers[wrappedPlayer.options.id] = {
-      ...merge({}, statusDefaultValues, defaultOptions, wrappedPlayer.options),
-    };
-  });
-
-  const store = createStore(combineReducers({ jPlayers: jPlayerReducer }), initialState);
-
-  ReactDOM.render(
-    <Provider store={store}>
-      <div>
-        {players.map(Player => (
-          <WrappedPlayer key={Player.options.id} id={Player.options.id}>
-            <Player />
-          </WrappedPlayer>
-          ),
-        )}
-      </div>
-    </Provider>,
-    document.getElementById('app'));
-};
 
 export { JPlayer, Gui, KeyControl, Progress, SeekBar, PlayBar,
    Buffer, BrowserUnsupported, Poster, Video, Audio, Title, FullScreen,

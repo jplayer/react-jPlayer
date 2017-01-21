@@ -1,12 +1,15 @@
+/* eslint react/prop-types: 0 */
 import React from 'react';
 
 import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Download, Duration, CurrentTime } from '../../src/index';
-import mp3 from '../assets/Alan Walker - Fade.mp3';
-import audioPoster from '../assets/Alan Walker - Fade.jpg';
-import webmv from '../assets/Big Buck Bunny Trailer.webm';
-import videoPoster from '../assets/Big Buck Bunny Trailer.jpg';
+  VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
+import mp3 from '../../assets/Alan Walker - Fade.mp3';
+import audioPoster from '../../assets/Alan Walker - Fade.jpg';
+import webmv from '../../assets/Big Buck Bunny Trailer.webm';
+import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
+import jPlayerConnect from '../../../src/connect';
+import StatusWrapper from '../helpers/statusWrapper';
 
 const medias = {
   video: {
@@ -35,14 +38,17 @@ const MixedPlayer = (props) => {
 
     props.setMedia(medias[mediaId], props.id);
   };
+  const posterStyle = (
+    !props.mediaSettings.video &&
+    !props.fullScreen ? { width: '640px', height: '360px' } : null
+  );
 
   return (
-    <div>
-      <h1>Mixed Player</h1>
-      <button onClick={changeMedia}>Toggle Media</button>
+    <StatusWrapper title="Mixed Player" id={props.id}>
+      <button className="btn-default" onClick={changeMedia}>Toggle Media</button>
       <JPlayer data-type="jp-default">
         <div className="jp-media">
-          <Poster style={!props.mediaSettings.video && !props.fullScreen ? { width: '640px', height: '360px' } : null} />
+          <Poster style={posterStyle} />
           <Video />
           <Audio />
         </div>
@@ -59,7 +65,7 @@ const MixedPlayer = (props) => {
               <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
               <VolumeBar />
             </div>
-            <Download><i className="fa fa-download"></i></Download>
+            <Download><i className="fa fa-download" /></Download>
             <Progress>
               <SeekBar>
                 <PlayBar />
@@ -72,11 +78,11 @@ const MixedPlayer = (props) => {
         </Gui>
         <BrowserUnsupported />
       </JPlayer>
-    </div>
+    </StatusWrapper>
   );
 };
 
-MixedPlayer.options = {
+export const mixedOptions = {
   id: 'mixed-player',
   muted: true,
   showRemainingDuration: true,
@@ -84,4 +90,4 @@ MixedPlayer.options = {
   media: medias[mediaId],
 };
 
-export default MixedPlayer;
+export default jPlayerConnect(MixedPlayer, mixedOptions.id);

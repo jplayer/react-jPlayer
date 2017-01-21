@@ -276,9 +276,6 @@ class MediaContainer extends React.Component {
     this.props.updateOption('remaining', remaining);
     this.props.updateOption('duration', this.currentMedia.duration);
     this.props.updateOption('playbackRate', this.currentMedia.playbackRate);
-    // this.props.dispatch(updateOption("videoWidth", this.currentMedia.videoWidth));
-    // this.props.dispatch(updateOption("videoHeight", this.currentMedia.videoHeight));
-    // this.props.dispatch(updateOption("ended", this.currentMedia.ended));
   }
   updateCurrentMedia = ({ defaultPlaybackRate, playbackRate, preload, volume,
     muted, autoplay, loop }) => {

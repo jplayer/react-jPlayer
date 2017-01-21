@@ -1,54 +1,17 @@
+/* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Media, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
+import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration,
-  CurrentTime } from '../../src/index';
-import mp3 from '../assets/Alan Walker - Fade.mp3';
-import poster from '../assets/Alan Walker - Fade.jpg';
-
-function replacer(key, value) {
-  if (key === "jPlayers") {
-    return undefined;
-  }
-
-  return value;
-}
-
-class ExampleWrapper extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {};
-  }
-  toggleStatus = () => this.setState({ showStatus: !this.state.showStatus })
-  toggleOtherPlayers = () => this.setState({ showOtherPlayers: !this.state.showOtherPlayers })
-  render() {
-    return (
-      <div>
-        <h1>{this.props.title}</h1>
-        {this.props.children}
-        <button onClick={this.toggleStatus}>Status</button>        
-          { this.state.showStatus ?
-            <pre>
-              { JSON.stringify(this.props.jPlayerOptions, replacer, 2) }
-            </pre>
-          : null 
-          }
-        <button onClick={this.toggleOtherPlayers}>Other Players</button>
-          { this.state.showOtherPlayers ? 
-            <pre>
-              { JSON.stringify(this.props.jPlayerOptions.jPlayers, replacer, 2) }
-            </pre>
-            : null
-          }
-      </div>
-    );
-  }
-}
+  CurrentTime } from '../../../src/index';
+import mp3 from '../../assets/Alan Walker - Fade.mp3';
+import poster from '../../assets/Alan Walker - Fade.jpg';
+import jPlayerConnect from '../../../src/connect';
+import StatusWrapper from '../helpers/statusWrapper';
 
 const AudioPlayer = props => (
-  <ExampleWrapper title="Audio Player" jPlayerOptions={props}>
+  <StatusWrapper title="Audio Player" id={props.id}>
     <JPlayer data-type="jp-default">
       <Gui>
         <Audio>
@@ -79,10 +42,10 @@ const AudioPlayer = props => (
       </Gui>
       <BrowserUnsupported />
     </JPlayer>
-  </ExampleWrapper>
+  </StatusWrapper>
 );
 
-AudioPlayer.options = {
+export const audioOptions = {
   id: 'audio-player',
   muted: true,
   keyEnabled: true,
@@ -97,7 +60,7 @@ AudioPlayer.options = {
   },
 };
 
-export default AudioPlayer;
+export default jPlayerConnect(AudioPlayer, audioOptions.id);
 
 /*
 onShuffleClick = (event) => {
