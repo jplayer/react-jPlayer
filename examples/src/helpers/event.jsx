@@ -12,7 +12,7 @@ Event.defaultProps = {
 
 Event.propTypes = {
   callNumber: React.PropTypes.number,
-  eventName: React.PropTypes.number.isRequired,
+  eventName: React.PropTypes.string.isRequired,
 };
 
 export default Event;

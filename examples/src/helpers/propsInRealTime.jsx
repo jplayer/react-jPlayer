@@ -10,6 +10,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 const PropsInRealTime = ({ jPlayerProps }) => (
   <div className="col-md-4">
     <h2>jPlayer Props</h2>
+    <p>Properties that get passed into your players through props</p>
     <JSONPretty json={jPlayerProps} />
   </div>
 );

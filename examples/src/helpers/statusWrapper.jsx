@@ -36,29 +36,36 @@ class StatusWrapper extends React.Component {
       },
     };
     this.events = {};
-    let callNumber;
-
-    const modifyEventCalls = (eventCalls, eventName, increment) => {
-      callNumber = eventCalls[eventName];
-      callNumber = increment ? callNumber + 1 : callNumber - 1;
-      return {
-        eventCalls: {
-          ...eventCalls,
-          [eventName]: callNumber,
-        },
-      };
-    };
+    this.eventTimeouts = [];
 
     Object.keys(this.state.eventCalls).forEach((eventName) => {
       this.events[eventName] = () => {
-        this.setState(prevState =>
-          modifyEventCalls(prevState.eventCalls, eventName, true),
-        () => setTimeout(() => this.setState(prevState =>
-          modifyEventCalls(prevState.eventCalls, eventName, false),
-        ), 1000));
+        this.setState(prevState => (
+          this.modifyEventCalls(prevState.eventCalls, eventName, true)
+        ), () => (
+          this.eventTimeouts.push(this.removeEventCallTimeout(eventName))
+        ));
       };
     });
   }
+  componentWillUnmount() {
+    this.eventTimeouts.forEach(timeoutNumber => clearTimeout(timeoutNumber));
+  }
+  removeEventCallTimeout = eventName => (
+    setTimeout(() => this.setState(prevState => (
+      this.modifyEventCalls(prevState.eventCalls, eventName, false)
+    )), 1000)
+  )
+  modifyEventCalls = (eventCalls, eventName, increment) => {
+    let callNumber = eventCalls[eventName];
+    callNumber = increment ? callNumber + 1 : callNumber - 1;
+    return {
+      eventCalls: {
+        ...eventCalls,
+        [eventName]: callNumber,
+      },
+    };
+  };
   render() {
     return (
       <div className="example-wrapper">

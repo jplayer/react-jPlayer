@@ -11,10 +11,10 @@ import jPlayerConnect from '../../../src/connect';
 
 const AudioPlayer = props => (
   <JPlayer data-type="jp-default">
+    <Audio events={props.events}>
+      <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+    </Audio>
     <Gui>
-      <Audio events={props.events}>
-        <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-      </Audio>
       <div className="jp-title-container">
         <Poster />
         <Title />

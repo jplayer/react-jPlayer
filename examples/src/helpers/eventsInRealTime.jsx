@@ -8,7 +8,7 @@ const EventsInRealTime = ({ mediaEvents }) => (
     <p>Events that have been called in the last second</p>
     <div className="events">
       {Object.entries(mediaEvents).map(val => (
-        <Event eventName={val[0]} callNumber={val[1]} />
+        <Event key={val[0]} eventName={val[0]} callNumber={val[1]} />
       ))}
     </div>
   </div>

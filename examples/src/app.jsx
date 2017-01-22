@@ -22,34 +22,25 @@ import StatusWrapper from './helpers/statusWrapper';
 const initialState = jPlayerInitialState(audioOptions, videoOptions, mixedOptions);
 
 const App = () => (
-  <Players />
+  <NavContainer>
+    <NavBar>
+      <NavLink>Audio</NavLink>
+      <NavLink>Video</NavLink>
+      <NavLink>Mixed</NavLink>
+    </NavBar>
+    <NavContentContainer>
+      <NavContent>
+        <StatusWrapper id={audioOptions.id}><AudioPlayer /></StatusWrapper>
+      </NavContent>
+      <NavContent>
+        <StatusWrapper id={videoOptions.id}><VideoPlayer /></StatusWrapper>
+      </NavContent>
+      <NavContent>
+        <StatusWrapper id={mixedOptions.id}><MixedPlayer /></StatusWrapper>
+      </NavContent>
+    </NavContentContainer>
+  </NavContainer>
 );
-
-class Players extends React.Component {
-  onSelect = (index, last) => console.log(`Selected tab: ${index}, Last tab: ${last}`)
-  render() {
-    return (
-      <NavContainer>
-        <NavBar>
-          <NavLink>Audio</NavLink>
-          <NavLink>Video</NavLink>
-          <NavLink>Mixed</NavLink>
-        </NavBar>
-        <NavContentContainer>
-          <NavContent>
-            <StatusWrapper id={audioOptions.id}><AudioPlayer /></StatusWrapper>
-          </NavContent>
-          <NavContent>
-            <StatusWrapper id={videoOptions.id}><VideoPlayer /></StatusWrapper>
-          </NavContent>
-          <NavContent>
-            <StatusWrapper id={mixedOptions.id}><MixedPlayer /></StatusWrapper>
-          </NavContent>
-        </NavContentContainer>
-      </NavContainer>
-    );
-  }
-}
 
 ReactDOM.render((
   <Provider store={createStore(jPlayerReducers, initialState)}>
