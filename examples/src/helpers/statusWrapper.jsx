@@ -1,25 +1,80 @@
 /* Ignore this file as it is only for showing jPlayer properties and events in real time */
 import React from 'react';
 
-import JPlayerPropsAsJson from './jPlayerPropsAsJson';
+import PropsInRealTime from './propsInRealTime';
+import EventsInRealTime from './eventsInRealTime';
 
-const StatusWrapper = ({ title, children, id }) => (
-  <div className="example-wrapper">
-    <h1>{title}</h1>
-    <div className="example-controls">
-      <button
-        className="btn btn-default"
-      >
-        Status
-      </button>
-    </div>
-    {children}
-    <JPlayerPropsAsJson id={id} />
-  </div>
-);
+class StatusWrapper extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      eventCalls: {
+        onProgress: 0,
+        onTimeUpdate: 0,
+        onDurationChange: 0,
+        onRateChange: 0,
+        onSeeking: 0,
+        onSeeked: 0,
+        onPlay: 0,
+        onRepeat: 0,
+        onEnded: 0,
+        onError: 0,
+        onPlaying: 0,
+        onPause: 0,
+        onWaiting: 0,
+        onSuspend: 0,
+        onVolumeChange: 0,
+        onLoadStart: 0,
+        onLoadedMetadata: 0,
+        onAbort: 0,
+        onEmptied: 0,
+        onStalled: 0,
+        onLoadedData: 0,
+        onCanPlay: 0,
+        onCanPlayThrough: 0,
+      },
+    };
+    this.events = {};
+    let callNumber;
+
+    const modifyEventCalls = (eventCalls, eventName, increment) => {
+      callNumber = eventCalls[eventName];
+      callNumber = increment ? callNumber + 1 : callNumber - 1;
+      return {
+        eventCalls: {
+          ...eventCalls,
+          [eventName]: callNumber,
+        },
+      };
+    };
+
+    Object.keys(this.state.eventCalls).forEach((eventName) => {
+      this.events[eventName] = () => {
+        this.setState(prevState =>
+          modifyEventCalls(prevState.eventCalls, eventName, true),
+        () => setTimeout(() => this.setState(prevState =>
+          modifyEventCalls(prevState.eventCalls, eventName, false),
+        ), 1000));
+      };
+    });
+  }
+  render() {
+    return (
+      <div className="example-wrapper">
+        {React.cloneElement(React.Children.only(this.props.children), { events: this.events })}
+        <div className="container-fluid">
+          <div className="row">
+            <PropsInRealTime id={this.props.id} />
+            <EventsInRealTime id={this.props.id} mediaEvents={this.state.eventCalls} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
 StatusWrapper.propTypes = {
-  title: React.PropTypes.string.isRequired,
   id: React.PropTypes.string.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.element,

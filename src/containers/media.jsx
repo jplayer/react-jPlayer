@@ -4,7 +4,7 @@ import { connectWithId, urlNotSupportedError, convertTime } from '../util/index'
 import { loopOptions, defaultOptions, statusDefaultValues } from '../util/constants';
 import actions, { pause } from '../actions/jPlayerActions';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...props }) => ({
   loop: jPlayers[id].loop,
   showRemainingDuration: jPlayers[id].showRemainingDuration,
   src: jPlayers[id].src,
@@ -23,7 +23,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   require: jPlayers[id].mediaSettings.require,
   guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
   children,
-  attributes,
+  ...props,
 });
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({

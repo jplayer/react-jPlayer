@@ -7,41 +7,38 @@ import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
 import webmv from '../../assets/Big Buck Bunny Trailer.webm';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
 import jPlayerConnect from '../../../src/connect';
-import StatusWrapper from '../helpers/statusWrapper';
 
 const VideoPlayer = props => (
-  <StatusWrapper title="Video Player" id={props.id}>
-    <JPlayer data-type="jp-default">
-      <div className="jp-media">
-        <Poster />
-        <Video />
+  <JPlayer data-type="jp-default">
+    <div className="jp-media">
+      <Poster />
+      <Video events={props.events} />
+    </div>
+    <Gui>
+      <div className="jp-title-container">
+        <Title />
       </div>
-      <Gui>
-        <div className="jp-title-container">
-          <Title />
+      <div className="jp-controls">
+        <Play><i className="fa">{/* Icon set in css*/}</i></Play>
+        <FullScreen><i className="fa fa-expand" /></FullScreen>
+        <Repeat><i className="fa fa-repeat" /></Repeat>
+        <PlaybackRateBar />
+        <div className="jp-volume-controls">
+          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
+          <VolumeBar />
         </div>
-        <div className="jp-controls">
-          <Play><i className="fa">{/* Icon set in css*/}</i></Play>
-          <FullScreen><i className="fa fa-expand" /></FullScreen>
-          <Repeat><i className="fa fa-repeat" /></Repeat>
-          <PlaybackRateBar />
-          <div className="jp-volume-controls">
-            <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-            <VolumeBar />
-          </div>
-          <Progress>
-            <SeekBar>
-              <PlayBar />
-              <Buffer />
-              <CurrentTime />
-              <Duration />
-            </SeekBar>
-          </Progress>
-        </div>
-      </Gui>
-      <BrowserUnsupported />
-    </JPlayer>
-  </StatusWrapper>
+        <Progress>
+          <SeekBar>
+            <PlayBar />
+            <Buffer />
+            <CurrentTime />
+            <Duration />
+          </SeekBar>
+        </Progress>
+      </div>
+    </Gui>
+    <BrowserUnsupported />
+  </JPlayer>
 );
 
 export const videoOptions = {

@@ -10,6 +10,8 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "less": "^2.7.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.4.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"

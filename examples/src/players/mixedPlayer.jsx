@@ -9,7 +9,6 @@ import audioPoster from '../../assets/Alan Walker - Fade.jpg';
 import webmv from '../../assets/Big Buck Bunny Trailer.webm';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
 import jPlayerConnect from '../../../src/connect';
-import StatusWrapper from '../helpers/statusWrapper';
 
 const medias = {
   video: {
@@ -44,13 +43,13 @@ const MixedPlayer = (props) => {
   );
 
   return (
-    <StatusWrapper title="Mixed Player" id={props.id}>
+    <div>
       <button className="btn-default" onClick={changeMedia}>Toggle Media</button>
       <JPlayer data-type="jp-default">
         <div className="jp-media">
           <Poster style={posterStyle} />
-          <Video />
-          <Audio />
+          <Video events={props.events} />
+          <Audio events={props.events} />
         </div>
         <Gui>
           <div className="jp-title-container">
@@ -78,7 +77,7 @@ const MixedPlayer = (props) => {
         </Gui>
         <BrowserUnsupported />
       </JPlayer>
-    </StatusWrapper>
+    </div>
   );
 };
 

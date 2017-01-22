@@ -43,6 +43,10 @@ export default {
         test: /\.(mp3|jpg|webm)$/,
         loader: 'file-loader',
       },
+      {
+        test: /\.styl$/,
+        loader: 'style-loader!css-loader!stylus-loader',
+      },
     ],
   },
   plugins: [
@@ -50,6 +54,6 @@ export default {
   ],
   postcss: () => [autoprefixer],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.styl'],
   },
 };

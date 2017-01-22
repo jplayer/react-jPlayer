@@ -13,7 +13,10 @@ NavContentContainer.contextTypes = {
 };
 
 NavContentContainer.propTypes = {
-  children: React.PropTypes.element.isRequired,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.element,
+    React.PropTypes.arrayOf(React.PropTypes.element),
+  ]).isRequired,
 };
 
 export default NavContentContainer;

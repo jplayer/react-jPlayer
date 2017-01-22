@@ -17,6 +17,7 @@ import NavContentContainer from './helpers/navContentContainer';
 import NavBar from './helpers/navBar';
 import NavLink from './helpers/navLink';
 import NavContent from './helpers/navContent';
+import StatusWrapper from './helpers/statusWrapper';
 
 const initialState = jPlayerInitialState(audioOptions, videoOptions, mixedOptions);
 
@@ -35,9 +36,15 @@ class Players extends React.Component {
           <NavLink>Mixed</NavLink>
         </NavBar>
         <NavContentContainer>
-          <NavContent><AudioPlayer /></NavContent>
-          <NavContent><VideoPlayer /></NavContent>
-          <NavContent><MixedPlayer /></NavContent>
+          <NavContent>
+            <StatusWrapper id={audioOptions.id}><AudioPlayer /></StatusWrapper>
+          </NavContent>
+          <NavContent>
+            <StatusWrapper id={videoOptions.id}><VideoPlayer /></StatusWrapper>
+          </NavContent>
+          <NavContent>
+            <StatusWrapper id={mixedOptions.id}><MixedPlayer /></StatusWrapper>
+          </NavContent>
         </NavContentContainer>
       </NavContainer>
     );

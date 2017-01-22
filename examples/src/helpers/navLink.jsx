@@ -16,9 +16,13 @@ NavLink.contextTypes = {
   setActiveTabId: React.PropTypes.func,
 };
 
+NavLink.defaultProps = {
+  tabId: 0,
+};
+
 NavLink.propTypes = {
   children: React.PropTypes.string.isRequired,
-  tabId: React.PropTypes.number.isRequired,
+  tabId: React.PropTypes.number,
 };
 
 export default NavLink;

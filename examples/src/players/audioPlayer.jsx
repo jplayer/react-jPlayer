@@ -8,41 +8,38 @@ import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
 import poster from '../../assets/Alan Walker - Fade.jpg';
 import jPlayerConnect from '../../../src/connect';
-import StatusWrapper from '../helpers/statusWrapper';
 
 const AudioPlayer = props => (
-  <StatusWrapper title="Audio Player" id={props.id}>
-    <JPlayer data-type="jp-default">
-      <Gui>
-        <Audio>
-          <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-        </Audio>
-        <div className="jp-title-container">
-          <Poster />
-          <Title />
+  <JPlayer data-type="jp-default">
+    <Gui>
+      <Audio events={props.events}>
+        <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+      </Audio>
+      <div className="jp-title-container">
+        <Poster />
+        <Title />
+      </div>
+      <div className="jp-controls">
+        <Play><i className="fa">{/* Icon set in css*/}</i></Play>
+        <FullScreen><i className="fa fa-expand" /></FullScreen>
+        <Repeat><i className="fa fa-repeat" /></Repeat>
+        <PlaybackRateBar />
+        <div className="jp-volume-controls">
+          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
+          <VolumeBar />
         </div>
-        <div className="jp-controls">
-          <Play><i className="fa">{/* Icon set in css*/}</i></Play>
-          <FullScreen><i className="fa fa-expand" /></FullScreen>
-          <Repeat><i className="fa fa-repeat" /></Repeat>
-          <PlaybackRateBar />
-          <div className="jp-volume-controls">
-            <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-            <VolumeBar />
-          </div>
-          <Progress>
-            <SeekBar>
-              <PlayBar />
-              <Buffer />
-              <CurrentTime />
-              <Duration />
-            </SeekBar>
-          </Progress>
-        </div>
-      </Gui>
-      <BrowserUnsupported />
-    </JPlayer>
-  </StatusWrapper>
+        <Progress>
+          <SeekBar>
+            <PlayBar />
+            <Buffer />
+            <CurrentTime />
+            <Duration />
+          </SeekBar>
+        </Progress>
+      </div>
+    </Gui>
+    <BrowserUnsupported />
+  </JPlayer>
 );
 
 export const audioOptions = {
