@@ -44,7 +44,7 @@ const MixedPlayer = (props) => {
 
   return (
     <div>
-      <button className="btn-default" onClick={changeMedia}>Toggle Media</button>
+      <button className="btn btn-default toggle-media" onClick={changeMedia}>Toggle Media</button>
       <JPlayer data-type="jp-default">
         <div className="jp-media">
           <Poster style={posterStyle} />

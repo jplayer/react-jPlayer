@@ -3,8 +3,7 @@ import React from 'react';
 
 import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Duration,
-  CurrentTime } from '../../../src/index';
+  VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
 import poster from '../../assets/Alan Walker - Fade.jpg';
 import jPlayerConnect from '../../../src/connect';
@@ -28,6 +27,7 @@ const AudioPlayer = props => (
           <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
           <VolumeBar />
         </div>
+        <Download><i className="fa fa-download" /></Download>
         <Progress>
           <SeekBar>
             <PlayBar />
