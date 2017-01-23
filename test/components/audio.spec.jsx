@@ -4,17 +4,65 @@ import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../common';
 import Audio from '../../src/components/audio';
+import Media from '../../src/containers/media';
 
 describe('<Audio />', () => {
+  const children = <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />;
   const component = (
     <Audio require>
-      <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+      {children}
     </Audio>
   );
-  const wrapper = shallow(component);
+  const events = {
+    onProgress: () => null,
+    onTimeUpdate: () => null,
+    onDurationChange: () => null,
+    onRateChange: () => null,
+    onSeeking: () => null,
+    onSeeked: () => null,
+    onPlay: () => null,
+    onRepeat: () => null,
+    onEnded: () => null,
+    onError: () => null,
+    onPlaying: () => null,
+    onPause: () => null,
+    onWaiting: () => null,
+    onSuspend: () => null,
+    onVolumeChange: () => null,
+    onLoadStart: () => null,
+    onLoadedMetadata: () => null,
+    onAbort: () => null,
+    onEmptied: () => null,
+    onStalled: () => null,
+    onLoadedData: () => null,
+    onCanPlay: () => null,
+    onCanPlayThrough: () => null,
+  };
+  let wrapper;
 
-  it('renders child', () => {
-    expect(wrapper.find('track').length).toBeTruthy();
+  beforeEach(() => {
+    wrapper = shallow(component);
+  });
+
+  it('renders nothing when not required', () => {
+    wrapper.setProps({ require: false });
+    expect(wrapper.children().length).toBe(0);
+  });
+
+  it('media gets events as props', () => {
+    wrapper.setProps({ events });
+
+    Object.entries(events).forEach((val) => {
+      expect(wrapper.prop(val[0])).toBe(val[1]);
+    });
+  });
+
+  it('wraps audio in mediaContainer', () => {
+    expect(wrapper.find('audio').parent().type()).toBe(Media);
+  });
+
+  it('renders children', () => {
+    expect(wrapper.find('audio').prop('children')).toBe(children);
   });
 
   customAttributeTests(component, 'audio');

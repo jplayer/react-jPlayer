@@ -4,27 +4,36 @@ import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../../common';
 import FullScreen from '../../../src/components/controls/fullScreen';
+import { classes } from '../../../src/util/constants';
 
 describe('<FullScreen />', () => {
-  const functions = {
-    onClick: () => null,
-  };
   const children = <i className="fa fa-fullScreen" />;
-  const spy = expect.spyOn(functions, 'onClick');
   const component = (
-    <FullScreen onClick={functions.onClick}>
+    <FullScreen>
       {children}
     </FullScreen>
   );
-  const wrapper = shallow(component);
+  let wrapper;
+  let spy;
 
-  it('renders child', () => {
+  beforeEach(() => {
+    wrapper = shallow(component);
+    spy = expect.createSpy();
+  });
+
+  it('renders children', () => {
     expect(wrapper.prop('children')).toBe(children);
   });
 
   it('calls handler on click', () => {
+    wrapper.setProps({ onClick: spy });
     wrapper.simulate('click');
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('has fullScreen class', () => {
+    wrapper.setProps({ className: classes.FULL_SCREEN });
+    expect(wrapper.hasClass(classes.FULL_SCREEN)).toBeTruthy();
   });
 
   customAttributeTests(component);

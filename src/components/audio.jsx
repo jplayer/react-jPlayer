@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { defaultOptions } from '../util/constants';
 import Media from '../containers/media';
 
-const Audio = ({ children, require, title, events, ...attributes }) => (
+const Audio = ({ children, require, events, ...attributes }) => (
   require ?
     <Media {...events}>
-      <audio {...attributes} title={title}>
+      <audio {...attributes}>
         {children}
       </audio>
     </Media>
@@ -16,7 +15,6 @@ const Audio = ({ children, require, title, events, ...attributes }) => (
 Audio.defaultProps = {
   children: null,
   events: null,
-  title: defaultOptions.media.title,
 };
 
 Audio.propTypes = {
@@ -25,7 +23,6 @@ Audio.propTypes = {
     React.PropTypes.element,
   ]),
   require: React.PropTypes.bool.isRequired,
-  title: React.PropTypes.string,
   events: React.PropTypes.shape({
     onProgress: React.PropTypes.func,
     onTimeUpdate: React.PropTypes.func,

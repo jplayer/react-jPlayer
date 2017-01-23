@@ -3,9 +3,9 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import { customAttributeTests } from '../../common';
 import PlaybackRateBarValue from '../../../src/components/controls/playbackRateBarValue';
+import { classes } from '../../../src/util/constants';
 
 describe('<PlaybackRateBarValue />', () => {
-  let wrapper;
   const component = <PlaybackRateBarValue />;
   const styleTests = [
     { props: {
@@ -29,6 +29,8 @@ describe('<PlaybackRateBarValue />', () => {
       expected: { width: '50%', height: null } },
   ];
 
+  let wrapper;
+
   beforeEach(() => {
     wrapper = shallow(component);
   });
@@ -39,6 +41,11 @@ describe('<PlaybackRateBarValue />', () => {
       wrapper.setProps(test.props);
       expect(wrapper.prop('style')).toEqual(test.expected);
     });
+  });
+
+  it('has playbackRateBarValue class', () => {
+    wrapper.setProps({ className: classes.PLAYBACK_RATE_BAR_VALUE });
+    expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR_VALUE)).toBeTruthy();
   });
 
   customAttributeTests(component);

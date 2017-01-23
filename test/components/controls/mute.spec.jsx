@@ -4,26 +4,36 @@ import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../../common';
 import Mute from '../../../src/components/controls/mute';
+import { classes } from '../../../src/util/constants';
 
 describe('<Mute />', () => {
-  const functions = {
-    onClick: () => null,
-  };
-  const spy = expect.spyOn(functions, 'onClick');
+  const children = <i className="fa fa-mute" />;
   const component = (
-    <Mute onClick={functions.onClick}>
-      <i className="fa fa-mute" />
+    <Mute>
+      {children}
     </Mute>
   );
-  const wrapper = shallow(component);
+  let wrapper;
+  let spy;
 
-  it('renders child', () => {
-    expect(wrapper.find('.fa-mute').length).toBeTruthy();
+  beforeEach(() => {
+    wrapper = shallow(component);
+    spy = expect.createSpy();
+  });
+
+  it('renders children', () => {
+    expect(wrapper.prop('children')).toBe(children);
   });
 
   it('calls handler on click', () => {
+    wrapper.setProps({ onClick: spy });
     wrapper.simulate('click');
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('has mute class', () => {
+    wrapper.setProps({ className: classes.MUTE });
+    expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
   });
 
   customAttributeTests(component);

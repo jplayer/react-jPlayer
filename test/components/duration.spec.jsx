@@ -4,18 +4,25 @@ import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../common';
 import Duration from '../../src/components/duration';
+import { classes } from '../../src/util/constants';
 
 describe('<Duration />', () => {
-  const durationText = '55';
-  const component = (
-    <Duration durationText={durationText}>
-      {durationText}
-    </Duration>
-  );
-  const wrapper = shallow(component);
+  const children = '';
+  const component = <Duration />;
+  let wrapper;
 
-  it('renders durationText as a child', () => {
-    expect(wrapper.prop('children')).toBe(durationText);
+  beforeEach(() => {
+    wrapper = shallow(component);
   });
+
+  it('renders children', () => {
+    expect(wrapper.prop('children')).toBe(children);
+  });
+
+  it('has duration class', () => {
+    wrapper.setProps({ className: classes.DURATION });
+    expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
+  });
+
   customAttributeTests(component);
 });
