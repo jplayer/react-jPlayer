@@ -10,12 +10,12 @@ describe('<Repeat />', () => {
     onClick: () => null,
   };
   const spy = expect.spyOn(functions, 'onClick');
-  const controlComponent = (
+  const component = (
     <Repeat onClick={functions.onClick}>
       <i className="fa fa-repeat" />
     </Repeat>
   );
-  const wrapper = shallow(controlComponent);
+  const wrapper = shallow(component);
 
   it('renders child', () => {
     expect(wrapper.find('.fa-repeat').length).toBeTruthy();
@@ -26,5 +26,5 @@ describe('<Repeat />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  customAttributeTests(controlComponent);
+  customAttributeTests(component);
 });

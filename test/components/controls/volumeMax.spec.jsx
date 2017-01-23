@@ -10,12 +10,12 @@ describe('<VolumeMax />', () => {
     onClick: () => null,
   };
   const spy = expect.spyOn(functions, 'onClick');
-  const controlComponent = (
+  const component = (
     <VolumeMax onClick={functions.onClick}>
       <i className="fa fa-volume-up" />
     </VolumeMax>
   );
-  const wrapper = shallow(controlComponent);
+  const wrapper = shallow(component);
 
   it('renders child', () => {
     expect(wrapper.find('.fa-volume-up').length).toBeTruthy();
@@ -26,5 +26,5 @@ describe('<VolumeMax />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  customAttributeTests(controlComponent);
+  customAttributeTests(component);
 });

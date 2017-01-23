@@ -22,7 +22,7 @@
   "scripts": {
     "lint:src": "eslint ./src --fix",
     "lint:examples": "eslint ./examples --fix",
-    "test": "mocha -w test/**/fullScreen.spec.jsx"
+    "test": "mocha -w test/**/*.spec.jsx"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",
@@ -38,6 +38,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.18.0",
     "css-loader": "^0.26.1",
+    "editorconfig": "^0.13.2",
     "enzyme": "^2.2.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^14.0.0",

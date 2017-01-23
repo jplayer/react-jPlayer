@@ -11,12 +11,12 @@ describe('<FullScreen />', () => {
   };
   const children = <i className="fa fa-fullScreen" />;
   const spy = expect.spyOn(functions, 'onClick');
-  const controlComponent = (
+  const component = (
     <FullScreen onClick={functions.onClick}>
       {children}
     </FullScreen>
   );
-  const wrapper = shallow(controlComponent);
+  const wrapper = shallow(component);
 
   it('renders child', () => {
     expect(wrapper.prop('children')).toBe(children);
@@ -27,5 +27,5 @@ describe('<FullScreen />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  customAttributeTests(controlComponent);
+  customAttributeTests(component);
 });

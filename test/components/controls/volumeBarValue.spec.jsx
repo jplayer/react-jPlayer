@@ -5,7 +5,6 @@ import { customAttributeTests } from '../../common';
 import VolumeBarValue from '../../../src/components/controls/volumeBarValue';
 
 describe('<VolumeBarValue />', () => {
-  const elementSelector = 'div';
   const component = <VolumeBarValue />;
   let wrapper;
   const styleTests = [
@@ -29,5 +28,5 @@ describe('<VolumeBarValue />', () => {
     });
   });
 
-  customAttributeTests(component, elementSelector);
+  customAttributeTests(component);
 });

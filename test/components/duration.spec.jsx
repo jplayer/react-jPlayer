@@ -7,14 +7,13 @@ import Duration from '../../src/components/duration';
 
 describe('<Duration />', () => {
   const durationText = '55';
-  const onClickSpy = expect.createSpy();
-  const component = <Duration durationText={durationText} onClick={onClickSpy} />;
+  const component = (
+    <Duration durationText={durationText}>
+      {durationText}
+    </Duration>
+  );
   const wrapper = shallow(component);
 
-  it('onClick handler is called', () => {
-    wrapper.simulate('click');
-    expect(onClickSpy).toHaveBeenCalled();
-  });
   it('renders durationText as a child', () => {
     expect(wrapper.prop('children')).toBe(durationText);
   });

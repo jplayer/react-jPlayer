@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 
-export const customAttributeTests = (component) => {
+export const customAttributeTests = (component, selector) => {
   let attributes;
   let wrapper;
 
@@ -15,7 +15,13 @@ export const customAttributeTests = (component) => {
   it('custom non-conflicting attributes get rendered', () => {
     attributes['data-jPlayerReact-test'] = 'test';
     wrapper.setProps({ ...attributes });
-    expect(wrapper.prop('data-jPlayerReact-test')).toBe(attributes['data-jPlayerReact-test']);
+
+    if (selector === undefined) {
+      expect(wrapper.prop('data-jPlayerReact-test')).toBe(attributes['data-jPlayerReact-test']);
+    } else {
+      expect(wrapper.dive().find(selector).prop('data-jPlayerReact-test'))
+        .toBe(attributes['data-jPlayerReact-test']);
+    }
   });
 };
 

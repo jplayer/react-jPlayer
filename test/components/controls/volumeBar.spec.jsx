@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { mount } from 'enzyme';
-import { customAttributeTests, barDraggingTests } from '../../common';
+import { customAttributeTests } from '../../common';
 import VolumeBar from '../../../src/components/controls/volumeBar';
 import VolumeBarValue from '../../../src/components/controls/volumeBarValue';
 
@@ -12,14 +12,10 @@ describe('<VolumeBar />', () => {
     </VolumeBar>
   );
   const wrapper = mount(component);
-  const props = {
-    barValueFn: 'volume',
-  };
 
   it('renders child', () => {
     expect(wrapper.find(VolumeBarValue).length).toBeTruthy();
   });
 
-  barDraggingTests(wrapper, props);
   customAttributeTests(component);
 });

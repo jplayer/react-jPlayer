@@ -5,9 +5,8 @@ import { customAttributeTests } from '../../common';
 import PlaybackRateBarValue from '../../../src/components/controls/playbackRateBarValue';
 
 describe('<PlaybackRateBarValue />', () => {
-  const elementSelector = 'div';
-  const component = <PlaybackRateBarValue />;
   let wrapper;
+  const component = <PlaybackRateBarValue />;
   const styleTests = [
     { props: {
       playbackRate: 1,
@@ -42,5 +41,5 @@ describe('<PlaybackRateBarValue />', () => {
     });
   });
 
-  customAttributeTests(component, elementSelector);
+  customAttributeTests(component);
 });

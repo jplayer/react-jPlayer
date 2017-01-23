@@ -6,17 +6,16 @@ import { customAttributeTests } from '../common';
 import Audio from '../../src/components/audio';
 
 describe('<Audio />', () => {
-  const controlComponent = (
+  const component = (
     <Audio require>
       <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
     </Audio>
   );
-  const wrapper = shallow(controlComponent);
-  wrapper.className = 'test';
+  const wrapper = shallow(component);
 
   it('renders child', () => {
     expect(wrapper.find('track').length).toBeTruthy();
   });
 
-  customAttributeTests(controlComponent);
+  customAttributeTests(component, 'audio');
 });

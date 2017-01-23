@@ -7,7 +7,11 @@ import CurrentTime from '../../src/components/currentTime';
 
 describe('<CurrentTime />', () => {
   const currentTimeText = '13';
-  const component = <CurrentTime currentTimeText={currentTimeText} />;
+  const component = (
+    <CurrentTime>
+      {currentTimeText}
+    </CurrentTime>
+  );
   const wrapper = shallow(component);
 
   it('renders currentTimeText as a child', () => {

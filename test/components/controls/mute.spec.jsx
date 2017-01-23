@@ -10,12 +10,12 @@ describe('<Mute />', () => {
     onClick: () => null,
   };
   const spy = expect.spyOn(functions, 'onClick');
-  const controlComponent = (
+  const component = (
     <Mute onClick={functions.onClick}>
       <i className="fa fa-mute" />
     </Mute>
   );
-  const wrapper = shallow(controlComponent);
+  const wrapper = shallow(component);
 
   it('renders child', () => {
     expect(wrapper.find('.fa-mute').length).toBeTruthy();
@@ -26,5 +26,5 @@ describe('<Mute />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  customAttributeTests(controlComponent);
+  customAttributeTests(component);
 });
