@@ -3,7 +3,7 @@ import expect from 'expect';
 import { mount } from 'enzyme';
 import { customAttributeTests, barDraggingTests } from '../../common';
 import VolumeBar from '../../../src/components/controls/volumeBar';
-import VolumeBarValue from '../../../src/components/controls/values/volumeBar';
+import VolumeBarValue from '../../../src/components/controls/volumeBarValue';
 
 describe('<VolumeBar />', () => {
   const component = (

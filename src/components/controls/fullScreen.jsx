@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes } from '../../util/constants'; 
+import { classes } from '../../util/constants';
 
 const FullScreen = ({ onClick, children, ...attributes }) => (
   <a {...attributes} className={classes.FULL_SCREEN} onClick={onClick}>

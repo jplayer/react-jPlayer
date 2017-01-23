@@ -7,8 +7,8 @@ import Audio from '../../src/components/audio';
 
 describe('<Audio />', () => {
   const controlComponent = (
-    <Audio>
-      <track />
+    <Audio require>
+      <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
     </Audio>
   );
   const wrapper = shallow(controlComponent);

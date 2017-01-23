@@ -3,7 +3,7 @@ import expect from 'expect';
 import { mount } from 'enzyme';
 import { customAttributeTests, barDraggingTests } from '../../common';
 import PlaybackRateBar from '../../../src/components/controls/playbackRateBar';
-import PlaybackRateBarValue from '../../../src/components/controls/values/playbackRateBar';
+import PlaybackRateBarValue from '../../../src/components/controls/playbackRateBarValue';
 
 describe('<PlaybackRateBar />', () => {
   const component = (

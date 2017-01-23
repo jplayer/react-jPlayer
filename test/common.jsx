@@ -5,24 +5,16 @@ import configureMockStore from 'redux-mock-store';
 
 export const customAttributeTests = (component) => {
   let attributes;
-  const wrapper = shallow(React.cloneElement(component));
+  let wrapper;
 
   beforeEach(() => {
     attributes = {};
-  });
-
-  it('custom conflicting attributes get overwritten', () => {
-    Object.keys(wrapper.props()).forEach((key) => {
-      const val = '@@jPlayerReact-test';
-      attributes[key] = val;
-      wrapper.setProps({ attributes });
-      expect(wrapper.prop(key)).toNotBe(val);
-    });
+    wrapper = shallow(React.cloneElement(component));
   });
 
   it('custom non-conflicting attributes get rendered', () => {
     attributes['data-jPlayerReact-test'] = 'test';
-    wrapper.setProps({ attributes });
+    wrapper.setProps({ ...attributes });
     expect(wrapper.prop('data-jPlayerReact-test')).toBe(attributes['data-jPlayerReact-test']);
   });
 };

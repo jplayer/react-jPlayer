@@ -22,7 +22,7 @@
   "scripts": {
     "lint:src": "eslint ./src --fix",
     "lint:examples": "eslint ./examples --fix",
-    "test": "mocha -w test/**/*.spec.jsx"
+    "test": "mocha -w test/**/fullScreen.spec.jsx"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",

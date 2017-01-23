@@ -9,6 +9,6 @@ describe('<Gui />', () => {
   const component = <Gui><div className={'test'} /></Gui>;
   const wrapper = shallow(component);
 
-  it('renders children', () => expect(wrapper.find('.test')).toExist();
+  it('renders children', () => expect(wrapper.find('.test')).toExist());
   customAttributeTests(component);
 });

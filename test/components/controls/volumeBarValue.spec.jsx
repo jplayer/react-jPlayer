@@ -1,8 +1,8 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
-import { customAttributeTests } from '../../../common';
-import VolumeBarValue from '../../../../src/components/controls/values/volumeBar';
+import { customAttributeTests } from '../../common';
+import VolumeBarValue from '../../../src/components/controls/volumeBarValue';
 
 describe('<VolumeBarValue />', () => {
   const elementSelector = 'div';
