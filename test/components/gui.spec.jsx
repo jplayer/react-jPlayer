@@ -7,21 +7,31 @@ import { customAttributeTests } from '../common';
 import Gui from '../../src/components/gui';
 
 describe('<Gui />', () => {
-  const children = <div className="title-container" />;
   const component = (
     <Gui>
-      {children}
+      <div className="title-container" />
     </Gui>
   );
-  const wrapper = shallow(component);
+  let wrapper;
+  let spy;
+
+  beforeEach(() => {
+    wrapper = shallow(component);
+    spy = expect.createSpy();
+  });
 
   it('renders children', () => {
-    expect(wrapper.dive().prop('children')).toBe(children);
+    expect(wrapper.dive().children('.title-container').exists()).toBeTruthy();
   });
 
   it('has gui class', () => {
-    wrapper.setProps({ className: classes.GUI });
     expect(wrapper.dive().hasClass(classes.GUI)).toBeTruthy();
+  });
+
+  it('calls handler on mouse enter', () => {
+    wrapper.setProps({ onMouseEnter: spy });
+    wrapper.dive().simulate('mouseenter');
+    expect(spy).toHaveBeenCalled();
   });
 
   customAttributeTests(component, `.${classes.GUI}`);

@@ -59,6 +59,8 @@ export const hints = {
 };
 
 export const classes = {
+  AUDIO: 'jp-audio',
+  VIDEO: 'jp-video',
   MEDIA: 'jp-media',
   JPLAYER: 'jp-jplayer',
   MUTE: 'jp-mute',

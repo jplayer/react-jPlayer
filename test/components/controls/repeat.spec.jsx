@@ -7,10 +7,9 @@ import Repeat from '../../../src/components/controls/repeat';
 import { classes } from '../../../src/util/constants';
 
 describe('<Repeat />', () => {
-  const children = <i className="fa fa-repeat" />;
   const component = (
     <Repeat>
-      {children}
+      <i className="fa fa-repeat" />
     </Repeat>
   );
   let wrapper;
@@ -22,7 +21,7 @@ describe('<Repeat />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.children('.fa-repeat').exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -32,7 +31,6 @@ describe('<Repeat />', () => {
   });
 
   it('has repeat class', () => {
-    wrapper.setProps({ className: classes.REPEAT });
     expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
   });
 

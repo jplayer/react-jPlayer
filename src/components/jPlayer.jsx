@@ -7,8 +7,8 @@ import KeyControl from '../containers/keyControl';
 const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
   volume, seeking, loop, id, keyEnabled, children, ...attributes }) => {
   const playerClasses = classNames(classes.JPLAYER, {
-    'jp-video': mediaSettings.video,
-    'jp-audio': !mediaSettings.video,
+    [classes.AUDIO]: !mediaSettings.video,
+    [classes.VIDEO]: mediaSettings.video,
     [classes.states.PLAYING]: !paused,
     [classes.states.FULL_SCREEN]: fullScreen,
     [classes.states.MUTED]: muted,
@@ -35,11 +35,11 @@ JPlayer.propTypes = {
     available: React.PropTypes.string,
     supportedFormats: React.PropTypes.objectOf(React.PropTypes.string),
   }),
-  paused: React.PropTypes.bool.isRequired,
-  fullScreen: React.PropTypes.bool.isRequired,
-  muted: React.PropTypes.bool.isRequired,
-  volume: React.PropTypes.number.isRequired,
-  seeking: React.PropTypes.bool.isRequired,
+  paused: React.PropTypes.bool,
+  fullScreen: React.PropTypes.bool,
+  muted: React.PropTypes.bool,
+  volume: React.PropTypes.number,
+  seeking: React.PropTypes.bool,
   loop: React.PropTypes.string,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),

@@ -7,10 +7,9 @@ import { customAttributeTests } from '../../common';
 import Download from '../../../src/components/controls/download';
 
 describe('<Download />', () => {
-  const children = <i className="fa fa-download" />;
   const component = (
     <Download free>
-      {children}
+      <i className="fa fa-download" />
     </Download>
   );
   let wrapper;
@@ -19,17 +18,16 @@ describe('<Download />', () => {
     wrapper = shallow(component);
   });
 
-  it('renders nothing when audio is not free', () => {
+  it('renders null when audio is not free', () => {
     wrapper.setProps({ free: false });
-    expect(wrapper.children().length).toBe(0);
+    expect(wrapper.node).toBe(null);
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.children('.fa-download').exists()).toBeTruthy();
   });
 
   it('has download class', () => {
-    wrapper.setProps({ className: classes.DOWNLOAD });
     expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
   });
 

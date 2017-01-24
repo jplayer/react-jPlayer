@@ -7,10 +7,9 @@ import Mute from '../../../src/components/controls/mute';
 import { classes } from '../../../src/util/constants';
 
 describe('<Mute />', () => {
-  const children = <i className="fa fa-mute" />;
   const component = (
     <Mute>
-      {children}
+      <i className="fa fa-mute" />
     </Mute>
   );
   let wrapper;
@@ -22,7 +21,7 @@ describe('<Mute />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.children('.fa-mute').exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -32,7 +31,6 @@ describe('<Mute />', () => {
   });
 
   it('has mute class', () => {
-    wrapper.setProps({ className: classes.MUTE });
     expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
   });
 

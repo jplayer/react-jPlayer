@@ -7,10 +7,9 @@ import VolumeMax from '../../../src/components/controls/volumeMax';
 import { classes } from '../../../src/util/constants';
 
 describe('<VolumeMax />', () => {
-  const children = <i className="fa fa-volume-up" />;
   const component = (
     <VolumeMax>
-      {children}
+      <i className="fa fa-volume-up" />
     </VolumeMax>
   );
   let wrapper;
@@ -22,7 +21,7 @@ describe('<VolumeMax />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.children('.fa-volume-up').exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -32,7 +31,6 @@ describe('<VolumeMax />', () => {
   });
 
   it('has volumeMax class', () => {
-    wrapper.setProps({ className: classes.VOLUME_MAX });
     expect(wrapper.hasClass(classes.VOLUME_MAX)).toBeTruthy();
   });
 

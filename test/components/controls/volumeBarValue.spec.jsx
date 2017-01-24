@@ -23,14 +23,13 @@ describe('<VolumeBarValue />', () => {
   });
 
   styleTests.forEach((test) => {
-    it(`volume bar with the props (${Object.entries(test.props).join(' & ')}) match styles`, () => {
+    it(`props (${Object.entries(test.props).join(' & ')}) match styles`, () => {
       wrapper.setProps(test.props);
       expect(wrapper.prop('style')).toEqual(test.expected);
     });
   });
 
   it('has volumeBarValue class', () => {
-    wrapper.setProps({ className: classes.VOLUME_BAR_VALUE });
     expect(wrapper.hasClass(classes.VOLUME_BAR_VALUE)).toBeTruthy();
   });
 

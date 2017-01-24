@@ -3,14 +3,15 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../common';
-import CurrentTime from '../../src/components/currentTime';
 import { classes } from '../../src/util/constants';
+import Progress from '../../src/components/progress';
+import SeekBar from '../../src/components/seekBar';
 
-describe('<CurrentTime />', () => {
+describe('<Progress />', () => {
   const component = (
-    <CurrentTime>
-      <div className="current-time">0:00</div>
-    </CurrentTime>
+    <Progress>
+      <SeekBar />
+    </Progress>
   );
   let wrapper;
 
@@ -19,11 +20,11 @@ describe('<CurrentTime />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.children('.current-time').exists()).toBeTruthy();
+    expect(wrapper.children(SeekBar).exists()).toBeTruthy();
   });
 
-  it('has currentTime class', () => {
-    expect(wrapper.hasClass(classes.CURRENT_TIME)).toBeTruthy();
+  it('has progress class', () => {
+    expect(wrapper.hasClass(classes.PROGRESS)).toBeTruthy();
   });
 
   customAttributeTests(component);

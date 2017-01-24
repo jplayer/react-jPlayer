@@ -15,10 +15,11 @@ const SeekBar = ({ setSeekBar, onClick, onMouseDown,
 
 SeekBar.defaultProps = {
   onMouseDown: () => null,
+  setSeekBar: () => null,
 };
 
 SeekBar.propTypes = {
-  setSeekBar: React.PropTypes.func.isRequired,
+  setSeekBar: React.PropTypes.func,
   seekPercent: React.PropTypes.number.isRequired,
   onClick: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func,

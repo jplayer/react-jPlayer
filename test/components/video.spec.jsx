@@ -3,14 +3,14 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../common';
-import Audio from '../../src/components/audio';
+import Video from '../../src/components/video';
 import Media from '../../src/containers/media';
 
-describe('<Audio />', () => {
+describe('<Video />', () => {
   const component = (
-    <Audio require>
-      <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
-    </Audio>
+    <Video require>
+      <source src="movie.mp4" type="video/mp4" />
+    </Video>
   );
   const events = {
     onProgress: () => null,
@@ -38,9 +38,11 @@ describe('<Audio />', () => {
     onCanPlayThrough: () => null,
   };
   let wrapper;
+  let spy;
 
   beforeEach(() => {
     wrapper = shallow(component);
+    spy = expect.createSpy();
   });
 
   it('renders null when not required', () => {
@@ -56,13 +58,17 @@ describe('<Audio />', () => {
     });
   });
 
-  it('wraps audio in mediaContainer', () => {
-    expect(wrapper.find('audio').parent().type()).toBe(Media);
+  it('wraps video in mediaContainer', () => {
+    expect(wrapper.find('video').parent().type()).toBe(Media);
   });
 
   it('renders children', () => {
-    expect(wrapper.find('audio').children('track').exists()).toBeTruthy();
+    expect(wrapper.find('video').children('source').exists()).toBeTruthy();
   });
 
-  customAttributeTests(component, 'audio');
+  it('calls handler on click', () => {
+    
+  });
+
+  customAttributeTests(component, 'video');
 });

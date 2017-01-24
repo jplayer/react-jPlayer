@@ -36,7 +36,7 @@ describe('<PlaybackRateBarValue />', () => {
   });
 
   styleTests.forEach((test) => {
-    it(`playback rate bar with the props (${Object.entries(test.props).join(' & ')}) match styles`,
+    it(`props (${Object.entries(test.props).join(' & ')}) match styles`,
     () => {
       wrapper.setProps(test.props);
       expect(wrapper.prop('style')).toEqual(test.expected);
@@ -44,7 +44,6 @@ describe('<PlaybackRateBarValue />', () => {
   });
 
   it('has playbackRateBarValue class', () => {
-    wrapper.setProps({ className: classes.PLAYBACK_RATE_BAR_VALUE });
     expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR_VALUE)).toBeTruthy();
   });
 

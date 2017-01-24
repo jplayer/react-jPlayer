@@ -7,10 +7,9 @@ import FullScreen from '../../../src/components/controls/fullScreen';
 import { classes } from '../../../src/util/constants';
 
 describe('<FullScreen />', () => {
-  const children = <i className="fa fa-fullScreen" />;
   const component = (
     <FullScreen>
-      {children}
+      <i className="fa fa-fullScreen" />
     </FullScreen>
   );
   let wrapper;
@@ -22,7 +21,7 @@ describe('<FullScreen />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.children('.fa-fullScreen').exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -32,7 +31,6 @@ describe('<FullScreen />', () => {
   });
 
   it('has fullScreen class', () => {
-    wrapper.setProps({ className: classes.FULL_SCREEN });
     expect(wrapper.hasClass(classes.FULL_SCREEN)).toBeTruthy();
   });
 

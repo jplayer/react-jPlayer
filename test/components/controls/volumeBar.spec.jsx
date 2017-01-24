@@ -17,7 +17,7 @@ describe('<VolumeBar />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children').type).toBe(VolumeBarValue);
+    expect(wrapper.children(VolumeBarValue).exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -33,7 +33,6 @@ describe('<VolumeBar />', () => {
   });
 
   it('has volumeBar class', () => {
-    wrapper.setProps({ className: classes.VOLUME_BAR });
     expect(wrapper.hasClass(classes.VOLUME_BAR)).toBeTruthy();
   });
 

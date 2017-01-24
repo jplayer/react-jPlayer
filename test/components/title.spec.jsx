@@ -3,14 +3,12 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../common';
-import Duration from '../../src/components/duration';
+import Title from '../../src/components/title';
 import { classes } from '../../src/util/constants';
 
-describe('<Duration />', () => {
+describe('<Title />', () => {
   const component = (
-    <Duration>
-      <div className="duration" />
-    </Duration>
+    <Title title="fade" />
   );
   let wrapper;
 
@@ -18,12 +16,12 @@ describe('<Duration />', () => {
     wrapper = shallow(component);
   });
 
-  it('renders children', () => {
-    expect(wrapper.children('.duration').exists()).toBeTruthy();
+  it('renders title as children', () => {
+    expect(wrapper.prop('children')).toBe('fade');
   });
 
-  it('has duration class', () => {
-    expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
+  it('has title class', () => {
+    expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
   });
 
   customAttributeTests(component);

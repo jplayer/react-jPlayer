@@ -18,7 +18,7 @@ describe('<PlaybackRateBar />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children').type).toBe(PlaybackRateBarValue);
+    expect(wrapper.children(PlaybackRateBarValue).exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -34,7 +34,6 @@ describe('<PlaybackRateBar />', () => {
   });
 
   it('has playbackRateBar class', () => {
-    wrapper.setProps({ className: classes.PLAYBACK_RATE_BAR });
     expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR)).toBeTruthy();
   });
 

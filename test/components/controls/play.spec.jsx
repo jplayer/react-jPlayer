@@ -7,10 +7,9 @@ import Play from '../../../src/components/controls/play';
 import { classes } from '../../../src/util/constants';
 
 describe('<Play />', () => {
-  const children = <i className="fa fa-play" />;
   const component = (
     <Play>
-      {children}
+      <i className="fa fa-play" />
     </Play>
   );
   let wrapper;
@@ -22,7 +21,7 @@ describe('<Play />', () => {
   });
 
   it('renders children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.children('.fa-play').exists()).toBeTruthy();
   });
 
   it('calls handler on click', () => {
@@ -32,7 +31,6 @@ describe('<Play />', () => {
   });
 
   it('has play class', () => {
-    wrapper.setProps({ className: classes.PLAY });
     expect(wrapper.hasClass(classes.PLAY)).toBeTruthy();
   });
 
