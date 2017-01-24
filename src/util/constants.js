@@ -213,6 +213,8 @@ export const statusDefaultValues = {
   seeking: false,
   src: '',
   guiFadeOut: false,
+  currentTimeText: '0:00',
+  durationText: '',
   seekPercent: 0,
   remainingDuration: 0,
   playHeadPercent: 0,
@@ -241,6 +243,7 @@ export const defaultOptions = {
   guiFadeHoldTime: 3000,
   media: {
     title: '',
+    free: false,
   },
   global: [],
   showRemainingDuration: false,

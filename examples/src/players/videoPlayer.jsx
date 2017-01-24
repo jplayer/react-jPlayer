@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
+import { JPlayer, Gui, Progress, SeekBar, Buffer,
   Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration, CurrentTime } from '../../../src/index';
 import webmv from '../../assets/Big Buck Bunny Trailer.webm';
@@ -12,7 +12,9 @@ const VideoPlayer = props => (
   <JPlayer data-type="jp-default">
     <div className="jp-media">
       <Poster />
-      <Video events={props.events} />
+      <Video events={props.events}>
+        {props.browserUnsupportedHtml}
+      </Video>
     </div>
     <Gui>
       <div className="jp-title-container">
@@ -37,12 +39,10 @@ const VideoPlayer = props => (
         </Progress>
       </div>
     </Gui>
-    <BrowserUnsupported />
   </JPlayer>
 );
 
-export const videoOptions = {
-  id: 'video-player',
+VideoPlayer.options = {
   muted: true,
   keyEnabled: true,
   media: {
@@ -54,4 +54,4 @@ export const videoOptions = {
   },
 };
 
-export default jPlayerConnect(VideoPlayer, videoOptions.id);
+export default jPlayerConnect(VideoPlayer);

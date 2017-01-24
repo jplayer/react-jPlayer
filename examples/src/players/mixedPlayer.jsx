@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
+import { JPlayer, Gui, Progress, SeekBar, Buffer,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
@@ -48,8 +48,12 @@ const MixedPlayer = (props) => {
       <JPlayer data-type="jp-default">
         <div className="jp-media">
           <Poster style={posterStyle} />
-          <Video events={props.events} />
-          <Audio events={props.events} />
+          <Video events={props.events}>
+            {props.browserUnsupportedHtml}
+          </Video>
+          <Audio events={props.events}>
+            {props.browserUnsupportedHtml}
+          </Audio>
         </div>
         <Gui>
           <div className="jp-title-container">
@@ -75,18 +79,16 @@ const MixedPlayer = (props) => {
             </Progress>
           </div>
         </Gui>
-        <BrowserUnsupported />
       </JPlayer>
     </div>
   );
 };
 
-export const mixedOptions = {
-  id: 'mixed-player',
+MixedPlayer.options = {
   muted: true,
   showRemainingDuration: true,
   keyEnabled: true,
   media: medias[mediaId],
 };
 
-export default jPlayerConnect(MixedPlayer, mixedOptions.id);
+export default jPlayerConnect(MixedPlayer);

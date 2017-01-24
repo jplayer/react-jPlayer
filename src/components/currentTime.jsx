@@ -8,12 +8,8 @@ const CurrentTime = ({ children, ...attributes }) => (
   </div>
 );
 
-CurrentTime.defaultProps = {
-  children: '0:00',
-};
-
 CurrentTime.propTypes = {
-  children: React.PropTypes.node,
+  children: React.PropTypes.string.isRequired,
 };
 
 export default CurrentTime;

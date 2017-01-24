@@ -15,9 +15,9 @@ const VolumeBarValue = ({ muted, volume, verticalVolume, ...attributes }) => {
 };
 
 VolumeBarValue.defaultProps = {
-  verticalVolume: defaultOptions.verticalVolume,
   muted: defaultOptions.muted,
   volume: defaultOptions.volume,
+  verticalVolume: defaultOptions.verticalVolume,
 };
 
 VolumeBarValue.propTypes = {

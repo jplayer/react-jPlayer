@@ -9,8 +9,12 @@ const Buffer = ({ setCanvas, ...attributes }) => (
   />
 );
 
+Buffer.defaultProps = {
+  setCanvas: Function.prototype,
+};
+
 Buffer.propTypes = {
-  setCanvas: React.PropTypes.func.isRequired,
+  setCanvas: React.PropTypes.func,
 };
 
 export default Buffer;

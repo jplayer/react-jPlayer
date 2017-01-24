@@ -8,12 +8,8 @@ const Duration = ({ children, ...attributes }) => (
   </div>
 );
 
-Duration.defaultProps = {
-  children: '',
-};
-
 Duration.propTypes = {
-  children: React.PropTypes.node,
+  children: React.PropTypes.string.isRequired,
 };
 
 export default Duration;

@@ -1,12 +1,13 @@
 import React from 'react';
 
 import Media from '../containers/media';
+import { defaultOptions } from '../util/constants';
 
-const Video = ({ children, require, events, onClick, ...attributes }) => (
+const Video = ({ children, require, events, ...attributes }) => (
   require ?
     <Media {...events}>
       <video
-        {...attributes} onClick={onClick}
+        {...attributes}
       >
         {children}
       </video>
@@ -16,9 +17,8 @@ const Video = ({ children, require, events, onClick, ...attributes }) => (
 
 Video.defaultProps = {
   children: null,
-  onClick: null,
-  require: false,
   events: null,
+  require: defaultOptions.mediaSettings.video,
 };
 
 Video.propTypes = {
@@ -26,8 +26,7 @@ Video.propTypes = {
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
   ]),
-  require: React.PropTypes.bool.isRequired,
-  onClick: React.PropTypes.func,
+  require: React.PropTypes.bool,
   events: React.PropTypes.shape({
     onProgress: React.PropTypes.func,
     onTimeUpdate: React.PropTypes.func,

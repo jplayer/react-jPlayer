@@ -1,60 +1,44 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import merge from 'lodash.merge';
 
 import './less/default/jPlayer.less';
-import * as jPlayerActions from './actions/jPlayerActions';
-
-const mapStateToProps = (state, { id, ...props }) => {
-  const otherPlayers = {};
-
-  Object.keys(state.jPlayers).forEach((key) => {
-    if (key !== id) {
-      otherPlayers[key] = state.jPlayers[key];
-    }
-  });
-
-  if (Object.keys(otherPlayers).length) {
-    return {
-      ...props,
-      ...state.jPlayers[id],
-      jPlayers: otherPlayers,
-    };
-  }
-
-  return {
-    ...props,
-    ...state.jPlayers[id],
-  };
-};
-
-const mapDispatchToProps = dispatch => ({ ...bindActionCreators(jPlayerActions, dispatch) });
+import jPlayerReducers from './reducers';
+import { defaultOptions, statusDefaultValues } from './util/constants';
 
 class WrappedPlayer extends React.Component {
   static get propTypes() {
     return {
-      id: React.PropTypes.string.isRequired,
+      // id: React.PropTypes.number,
       player: React.PropTypes.func.isRequired,
     };
   }
   static get childContextTypes() {
     return {
-      id: React.PropTypes.string,
+      id: React.PropTypes.number,
     };
   }
   constructor(props) {
     super(props);
 
-    this.ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(this.props.player);
+    this.initialState = {
+      jPlayers: {},
+    };
+    this.props.players.forEach((player) => { 
+      this.initialState.jPlayers[player.id] = {
+        ...merge({}, statusDefaultValues, defaultOptions, player.options),
+      };
+    });
   }
-  getChildContext = () => ({
-    id: this.props.id,
-  });
   render() {
-    const { id, player, ...props } = this.props; // eslint-disable-line no-unused-vars
-    const ConnectedPlayer = this.ConnectedPlayer;
+    const { player, ...props } = this.props; // eslint-disable-line no-unused-vars
 
-    return <ConnectedPlayer id={id} {...props} />;
+    return (
+      <Provider store={createStore(jPlayerReducers, this.initialState)}>
+        {this.props.children}
+      </Provider>
+    );
   }
 }
 

@@ -14,8 +14,8 @@ const SeekBar = ({ setSeekBar, onClick, onMouseDown,
 );
 
 SeekBar.defaultProps = {
-  onMouseDown: () => null,
-  setSeekBar: () => null,
+  onMouseDown: Function.prototype,
+  setSeekBar: Function.prototype,
 };
 
 SeekBar.propTypes = {

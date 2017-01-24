@@ -47,6 +47,15 @@ class StatusWrapper extends React.Component {
         ));
       };
     });
+
+    this.browserUnsupportedHtml = (
+      <div>
+        <h2>Browser Unsupported</h2>
+        <div>
+          To play the media you will need to update your browser to a more recent version.
+        </div>
+      </div>
+    );
   }
   componentWillUnmount() {
     this.eventTimeouts.forEach(timeoutNumber => clearTimeout(timeoutNumber));
@@ -69,11 +78,14 @@ class StatusWrapper extends React.Component {
   render() {
     return (
       <div className="example-wrapper">
-        {React.cloneElement(React.Children.only(this.props.children), { events: this.events })}
+        {React.cloneElement(React.Children.only(this.props.children), {
+          events: this.events,
+          browserUnsupportedHtml: this.browserUnsupportedHtml,
+        })}
         <div className="container-fluid">
           <div className="row">
-            <PropsInRealTime id={this.props.id} />
-            <EventsInRealTime id={this.props.id} mediaEvents={this.state.eventCalls} />
+            {/* <PropsInRealTime id={this.props.id} />
+            <EventsInRealTime id={this.props.id} mediaEvents={this.state.eventCalls} />*/}
           </div>
         </div>
       </div>
@@ -82,7 +94,7 @@ class StatusWrapper extends React.Component {
 }
 
 StatusWrapper.propTypes = {
-  id: React.PropTypes.string.isRequired,
+  id: React.PropTypes.number.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.element,
     React.PropTypes.arrayOf(React.PropTypes.element),

@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, Progress, SeekBar, Buffer, BrowserUnsupported,
+import { JPlayer, Gui, Progress, SeekBar, Buffer,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
@@ -11,7 +11,7 @@ import jPlayerConnect from '../../../src/connect';
 const AudioPlayer = props => (
   <JPlayer data-type="jp-default">
     <Audio events={props.events}>
-      <track src="subtitles_en.vtt" kind="subtitles" srcLang="en" label="English" />
+      {props.browserUnsupportedHtml}
     </Audio>
     <Gui>
       <div className="jp-title-container">
@@ -38,12 +38,10 @@ const AudioPlayer = props => (
         </Progress>
       </div>
     </Gui>
-    <BrowserUnsupported />
   </JPlayer>
 );
 
-export const audioOptions = {
-  id: 'audio-player',
+AudioPlayer.options = {
   muted: true,
   keyEnabled: true,
   media: {
@@ -57,7 +55,7 @@ export const audioOptions = {
   },
 };
 
-export default jPlayerConnect(AudioPlayer, audioOptions.id);
+export default jPlayerConnect(AudioPlayer);
 
 /*
 onShuffleClick = (event) => {

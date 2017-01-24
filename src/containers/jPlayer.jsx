@@ -14,7 +14,7 @@ Object.entries(formats).forEach((format) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => {debugger; return({
   timeFormats: jPlayers[id].timeFormats,
   mediaSettings: jPlayers[id].mediaSettings,
   media: jPlayers[id].media,
@@ -30,7 +30,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   id,
   children,
   attributes,
-});
+});}
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({
   setMedia: media => dispatch(setMedia(media, id)),
@@ -42,7 +42,7 @@ class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      id: React.PropTypes.string.isRequired,
+      id: React.PropTypes.number.isRequired,
       timeFormats: React.PropTypes.object,
       mediaSettings: React.PropTypes.shape({
         video: React.PropTypes.bool,

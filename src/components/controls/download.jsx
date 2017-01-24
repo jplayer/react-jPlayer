@@ -2,10 +2,10 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Download = ({ free, src, children, ...attributes }) => (
+const Download = ({ free, href, children, ...attributes }) => (
   free ?
     <a
-      {...attributes} className={classes.DOWNLOAD} href={src}
+      {...attributes} className={classes.DOWNLOAD} href={href}
       download
     >
       {children}
@@ -13,17 +13,13 @@ const Download = ({ free, src, children, ...attributes }) => (
   : null
 );
 
-Download.defaultProps = {
-  free: false,
-};
-
 Download.propTypes = {
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
   ]).isRequired,
-  src: React.PropTypes.string.isRequired,
-  free: React.PropTypes.bool,
+  href: React.PropTypes.string.isRequired,
+  free: React.PropTypes.bool.isRequired,
 };
 
 export default Download;

@@ -3,7 +3,7 @@ import Download from '../../components/controls/download';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   free: jPlayers[id].media.free,
-  src: jPlayers[id].src,
+  href: jPlayers[id].src,
   children,
   ...attributes,
 });
