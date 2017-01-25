@@ -4,10 +4,10 @@ import { connectWithId } from '../util/index';
 import { defaultOptions } from '../util/constants';
 import Buffer from '../components/buffer';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
-  bufferedTimeRanges: jPlayers[id].bufferedTimeRanges,
-  duration: jPlayers[id].duration,
-  bufferColour: jPlayers[id].bufferColour,
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+  bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
+  duration: jPlayers[uid].duration,
+  bufferColour: jPlayers[uid].bufferColour,
   attributes,
 });
 

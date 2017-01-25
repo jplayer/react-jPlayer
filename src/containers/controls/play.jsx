@@ -2,12 +2,12 @@ import { play, pause } from '../../actions/jPlayerActions';
 import { connectWithId } from '../../util/index';
 import Play from '../../components/controls/play';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
-  paused: jPlayers[id].paused,
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
+  paused: jPlayers[uid].paused,
 });
 
-const mergeProps = ({ paused }, { dispatch }, { id, children, ...attributes }) => ({
-  onClick: () => (paused ? dispatch(play(id)) : dispatch(pause(id))),
+const mergeProps = ({ paused }, { dispatch }, { uid, children, ...attributes }) => ({
+  onClick: () => (paused ? dispatch(play(uid)) : dispatch(pause(uid))),
   children,
   ...attributes,
 });

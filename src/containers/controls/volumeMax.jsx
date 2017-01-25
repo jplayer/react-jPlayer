@@ -2,16 +2,16 @@ import { connectWithId } from '../../util/index';
 import { setVolume, setMute } from '../../actions/jPlayerActions';
 import VolumeMax from '../../components/controls/volumeMax';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
-  muted: jPlayers[id].muted,
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
+  muted: jPlayers[uid].muted,
 });
 
-const mergeProps = ({ muted }, { dispatch }, { id, children, ...attributes }) => ({
+const mergeProps = ({ muted }, { dispatch }, { uid, children, ...attributes }) => ({
   onClick: () => {
-    dispatch(setVolume(1, id));
+    dispatch(setVolume(1, uid));
 
     if (muted) {
-      dispatch(setMute(false, id));
+      dispatch(setMute(false, uid));
     }
   },
   children,

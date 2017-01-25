@@ -10,7 +10,7 @@ import KeyControl from '../../src/containers/keyControl';
 
 describe('<JPlayer />', () => {
   const component = (
-    <JPlayer id="jPlayer-test">
+    <JPlayer uid="jPlayer-test">
       <Gui />
     </JPlayer>
   );
@@ -55,8 +55,8 @@ describe('<JPlayer />', () => {
     expect(wrapper.children(KeyControl).exists()).toBeTruthy();
   });
 
-  it('has custom id', () => {
-    expect(wrapper.prop('id')).toExist();
+  it('has custom uid', () => {
+    expect(wrapper.prop('uid')).toExist();
   });
 
   classTests.forEach((test) => {

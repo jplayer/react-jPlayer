@@ -1,5 +1,3 @@
-import screenfull from 'screenfull';
-
 import { actionTypes, formats } from '../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 import { statusDefaultValues } from '../containers/jPlayer';
@@ -96,42 +94,37 @@ const setPlayHead = (state, { percent }) => {
   });
 };
 
-const setVolume = (state, { volumeValue }) => updateObject(state, {
-  volume: limitValue(volumeValue, 0, 1),
+const setVolume = (state, { volume }) => updateObject(state, {
+  volume: limitValue(volume, 0, 1),
 });
 
-const setMute = (state, { muteValue }) => updateObject(state, {
-  muted: muteValue,
+const setMute = (state, { mute }) => updateObject(state, {
+  muted: mute,
 });
 
 const setDuration = (state, { remainingDuration }) => updateObject(state, {
   remainingDuration: !remainingDuration,
 });
 
-const setPlaybackRate = (state, { playbackRateValue }) => updateObject(state, {
-  playbackRate: limitValue(playbackRateValue, state.minPlaybackRate, state.maxPlaybackRate),
+const setPlaybackRate = (state, { playbackRate }) => updateObject(state, {
+  playbackRate: limitValue(playbackRate, state.minPlaybackRate, state.maxPlaybackRate),
 });
 
-const setLoop = (state, { loopValue }) => updateObject(state, {
-  loop: loopValue,
+const setLoop = (state, { loop }) => updateObject(state, {
+  loop,
 });
 
-const setFullScreen = (state, { fullScreenValue, id }) => {
-  if (fullScreenValue) {
-    screenfull.request(document.getElementById(id));
-  } else {
-    screenfull.exit();
-  }
-  return state;
-};
+const setFullScreen = (state, { fullScreen }) => updateObject(state, {
+  fullScreen,
+});
 
-const setFocus = (state, { id }) => {
+const setFocus = (state, { uid }) => {
   const newState = { ...state };
   const firstKeyEnabledPlayer = Object.keys(state).filter(key => newState[key].keyEnabled).shift();
 
-  if (newState[id].keyEnabled) {
+  if (newState[uid].keyEnabled) {
     Object.keys(state).forEach((key) => {
-      if (key === id) {
+      if (key === uid) {
         newState[key] = updateObject(newState[key], { focus: true });
       } else {
         newState[key] = updateObject(newState[key], { focus: false });
@@ -163,7 +156,7 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
     case actionTypes.jPlayer.PLAY_HEAD:
       return setPlayHead(jPlayer, action);
     case actionTypes.jPlayer.VOLUME:
-      return setVolume(setMute(jPlayer, { muteValue: action.volumeValue <= 0 }), action);
+      return setVolume(setMute(jPlayer, { mute: action.volume <= 0 }), action);
     case actionTypes.jPlayer.MUTE:
       return setMute(jPlayer, action);
     case actionTypes.jPlayer.DURATION:
@@ -187,7 +180,7 @@ const jPlayerReducer = (state = {}, action) => {
     const jPlayer = newState[key];
 
     jPlayer.global.forEach((actionType) => {
-      if (key !== action.id && action.type === actionType) {
+      if (key !== action.uid && action.type === actionType) {
         newState = updateObject(newState, {
           [key]: updatePlayer(newState[key], action, actionType),
         });
@@ -200,12 +193,12 @@ const jPlayerReducer = (state = {}, action) => {
       return updateObject(newState, setFocus(newState, action));
     default:
       newState = updateObject(newState, {
-        [action.id]: updatePlayer(newState[action.id], action),
+        [action.uid]: updatePlayer(newState[action.uid], action),
       });
 
       return jPlayerReducer(newState, {
         type: actionTypes.jPlayer.FOCUS,
-        id: action.id,
+        uid: action.uid,
       });
   }
 };

@@ -6,17 +6,17 @@ import { setPlaybackRate } from '../../actions/jPlayerActions';
 import PlaybackRateBar from '../../components/controls/playbackRateBar';
 import PlaybackRateBarValue from './playbackRateBarValue';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
-  verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
-  minPlaybackRate: jPlayers[id].minPlaybackRate,
-  maxPlaybackRate: jPlayers[id].maxPlaybackRate,
-  barDrag: jPlayers[id].barDrag,
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
+  verticalPlaybackRate: jPlayers[uid].verticalPlaybackRate,
+  minPlaybackRate: jPlayers[uid].minPlaybackRate,
+  maxPlaybackRate: jPlayers[uid].maxPlaybackRate,
+  barDrag: jPlayers[uid].barDrag,
   children,
   attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  setPlaybackRate: newPlaybackRate => dispatch(setPlaybackRate(newPlaybackRate, id)),
+const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+  setPlaybackRate: newPlaybackRate => dispatch(setPlaybackRate(newPlaybackRate, uid)),
   ...stateProps,
 });
 

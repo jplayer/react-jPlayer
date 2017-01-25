@@ -2,17 +2,17 @@ import { connectWithId } from '../util/index';
 import actions from '../actions/jPlayerActions';
 import Gui from '../components/gui';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
-  fullScreen: jPlayers[id].fullScreen,
-  guiFadeOut: jPlayers[id].guiFadeOut,
-  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
+  fullScreen: jPlayers[uid].fullScreen,
+  guiFadeOut: jPlayers[uid].guiFadeOut,
+  guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
 });
 
 const mergeProps = ({ fullScreen, guiFadeOut, guiFadeHoldTimeout }, { dispatch },
-{ id, children, ...attributes }) => ({
+{ uid, children, ...attributes }) => ({
   onMouseEnter: () => {
     if (fullScreen) {
-      dispatch(actions.updateOption('guiFadeOut', false, id));
+      dispatch(actions.updateOption('guiFadeOut', false, uid));
       clearTimeout(guiFadeHoldTimeout);
     }
   },

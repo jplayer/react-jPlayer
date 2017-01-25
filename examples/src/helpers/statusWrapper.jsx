@@ -7,7 +7,7 @@ import EventsInRealTime from './eventsInRealTime';
 class StatusWrapper extends React.Component {
   static get propTypes() {
     return {
-      id: React.PropTypes.string.isRequired,
+      uid: React.PropTypes.string.isRequired,
       children: React.PropTypes.oneOfType([
         React.PropTypes.element,
         React.PropTypes.arrayOf(React.PropTypes.element),
@@ -93,8 +93,8 @@ class StatusWrapper extends React.Component {
         })}
         <div className="container-fluid">
           <div className="row">
-            <PropsInRealTime id={this.props.id} />
-            <EventsInRealTime id={this.props.id} mediaEvents={this.state.eventCalls} />
+            <PropsInRealTime uid={this.props.uid} />
+            <EventsInRealTime uid={this.props.uid} mediaEvents={this.state.eventCalls} />
           </div>
         </div>
       </div>

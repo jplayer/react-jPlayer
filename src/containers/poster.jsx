@@ -1,11 +1,11 @@
 import { connectWithId } from '../util/index';
 import Poster from '../components/poster';
 
-const mapStateToProps = ({ jPlayers }, { id, alt, ...attributes }) => ({
-  src: jPlayers[id].media.poster,
-  paused: jPlayers[id].paused,
-  currentTime: jPlayers[id].currentTime,
-  video: jPlayers[id].mediaSettings.video,
+const mapStateToProps = ({ jPlayers }, { uid, alt, ...attributes }) => ({
+  src: jPlayers[uid].media.poster,
+  paused: jPlayers[uid].paused,
+  currentTime: jPlayers[uid].currentTime,
+  video: jPlayers[uid].mediaSettings.video,
   alt,
   ...attributes,
 });

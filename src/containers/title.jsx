@@ -1,8 +1,8 @@
 import { connectWithId } from '../util/index';
 import Title from '../components/title';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
-  children: jPlayers[id].media.title,
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+  children: jPlayers[uid].media.title,
   ...attributes,
 });
 

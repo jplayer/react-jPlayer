@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { errors, hints, defaultOptions } from './constants';
 
 export const connectWithId = (...args) => compose(
-  getContext({ id: React.PropTypes.string }),
+  getContext({ uid: React.PropTypes.string }),
   connect(...args),
 );
 

@@ -26,7 +26,7 @@
 //       <MuteContainer className={attributes.className}>
 //         {children}
 //       </MuteContainer>,
-//       { context: { id: 'audio-player-one' } },
+//       { context: { uid: 'audio-player-one' } },
 //       ).shallow({ context: { store } });
 //   });
 

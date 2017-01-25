@@ -30,8 +30,9 @@ class WrappedPlayer extends React.Component {
     }
 
     jPlayers.forEach((jPlayer) => {
-      this.initialState.jPlayers[jPlayer.id] = {
+      this.initialState.jPlayers[jPlayer.uid] = {
         ...merge({}, statusDefaultValues, defaultOptions, jPlayer.options),
+        id: jPlayer.uid,
       };
     });
 

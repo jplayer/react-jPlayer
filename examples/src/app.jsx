@@ -25,13 +25,13 @@ const App = () => (
     </NavBar>
     <NavContentContainer>
       <NavContent>
-        <StatusWrapper id={AudioPlayer.id}><AudioPlayer /></StatusWrapper>
+        <StatusWrapper uid={AudioPlayer.uid}><AudioPlayer /></StatusWrapper>
       </NavContent>
       <NavContent>
-        <StatusWrapper id={VideoPlayer.id}><VideoPlayer /></StatusWrapper>
+        <StatusWrapper uid={VideoPlayer.uid}><VideoPlayer /></StatusWrapper>
       </NavContent>
       <NavContent>
-        <StatusWrapper id={MixedPlayer.id}><MixedPlayer /></StatusWrapper>
+        <StatusWrapper uid={MixedPlayer.uid}><MixedPlayer /></StatusWrapper>
       </NavContent>
     </NavContentContainer>
   </NavContainer>

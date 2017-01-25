@@ -9,7 +9,7 @@
 // import configureMockStore from 'redux-mock-store';
 
 // describe('Play Container', () => {
-//   const id = 'audio-player-1';
+//   const uid = 'audio-player-1';
 //   const children = <i />;
 //   const attributes = {
 //     className: 'test',
@@ -25,18 +25,18 @@
 //       <PlayContainer className={attributes.className}>
 //         {children}
 //       </PlayContainer>,
-//       { context: { id } },
+//       { context: { uid } },
 //       );
 //     wrapper = connected.shallow({ context: { store } });
 //   });
 
 //   it('onClick toggles play if paused', () => {
 //     wrapper.simulate('click');
-//     expect(store.dispatch).toHaveBeenCalledWith(play(id));
+//     expect(store.dispatch).toHaveBeenCalledWith(play(uid));
 //   });
 //   it('onClick toggles pause if playing', () => {
 //     wrapper.simulate('click');
-//     expect(dispatchSpy).toHaveBeenCalledWith(pause(id));
+//     expect(dispatchSpy).toHaveBeenCalledWith(pause(uid));
 //   });
 //   it('renders component', () => expect(wrapper.type()).toBe(Play));
 //   it('maps children', () => expect(wrapper.prop('children')).toBe(children));

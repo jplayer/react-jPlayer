@@ -26,7 +26,7 @@
 //       <FullScreenContainer className={attributes.className}>
 //         {children}
 //       </FullScreenContainer>,
-//       { context: { id: 'audio-player-one' } },
+//       { context: { uid: 'audio-player-one' } },
 //       ).shallow({ context: { store } });
 //   });
 

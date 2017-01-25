@@ -6,15 +6,15 @@ import { setVolume } from '../../actions/jPlayerActions';
 import VolumeBar from '../../components/controls/volumeBar';
 import VolumeBarValue from './volumeBarValue';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
-  verticalVolume: jPlayers[id].verticalVolume,
-  barDrag: jPlayers[id].barDrag,
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
+  verticalVolume: jPlayers[uid].verticalVolume,
+  barDrag: jPlayers[uid].barDrag,
   children,
   attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  setVolume: newVolume => dispatch(setVolume(newVolume, id)),
+const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+  setVolume: newVolume => dispatch(setVolume(newVolume, uid)),
   ...stateProps,
 });
 

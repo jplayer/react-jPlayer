@@ -4,15 +4,15 @@ import { defaultOptions } from '../util/constants';
 import { setPlayHead } from '../actions/jPlayerActions';
 import SeekBar from '../components/seekBar';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
-  seekPercent: jPlayers[id].seekPercent,
-  barDrag: jPlayers[id].barDrag,
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
+  seekPercent: jPlayers[uid].seekPercent,
+  barDrag: jPlayers[uid].barDrag,
   children,
   attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  playHead: percentage => dispatch(setPlayHead(percentage, id)),
+const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+  playHead: percentage => dispatch(setPlayHead(percentage, uid)),
   ...stateProps,
 });
 

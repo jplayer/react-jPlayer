@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 
 import * as jPlayerActions from './actions/jPlayerActions';
 
-const mapStateToProps = (state, { id, ...props }) => {
+const mapStateToProps = (state, { uid, ...props }) => {
   const otherPlayers = {};
 
   Object.keys(state.jPlayers).forEach((key) => {
-    if (key !== id) {
+    if (key !== uid) {
       otherPlayers[key] = state.jPlayers[key];
     }
   });
@@ -17,14 +17,14 @@ const mapStateToProps = (state, { id, ...props }) => {
   if (Object.keys(otherPlayers).length) {
     return {
       ...props,
-      ...state.jPlayers[id],
+      ...state.jPlayers[uid],
       jPlayers: otherPlayers,
     };
   }
 
   return {
     ...props,
-    ...state.jPlayers[id],
+    ...state.jPlayers[uid],
   };
 };
 
@@ -34,7 +34,7 @@ const jPlayerConnect = (player) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(player);
 
   return class extends React.Component {
-    static get id() {
+    static get uid() {
       return player.name;
     }
     static get options() {
@@ -42,14 +42,14 @@ const jPlayerConnect = (player) => {
     }
     static get childContextTypes() {
       return {
-        id: React.PropTypes.string,
+        uid: React.PropTypes.string,
       };
     }
     getChildContext = () => ({
-      id: player.name,
+      uid: player.name,
     });
     render() {
-      return <ConnectedPlayer id={player.name} {...this.props} />;
+      return <ConnectedPlayer uid={player.name} {...this.props} />;
     }
   };
 };

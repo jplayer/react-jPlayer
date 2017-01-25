@@ -4,31 +4,31 @@ import { connectWithId, urlNotSupportedError, convertTime } from '../util/index'
 import { loopOptions, defaultOptions, statusDefaultValues } from '../util/constants';
 import actions, { pause } from '../actions/jPlayerActions';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...props }) => ({
-  loop: jPlayers[id].loop,
-  showRemainingDuration: jPlayers[id].showRemainingDuration,
-  src: jPlayers[id].src,
-  currentTime: jPlayers[id].currentTime,
-  playHeadPercent: jPlayers[id].playHeadPercent,
-  paused: jPlayers[id].paused,
-  defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
-  playbackRate: jPlayers[id].playbackRate,
-  preload: jPlayers[id].preload,
-  volume: jPlayers[id].volume,
-  muted: jPlayers[id].muted,
-  autoplay: jPlayers[id].autoplay,
-  title: jPlayers[id].media.title,
-  newTime: jPlayers[id].newTime,
-  fullScreen: jPlayers[id].fullScreen,
-  require: jPlayers[id].mediaSettings.require,
-  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
+  loop: jPlayers[uid].loop,
+  showRemainingDuration: jPlayers[uid].showRemainingDuration,
+  src: jPlayers[uid].src,
+  currentTime: jPlayers[uid].currentTime,
+  playHeadPercent: jPlayers[uid].playHeadPercent,
+  paused: jPlayers[uid].paused,
+  defaultPlaybackRate: jPlayers[uid].defaultPlaybackRate,
+  playbackRate: jPlayers[uid].playbackRate,
+  preload: jPlayers[uid].preload,
+  volume: jPlayers[uid].volume,
+  muted: jPlayers[uid].muted,
+  autoplay: jPlayers[uid].autoplay,
+  title: jPlayers[uid].media.title,
+  newTime: jPlayers[uid].newTime,
+  fullScreen: jPlayers[uid].fullScreen,
+  require: jPlayers[uid].mediaSettings.require,
+  guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
   children,
   ...props,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  updateOption: (key, value) => dispatch(actions.updateOption(key, value, id)),
-  pause: time => dispatch(pause(id, time)),
+const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+  updateOption: (key, value) => dispatch(actions.updateOption(key, value, uid)),
+  pause: time => dispatch(pause(uid, time)),
   ...stateProps,
 });
 

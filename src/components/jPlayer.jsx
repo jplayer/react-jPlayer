@@ -5,7 +5,7 @@ import { defaultOptions, statusDefaultValues, classes, loopOptions } from '../ut
 import KeyControl from '../containers/keyControl';
 
 const JPlayer = ({ video, paused, fullScreen, muted,
-  volume, seeking, loop, keyEnabled, children, ...attributes }) => {
+  volume, seeking, loop, keyEnabled, setJPlayer, children, ...attributes }) => {
   const playerClasses = classNames(classes.JPLAYER, {
     [classes.AUDIO]: !video,
     [classes.VIDEO]: video,
@@ -20,7 +20,7 @@ const JPlayer = ({ video, paused, fullScreen, muted,
     // 'jp-video-full': sizeFullCssClass !== undefined,
   });
   return (
-    <div {...attributes} className={playerClasses}>
+    <div ref={setJPlayer} {...attributes} className={playerClasses}>
       {children}
       {keyEnabled && <KeyControl />}
     </div>
@@ -35,6 +35,7 @@ JPlayer.propTypes = {
   volume: React.PropTypes.number,
   seeking: React.PropTypes.bool.isRequired,
   loop: React.PropTypes.string,
+  setJPlayer: React.PropTypes.func,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
@@ -51,6 +52,7 @@ JPlayer.defaultProps = {
   seeking: statusDefaultValues.seeking,
   loop: defaultOptions.loop,
   keyEnabled: defaultOptions.keyEnabled,
+  setJPlayer: null,
 };
 
 export default JPlayer;

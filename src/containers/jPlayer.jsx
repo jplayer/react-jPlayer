@@ -14,26 +14,26 @@ Object.entries(formats).forEach((format) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
-  timeFormats: jPlayers[id].timeFormats,
-  video: jPlayers[id].mediaSettings.video,
-  media: jPlayers[id].media,
-  error: jPlayers[id].error,
-  paused: jPlayers[id].paused,
-  fullScreen: jPlayers[id].fullScreen,
-  muted: jPlayers[id].muted,
-  volume: jPlayers[id].volume,
-  seeking: jPlayers[id].seeking,
-  loop: jPlayers[id].loop,
-  keyEnabled: jPlayers[id].keyEnabled,
-  currentTime: jPlayers[id].currentTime,
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
+  timeFormats: jPlayers[uid].timeFormats,
+  video: jPlayers[uid].mediaSettings.video,
+  media: jPlayers[uid].media,
+  error: jPlayers[uid].error,
+  paused: jPlayers[uid].paused,
+  fullScreen: jPlayers[uid].fullScreen,
+  muted: jPlayers[uid].muted,
+  volume: jPlayers[uid].volume,
+  seeking: jPlayers[uid].seeking,
+  loop: jPlayers[uid].loop,
+  keyEnabled: jPlayers[uid].keyEnabled,
+  currentTime: jPlayers[uid].currentTime,
   children,
   attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  setMedia: media => dispatch(setMedia(media, id)),
-  updateOption: (key, value) => dispatch(actions.updateOption(key, value, id)),
+const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+  setMedia: media => dispatch(setMedia(media, uid)),
+  updateOption: (key, value) => dispatch(actions.updateOption(key, value, uid)),
   ...stateProps,
 });
 
@@ -92,30 +92,43 @@ class JPlayerContainer extends React.Component {
     this.timeFormats = merge(defaultOptions.timeFormats, this.props.timeFormats);
   }
   componentWillMount() {
-    document.addEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
+    document.addEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
   }
   componentDidMount() {
     this.props.setMedia(this.props.media);
   }
   componentWillReceiveProps(nextProps) {
     this.logErrors(nextProps);
+    this.setFullScreen(nextProps);
   }
   componentWillUnmount() {
-    document.removeEventListener(screenfull.raw.fullscreenchange, this.toggleFullScreen);
+    document.removeEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
     window.removeEventListener('unload', this.unload);
   }
-  logErrors = (nextProps) => {
-    if (nextProps.error !== this.props.error) {
-      console.error(nextProps.error);
+  setJPlayer = ref => (this.jPlayer = ref)
+  setFullScreen = ({ fullScreen }) => {
+    if (fullScreen !== this.props.fullScreen) {
+      if (fullScreen) {
+        screenfull.request(this.jPlayer);
+      } else {
+        screenfull.exit();
+      }
     }
   }
-  toggleFullScreen = () => (
-    this.props.updateOption('fullScreen', screenfull.isFullscreen)
-  )
+  closeFullScreen = () => {
+    if (!screenfull.isFullscreen) {
+      this.props.updateOption('fullScreen', false);
+    }
+  }
+  logErrors = ({ error }) => {
+    if (error !== this.props.error) {
+      console.error(error);
+    }
+  }
   render() {
     return (
       <JPlayer
-        video={this.props.video}
+        setJPlayer={this.setJPlayer} video={this.props.video}
         paused={this.props.paused} fullScreen={this.props.fullScreen}
         muted={this.props.muted} volume={this.props.volume}
         seeking={this.props.seeking} loop={this.props.loop}

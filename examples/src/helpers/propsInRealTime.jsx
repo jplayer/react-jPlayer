@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/JSONPretty.monikai.styl';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
-  jPlayerProps: jPlayers[id],
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
+  jPlayerProps: jPlayers[uid],
 });
 
 const PropsInRealTime = ({ jPlayerProps }) => (
