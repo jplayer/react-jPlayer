@@ -25,20 +25,20 @@ const App = () => (
     </NavBar>
     <NavContentContainer>
       <NavContent>
-        <StatusWrapper><AudioPlayer /></StatusWrapper>
+        <StatusWrapper id={AudioPlayer.id}><AudioPlayer /></StatusWrapper>
       </NavContent>
       <NavContent>
-        <StatusWrapper><VideoPlayer /></StatusWrapper>
+        <StatusWrapper id={VideoPlayer.id}><VideoPlayer /></StatusWrapper>
       </NavContent>
       <NavContent>
-        <StatusWrapper><MixedPlayer /></StatusWrapper>
+        <StatusWrapper id={MixedPlayer.id}><MixedPlayer /></StatusWrapper>
       </NavContent>
     </NavContentContainer>
   </NavContainer>
 );
 
 ReactDOM.render((
-  <WrappedPlayer players={[AudioPlayer, VideoPlayer, MixedPlayer]}>
+  <WrappedPlayer jPlayers={[AudioPlayer, VideoPlayer, MixedPlayer]}>
     <App />
   </WrappedPlayer>
 ), document.getElementById('app'));

@@ -10,13 +10,11 @@ import { defaultOptions, statusDefaultValues } from './util/constants';
 class WrappedPlayer extends React.Component {
   static get propTypes() {
     return {
-      // id: React.PropTypes.number,
-      player: React.PropTypes.func.isRequired,
-    };
-  }
-  static get childContextTypes() {
-    return {
-      id: React.PropTypes.number,
+      jPlayers: React.PropTypes.oneOfType([
+        React.PropTypes.arrayOf(React.PropTypes.func),
+        React.PropTypes.func,
+      ]).isRequired,
+      children: React.PropTypes.element.isRequired,
     };
   }
   constructor(props) {
@@ -25,17 +23,23 @@ class WrappedPlayer extends React.Component {
     this.initialState = {
       jPlayers: {},
     };
-    this.props.players.forEach((player) => { 
-      this.initialState.jPlayers[player.id] = {
-        ...merge({}, statusDefaultValues, defaultOptions, player.options),
+    let jPlayers = props.jPlayers;
+
+    if (!Array.isArray(jPlayers)) {
+      jPlayers = [jPlayers];
+    }
+
+    jPlayers.forEach((jPlayer) => {
+      this.initialState.jPlayers[jPlayer.id] = {
+        ...merge({}, statusDefaultValues, defaultOptions, jPlayer.options),
       };
     });
+
+    this.store = createStore(jPlayerReducers, this.initialState);
   }
   render() {
-    const { player, ...props } = this.props; // eslint-disable-line no-unused-vars
-
     return (
-      <Provider store={createStore(jPlayerReducers, this.initialState)}>
+      <Provider store={this.store}>
         {this.props.children}
       </Provider>
     );

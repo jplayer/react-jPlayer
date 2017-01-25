@@ -49,7 +49,7 @@ const jPlayerConnect = (player) => {
       id: player.name,
     });
     render() {
-      return <ConnectedPlayer id={player.name} />;
+      return <ConnectedPlayer id={player.name} {...this.props} />;
     }
   };
 };

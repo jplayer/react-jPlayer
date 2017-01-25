@@ -14,7 +14,7 @@ Object.entries(formats).forEach((format) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => {debugger; return({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   timeFormats: jPlayers[id].timeFormats,
   mediaSettings: jPlayers[id].mediaSettings,
   media: jPlayers[id].media,
@@ -30,7 +30,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => {debu
   id,
   children,
   attributes,
-});}
+});
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({
   setMedia: media => dispatch(setMedia(media, id)),
