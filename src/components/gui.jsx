@@ -22,7 +22,7 @@ const Gui = ({ onMouseEnter, guiFadeOut, children, ...attributes }) => (
 );
 
 Gui.defaultProps = {
-  onMouseEnter: Function.prototype,
+  onMouseEnter: null,
   guiFadeOut: statusDefaultValues.guiFadeOut,
 };
 

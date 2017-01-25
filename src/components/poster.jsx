@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { classes } from '../util/constants';
+import { classes, defaultOptions } from '../util/constants';
 
 const Poster = ({ src, video, paused, currentTime, alt, ...attributes }) => {
   const posterClasses = classNames(classes.POSTER, {
@@ -12,10 +12,11 @@ const Poster = ({ src, video, paused, currentTime, alt, ...attributes }) => {
 
 Poster.defaultProps = {
   alt: null,
+  video: defaultOptions.mediaSettings.video,
 };
 
 Poster.propTypes = {
-  video: React.PropTypes.bool.isRequired,
+  video: React.PropTypes.bool,
   currentTime: React.PropTypes.number.isRequired,
   paused: React.PropTypes.bool.isRequired,
   src: React.PropTypes.string.isRequired,

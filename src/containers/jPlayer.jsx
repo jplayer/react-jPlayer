@@ -16,7 +16,7 @@ Object.entries(formats).forEach((format) => {
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   timeFormats: jPlayers[id].timeFormats,
-  mediaSettings: jPlayers[id].mediaSettings,
+  video: jPlayers[id].mediaSettings.video,
   media: jPlayers[id].media,
   error: jPlayers[id].error,
   paused: jPlayers[id].paused,
@@ -27,7 +27,6 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   loop: jPlayers[id].loop,
   keyEnabled: jPlayers[id].keyEnabled,
   currentTime: jPlayers[id].currentTime,
-  id,
   children,
   attributes,
 });
@@ -42,24 +41,14 @@ class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      id: React.PropTypes.string.isRequired,
       timeFormats: React.PropTypes.object,
-      mediaSettings: React.PropTypes.shape({
-        video: React.PropTypes.bool,
-        formats: React.PropTypes.array,
-        available: React.PropTypes.string,
-        supportedFormats: React.PropTypes.objectOf(React.PropTypes.string),
-      }),
+      video: React.PropTypes.bool,
       media: React.PropTypes.shape({
         title: React.PropTypes.string,
         artist: React.PropTypes.string,
         sources: React.PropTypes.shape(formatPropTypes).isRequired,
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
-        id: React.PropTypes.oneOfType([
-          React.PropTypes.number,
-          React.PropTypes.string,
-        ]),
       }).isRequired,
       updateOption: React.PropTypes.func.isRequired,
       setMedia: React.PropTypes.func.isRequired,
@@ -87,7 +76,7 @@ class JPlayerContainer extends React.Component {
       attributes: {},
       currentTime: statusDefaultValues.currentTime,
       timeFormats: defaultOptions.timeFormats,
-      mediaSettings: defaultOptions.mediaSettings,
+      video: defaultOptions.video,
       error: statusDefaultValues.error,
       media: defaultOptions.media,
       supplied: defaultOptions.supplied,
@@ -126,7 +115,7 @@ class JPlayerContainer extends React.Component {
   render() {
     return (
       <JPlayer
-        id={this.props.id} mediaSettings={this.props.mediaSettings}
+        video={this.props.video}
         paused={this.props.paused} fullScreen={this.props.fullScreen}
         muted={this.props.muted} volume={this.props.volume}
         seeking={this.props.seeking} loop={this.props.loop}

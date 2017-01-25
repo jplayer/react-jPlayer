@@ -4,11 +4,11 @@ import classNames from 'classnames';
 import { defaultOptions, statusDefaultValues, classes, loopOptions } from '../util/constants';
 import KeyControl from '../containers/keyControl';
 
-const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
-  volume, seeking, loop, id, keyEnabled, children, ...attributes }) => {
+const JPlayer = ({ video, paused, fullScreen, muted,
+  volume, seeking, loop, keyEnabled, children, ...attributes }) => {
   const playerClasses = classNames(classes.JPLAYER, {
-    [classes.AUDIO]: !mediaSettings.video,
-    [classes.VIDEO]: mediaSettings.video,
+    [classes.AUDIO]: !video,
+    [classes.VIDEO]: video,
     [classes.states.PLAYING]: !paused,
     [classes.states.FULL_SCREEN]: fullScreen,
     [classes.states.MUTED]: muted,
@@ -20,7 +20,7 @@ const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
     // 'jp-video-full': sizeFullCssClass !== undefined,
   });
   return (
-    <div {...attributes} id={id} className={playerClasses}>
+    <div {...attributes} className={playerClasses}>
       {children}
       {keyEnabled && <KeyControl />}
     </div>
@@ -28,18 +28,12 @@ const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
 };
 
 JPlayer.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  mediaSettings: React.PropTypes.shape({
-    video: React.PropTypes.bool,
-    formats: React.PropTypes.array,
-    available: React.PropTypes.string,
-    supportedFormats: React.PropTypes.objectOf(React.PropTypes.string),
-  }),
-  paused: React.PropTypes.bool,
+  video: React.PropTypes.bool,
+  paused: React.PropTypes.bool.isRequired,
   fullScreen: React.PropTypes.bool,
   muted: React.PropTypes.bool,
   volume: React.PropTypes.number,
-  seeking: React.PropTypes.bool,
+  seeking: React.PropTypes.bool.isRequired,
   loop: React.PropTypes.string,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
@@ -49,7 +43,7 @@ JPlayer.propTypes = {
 };
 
 JPlayer.defaultProps = {
-  mediaSettings: defaultOptions.mediaSettings,
+  video: defaultOptions.mediaSettings.video,
   paused: statusDefaultValues.paused,
   fullScreen: defaultOptions.fullScreen,
   muted: defaultOptions.muted,

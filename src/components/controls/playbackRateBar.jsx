@@ -14,15 +14,14 @@ const PlaybackRateBar = ({ onClick, onMouseDown, setPlaybackRate, children, ...a
 );
 
 PlaybackRateBar.defaultProps = {
-  onMouseDown: Function.prototype,
-  setPlaybackRate: Function.prototype,
+  onMouseDown: null,
   children: (<PlaybackRateBarValue />),
 };
 
 PlaybackRateBar.propTypes = {
   onClick: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func,
-  setPlaybackRate: React.PropTypes.func,
+  setPlaybackRate: React.PropTypes.func.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,

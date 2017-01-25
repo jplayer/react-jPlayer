@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, Progress, SeekBar, Buffer,
+import { JPlayer, Gui, SeekBar, Buffer,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
@@ -28,14 +28,14 @@ const AudioPlayer = props => (
           <VolumeBar />
         </div>
         <Download><i className="fa fa-download" /></Download>
-        <Progress>
+        <div className="jp-progress">
           <SeekBar>
             <PlayBar />
             <Buffer />
             <CurrentTime />
             <Duration />
           </SeekBar>
-        </Progress>
+        </div>
       </div>
     </Gui>
   </JPlayer>

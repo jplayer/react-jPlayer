@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, Progress, SeekBar, Buffer,
+import { JPlayer, Gui, SeekBar, Buffer,
   Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration, CurrentTime } from '../../../src/index';
 import webmv from '../../assets/Big Buck Bunny Trailer.webm';
@@ -29,14 +29,14 @@ const VideoPlayer = props => (
           <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
           <VolumeBar />
         </div>
-        <Progress>
+        <div className="jp-progress">
           <SeekBar>
             <PlayBar />
             <Buffer />
             <CurrentTime />
             <Duration />
           </SeekBar>
-        </Progress>
+        </div>
       </div>
     </Gui>
   </JPlayer>

@@ -2,7 +2,6 @@ import './less/jPlayer.less';
 import Gui from './containers/gui';
 import Video from './containers/video';
 import Audio from './containers/audio';
-import Progress from './components/progress';
 import JPlayer from './containers/jPlayer';
 import KeyControl from './containers/keyControl';
 import SeekBar from './containers/seekBar';
@@ -22,7 +21,7 @@ import Download from './containers/controls/download';
 import Duration from './containers/duration';
 import CurrentTime from './containers/currentTime';
 
-export { JPlayer, Gui, KeyControl, Progress, SeekBar, PlayBar,
+export { JPlayer, Gui, KeyControl, SeekBar, PlayBar,
    Buffer, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Download, Duration, CurrentTime };
