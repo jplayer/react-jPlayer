@@ -28,7 +28,7 @@ const JPlayer = ({ mediaSettings, paused, fullScreen, muted,
 };
 
 JPlayer.propTypes = {
-  id: React.PropTypes.number.isRequired,
+  id: React.PropTypes.string.isRequired,
   mediaSettings: React.PropTypes.shape({
     video: React.PropTypes.bool,
     formats: React.PropTypes.array,

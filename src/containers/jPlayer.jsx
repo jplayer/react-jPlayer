@@ -42,7 +42,7 @@ class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      id: React.PropTypes.number.isRequired,
+      id: React.PropTypes.string.isRequired,
       timeFormats: React.PropTypes.object,
       mediaSettings: React.PropTypes.shape({
         video: React.PropTypes.bool,

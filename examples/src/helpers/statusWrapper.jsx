@@ -5,6 +5,15 @@ import PropsInRealTime from './propsInRealTime';
 import EventsInRealTime from './eventsInRealTime';
 
 class StatusWrapper extends React.Component {
+  static get propTypes() {
+    return {
+      id: React.PropTypes.string.isRequired,
+      children: React.PropTypes.oneOfType([
+        React.PropTypes.element,
+        React.PropTypes.arrayOf(React.PropTypes.element),
+      ]).isRequired,
+    };
+  }
   constructor() {
     super();
 
@@ -92,13 +101,5 @@ class StatusWrapper extends React.Component {
     );
   }
 }
-
-StatusWrapper.propTypes = {
-  id: React.PropTypes.number.isRequired,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.element,
-    React.PropTypes.arrayOf(React.PropTypes.element),
-  ]).isRequired,
-};
 
 export default StatusWrapper;
