@@ -6,7 +6,7 @@ import { JPlayer, Gui, SeekBar, Buffer,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
 import poster from '../../assets/Alan Walker - Fade.jpg';
-import jPlayerConnect from '../../../src/connect';
+import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const AudioPlayer = props => (
   <JPlayer data-type="jp-default">

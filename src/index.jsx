@@ -1,27 +1,28 @@
-import './less/jPlayer.less';
-import Gui from './containers/gui';
-import Video from './containers/video';
-import Audio from './containers/audio';
-import JPlayer from './containers/jPlayer';
-import KeyControl from './containers/keyControl';
-import SeekBar from './containers/seekBar';
-import PlayBar from './containers/playBar';
-import Buffer from './containers/buffer';
-import Poster from './containers/poster';
-import Title from './containers/title';
-import FullScreen from './containers/controls/fullScreen';
-import Mute from './containers/controls/mute';
-import Play from './containers/controls/play';
-import Repeat from './containers/controls/repeat';
-import PlaybackRateBar from './containers/controls/playbackRateBar';
-import PlaybackRateBarValue from './containers/controls/playbackRateBarValue';
-import VolumeBar from './containers/controls/volumeBar';
-import VolumeBarValue from './containers/controls/volumeBarValue';
-import Download from './containers/controls/download';
-import Duration from './containers/duration';
-import CurrentTime from './containers/currentTime';
+import './jPlayer/jPlayer/jPlayer.less';
+import JPlayerProvider from './jPlayerProvider';
+import Gui from './jPlayer/gui/gui.container';
+import Video from './jPlayer/video/video.container';
+import Audio from './jPlayer/audio/audio.container';
+import JPlayer from './jPlayer/jPlayer/jPlayer.container';
+import KeyControl from './jPlayer/keyControl/keyControl.container';
+import SeekBar from './jPlayer/seekBar/seekBar.container';
+import PlayBar from './jPlayer/playBar/playBar.container';
+import Buffer from './jPlayer/buffer/buffer.container';
+import Poster from './jPlayer/poster/poster.container';
+import Title from './jPlayer/title/title.container';
+import FullScreen from './jPlayer/fullScreen/fullScreen.container';
+import Mute from './jPlayer/mute/mute.container';
+import Play from './jPlayer/play/play.container';
+import Repeat from './jPlayer/repeat/repeat.container';
+import PlaybackRateBar from './jPlayer/playbackRateBar/playbackRateBar.container';
+import PlaybackRateBarValue from './jPlayer/playbackRateBarValue/playbackRateBarValue.container';
+import VolumeBar from './jPlayer/volumeBar/volumeBar.container';
+import VolumeBarValue from './jPlayer/volumeBarValue/volumeBarValue.container';
+import Download from './jPlayer/download/download.container';
+import Duration from './jPlayer/duration/duration.container';
+import CurrentTime from './jPlayer/currentTime/currentTime.container';
 
-export { JPlayer, Gui, KeyControl, SeekBar, PlayBar,
+export { JPlayerProvider, JPlayer, Gui, KeyControl, SeekBar, PlayBar,
    Buffer, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Download, Duration, CurrentTime };

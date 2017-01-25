@@ -14,7 +14,7 @@ import NavBar from './helpers/navBar';
 import NavLink from './helpers/navLink';
 import NavContent from './helpers/navContent';
 import StatusWrapper from './helpers/statusWrapper';
-import WrappedPlayer from '../../src/wrappedPlayer';
+import { JPlayerProvider } from '../../src/index';
 
 const App = () => (
   <NavContainer>
@@ -38,7 +38,7 @@ const App = () => (
 );
 
 ReactDOM.render((
-  <WrappedPlayer jPlayers={[AudioPlayer, VideoPlayer, MixedPlayer]}>
+  <JPlayerProvider jPlayers={[AudioPlayer, VideoPlayer, MixedPlayer]}>
     <App />
-  </WrappedPlayer>
+  </JPlayerProvider>
 ), document.getElementById('app'));

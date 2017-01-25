@@ -6,7 +6,7 @@ import { JPlayer, Gui, SeekBar, Buffer,
   VolumeBar, Duration, CurrentTime } from '../../../src/index';
 import webmv from '../../assets/Big Buck Bunny Trailer.webm';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
-import jPlayerConnect from '../../../src/connect';
+import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const VideoPlayer = props => (
   <JPlayer data-type="jp-default">

@@ -1,0 +1,31 @@
+@import "../mixins";
+@import "../variables";
+
+[data-type="jp-default"] {
+  text-align: center;
+  @import "./gui";
+  .jp-audio& .jp-media,
+  .jp-video& .jp-media {
+      position: relative;
+
+      .jp-poster {
+          max-height: 100%;
+          max-width: 100%;
+      }
+  }
+  .jp-video& .jp-media {
+      display: inline-block;
+      overflow: hidden;
+
+      video {
+          display: block;
+      }
+      .jp-poster {
+          position: absolute;
+          top: 50%;         
+          left: 50%;
+          transform: translate(-50%, -50%);         
+      }
+  }
+  font-family:"Source Sans Pro", sans-serif;
+}

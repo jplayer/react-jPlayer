@@ -8,7 +8,7 @@ import mp3 from '../../assets/Alan Walker - Fade.mp3';
 import audioPoster from '../../assets/Alan Walker - Fade.jpg';
 import webmv from '../../assets/Big Buck Bunny Trailer.webm';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
-import jPlayerConnect from '../../../src/connect';
+import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const medias = {
   video: {
