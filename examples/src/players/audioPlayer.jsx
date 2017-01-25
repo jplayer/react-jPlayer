@@ -16,7 +16,7 @@ const AudioPlayer = props => (
     <Gui>
       <div className="jp-title-container">
         <Poster />
-        <Title />
+        <Title uid="test" />
       </div>
       <div className="jp-controls">
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>

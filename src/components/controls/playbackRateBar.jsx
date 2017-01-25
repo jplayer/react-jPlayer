@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { classes } from '../../util/constants';
-import PlaybackRateBarValue from '../../components/controls/playbackRateBarValue';
 
 const PlaybackRateBar = ({ onClick, onMouseDown, setPlaybackRate, children, ...attributes }) => (
   <div
@@ -15,7 +14,6 @@ const PlaybackRateBar = ({ onClick, onMouseDown, setPlaybackRate, children, ...a
 
 PlaybackRateBar.defaultProps = {
   onMouseDown: null,
-  children: (<PlaybackRateBarValue />),
 };
 
 PlaybackRateBar.propTypes = {
@@ -25,7 +23,7 @@ PlaybackRateBar.propTypes = {
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
-  ]),
+  ]).isRequired,
 };
 
 export default PlaybackRateBar;

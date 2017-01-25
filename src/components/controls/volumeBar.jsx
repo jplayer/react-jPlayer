@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { classes } from '../../util/constants';
-import VolumeBarValue from '../../components/controls/volumeBarValue';
 
 const VolumeBar = ({ setVolumeBar, onClick, onMouseDown, children, ...attributes }) => (
   <div
@@ -14,7 +13,6 @@ const VolumeBar = ({ setVolumeBar, onClick, onMouseDown, children, ...attributes
 
 VolumeBar.defaultProps = {
   onMouseDown: null,
-  children: (<VolumeBarValue />),
 };
 
 VolumeBar.propTypes = {
@@ -24,7 +22,7 @@ VolumeBar.propTypes = {
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,
-  ]),
+  ]).isRequired,
 };
 
 export default VolumeBar;

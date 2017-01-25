@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connectWithId } from '../util/index';
-import { defaultOptions, statusDefaultValues } from '../util/constants';
+import { defaultOptions } from '../util/constants';
 import Buffer from '../components/buffer';
 
 const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({

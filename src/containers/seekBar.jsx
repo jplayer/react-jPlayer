@@ -8,7 +8,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   seekPercent: jPlayers[id].seekPercent,
   barDrag: jPlayers[id].barDrag,
   children,
-  ...attributes,
+  attributes,
 });
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({
@@ -31,6 +31,7 @@ class SeekBarContainer extends React.Component {
   }
   static get defaultProps() {
     return {
+      attributes: {},
       barDrag: defaultOptions.barDrag,
     };
   }

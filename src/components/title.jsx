@@ -2,14 +2,14 @@ import React from 'react';
 
 import { classes } from '../util/constants';
 
-const Title = ({ title, ...attributes }) => (
+const Title = ({ children, ...attributes }) => (
   <div {...attributes} className={classes.TITLE}>
-    {title}
+    {children}
   </div>
 );
 
 Title.propTypes = {
-  title: React.PropTypes.string.isRequired,
+  children: React.PropTypes.string.isRequired,
 };
 
 export default Title;
