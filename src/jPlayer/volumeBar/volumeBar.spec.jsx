@@ -1,45 +1,38 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { classes } from '../../../src/util/constants';
-import { customAttributeTests } from '../../util/common.spec';
 import VolumeBar from './volumeBar';
-import VolumeBarValue from '../volumeBarValue/volumeBarValue';
+
+const setup = () => {
+  const props = {
+    onClick: createSpy(),
+    onMouseDown: createSpy(),
+    setVolumeBar: Function.prototype,
+    children: (<div />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<VolumeBar {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
 
 describe('<VolumeBar />', () => {
-  const component = (
-    <VolumeBar>
-      <VolumeBarValue />
-    </VolumeBar>
-  );
-  let wrapper;
-  let spy;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-    spy = expect.createSpy();
-  });
-
-  it('renders children', () => {
-    expect(wrapper.children(VolumeBarValue).exists()).toBeTruthy();
-  });
-
-  it('calls handler on click', () => {
-    wrapper.setProps({ onClick: spy });
     wrapper.simulate('click');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('calls handler on mouse down', () => {
-    wrapper.setProps({ onMouseDown: spy });
     wrapper.simulate('mousedown');
-    expect(spy).toHaveBeenCalled();
-  });
 
-  it('has volumeBar class', () => {
+    expect(props.onClick).toHaveBeenCalled();
+    expect(props.onMouseDown).toHaveBeenCalled();
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.VOLUME_BAR)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

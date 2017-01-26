@@ -2,29 +2,29 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../util/constants';
 import Title from './title';
 
+const setup = () => {
+  const props = {
+    children: 'fade',
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<Title {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<Title />', () => {
-  const component = (
-    <Title>
-      fade
-    </Title>
-  );
-  let wrapper;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-  });
-
-  it('renders children', () => {
-    expect(wrapper.prop('children')).toBe('fade');
-  });
-
-  it('has title class', () => {
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

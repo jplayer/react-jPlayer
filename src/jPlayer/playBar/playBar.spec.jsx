@@ -2,37 +2,40 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../util/constants';
 import PlayBar from './playBar';
 
+const setup = () => {
+  const props = {
+    currentPercentAbsolute: 20,
+    currentPercentRelative: 30,
+    children: (<i className="fa fa-play" />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<PlayBar {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<PlayBar />', () => {
-  const currentPercentRelative = 30;
-  const currentPercentAbsolute = 20;
-  const component = (
-    <PlayBar
-      currentPercentAbsolute={currentPercentAbsolute}
-      currentPercentRelative={currentPercentRelative}
-    />
-  );
-  let wrapper;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
+    const playBar = wrapper.dive();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-  });
-
-  it('has playBar class', () => {
-    expect(wrapper.dive().hasClass(classes.PLAY_BAR)).toBeTruthy();
-  });
-
-  it('width is currentPercentRelative when !smoothPlayBar', () => {
-    expect(wrapper.dive().prop('style').width).toBe(`${currentPercentRelative}%`);
+    expect(playBar.prop('style').width).toBe(`${props.currentPercentRelative}%`);
+    expect(playBar.prop('children')).toBe(props.children);
+    expect(playBar.hasClass(classes.PLAY_BAR)).toBeTruthy();
+    expect(playBar.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
 
   it('width is currentPercentAbsolute when smoothPlayBar', () => {
-    wrapper.setProps({ smoothPlayBar: true });
-    expect(wrapper.dive().prop('style').width).toBe(`${currentPercentAbsolute}%`);
-  });
+    const { wrapper, props } = setup();
 
-  customAttributeTests(component, `.${classes.PLAY_BAR}`);
+    wrapper.setProps({ smoothPlayBar: true });
+    expect(wrapper.dive().prop('style').width).toBe(`${props.currentPercentAbsolute}%`);
+  });
 });

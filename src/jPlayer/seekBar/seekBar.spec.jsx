@@ -1,47 +1,40 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { classes } from '../../util/constants';
 import Seekbar from './seekBar';
-import PlayBar from '../playBar/playBar';
+
+const setup = () => {
+  const props = {
+    onMouseDown: createSpy(),
+    onClick: createSpy(),
+    setSeekBar: Function.prototype,
+    seekPercent: 33,
+    children: (<div />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<Seekbar {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
 
 describe('<SeekBar />', () => {
-  let wrapper;
-  let spy;
-  const seekPercent = 33;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    spy = expect.createSpy();
-    wrapper = shallow(
-      <Seekbar onClick={spy} seekPercent={seekPercent}>
-        <PlayBar currentPercentAbsolute={0} currentPercentRelative={0} />
-      </Seekbar>,
-    );
-  });
-
-  it('renders children', () => {
-    expect(wrapper.children(PlayBar).exists()).toBeTruthy();
-  });
-
-  it('has seekBar class', () => {
-    expect(wrapper.hasClass(classes.SEEK_BAR)).toBeTruthy();
-  });
-
-  it('calls handler on mouse down', () => {
-    wrapper.setProps({ onMouseDown: spy });
     wrapper.simulate('mousedown');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('calls handler on mouse click', () => {
     wrapper.simulate('click');
-    expect(spy).toHaveBeenCalled();
-  });
 
-  it('width is equal to seekPercent', () => {
-    expect(wrapper.prop('style').width).toBe(`${seekPercent}%`);
+    expect(props.onMouseDown).toHaveBeenCalled();
+    expect(props.onClick).toHaveBeenCalled();
+    expect(wrapper.prop('style').width).toBe(`${props.seekPercent}%`);
+    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.hasClass(classes.SEEK_BAR)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // // customAttributeTests(component);
 });

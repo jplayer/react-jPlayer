@@ -1,38 +1,35 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { classes } from '../../util/constants';
-import { customAttributeTests } from '../../util/common.spec';
 import Gui from './gui';
 
+const setup = () => {
+  const props = {
+    onMouseEnter: createSpy(),
+    children: (<div className="title-container" />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<Gui {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<Gui />', () => {
-  const component = (
-    <Gui>
-      <div className="title-container" />
-    </Gui>
-  );
-  let wrapper;
-  let spy;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
+    const gui = wrapper.dive();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-    spy = expect.createSpy();
+    gui.simulate('mouseenter');
+
+    expect(props.onMouseEnter).toHaveBeenCalled();
+    expect(gui.prop('children')).toBe(props.children);
+    expect(gui.hasClass(classes.GUI)).toBeTruthy();
+    expect(gui.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  it('renders children', () => {
-    expect(wrapper.dive().children('.title-container').exists()).toBeTruthy();
-  });
-
-  it('has gui class', () => {
-    expect(wrapper.dive().hasClass(classes.GUI)).toBeTruthy();
-  });
-
-  it('calls handler on mouse enter', () => {
-    wrapper.setProps({ onMouseEnter: spy });
-    wrapper.dive().simulate('mouseenter');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  //customAttributeTests(component, `.${classes.GUI}`);
 });

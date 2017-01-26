@@ -1,36 +1,34 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../../src/util/constants';
 import FullScreen from './fullScreen';
 
+const setup = () => {
+  const props = {
+    onClick: createSpy(),
+    children: (<i className="fa fa-fullScreen" />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<FullScreen {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<FullScreen />', () => {
-  let wrapper;
-  let spy;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    spy = expect.createSpy();
-    wrapper = shallow(
-      <FullScreen onClick={spy}>
-        <i className="fa fa-fullScreen" />
-      </FullScreen>,
-    );
-  });
-
-  it('renders children', () => {
-    expect(wrapper.children('.fa-fullScreen').exists()).toBeTruthy();
-  });
-
-  it('calls handler on click', () => {
     wrapper.simulate('click');
-    expect(spy).toHaveBeenCalled();
-  });
 
-  it('has fullScreen class', () => {
+    expect(props.onClick).toHaveBeenCalled();
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.FULL_SCREEN)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

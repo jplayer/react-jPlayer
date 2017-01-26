@@ -1,26 +1,29 @@
 import React from 'react';
 import expect from 'expect';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../util/constants';
 import BufferBar from './bufferBar';
 
+const setup = () => {
+  const props = {
+    setCanvas: Function.prototype,
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<BufferBar {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<BufferBar />', () => {
-  let wrapper;
-  let canvas;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    wrapper = mount(<BufferBar setCanvas={ref => (canvas = ref)} />);
-  });
-
-  it('ref is canvas', () => {
-    expect(canvas).toBe(wrapper.find('canvas').node);
-  });
-
-  it('has bufferBar class', () => {
     expect(wrapper.hasClass(classes.BUFFER_BAR)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // // customAttributeTests(component);
 });

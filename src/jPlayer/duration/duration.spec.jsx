@@ -2,29 +2,29 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../util/constants';
 import Duration from './duration';
 
+const setup = () => {
+  const props = {
+    children: '50',
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<Duration {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<Duration />', () => {
-  const component = (
-    <Duration>
-      50
-    </Duration>
-  );
-  let wrapper;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-  });
-
-  it('renders children', () => {
-    expect(wrapper.prop('children')).toBe('50');
-  });
-
-  it('has duration class', () => {
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

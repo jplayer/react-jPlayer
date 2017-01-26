@@ -1,38 +1,34 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../../src/util/constants';
 import Repeat from './repeat';
 
+const setup = () => {
+  const props = {
+    onClick: createSpy(),
+    children: (<i className="fa fa-repeat" />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<Repeat {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<Repeat />', () => {
-  const component = (
-    <Repeat>
-      <i className="fa fa-repeat" />
-    </Repeat>
-  );
-  let wrapper;
-  let spy;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-    spy = expect.createSpy();
-  });
-
-  it('renders children', () => {
-    expect(wrapper.children('.fa-repeat').exists()).toBeTruthy();
-  });
-
-  it('calls handler on click', () => {
-    wrapper.setProps({ onClick: spy });
     wrapper.simulate('click');
-    expect(spy).toHaveBeenCalled();
-  });
 
-  it('has repeat class', () => {
+    expect(props.onClick).toHaveBeenCalled();
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

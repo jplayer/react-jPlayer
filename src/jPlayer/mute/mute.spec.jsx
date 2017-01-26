@@ -1,37 +1,34 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../../src/util/constants';
 import Mute from './mute';
 
+const setup = () => {
+  const props = {
+    onClick: createSpy(),
+    children: (<i className="fa fa-mute" />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<Mute {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<Mute />', () => {
-  let wrapper;
-  let spy;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    spy = expect.createSpy();
-    wrapper = shallow(
-      <Mute onClick={spy}>
-        <i className="fa fa-mute" />
-      </Mute>,
-    );
-  });
-
-  it('renders children', () => {
-    expect(wrapper.children('.fa-mute').exists()).toBeTruthy();
-  });
-
-  it('calls handler on click', () => {
-    wrapper.setProps({ onClick: spy });
     wrapper.simulate('click');
-    expect(spy).toHaveBeenCalled();
-  });
 
-  it('has mute class', () => {
+    expect(props.onClick).toHaveBeenCalled();
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

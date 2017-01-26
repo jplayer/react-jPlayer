@@ -2,73 +2,70 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import Video from './video';
 import Media from '../media/media.container';
 
-describe('<Video />', () => {
-  const component = (
-    <Video require>
-      <source src="movie.mp4" type="video/mp4" />
-    </Video>
-  );
-  const events = {
-    onProgress: null,
-    onTimeUpdate: null,
-    onDurationChange: null,
-    onRateChange: null,
-    onSeeking: null,
-    onSeeked: null,
-    onPlay: null,
-    onRepeat: null,
-    onEnded: null,
-    onError: null,
-    onPlaying: null,
-    onPause: null,
-    onWaiting: null,
-    onSuspend: null,
-    onVolumeChange: null,
-    onLoadStart: null,
-    onLoadedMetadata: null,
-    onAbort: null,
-    onEmptied: null,
-    onStalled: null,
-    onLoadedData: null,
-    onCanPlay: null,
-    onCanPlayThrough: null,
+const events = {
+  onProgress: null,
+  onTimeUpdate: null,
+  onDurationChange: null,
+  onRateChange: null,
+  onSeeking: null,
+  onSeeked: null,
+  onPlay: null,
+  onRepeat: null,
+  onEnded: null,
+  onError: null,
+  onPlaying: null,
+  onPause: null,
+  onWaiting: null,
+  onSuspend: null,
+  onVolumeChange: null,
+  onLoadStart: null,
+  onLoadedMetadata: null,
+  onAbort: null,
+  onEmptied: null,
+  onStalled: null,
+  onLoadedData: null,
+  onCanPlay: null,
+  onCanPlayThrough: null,
+};
+
+const setup = () => {
+  const props = {
+    events,
+    require: true,
+    children: (<source />),
+    'data-attribute-test': 'test',
   };
-  let wrapper;
-  let spy;
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-    spy = expect.createSpy();
-  });
+  const wrapper = shallow(<Video {...props} />);
 
-  it('renders null when not required', () => {
-    wrapper.setProps({ require: false });
-    expect(wrapper.type()).toBe(null);
-  });
+  return {
+    props,
+    wrapper,
+  };
+};
 
-  it('media gets events as props', () => {
-    wrapper.setProps({ events });
+describe('<Video />', () => {
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
+    const video = wrapper.find('video');
 
     Object.entries(events).forEach((val) => {
       expect(wrapper.prop(val[0])).toBe(val[1]);
     });
+
+    expect(video.parent().type()).toBe(Media);
+    expect(video.prop('children')).toBe(props.children);
+    expect(video.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
 
-  it('wraps video in mediaContainer', () => {
-    expect(wrapper.find('video').parent().type()).toBe(Media);
-  });
+  it('renders null when not required', () => {
+    const { wrapper } = setup();
 
-  it('renders children', () => {
-    expect(wrapper.find('video').children('source').exists()).toBeTruthy();
-  });
+    wrapper.setProps({ require: false });
 
-  it('calls handler on click', () => {
-    
+    expect(wrapper.type()).toBe(null);
   });
-
-  customAttributeTests(component, 'video');
 });

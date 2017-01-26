@@ -1,38 +1,34 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../../src/util/constants';
 import VolumeMax from './volumeMax';
 
+const setup = () => {
+  const props = {
+    onClick: createSpy(),
+    children: (<i className="fa fa-volume-up" />),
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<VolumeMax {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
 describe('<VolumeMax />', () => {
-  const component = (
-    <VolumeMax>
-      <i className="fa fa-volume-up" />
-    </VolumeMax>
-  );
-  let wrapper;
-  let spy;
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
 
-  beforeEach(() => {
-    wrapper = shallow(component);
-    spy = expect.createSpy();
-  });
-
-  it('renders children', () => {
-    expect(wrapper.children('.fa-volume-up').exists()).toBeTruthy();
-  });
-
-  it('calls handler on click', () => {
-    wrapper.setProps({ onClick: spy });
     wrapper.simulate('click');
-    expect(spy).toHaveBeenCalled();
-  });
 
-  it('has volumeMax class', () => {
+    expect(props.onClick).toHaveBeenCalled();
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.VOLUME_MAX)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
-
-  // customAttributeTests(component);
 });

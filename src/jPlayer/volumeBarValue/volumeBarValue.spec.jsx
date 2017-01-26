@@ -2,37 +2,49 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../../src/util/constants';
 import VolumeBarValue from './volumeBarValue';
 
-describe('<VolumeBarValue />', () => {
-  const component = <VolumeBarValue />;
-  const styleTests = [
-    { props: { muted: true }, expected: { width: '0%', height: null } },
-    { props: { muted: true, volume: 0.3 }, expected: { width: '0%', height: null } },
-    { props: { muted: true, volume: 0.765, verticalVolume: true },
-      expected: { width: null, height: '0%' } },
-    { props: { volume: 0.33 }, expected: { width: '33%', height: null } },
-    { props: { volume: 0 }, expected: { width: '0%', height: null } },
-    { props: { volume: 0.765, verticalVolume: true }, expected: { width: null, height: '76.5%' } },
-  ];
-  let wrapper;
+const styleTests = [
+  { props: { muted: true }, expected: { width: '0%', height: null } },
+  { props: { muted: true, volume: 0.3 }, expected: { width: '0%', height: null } },
+  { props: { muted: true, verticalVolume: true },
+    expected: { width: null, height: '0%' } },
+  { props: { volume: 0.33 }, expected: { width: '33%', height: null } },
+  { props: { volume: 0 }, expected: { width: '0%', height: null } },
+  { props: { verticalVolume: true }, expected: { width: null, height: '80%' } },
+];
 
-  beforeEach(() => {
-    wrapper = shallow(component);
+const setup = () => {
+  const props = {
+    muted: false,
+    volume: 0.8,
+    'data-attribute-test': 'test',
+  };
+
+  const wrapper = shallow(<VolumeBarValue {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
+
+describe('<VolumeBarValue />', () => {
+  it('renders self and subcomponents', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.hasClass(classes.VOLUME_BAR_VALUE)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
 
   styleTests.forEach((test) => {
     it(`props (${Object.entries(test.props).join(' & ')}) match styles`, () => {
+      const { wrapper } = setup();
+
       wrapper.setProps(test.props);
+
       expect(wrapper.prop('style')).toEqual(test.expected);
     });
   });
-
-  it('has volumeBarValue class', () => {
-    expect(wrapper.hasClass(classes.VOLUME_BAR_VALUE)).toBeTruthy();
-  });
-
-  // customAttributeTests(component);
 });
