@@ -4,7 +4,7 @@ import { connectWithId, getWidth, getHeight, getOffset } from '../../util/index'
 import { defaultOptions } from '../../util/constants';
 import { setPlaybackRate } from '../actions';
 import PlaybackRateBar from './playbackRateBar';
-import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValue';
+import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValue.container';
 
 const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   verticalPlaybackRate: jPlayers[uid].verticalPlaybackRate,

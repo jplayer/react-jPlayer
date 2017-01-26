@@ -4,7 +4,7 @@ import { connectWithId, getWidth, getHeight, getOffset } from '../../util/index'
 import { defaultOptions } from '../../util/constants';
 import { setVolume } from '../actions';
 import VolumeBar from './volumeBar';
-import VolumeBarValue from '../volumeBarValue/volumeBarValue';
+import VolumeBarValue from '../volumeBarValue/volumeBarValue.container';
 
 const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   verticalVolume: jPlayers[uid].verticalVolume,

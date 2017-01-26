@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, SeekBar, Buffer,
+import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
@@ -72,7 +72,7 @@ const MixedPlayer = (props) => {
             <div className="jp-progress">
               <SeekBar>
                 <PlayBar />
-                <Buffer />
+                <BufferBar />
                 <CurrentTime />
                 <Duration />
               </SeekBar>

@@ -1,4 +1,4 @@
-import { actionTypes, formats, statusDefaultValues } from '../util/constants';
+import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 
 const clearMedia = state =>
@@ -51,7 +51,7 @@ const setMedia = (state, { media }) => {
   if (!foundSupported) {
     newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(', ')}'}`);
   }
-  newState.media = media;
+  newState.media = updateObject(defaultOptions.media, media);
 
   return newState;
 };

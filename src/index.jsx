@@ -7,7 +7,7 @@ import JPlayer from './jPlayer/jPlayer/jPlayer.container';
 import KeyControl from './jPlayer/keyControl/keyControl.container';
 import SeekBar from './jPlayer/seekBar/seekBar.container';
 import PlayBar from './jPlayer/playBar/playBar.container';
-import Buffer from './jPlayer/buffer/buffer.container';
+import BufferBar from './jPlayer/bufferBar/bufferBar.container';
 import Poster from './jPlayer/poster/poster.container';
 import Title from './jPlayer/title/title.container';
 import FullScreen from './jPlayer/fullScreen/fullScreen.container';
@@ -23,6 +23,6 @@ import Duration from './jPlayer/duration/duration.container';
 import CurrentTime from './jPlayer/currentTime/currentTime.container';
 
 export { JPlayerProvider, JPlayer, Gui, KeyControl, SeekBar, PlayBar,
-   Buffer, Poster, Video, Audio, Title, FullScreen,
+   BufferBar, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Download, Duration, CurrentTime };

@@ -70,7 +70,7 @@ export const classes = {
   VOLUME_MAX: 'jp-volume-max',
   PLAYBACK_RATE_BAR: 'jp-playback-rate-bar',
   PLAYBACK_RATE_BAR_VALUE: 'jp-playback-rate-bar-value',
-  BUFFER_BAR: 'jp-buffer-bar',
+  BUFFER_BAR: 'jp-bufferBar-bar',
   PROGRESS: 'jp-progress',
   SEEK_BAR: 'jp-seek-bar',
   PLAY_BAR: 'jp-play-bar',

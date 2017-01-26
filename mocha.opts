@@ -1,4 +1,4 @@
 --require babel-register
---require test/dom.js
+--require src/jsdom.js
 --require expect
 --compilers jsx:babel-register

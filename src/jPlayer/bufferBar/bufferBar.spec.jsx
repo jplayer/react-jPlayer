@@ -4,17 +4,17 @@ import { shallow } from 'enzyme';
 
 import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../util/constants';
-import Buffer from './buffer';
+import BufferBar from './bufferBar';
 
-describe('<Buffer />', () => {
-  const component = <Buffer />;
+describe('<BufferBar />', () => {
+  const component = <BufferBar />;
   let wrapper;
 
   beforeEach(() => {
     wrapper = shallow(component);
   });
 
-  it('has buffer class', () => {
+  it('has bufferBar class', () => {
     expect(wrapper.hasClass(classes.BUFFER_BAR)).toBeTruthy();
   });
 

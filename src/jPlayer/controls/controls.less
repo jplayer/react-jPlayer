@@ -1,16 +1,16 @@
 .jp-controls {
-  @import "../progress";
+  @import "../progress/progress";
   height: 100%;
   position:relative;
   margin:auto;
   font-size:24px;
   display: flex;
   align-items: center;
-  @import "../play";
-  @import "../download";
-  @import "../repeat";
-  @import "../fullScreen";
-  @import "../playbackRateBar";
+  @import "../play/play";
+  @import "../download/download";
+  @import "../repeat/repeat";
+  @import "../fullScreen/fullScreen";
+  @import "../playbackRateBar/playbackRateBar";
   a {
     cursor:pointer;
     text-decoration:none;
@@ -23,8 +23,8 @@
     position: absolute;
   }
   .jp-volume-controls {
-    @import "../mute";
-    @import "../volumeBar";
+    @import "../mute/mute";
+    @import "../volumeBar/volumeBar";
     #centerChildren;
     right: 565px;
   }   

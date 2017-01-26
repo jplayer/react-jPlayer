@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connectWithId } from '../../util/index';
 import { defaultOptions } from '../../util/constants';
-import Buffer from './buffer';
+import BufferBar from './bufferBar';
 
 const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
@@ -55,7 +55,7 @@ class BufferContainer extends React.Component {
     });
   }
   render() {
-    return <Buffer setCanvas={this.setCanvas} {...this.props.attributes} />;
+    return <BufferBar setCanvas={this.setCanvas} {...this.props.attributes} />;
   }
 }
 
