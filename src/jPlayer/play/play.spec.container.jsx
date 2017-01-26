@@ -2,30 +2,29 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import PlayContainer from './play.container';
-import Play from './play';
 import { play, pause } from '../actions';
 import { mockStore } from '../../util/common.spec';
+import PlayContainer from './play.container';
+import Play from './play';
 
 describe('Play Container', () => {
-  const uid = 'audio-player-1';
-  const children = <i />;
+  const uid = 'player-1';
   let wrapper;
   let store;
 
-  const renderWrapper = (state) => {
+  const renderWrapper = (state = {}) => {
     store = mockStore(state);
     expect.spyOn(store, 'dispatch');
     wrapper = shallow(
       <PlayContainer className="test">
-        {children}
+        <Play />
       </PlayContainer>,
       { context: { uid } },
-    ).shallow({ context: { store } });
+    ).dive({ context: { store } });
   };
 
   beforeEach(() => {
-    renderWrapper({ paused: false });
+    renderWrapper();
   });
 
   it('onClick toggles play if paused', () => {
@@ -44,7 +43,7 @@ describe('Play Container', () => {
   });
 
   it('maps children', () => {
-    expect(wrapper.prop('children')).toBe(children);
+    expect(wrapper.prop('children').type).toBe(Play);
   });
 
   it('maps attributes', () => {

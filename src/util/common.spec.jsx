@@ -68,7 +68,7 @@ export const mockStore = (...states) => configureMockStore()(() => {
 
   states.forEach((state, i) => {
     const current = i + 1;
-    jPlayers[`audio-player-${current}`] = state;
+    jPlayers[`player-${current}`] = state;
   });
 
   return {

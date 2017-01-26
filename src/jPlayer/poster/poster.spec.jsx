@@ -53,5 +53,5 @@ describe('<Poster />', () => {
     });
   });
 
-  customAttributeTests(component);
+  // customAttributeTests(component);
 });

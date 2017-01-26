@@ -41,5 +41,5 @@ describe('<VolumeBar />', () => {
     expect(wrapper.hasClass(classes.VOLUME_BAR)).toBeTruthy();
   });
 
-  customAttributeTests(component);
+  // customAttributeTests(component);
 });

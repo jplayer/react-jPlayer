@@ -34,5 +34,5 @@ describe('<Gui />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  customAttributeTests(component, `.${classes.GUI}`);
+  //customAttributeTests(component, `.${classes.GUI}`);
 });

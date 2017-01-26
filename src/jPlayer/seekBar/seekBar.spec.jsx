@@ -43,5 +43,5 @@ describe('<SeekBar />', () => {
     expect(wrapper.prop('style').width).toBe(`${seekPercent}%`);
   });
 
-  // customAttributeTests(component);
+  // // customAttributeTests(component);
 });

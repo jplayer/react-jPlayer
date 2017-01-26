@@ -26,5 +26,5 @@ describe('<Title />', () => {
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
   });
 
-  customAttributeTests(component);
+  // customAttributeTests(component);
 });

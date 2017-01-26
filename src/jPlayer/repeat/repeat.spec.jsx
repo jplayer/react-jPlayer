@@ -34,5 +34,5 @@ describe('<Repeat />', () => {
     expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
   });
 
-  customAttributeTests(component);
+  // customAttributeTests(component);
 });

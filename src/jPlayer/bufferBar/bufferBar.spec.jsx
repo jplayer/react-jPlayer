@@ -1,22 +1,26 @@
 import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../util/constants';
 import BufferBar from './bufferBar';
 
 describe('<BufferBar />', () => {
-  const component = <BufferBar />;
   let wrapper;
+  let canvas;
 
   beforeEach(() => {
-    wrapper = shallow(component);
+    wrapper = mount(<BufferBar setCanvas={ref => (canvas = ref)} />);
+  });
+
+  it('ref is canvas', () => {
+    expect(canvas).toBe(wrapper.find('canvas').node);
   });
 
   it('has bufferBar class', () => {
     expect(wrapper.hasClass(classes.BUFFER_BAR)).toBeTruthy();
   });
 
-  customAttributeTests(component);
+  // // customAttributeTests(component);
 });
