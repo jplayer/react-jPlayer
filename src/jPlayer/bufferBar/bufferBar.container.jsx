@@ -11,7 +11,7 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   attributes,
 });
 
-class BufferContainer extends React.Component {
+class BufferBarContainer extends React.Component {
   static get propTypes() {
     return {
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
@@ -59,4 +59,4 @@ class BufferContainer extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps)(BufferContainer);
+export default connectWithId(mapStateToProps)(BufferBarContainer);

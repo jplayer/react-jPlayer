@@ -56,6 +56,12 @@ describe('<Audio />', () => {
     });
   });
 
+  it('audio gets events', () => {
+    wrapper.setProps({ events });
+
+    var p = wrapper.find('audio');
+  });
+
   it('wraps audio in mediaContainer', () => {
     expect(wrapper.find('audio').parent().type()).toBe(Media);
   });
