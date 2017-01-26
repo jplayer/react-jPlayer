@@ -2,9 +2,9 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { customAttributeTests } from '../common';
-import Duration from '../../src/components/duration';
-import { classes } from '../../src/util/constants';
+import { customAttributeTests } from '../../util/common.spec';
+import { classes } from '../../util/constants';
+import Duration from './duration';
 
 describe('<Duration />', () => {
   const component = (

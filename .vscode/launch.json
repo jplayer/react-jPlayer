@@ -1,15 +1,16 @@
 {
   "version": "0.2.0",
   "configurations": [
-    
     {
       "request": "launch",
       "name": "Debug Mocha Test",
       "type": "node2",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "args": [
-        "test/**/*.spec.jsx",
-        "--colors"
+        "src/**/*.spec.{jsx,js}",
+        "--colors",
+        "--opts",
+        "./mocha.opts"
       ],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": null,

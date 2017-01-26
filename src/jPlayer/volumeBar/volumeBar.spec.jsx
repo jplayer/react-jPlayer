@@ -8,7 +8,11 @@ import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValue';
 
 describe('<VolumeBar />', () => {
-  const component = <VolumeBar />;
+  const component = (
+    <VolumeBar>
+      <VolumeBarValue />
+    </VolumeBar>
+  );
   let wrapper;
   let spy;
 

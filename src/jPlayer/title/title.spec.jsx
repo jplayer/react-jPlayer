@@ -8,7 +8,9 @@ import Title from './title';
 
 describe('<Title />', () => {
   const component = (
-    <Title title="fade" />
+    <Title>
+      fade
+    </Title>
   );
   let wrapper;
 
@@ -16,7 +18,7 @@ describe('<Title />', () => {
     wrapper = shallow(component);
   });
 
-  it('renders title as children', () => {
+  it('renders children', () => {
     expect(wrapper.prop('children')).toBe('fade');
   });
 

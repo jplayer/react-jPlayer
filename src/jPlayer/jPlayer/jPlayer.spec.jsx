@@ -21,7 +21,7 @@ describe('<JPlayer />', () => {
       expected: [classes.JPLAYER, classes.AUDIO, classes.states.VOLUME_HIGH],
     },
     { props: {
-      mediaSettings: { video: true },
+      video: true,
       paused: true,
       fullScreen: true,
       muted: true,

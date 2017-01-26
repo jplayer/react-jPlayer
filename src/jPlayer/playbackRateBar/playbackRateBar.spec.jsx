@@ -5,10 +5,14 @@ import { shallow } from 'enzyme';
 import { customAttributeTests } from '../../util/common.spec';
 import { classes } from '../../../src/util/constants';
 import PlaybackRateBar from './playbackRateBar';
-import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValue';
+import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValue.container';
 
 describe('<PlaybackRateBar />', () => {
-  const component = <PlaybackRateBar />;
+  const component = (
+    <PlaybackRateBar>
+      <PlaybackRateBarValue />
+    </PlaybackRateBar>
+  );
 
   let wrapper;
   let spy;
