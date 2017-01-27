@@ -1,45 +1,45 @@
-// import React from 'react';
-// import expect from 'expect';
-// import { shallow } from 'enzyme';
-// import configureMockStore from 'redux-mock-store';
+import React from 'react';
+import expect from 'expect';
 
-// import FullScreenContainer from '../../../src/containers/controls/fullScreen';
-// import FullScreen from '../../../src/components/controls/fullScreen';
-// import { fullScreen } from '../../../src/actions/jPlayerActions';
+import { shallowSetup } from '../../util/common.spec';
+import { setFullScreen } from '../actions';
+import FullScreenContainer from './fullScreen.container';
+import FullScreen from './fullScreen';
 
-// describe('FullScreen Container', () => {
-//   const children = <i />;
-//   const attributes = {
-//     className: 'test',
-//   };
-//   const store = configureMockStore()({
-//     jPlayers: {
-//       'audio-player-one': { fullScreen: true },
-//     },
-//   });
-//   let dispatchSpy;
-//   let wrapper;
+const setup = state => shallowSetup(FullScreenContainer, {
+  children: (<i />),
+}, state);
 
-//   beforeEach(() => {
-//     dispatchSpy = expect.spyOn(store, 'dispatch');
-//     wrapper = shallow(
-//       <FullScreenContainer className={attributes.className}>
-//         {children}
-//       </FullScreenContainer>,
-//       { context: { uid: 'audio-player-one' } },
-//       ).shallow({ context: { store } });
-//   });
+describe('CurrentTimeContainer', () => {
+  it('renders component and maps state', () => {
+    const { wrapper, props } = setup();
 
-//   it('onClick toggles fullScreen', () => {
-//     const current = 'audio-player-one';
+    expect(wrapper.type()).toBe(FullScreen);
+    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('uid')).toNotExist();
+    expect(wrapper.prop('dispatch')).toNotExist();
+  });
 
-//     wrapper.simulate('click');
-//     expect(dispatchSpy).toHaveBeenCalledWith(fullScreen(
-//       !store.getState().jPlayers[current].fullScreen,
-//       current,
-//     ));
-//   });
-//   it('renders component', () => expect(wrapper.type()).toBe(FullScreen));
-//   it('maps children', () => expect(wrapper.prop('children')).toBe(children));
-//   it('maps attributes', () => expect(wrapper.prop('attributes')).toEqual(attributes));
-// });
+  it('onClick toggles fullScreen on when fullScreen false', () => {
+    const { wrapper, state, jPlayer } = setup();
+
+    wrapper.simulate('click');
+
+    expect(state.store.dispatch).toHaveBeenCalledWith(setFullScreen(
+      !jPlayer.fullScreen,
+      state.uid,
+    ));
+  });
+
+  it('onClick toggles fullScreen off when fullScreen true', () => {
+    const { wrapper, state, jPlayer } = setup({ fullScreen: true });
+
+    wrapper.simulate('click');
+
+    expect(state.store.dispatch).toHaveBeenCalledWith(setFullScreen(
+      !jPlayer.fullScreen,
+      state.uid,
+    ));
+  });
+});

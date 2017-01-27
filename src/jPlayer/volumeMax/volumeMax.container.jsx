@@ -8,7 +8,7 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
 
 const mergeProps = ({ muted }, { dispatch }, { uid, children, ...attributes }) => ({
   onClick: () => {
-    dispatch(setVolume(1, uid));
+    dispatch(setVolume(uid, 1));
 
     if (muted) {
       dispatch(setMute(false, uid));

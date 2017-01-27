@@ -1,29 +1,10 @@
 import React from 'react';
+import merge from 'lodash.merge';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
-
-export const customAttributeTests = (component, selector) => {
-  let attributes;
-  let wrapper;
-
-  beforeEach(() => {
-    attributes = {};
-    wrapper = shallow(React.cloneElement(component));
-  });
-
-  it('custom non-conflicting attributes get rendered', () => {
-    attributes['data-jPlayerReact-test'] = 'test';
-    wrapper.setProps({ ...attributes });
-
-    if (selector === undefined) {
-      expect(wrapper.prop('data-jPlayerReact-test')).toBe(attributes['data-jPlayerReact-test']);
-    } else {
-      expect(wrapper.dive().find(selector).prop('data-jPlayerReact-test'))
-        .toBe(attributes['data-jPlayerReact-test']);
-    }
-  });
-};
+import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { defaultOptions, statusDefaultValues } from './constants';
 
 export const barDraggingTests = (wrapper, { barValueFn }) => {
   let instance;
@@ -75,3 +56,57 @@ export const mockStore = (...states) => configureMockStore()(() => {
     jPlayers,
   };
 });
+
+const setup = (component, props, state) => {
+  const newState = {
+    store: mockStore({
+      ...merge({}, statusDefaultValues, defaultOptions, state),
+    }),
+    uid: 'player-1',
+  };
+
+  const newProps = {
+    'data-attribute-test': 'test',
+    ...props,
+  };
+
+  expect.spyOn(newState.store, 'dispatch');
+
+  const wrapper = component(newProps, newState);
+
+  return {
+    wrapper,
+    props: newProps,
+    state: newState,
+    jPlayer: newState.store.getState().jPlayers[newState.uid],
+  };
+};
+
+export const shallowSetup = (component, props, state) => {
+  const shallowComponent = (newProps, newState) => {
+    const Component = component;
+
+    return shallow(
+      <Component {...newProps} />, { context: { uid: newState.uid } },
+    ).dive({ context: { store: newState.store } });
+  };
+
+  return setup(shallowComponent, props, state);
+};
+
+export const mountedSetup = (component, props, state) => {
+  const mountedComponent = (newProps, newState) => {
+    const Component = component;
+
+    return mount(
+      <Provider store={newState.store}>
+        <Component {...newProps} />
+      </Provider>, {
+        context: { uid: newState.uid }, childContextTypes: { uid: React.PropTypes.string },
+      },
+    ).find(Component);
+  };
+
+  return setup(mountedComponent, props, state);
+};
+

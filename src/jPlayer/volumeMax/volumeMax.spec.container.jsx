@@ -2,38 +2,38 @@ import React from 'react';
 import expect from 'expect';
 
 import { shallowSetup } from '../../util/common.spec';
-import { play, pause } from '../actions';
-import PlayContainer from './play.container';
-import Play from './play';
+import { setVolume, setMute } from '../actions';
+import VolumeMaxContainer from './volumeMax.container';
+import VolumeMax from './volumeMax';
 
-const setup = state => shallowSetup(PlayContainer, {
+const setup = state => shallowSetup(VolumeMaxContainer, {
   children: (<i />),
 }, state);
 
-describe('PlayContainer', () => {
+describe('VolumeMaxContainer', () => {
   it('renders component and maps state', () => {
     const { wrapper, props } = setup();
 
-    expect(wrapper.type()).toBe(Play);
+    expect(wrapper.type()).toBe(VolumeMax);
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });
 
-  it('onClick toggles play if paused', () => {
+  it('onClick sets volume to max', () => {
     const { wrapper, state } = setup();
 
     wrapper.simulate('click');
 
-    expect(state.store.dispatch).toHaveBeenCalledWith(play(state.uid));
+    expect(state.store.dispatch).toHaveBeenCalledWith(setVolume(state.uid, 1));
   });
 
-  it('onClick toggles pause if playing', () => {
-    const { wrapper, state } = setup({ paused: false });
+  it('onClick toggle mute off if muted', () => {
+    const { wrapper, state } = setup({ muted: true });
 
     wrapper.simulate('click');
 
-    expect(state.store.dispatch).toHaveBeenCalledWith(pause(state.uid));
+    expect(state.store.dispatch).toHaveBeenCalledWith(setMute(false, state.uid));
   });
 });

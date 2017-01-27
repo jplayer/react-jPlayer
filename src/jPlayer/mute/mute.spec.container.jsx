@@ -1,45 +1,45 @@
-// import React from 'react';
-// import expect from 'expect';
-// import { shallow } from 'enzyme';
-// import configureMockStore from 'redux-mock-store';
+import React from 'react';
+import expect from 'expect';
 
-// import MuteContainer from '../../../src/containers/controls/mute';
-// import Mute from '../../../src/components/controls/mute';
-// import { mute } from '../../../src/actions/jPlayerActions';
+import { shallowSetup } from '../../util/common.spec';
+import { setMute } from '../actions';
+import MuteContainer from './mute.container';
+import Mute from './mute';
 
-// describe('Mute Container', () => {
-//   const children = <i />;
-//   const attributes = {
-//     className: 'test',
-//   };
-//   const store = configureMockStore()({
-//     jPlayers: {
-//       'audio-player-one': { muted: true },
-//     },
-//   });
-//   let dispatchSpy;
-//   let wrapper;
+const setup = state => shallowSetup(MuteContainer, {
+  children: (<i />),
+}, state);
 
-//   beforeEach(() => {
-//     dispatchSpy = expect.spyOn(store, 'dispatch');
-//     wrapper = shallow(
-//       <MuteContainer className={attributes.className}>
-//         {children}
-//       </MuteContainer>,
-//       { context: { uid: 'audio-player-one' } },
-//       ).shallow({ context: { store } });
-//   });
+describe('MuteContainer', () => {
+  it('renders component and maps state', () => {
+    const { wrapper, props } = setup();
 
-//   it('onClick toggles mute', () => {
-//     const current = 'audio-player-one';
+    expect(wrapper.type()).toBe(Mute);
+    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('uid')).toNotExist();
+    expect(wrapper.prop('dispatch')).toNotExist();
+  });
 
-//     wrapper.simulate('click');
-//     expect(dispatchSpy).toHaveBeenCalledWith(mute(
-//       !store.getState().jPlayers[current].muted,
-//       current,
-//     ));
-//   });
-//   it('renders component', () => expect(wrapper.type()).toBe(Mute));
-//   it('maps children', () => expect(wrapper.prop('children')).toBe(children));
-//   it('maps attributes', () => expect(wrapper.prop('attributes')).toEqual(attributes));
-// });
+  it('onClick toggles muted on when muted false', () => {
+    const { wrapper, state, jPlayer } = setup();
+
+    wrapper.simulate('click');
+
+    expect(state.store.dispatch).toHaveBeenCalledWith(setMute(
+      !jPlayer.muted,
+      state.uid,
+    ));
+  });
+
+  it('onClick toggles muted off when muted true', () => {
+    const { wrapper, state, jPlayer } = setup({ muted: true });
+
+    wrapper.simulate('click');
+
+    expect(state.store.dispatch).toHaveBeenCalledWith(setMute(
+      !jPlayer.muted,
+      state.uid,
+    ));
+  });
+});

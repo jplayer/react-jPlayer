@@ -39,8 +39,6 @@ describe('<PlayBar />', () => {
   });
 
   it('width is currentPercentAbsolute when smoothPlayBar', () => {
-    const { wrapper, props } = setup();
-
     wrapper.setProps({ smoothPlayBar: true });
     expect(wrapper.dive().prop('style').width).toBe(`${props.currentPercentAbsolute}%`);
   });

@@ -243,6 +243,7 @@ export const defaultOptions = {
   guiFadeHoldTime: 3000,
   media: {
     title: '',
+    poster: '',
     free: false,
   },
   global: [],
