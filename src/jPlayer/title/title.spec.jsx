@@ -20,9 +20,14 @@ const setup = () => {
 };
 
 describe('<Title />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);

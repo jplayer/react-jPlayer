@@ -31,17 +31,20 @@ const setup = () => {
 };
 
 describe('<VolumeBarValue />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     expect(wrapper.hasClass(classes.VOLUME_BAR_VALUE)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
 
   styleTests.forEach((test) => {
     it(`props (${Object.entries(test.props).join(' & ')}) match styles`, () => {
-      const { wrapper } = setup();
-
       wrapper.setProps(test.props);
 
       expect(wrapper.prop('style')).toEqual(test.expected);

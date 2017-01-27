@@ -21,8 +21,14 @@ const setup = () => {
 };
 
 describe('<Gui />', () => {
+  let wrapper;
+  let props;
+
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
   it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
     const gui = wrapper.dive();
 
     gui.simulate('mouseenter');

@@ -4,12 +4,13 @@ import { connectWithId } from '../../util/index';
 import { defaultOptions } from '../../util/constants';
 import BufferBar from './bufferBar';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => {
+  return({
   bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
   duration: jPlayers[uid].duration,
   bufferColour: jPlayers[uid].bufferColour,
   attributes,
-});
+});}
 
 class BufferBarContainer extends React.Component {
   static get propTypes() {

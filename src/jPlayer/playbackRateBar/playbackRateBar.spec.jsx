@@ -23,9 +23,14 @@ const setup = () => {
 };
 
 describe('<PlaybackRateBar />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     wrapper.simulate('click');
     wrapper.simulate('mousedown');
 

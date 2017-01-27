@@ -43,9 +43,14 @@ const setup = () => {
 };
 
 describe('<Poster />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     expect(wrapper.prop('alt')).toBe(props.alt);
     expect(wrapper.prop('src')).toBe(props.src);
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
@@ -54,8 +59,6 @@ describe('<Poster />', () => {
   classTests.forEach((test) => {
     it(`props (${Object.entries(test.props).join(' & ')}) match classes`,
     () => {
-      const { wrapper } = setup();
-
       wrapper.setProps(test.props);
 
       Object.entries(test.expected).forEach((keyValuePair) => {

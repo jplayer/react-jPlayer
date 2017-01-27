@@ -48,8 +48,14 @@ const setup = () => {
 };
 
 describe('<Video />', () => {
+  let wrapper;
+  let props;
+
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
   it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
     const video = wrapper.find('video');
 
     Object.entries(events).forEach((val) => {
@@ -62,8 +68,6 @@ describe('<Video />', () => {
   });
 
   it('renders null when not required', () => {
-    const { wrapper } = setup();
-
     wrapper.setProps({ require: false });
 
     expect(wrapper.type()).toBe(null);

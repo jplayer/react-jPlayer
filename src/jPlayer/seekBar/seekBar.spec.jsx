@@ -24,9 +24,14 @@ const setup = () => {
 };
 
 describe('<SeekBar />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     wrapper.simulate('mousedown');
     wrapper.simulate('click');
 

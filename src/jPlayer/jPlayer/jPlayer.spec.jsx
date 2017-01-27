@@ -48,9 +48,14 @@ const setup = () => {
 };
 
 describe('<JPlayer />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     expect(wrapper.children(props.children.type).type()).toBe(props.children.type);
     expect(wrapper.hasClass(classes.JPLAYER)).toBeTruthy();
     expect(wrapper.children(KeyControl).exists()).toBeTruthy();
@@ -60,8 +65,6 @@ describe('<JPlayer />', () => {
   classTests.forEach((test) => {
     it(`props (${Object.entries(test.props).join(' & ')}) match classes`,
     () => {
-      const { wrapper } = setup();
-
       wrapper.setProps(test.props);
 
       expect(test.expected.every(x => wrapper.hasClass(x))).toBeTruthy();

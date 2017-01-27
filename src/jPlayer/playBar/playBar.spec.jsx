@@ -22,8 +22,14 @@ const setup = () => {
 };
 
 describe('<PlayBar />', () => {
+  let wrapper;
+  let props;
+
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
   it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
     const playBar = wrapper.dive();
 
     expect(playBar.prop('style').width).toBe(`${props.currentPercentRelative}%`);

@@ -42,9 +42,14 @@ const setup = () => {
 };
 
 describe('<PlaybackRateBarValue />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR_VALUE)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });
@@ -52,8 +57,6 @@ describe('<PlaybackRateBarValue />', () => {
   styleTests.forEach((test) => {
     it(`props (${Object.entries(test.props).join(' & ')}) match styles`,
     () => {
-      const { wrapper } = setup();
-
       wrapper.setProps(test.props);
 
       expect(wrapper.prop('style')).toEqual(test.expected);

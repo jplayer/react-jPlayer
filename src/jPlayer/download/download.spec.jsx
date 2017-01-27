@@ -22,9 +22,14 @@ const setup = () => {
 };
 
 describe('<Download />', () => {
-  it('renders self and subcomponents', () => {
-    const { wrapper, props } = setup();
+  let wrapper;
+  let props;
 
+  beforeEach(() => {
+    ({ wrapper, props } = setup());
+  });
+
+  it('renders self and subcomponents', () => {
     expect(wrapper.prop('download')).toBeTruthy();
     expect(wrapper.prop('href')).toBe(props.href);
     expect(wrapper.prop('children')).toBe(props.children);
@@ -33,8 +38,6 @@ describe('<Download />', () => {
   });
 
   it('renders null when audio is not free', () => {
-    const { wrapper } = setup();
-
     wrapper.setProps({ free: false });
     expect(wrapper.node).toBe(null);
   });
