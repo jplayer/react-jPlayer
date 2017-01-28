@@ -142,7 +142,7 @@ const isInitializing = actionType => (
 
 const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
   switch (actionType) {
-    case actionTypes.jPlayer.UPDATE_OPTION:
+    case actionTypes.jPlayer.SET_OPTION:
       return updateObject(jPlayer, { [action.key]: action.value });
     case actionTypes.jPlayer.CLEAR_MEDIA:
       return clearMedia(jPlayer);

@@ -38,24 +38,24 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
             // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
             // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
 
-        this.props.updateOption('onEnded', () => {
+        this.props.setOption('onEnded', () => {
           this.next();
                // this._trigger(this.props.onEnded)
         });
 
-        this.props.updateOption('onPlay', () => {
+        this.props.setOption('onPlay', () => {
                 // actions.updateOthersOption(this.props.jPlayerid, true, "paused");
                // this._trigger(this.props.onPlay);
         });
 
-        this.props.updateOption('onResize', () => {
+        this.props.setOption('onResize', () => {
           const method = this.props.fullScreen ? this.props.removeFromArrayByValue : this.props.addUniqueToArray;
 
           this.setState(state => method(state.detailsClass, constants.classes.HIDDEN));
                // this._trigger(this.props.onResize);
         });
 
-        this.props.updateOption('keyBindings', merge({
+        this.props.setOption('keyBindings', merge({
           next: {
             key: 221, // ]
             fn: () => this.next(),
@@ -153,8 +153,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
         }
       }
       _initPlaylist = (playlist) => {
-        this.props.updateOption('current', 0);
-        this.props.updateOption('shuffled', false);
+        this.props.setOption('current', 0);
+        this.props.setOption('shuffled', false);
         this.original = merge([], playlist); // Copy the Array of Objects
 
         for (let i = 0; i < this.original.length; i++) {
@@ -162,7 +162,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
           this._addFreeMediaLinks(this.original[i]);
         }
 
-        this.props.updateOption('playlist', this.original);
+        this.props.setOption('playlist', this.original);
       }
       setPlaylist = playlist => this._initPlaylist(playlist);
       add = (media, playNow) => {
@@ -187,17 +187,17 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
           const playlist = merge([], [...this.props.playlist]);
           playlist[index].isRemoving = true;
 
-          this.props.updateOption('playlist', playlist);
+          this.props.setOption('playlist', playlist);
         }
         this.setState({ removing: true });
       }
       select = (index) => {
         index = (index < 0) ? this.original.length + index : index; // Negative index relates to end of array.
         if (index >= 0 && index < this.props.playlist.length) {
-          this.props.updateOption('current', index);
+          this.props.setOption('current', index);
           this.context.setMedia(this.props.playlist[index]);
         } else {
-          this.props.updateOption('current', 0);
+          this.props.setOption('current', 0);
         }
       }
       play = (index) => {
@@ -243,8 +243,8 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
           shuffled = !this.props.shuffled;
         }
 
-        this.props.updateOption('playNow', playNow);
-        this.props.updateOption('shuffled', shuffled);
+        this.props.setOption('playNow', playNow);
+        this.props.setOption('shuffled', shuffled);
         this.setState({ shuffling: true });
       }
       _removeAnimationCallback = (index) => {
@@ -265,13 +265,13 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
         if (this.original.length) {
           if (index === this.props.current) {
                     // To cope when last element being selected when it was removed
-            this.props.updateOption('current', (index < this.original.length) ? this.props.current : this.original.length - 1).then(() => this.select(this.props.current));
+            this.props.setOption('current', (index < this.original.length) ? this.props.current : this.original.length - 1).then(() => this.select(this.props.current));
           } else if (index < this.props.current) {
-            this.props.updateOption('current', this.props.current--);
+            this.props.setOption('current', this.props.current--);
           }
         } else {
-          this.props.updateOption('current', 0);
-          this.props.updateOption('shuffled', false);
+          this.props.setOption('current', 0);
+          this.props.setOption('shuffled', false);
           this.context.clearMedia();
         }
 
@@ -279,7 +279,7 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
       }
       _shuffleAnimationCallback = () => {
         if (this.state.shuffling) {
-          this.props.shuffled ? this.props.updateOption('playlist', [...this.props.playlist].sort(() => 0.5 - Math.random())) : this.props.updateOption('playlist', this.original);
+          this.props.shuffled ? this.props.setOption('playlist', [...this.props.playlist].sort(() => 0.5 - Math.random())) : this.props.setOption('playlist', this.original);
           this.setState({ shuffling: false });
         }
       }

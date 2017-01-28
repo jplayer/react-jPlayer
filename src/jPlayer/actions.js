@@ -1,13 +1,11 @@
 import { actionTypes } from '../util/constants';
 
-export default {
-  updateOption: (key, value, uid) => ({
-    type: actionTypes.jPlayer.UPDATE_OPTION,
-    key,
-    value,
-    uid,
-  }),
-};
+export const setOption = (key, value, uid) => ({
+  type: actionTypes.jPlayer.SET_OPTION,
+  key,
+  value,
+  uid,
+});
 export const setMedia = (media, uid) => ({
   type: actionTypes.jPlayer.SET_MEDIA,
   uid,

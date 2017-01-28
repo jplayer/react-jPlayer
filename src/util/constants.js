@@ -1,6 +1,6 @@
 export const actionTypes = {
   jPlayer: {
-    UPDATE_OPTION: 'UPDATE_OPTION',
+    SET_OPTION: 'SET_OPTION',
     SET_MEDIA: 'SET_MEDIA',
     CLEAR_MEDIA: 'CLEAR_MEDIA',
     PLAY: 'PLAY',
@@ -15,7 +15,7 @@ export const actionTypes = {
     FOCUS: 'FOCUS',
   },
   jPlaylist: {
-    UPDATE_OPTION: 'UPDATE_OPTION',
+    SET_OPTION: 'SET_OPTION',
     ARRAY_ADD_UNIQUE: 'ARRAY_ADD_UNIQUE',
     ARRAY_REMOVE_BY_VALUE: 'ARRAY_REMOVE_BY_VALUE',
     ARRAY_REMOVE_BY_INDEX: 'ARRAY_REMOVE_BY_INDEX',

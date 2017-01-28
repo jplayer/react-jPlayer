@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connectWithId, urlNotSupportedError, convertTime } from '../../util/index';
 import { loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
-import actions, { pause } from '../actions';
+import { setOption, pause } from '../actions';
 
 const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
   loop: jPlayers[uid].loop,
@@ -27,7 +27,7 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
 });
 
 const mergeProps = (stateProps, { dispatch }, { uid }) => ({
-  updateOption: (key, value) => dispatch(actions.updateOption(key, value, uid)),
+  setOption: (key, value) => dispatch(setOption(key, value, uid)),
   pause: time => dispatch(pause(uid, time)),
   ...stateProps,
 });
@@ -67,7 +67,7 @@ class MediaContainer extends React.Component {
       currentTime: React.PropTypes.number,
       playHeadPercent: React.PropTypes.number.isRequired,
       paused: React.PropTypes.bool.isRequired,
-      updateOption: React.PropTypes.func.isRequired,
+      setOption: React.PropTypes.func.isRequired,
       pause: React.PropTypes.func.isRequired,
       autoplay: React.PropTypes.bool,
       defaultPlaybackRate: React.PropTypes.number,
@@ -137,7 +137,7 @@ class MediaContainer extends React.Component {
           });
         }
         this.updateMediaStatus();
-        this.props.updateOption('bufferedTimeRanges', bufferedTimeRanges);
+        this.props.setOption('bufferedTimeRanges', bufferedTimeRanges);
         this.props.onProgress();
       },
       onTimeUpdate: () => {
@@ -149,15 +149,15 @@ class MediaContainer extends React.Component {
         this.props.onDurationChange();
       },
       onSeeking: () => {
-        this.props.updateOption('seeking', true);
+        this.props.setOption('seeking', true);
         this.props.onSeeking();
       },
       onSeeked: () => {
-        this.props.updateOption('seeking', false);
+        this.props.setOption('seeking', false);
         this.props.onSeeked();
       },
       onPlay: () => {
-        this.props.updateOption('paused', false);
+        this.props.setOption('paused', false);
         this.props.onPlay();
       },
       onEnded: () => {
@@ -171,7 +171,7 @@ class MediaContainer extends React.Component {
         this.props.onEnded();
       },
       onError: () => {
-        this.props.updateOption('error', urlNotSupportedError(this.props.src));
+        this.props.setOption('error', urlNotSupportedError(this.props.src));
         this.props.onError();
       },
       onRateChange: this.props.onRateChange,
@@ -204,7 +204,7 @@ class MediaContainer extends React.Component {
 
     if (nextProps.newTime !== null) {
       this.currentMedia.currentTime = nextProps.newTime;
-      this.props.updateOption('newTime', null);
+      this.props.setOption('newTime', null);
     }
 
     if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
@@ -214,7 +214,7 @@ class MediaContainer extends React.Component {
         this.currentMedia.currentTime = nextProps.playHeadPercent *
                 (this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100);
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-        this.props.updateOption('currentPercentRelative', this.getCurrentPercentRelative());
+        this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
       }
     }
 
@@ -229,10 +229,10 @@ class MediaContainer extends React.Component {
   onMouseMove = () => {
     if (this.props.fullScreen) {
       clearTimeout(this.props.guiFadeHoldTimeout);
-      this.props.updateOption('guiFadeOut', false);
-      this.props.updateOption('guiFadeHoldTimeout', setTimeout(() => {
+      this.props.setOption('guiFadeOut', false);
+      this.props.setOption('guiFadeHoldTimeout', setTimeout(() => {
         if (this.props.fullScreen) {
-          this.props.updateOption('guiFadeOut', true);
+          this.props.setOption('guiFadeOut', true);
         }
       }, this.props.guiFadeHoldTime));
     }
@@ -267,15 +267,15 @@ class MediaContainer extends React.Component {
       durationText = convertTime(this.currentMedia.duration);
     }
 
-    this.props.updateOption('durationText', durationText);
-    this.props.updateOption('currentTimeText', currentTimeText);
-    this.props.updateOption('seekPercent', seekPercent);
-    this.props.updateOption('currentPercentRelative', this.getCurrentPercentRelative());
-    this.props.updateOption('currentPercentAbsolute', currentPercentAbsolute);
-    this.props.updateOption('currentTime', this.currentMedia.currentTime);
-    this.props.updateOption('remaining', remaining);
-    this.props.updateOption('duration', this.currentMedia.duration);
-    this.props.updateOption('playbackRate', this.currentMedia.playbackRate);
+    this.props.setOption('durationText', durationText);
+    this.props.setOption('currentTimeText', currentTimeText);
+    this.props.setOption('seekPercent', seekPercent);
+    this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
+    this.props.setOption('currentPercentAbsolute', currentPercentAbsolute);
+    this.props.setOption('currentTime', this.currentMedia.currentTime);
+    this.props.setOption('remaining', remaining);
+    this.props.setOption('duration', this.currentMedia.duration);
+    this.props.setOption('playbackRate', this.currentMedia.playbackRate);
   }
   updateCurrentMedia = ({ defaultPlaybackRate, playbackRate, preload, volume,
     muted, autoplay, loop }) => {

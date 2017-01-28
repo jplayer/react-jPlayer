@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import actions from '../actions';
+import { setOption } from '../actions';
 import Gui from './gui';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({
@@ -12,7 +12,7 @@ const mergeProps = ({ fullScreen, guiFadeOut, guiFadeHoldTimeout }, { dispatch }
 { uid, children, ...attributes }) => ({
   onMouseEnter: () => {
     if (fullScreen) {
-      dispatch(actions.updateOption('guiFadeOut', false, uid));
+      dispatch(setOption('guiFadeOut', false, uid));
       clearTimeout(guiFadeHoldTimeout);
     }
   },

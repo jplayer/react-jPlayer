@@ -47,15 +47,15 @@
 //   fullscreenchange = () => {
 //         // If nothing is fullscreen, then we cannot be in fullscreen mode.
 //     if (this.props.fullScreen && !nativeFeatures.fullscreen.api.fullscreenElement()) {
-//       this.props.updateOption('fullScreen', false);
+//       this.props.setOption('fullScreen', false);
 //     }
 //   }
 //   restrictNativeVideoControls = () => {
 //         // Fallback to noFullWindow when nativeVideoControls is true and audio media is being used. Affects when both media types are used.
 //     if (this.props.require.audio) {
 //       if (this.props.nativeVideoControls) {
-//         this.props.updateOption('nativeVideoControls', false);
-//         this.props.updateOption('noFullWindow', true);
+//         this.props.setOption('nativeVideoControls', false);
+//         this.props.setOption('noFullWindow', true);
 //       }
 //     }
 //   }

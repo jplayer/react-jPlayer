@@ -5,7 +5,7 @@ import screenfull from 'screenfull';
 import { connectWithId } from '../../util/index';
 import { defaultOptions, statusDefaultValues, formats } from '../../util/constants';
 import JPlayer from './jPlayer';
-import actions, { setMedia } from '../actions';
+import { setOption, setMedia } from '../actions';
 
 const formatPropTypes = {};
 
@@ -33,7 +33,7 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
 
 const mergeProps = (stateProps, { dispatch }, { uid }) => ({
   setMedia: media => dispatch(setMedia(media, uid)),
-  updateOption: (key, value) => dispatch(actions.updateOption(key, value, uid)),
+  setOption: (key, value) => dispatch(setOption(key, value, uid)),
   ...stateProps,
 });
 
@@ -50,7 +50,7 @@ class JPlayerContainer extends React.Component {
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
       }).isRequired,
-      updateOption: React.PropTypes.func.isRequired,
+      setOption: React.PropTypes.func.isRequired,
       setMedia: React.PropTypes.func.isRequired,
       error: React.PropTypes.shape({
         context: React.PropTypes.string,
@@ -117,7 +117,7 @@ class JPlayerContainer extends React.Component {
   }
   closeFullScreen = () => {
     if (!screenfull.isFullscreen) {
-      this.props.updateOption('fullScreen', false);
+      this.props.setOption('fullScreen', false);
     }
   }
   logErrors = ({ error }) => {

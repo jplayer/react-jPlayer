@@ -1,7 +1,7 @@
 // import { actionTypes } from '../util/constants';
 
-// export const updateOption = (key, value) => Promise.resolve({
-//     type: actionTypes.jPlaylist.UPDATE_OPTION,
+// export const setOption = (key, value) => Promise.resolve({
+//     type: actionTypes.jPlaylist.SET_OPTION,
 //     key: key,
 //     value: value
 // });
