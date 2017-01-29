@@ -9,9 +9,18 @@ export const connectWithId = (...args) => compose(
   connect(...args),
 );
 
+export const mapObject = (obj, fn) =>
+  Object.assign(...Object.keys(obj).map(k => ({ [k]: fn(obj[k]) })));
+
 export const updateObject = (existingObject, newValues) => ({
   ...existingObject,
   ...newValues,
+});
+
+export const requiredParameterError = context => ({
+  context,
+  message: errors.REQUIRED_PARAMETER,
+  hint: hints.REQUIRED_PARAMETER,
 });
 
 export const noFormatSupportedError = context => ({
@@ -38,7 +47,9 @@ export const getOffset = el => (
     left: el.getBoundingClientRect().left + document.body.scrollLeft,
   }
 );
+
 export const getWidth = el => el.getBoundingClientRect().width;
+
 export const getHeight = el => el.getBoundingClientRect().height;
 
 export const limitValue = (value, min, max) => {

@@ -1,15 +1,13 @@
 import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../util/constants';
-import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
+import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
+  requiredParameterError } from '../util/index';
 
-const clearMedia = state =>
-    // if(!nextProps.nativeVideoControls) {
-    //     this.setState(state => reducer.addUniqueToArray(state, reducer.addUniqueToArray(keys.VIDEO_CLASS, classes.HIDDEN)));
-    // }
+const resetStatus = state => updateObject(state, { ...statusDefaultValues });
 
-   updateObject(state, {
-     seeking: false,
-     ...statusDefaultValues,
-   });
+const clearMedia = state => updateObject(state, {
+  ...resetStatus(state),
+  media: defaultOptions.media,
+});
 
 const updateFormats = (state, media) => {
   const newMediaSettings = { ...state.mediaSettings };
@@ -32,10 +30,16 @@ const updateFormats = (state, media) => {
 };
 
 const setMedia = (state, { media }) => {
+  if (media === undefined) {
+    return updateObject(state, {
+      error: requiredParameterError(`parameter 'media' for function ${setMedia.name}`),
+    });
+  }
+
   let foundSupported = false;
   const newState = {
     ...state,
-    ...clearMedia(state),
+    ...resetStatus(state),
     ...updateFormats(state, media),
   };
 
@@ -177,13 +181,15 @@ const setGlobalOptions = (state, action) => {
   Object.keys(newState).forEach((key) => {
     const jPlayer = newState[key];
 
-    jPlayer.global.forEach((actionType) => {
-      if (key !== action.uid && action.type === actionType) {
-        newState = updateObject(newState, {
-          [key]: updatePlayer(newState[key], action, actionType),
-        });
-      }
-    });
+    if (jPlayer.global !== undefined) {
+      jPlayer.global.forEach((actionType) => {
+        if (key !== action.uid && action.type === actionType) {
+          newState = updateObject(newState, {
+            [key]: updatePlayer(newState[key], action, actionType),
+          });
+        }
+      });
+    }
   });
   return newState;
 };

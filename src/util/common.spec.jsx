@@ -61,7 +61,7 @@ export const getJPlayerState = (numberOfJPlayers) => {
   const jPlayers = {};
 
   for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
-    jPlayers[`player-${i}`] = merge({}, statusDefaultValues, defaultOptions);
+    jPlayers[`player-${i}`] = {};// merge({}, statusDefaultValues, defaultOptions);
   }
 
   return {
