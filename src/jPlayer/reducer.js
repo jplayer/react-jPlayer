@@ -171,8 +171,7 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
   }
 };
 
-const jPlayerReducer = (state = {}, action) => {
-  if (!isInitializing(action.type)) return state;
+const setGlobalOptions = (state, action) => {
   let newState = { ...state };
 
   Object.keys(newState).forEach((key) => {
@@ -186,11 +185,20 @@ const jPlayerReducer = (state = {}, action) => {
       }
     });
   });
+  return newState;
+};
+
+const jPlayerReducer = (state = {}, action) => {
+  if (!isInitializing(action.type)) {
+    return state;
+  }
+  let newState = { ...state };
 
   switch (action.type) {
     case actionTypes.jPlayer.FOCUS:
       return updateObject(newState, setFocus(newState, action));
     default:
+      newState = setGlobalOptions(state, action);
       newState = updateObject(newState, {
         [action.uid]: updatePlayer(newState[action.uid], action),
       });

@@ -2,15 +2,15 @@ import expect from 'expect';
 import * as actions from './actions';
 import { actionTypes } from '../util/constants';
 
-describe('actions', () => {
-  const jPlayerActions = actionTypes.jPlayer;
+describe('jPlayer actions', () => {
+  const jPlayerActionTypes = actionTypes.jPlayer;
   const uid = 'player-1';
 
   it('should create an action to set the jPlayer options', () => {
     const key = 'verticalVolume';
     const value = true;
     const expectedAction = {
-      type: jPlayerActions.SET_OPTION,
+      type: jPlayerActionTypes.SET_OPTION,
       key,
       value,
       uid,
@@ -25,7 +25,7 @@ describe('actions', () => {
       poster: 'test-poster',
     };
     const expectedAction = {
-      type: jPlayerActions.SET_MEDIA,
+      type: jPlayerActionTypes.SET_MEDIA,
       media,
       uid,
     };
@@ -35,7 +35,7 @@ describe('actions', () => {
 
   it('should create an action to clear the media', () => {
     const expectedAction = {
-      type: jPlayerActions.CLEAR_MEDIA,
+      type: jPlayerActionTypes.CLEAR_MEDIA,
       uid,
     };
 
@@ -45,7 +45,7 @@ describe('actions', () => {
   it('should create an action to play the media', () => {
     const time = 30;
     const expectedAction = {
-      type: jPlayerActions.PLAY,
+      type: jPlayerActionTypes.PLAY,
       time,
       uid,
     };
@@ -56,7 +56,7 @@ describe('actions', () => {
   it('should create an action to pause the media', () => {
     const time = 30;
     const expectedAction = {
-      type: jPlayerActions.PAUSE,
+      type: jPlayerActionTypes.PAUSE,
       time,
       uid,
     };
@@ -67,7 +67,7 @@ describe('actions', () => {
   it('should create an action to set the play head', () => {
     const percent = 30;
     const expectedAction = {
-      type: jPlayerActions.PLAY_HEAD,
+      type: jPlayerActionTypes.PLAY_HEAD,
       percent,
       uid,
     };
@@ -78,7 +78,7 @@ describe('actions', () => {
   it('should create an action to set the volume', () => {
     const volume = 0.8;
     const expectedAction = {
-      type: jPlayerActions.VOLUME,
+      type: jPlayerActionTypes.VOLUME,
       volume,
       uid,
     };
@@ -89,7 +89,7 @@ describe('actions', () => {
   it('should create an action to mute the media', () => {
     const mute = true;
     const expectedAction = {
-      type: jPlayerActions.MUTE,
+      type: jPlayerActionTypes.MUTE,
       mute,
       uid,
     };
@@ -100,7 +100,7 @@ describe('actions', () => {
   it('should create an action to set the duration', () => {
     const remainingDuration = true;
     const expectedAction = {
-      type: jPlayerActions.DURATION,
+      type: jPlayerActionTypes.DURATION,
       remainingDuration,
       uid,
     };
@@ -111,7 +111,7 @@ describe('actions', () => {
   it('should create an action to set the playbackRate', () => {
     const playbackRate = 3.2;
     const expectedAction = {
-      type: jPlayerActions.PLAYBACK_RATE,
+      type: jPlayerActionTypes.PLAYBACK_RATE,
       playbackRate,
       uid,
     };
@@ -122,7 +122,7 @@ describe('actions', () => {
   it('should create an action to set the loop', () => {
     const loop = true;
     const expectedAction = {
-      type: jPlayerActions.LOOP,
+      type: jPlayerActionTypes.LOOP,
       loop,
       uid,
     };
@@ -133,7 +133,7 @@ describe('actions', () => {
   it('should create an action to set the fullScreen', () => {
     const fullScreen = true;
     const expectedAction = {
-      type: jPlayerActions.FULL_SCREEN,
+      type: jPlayerActionTypes.FULL_SCREEN,
       fullScreen,
       uid,
     };
@@ -143,7 +143,7 @@ describe('actions', () => {
 
   it('should create an action to set the focus', () => {
     const expectedAction = {
-      type: jPlayerActions.FOCUS,
+      type: jPlayerActionTypes.FOCUS,
       uid,
     };
 

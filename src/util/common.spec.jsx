@@ -44,7 +44,7 @@ export const barDraggingTests = (wrapper, { barValueFn }) => {
   });
 };
 
-export const mockStore = (...states) => configureMockStore()(() => {
+export const setJPlayerState = (...states) => {
   const jPlayers = {};
 
   states.forEach((state, i) => {
@@ -55,13 +55,25 @@ export const mockStore = (...states) => configureMockStore()(() => {
   return {
     jPlayers,
   };
-});
+};
+
+export const getJPlayerState = (numberOfJPlayers) => {
+  const jPlayers = {};
+
+  for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
+    jPlayers[`player-${i}`] = merge({}, statusDefaultValues, defaultOptions);
+  }
+
+  return {
+    jPlayers,
+  };
+};
 
 const setup = (component, props, state) => {
   const newState = {
-    store: mockStore({
+    store: configureMockStore()(setJPlayerState({
       ...merge({}, statusDefaultValues, defaultOptions, state),
-    }),
+    })),
     uid: 'player-1',
   };
 
