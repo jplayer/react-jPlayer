@@ -3,8 +3,7 @@ import merge from 'lodash.merge';
 
 import reducer from './reducer';
 import * as reducerData from './constants.spec';
-import { actionTypes, statusDefaultValues, defaultOptions, errors, hints,
-  formats } from '../util/constants';
+import { actionTypes, defaultOptions, formats } from '../util/constants';
 import { getJPlayerState } from '../util/common.spec';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
@@ -271,20 +270,23 @@ describe('jPlayer reducer', () => {
   });
 
   it('should set the global option for every action that requires it', () => {
-    setup('audio');
-    state = getJPlayerState(3).jPlayers;
+    // eslint-disable-next-line no-unused-vars
+    const { focusData, ...globalActions } = reducerData;
 
+    setup('audio');
+
+    state = getJPlayerState(3).jPlayers;
     state[playerIdOne].global = Object.keys(jPlayerActionTypes);
     state[playerIdTwo].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
     state[playerIdThree].global = Object.keys(jPlayerActionTypes);
-
-    // eslint-disable-next-line no-unused-vars
-    const { focusData, ...globalActions } = reducerData;
 
     Object.values(globalActions).forEach((dataArray) => {
       dataArray.forEach((data) => {
         const jPlayersWithGlobalOption = Object.keys(state).filter(key => (
           state[key].global.includes(data.action.type)),
+        );
+        const jPlayersWithoutGlobalOption = Object.keys(state).filter(key => (
+          !state[key].global.includes(data.action.type)),
         );
         const newState = { ...state };
 
@@ -299,8 +301,14 @@ describe('jPlayer reducer', () => {
           ...data.action,
         });
 
+        jPlayersWithoutGlobalOption.forEach((key) => {
+          expect(jPlayers[key]).toExclude(data.expected, null,
+            `Action ${data.action.type}: 
+            Expected ${JSON.stringify(jPlayers[key])} to exclude ${JSON.stringify(data.expected)}`);
+        });
+
         jPlayersWithGlobalOption.forEach((key) => {
-          expect(jPlayers[key]).toContain(data.expected, null,
+          expect(jPlayers[key]).toInclude(data.expected, null,
             `Action ${data.action.type}: 
             Expected ${JSON.stringify(jPlayers[key])} to include ${JSON.stringify(data.expected)}`);
         });
