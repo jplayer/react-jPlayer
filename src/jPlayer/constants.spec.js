@@ -28,6 +28,41 @@ export const clearMediaData = ([
   },
 ]);
 
+export const setMediaData = ([
+  {
+    state: {
+      mediaSettings: {
+        video: false,
+      },
+    },
+    action: {
+      type: jPlayerActionTypes.SET_MEDIA,
+      uid: playerIdOne,
+      media: {
+        sources: {
+          mp3: 'test.mp3',
+        },
+      },
+    },
+    expected: {
+      mediaSettings: {
+        video: false,
+        formats: [
+          {
+            supplied: 'mp3',
+            supported: 'probably',
+          },
+        ],
+      },
+      src: 'test.mp3',
+      paused: true,
+      media: {
+        ...{ ...defaultOptions.media, ...{ sources: { mp3: 'test.mp3' } } },
+      },
+    },
+  },
+]);
+
 export const playData = [
   {
     state: {

@@ -17,12 +17,6 @@ export const updateObject = (existingObject, newValues) => ({
   ...newValues,
 });
 
-export const requiredParameterError = context => ({
-  context,
-  message: errors.REQUIRED_PARAMETER,
-  hint: hints.REQUIRED_PARAMETER,
-});
-
 export const noFormatSupportedError = context => ({
   context,
   message: errors.FORMAT_NO_SUPPORT,

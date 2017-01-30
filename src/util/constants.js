@@ -45,7 +45,6 @@ export const keys = {
 };
 
 export const errors = {
-  REQUIRED_PARAMETER: 'You have not supplied the required parameter(s) for this function',
   FORMAT_NO_SUPPORT: 'It is not possible to play any media format' +
   'provided on this browser using your current options.',
   URL_NO_SUPPORT: 'The media URL could not be loaded.',
@@ -53,7 +52,6 @@ export const errors = {
 };
 
 export const hints = {
-  REQUIRED_PARAMETER: 'Check the parameters for this function',
   FORMAT_NO_SUPPORT: 'Video or audio formats defined in the supplied option may be missing.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
   URL_NOT_SET: 'Pass the media through the options or use the setMedia()' +

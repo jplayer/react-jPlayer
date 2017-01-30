@@ -1,6 +1,5 @@
 import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../util/constants';
-import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
-  requiredParameterError } from '../util/index';
+import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 
 const resetStatus = state => updateObject(state, { ...statusDefaultValues });
 
@@ -29,13 +28,7 @@ const updateFormats = (state, media) => {
   });
 };
 
-const setMedia = (state, { media }) => {
-  if (media === undefined) {
-    return updateObject(state, {
-      error: requiredParameterError(`parameter 'media' for function ${setMedia.name}`),
-    });
-  }
-
+const setMedia = (state, { media = { sources: [] } }) => {
   let foundSupported = false;
   const newState = {
     ...state,
@@ -53,7 +46,9 @@ const setMedia = (state, { media }) => {
   });
 
   if (!foundSupported) {
-    newState.error = noFormatSupportedError(`{supplied: '${newState.supplied.join(', ')}'}`);
+    newState.error = noFormatSupportedError(
+      `{ media.sources: '${Object.keys(media.sources).join(', ')}' }`,
+    );
   }
   newState.media = updateObject(defaultOptions.media, media);
 
