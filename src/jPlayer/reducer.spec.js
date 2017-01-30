@@ -309,4 +309,3 @@ describe('jPlayer reducer', () => {
     tearDown();
   });
 });
-//          `action type: ${test.action.type} did not match expected output`
