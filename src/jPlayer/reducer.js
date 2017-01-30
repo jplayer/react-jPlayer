@@ -172,7 +172,9 @@ const setGlobalOptions = (state, action) => {
   let newState = { ...state };
 
   Object.keys(newState).forEach((key) => {
-    if (key !== action.uid) {
+    const { global = [] } = newState[key];
+
+    if (key !== action.uid && global.includes(action.type)) {
       newState = updateObject(newState, {
         [key]: updatePlayer(newState[key], action, action.type),
       });

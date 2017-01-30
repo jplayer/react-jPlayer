@@ -4,9 +4,8 @@ import { defaultOptions, statusDefaultValues, actionTypes, loopOptions,
 const jPlayerActionTypes = actionTypes.jPlayer;
 const playerIdOne = 'player-1';
 const playerIdTwo = 'player-2';
-const playerIdThree = 'player-3';
 
-export const clearMediaData = ([
+export const clearMediaData = [
   {
     state: {
       media: {
@@ -26,9 +25,9 @@ export const clearMediaData = ([
       media: defaultOptions.media,
     },
   },
-]);
+];
 
-export const setMediaData = ([
+export const setMediaData = [
   {
     action: {
       type: jPlayerActionTypes.SET_MEDIA,
@@ -79,7 +78,7 @@ export const setMediaData = ([
       },
     },
   },
-]);
+];
 
 export const playData = [
   {
@@ -112,7 +111,7 @@ export const playData = [
   },
 ];
 
-export const playHeadData = ([
+export const playHeadData = [
   {
     state: {
       src: 'test.mp3',
@@ -166,7 +165,7 @@ export const playHeadData = ([
       },
     },
   },
-]);
+];
 
 export const pauseData = [
   {
@@ -199,7 +198,7 @@ export const pauseData = [
   },
 ];
 
-export const volumeData = ([
+export const volumeData = [
   {
     action: {
       type: jPlayerActionTypes.VOLUME,
@@ -233,9 +232,9 @@ export const volumeData = ([
       muted: false,
     },
   },
-]);
+];
 
-export const muteData = ([
+export const muteData = [
   {
     action: {
       type: jPlayerActionTypes.MUTE,
@@ -256,9 +255,9 @@ export const muteData = ([
       muted: false,
     },
   },
-]);
+];
 
-export const durationData = ([
+export const durationData = [
   {
     action: {
       type: jPlayerActionTypes.DURATION,
@@ -279,9 +278,9 @@ export const durationData = ([
       remainingDuration: true,
     },
   },
-]);
+];
 
-export const playbackRateData = ([
+export const playbackRateData = [
   {
     state: {
       maxPlaybackRate: defaultOptions.maxPlaybackRate,
@@ -322,9 +321,9 @@ export const playbackRateData = ([
       playbackRate: 1.3,
     },
   },
-]);
+];
 
-export const loopData = ([
+export const loopData = [
   {
     action: {
       type: jPlayerActionTypes.LOOP,
@@ -345,9 +344,9 @@ export const loopData = ([
       loop: loopOptions.LOOP,
     },
   },
-]);
+];
 
-export const fullScreenData = ([
+export const fullScreenData = [
   {
     action: {
       type: jPlayerActionTypes.FULL_SCREEN,
@@ -368,9 +367,9 @@ export const fullScreenData = ([
       fullScreen: true,
     },
   },
-]);
+];
 
-export const focusData = ([
+export const focusData = [
   {
     uid: playerIdTwo,
     state: {
@@ -392,4 +391,137 @@ export const focusData = ([
       uid: playerIdOne,
     },
   },
-]);
+];
+
+// const globalTest = [
+//   {
+//     action: {
+//       type: jPlayerActionTypes.SET_OPTION,
+//       uid: playerIdOne,
+//       key: 'autoplay',
+//       value: true,
+//     },
+//     expected: {
+//       autoplay: true,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.SET_MEDIA,
+//       uid: playerIdOne,
+//       media: {
+//         sources: {
+//           mp3: 'test.mp3',
+//         },
+//       },
+//     },
+//     expected: {
+//       media: {
+//         sources: {
+//           mp3: 'test.mp3',
+//         },
+//       },
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.CLEAR_MEDIA,
+//       uid: playerIdOne,
+//     },
+//     expected: {
+//       media: {},
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.PAUSE,
+//       uid: playerIdOne,
+//       time: 30,
+//     },
+//     expected: {
+//       newTime: 30,
+//       paused: true,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.PLAY,
+//       uid: playerIdOne,
+//     },
+//     expected: {
+//       newTime: 35,
+//       paused: false,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.PLAY_HEAD,
+//       uid: playerIdOne,
+//       percent: 15,
+//     },
+//     expected: {
+//       playHeadPercent: 15,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.VOLUME,
+//       uid: playerIdOne,
+//       volume: 0.75,
+//     },
+//     expected: {
+//       volume: 0.75,
+//       muted: false,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.MUTE,
+//       uid: playerIdOne,
+//       mute: true,
+//     },
+//     expected: {
+//       muted: true,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.DURATION,
+//       uid: playerIdOne,
+//       remainingDuration: false,
+//     },
+//     expected: {
+//       remainingDuration: true,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.PLAYBACK_RATE,
+//       uid: playerIdOne,
+//       playbackRate: 2.5,
+//     },
+//     expected: {
+//       playbackRate: 2.5,
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.LOOP,
+//       uid: playerIdOne,
+//       loop: 'loop',
+//     },
+//     expected: {
+//       loop: 'loop',
+//     },
+//   },
+//   {
+//     action: {
+//       type: jPlayerActionTypes.FULL_SCREEN,
+//       uid: playerIdOne,
+//       fullScreen: true,
+//     },
+//     expected: {
+//       fullScreen: true,
+//     },
+//   },
+// ];

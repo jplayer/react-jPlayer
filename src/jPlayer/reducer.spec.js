@@ -2,8 +2,7 @@ import expect, { spyOn } from 'expect';
 import merge from 'lodash.merge';
 
 import reducer from './reducer';
-import { setMediaData, clearMediaData, pauseData, playData, playHeadData, volumeData, muteData,
-  durationData, playbackRateData, loopData, fullScreenData, focusData } from './constants.spec';
+import * as reducerData from './constants.spec';
 import { actionTypes, statusDefaultValues, defaultOptions, errors, hints,
   formats } from '../util/constants';
 import { getJPlayerState } from '../util/common.spec';
@@ -12,6 +11,17 @@ const jPlayerActionTypes = actionTypes.jPlayer;
 const playerIdOne = 'player-1';
 const playerIdTwo = 'player-2';
 const playerIdThree = 'player-3';
+
+export const setup = (mediaType) => {
+  const media = document.createElement(mediaType);
+
+  spyOn(document, 'createElement').andReturn(media);
+  spyOn(media, 'canPlayType').andReturn('probably');
+};
+
+export const tearDown = () => {
+  expect.restoreSpies();
+};
 
 describe('jPlayer reducer', () => {
   let state;
@@ -24,12 +34,40 @@ describe('jPlayer reducer', () => {
     expect(reducer(state, '@@jPlayer-test')).toBe(state);
   });
 
+  it('should handle SET_OPTION', () => {
+    const jPlayer = reducer(state, {
+      type: jPlayerActionTypes.SET_OPTION,
+      uid: playerIdOne,
+      key: 'preload',
+      value: 'test',
+    })[playerIdOne];
+
+    expect(jPlayer).toEqual({
+      preload: 'test',
+    });
+  });
+
+  it('should handle CLEAR_MEDIA', () => {
+    reducerData.clearMediaData.forEach((test) => {
+      const newState = {
+        ...state,
+        [playerIdOne]: {
+          ...state[playerIdOne],
+          ...test.state,
+        },
+      };
+
+      const jPlayer = reducer(newState, test.action)[playerIdOne];
+
+      Object.keys(test.expected).forEach((key) => {
+        expect(jPlayer[key]).toEqual(test.expected[key]);
+      });
+    });
+  });
+
   it('SET_MEDIA should handle all possible formats', () => {
     Object.keys(formats).forEach((key) => {
-      const media = document.createElement(formats[key].MEDIA);
-
-      spyOn(document, 'createElement').andReturn(media);
-      spyOn(media, 'canPlayType').andReturn('probably');
+      setup(formats[key].MEDIA);
 
       const jPlayer = reducer(state, {
         type: jPlayerActionTypes.SET_MEDIA,
@@ -58,56 +96,24 @@ describe('jPlayer reducer', () => {
         },
       });
 
-      document.createElement.restore();
+      tearDown();
     });
   });
 
   it('should handle SET_MEDIA', () => {
-    const audio = document.createElement('audio');
-
-    spyOn(document, 'createElement').andReturn(audio);
-    spyOn(audio, 'canPlayType').andReturn('probably');
-
-    setMediaData.forEach((test) => {
+    setup('audio');
+    reducerData.fullScreenData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
       });
     });
-    document.createElement.restore();
-  });
-
-  it('should handle CLEAR_MEDIA', () => {
-    clearMediaData.forEach((test) => {
-      const newState = {
-        ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
-          ...test.state,
-        },
-      };
-
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle SET_MEDIA', () => {
-    fullScreenData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
+    tearDown();
   });
 
   it('should handle PLAY', () => {
-    playData.forEach((test) => {
+    reducerData.playData.forEach((test) => {
       const newState = {
         ...state,
         [playerIdOne]: {
@@ -124,7 +130,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle PAUSE', () => {
-    pauseData.forEach((test) => {
+    reducerData.pauseData.forEach((test) => {
       const newState = {
         ...state,
         [playerIdOne]: {
@@ -141,7 +147,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle PLAY_HEAD', () => {
-    playHeadData.forEach((test) => {
+    reducerData.playHeadData.forEach((test) => {
       const newState = {
         ...state,
         [playerIdOne]: {
@@ -158,7 +164,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle VOLUME', () => {
-    volumeData.forEach((test) => {
+    reducerData.volumeData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
@@ -168,7 +174,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle MUTE', () => {
-    muteData.forEach((test) => {
+    reducerData.muteData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
@@ -178,7 +184,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle DURATION', () => {
-    durationData.forEach((test) => {
+    reducerData.durationData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
@@ -188,7 +194,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle PLAYBACK_RATE', () => {
-    playbackRateData.forEach((test) => {
+    reducerData.playbackRateData.forEach((test) => {
       const newState = {
         ...state,
         [playerIdOne]: {
@@ -206,7 +212,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle LOOP', () => {
-    loopData.forEach((test) => {
+    reducerData.loopData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
@@ -216,11 +222,29 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle FULL_SCREEN', () => {
-    fullScreenData.forEach((test) => {
+    reducerData.fullScreenData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
+      });
+    });
+  });
+
+  it('should handle FOCUS', () => {
+    state = getJPlayerState(3).jPlayers;
+
+    reducerData.focusData.forEach((test) => {
+      state[test.uid] = test.state;
+
+      const jPlayers = reducer(state, test.action);
+
+      Object.keys(jPlayers).forEach((key) => {
+        if (test.uid !== key) {
+          expect(jPlayers[key].focus).toBeFalsy();
+        } else {
+          expect(jPlayers[key].focus).toBeTruthy();
+        }
       });
     });
   });
@@ -246,39 +270,43 @@ describe('jPlayer reducer', () => {
     });
   });
 
-  it('should handle FOCUS', () => {
-    state = getJPlayerState(3).jPlayers;
-
-    focusData.forEach((test) => {
-      state[test.uid] = test.state;
-
-      const jPlayers = reducer(state, test.action);
-
-      Object.keys(jPlayers).forEach((key) => {
-        if (test.uid !== key) {
-          expect(jPlayers[key].focus).toBeFalsy();
-        } else {
-          expect(jPlayers[key].focus).toBeTruthy();
-        }
-      });
-    });
-  });
-
   it('should set the global option for every action that requires it', () => {
+    setup('audio');
     state = getJPlayerState(3).jPlayers;
 
     state[playerIdOne].global = Object.keys(jPlayerActionTypes);
-    state[playerIdTwo].global = [jPlayerActionTypes.MUTE];
+    state[playerIdTwo].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
     state[playerIdThree].global = Object.keys(jPlayerActionTypes);
 
-    Object.values(jPlayerActionTypes).forEach((actionType) => {
-      const jPlayers = reducer(state, {
-        type: actionType,
-        uid: playerIdOne,
-      });
+    // eslint-disable-next-line no-unused-vars
+    const { focusData, ...globalActions } = reducerData;
 
-      // expect(jPlayers).toContain(test.expected, null,
-      //  `action type: ${test.action.type} did not match expected output`);
+    Object.values(globalActions).forEach((dataArray) => {
+      dataArray.forEach((data) => {
+        const jPlayersWithGlobalOption = Object.keys(state).filter(key => (
+          state[key].global.includes(data.action.type)),
+        );
+        const newState = { ...state };
+
+        jPlayersWithGlobalOption.forEach((key) => {
+          newState[key] = {
+            ...newState[key],
+            ...data.state,
+          };
+        });
+
+        const jPlayers = reducer(newState, {
+          ...data.action,
+        });
+
+        jPlayersWithGlobalOption.forEach((key) => {
+          expect(jPlayers[key]).toContain(data.expected, null,
+            `Action ${data.action.type}: 
+            Expected ${JSON.stringify(jPlayers[key])} to include ${JSON.stringify(data.expected)}`);
+        });
+      });
     });
+    tearDown();
   });
 });
+//          `action type: ${test.action.type} did not match expected output`
