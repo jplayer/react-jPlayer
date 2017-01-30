@@ -317,3 +317,26 @@ export const fullScreenData = ([
   },
 ]);
 
+export const focusData = ([
+  {
+    uid: playerIdTwo,
+    state: {
+      keyEnabled: true,
+    },
+    action: {
+      type: jPlayerActionTypes.MUTE,
+      muted: true,
+      uid: playerIdOne,
+    },
+  },
+  {
+    uid: playerIdOne,
+    state: {
+      keyEnabled: true,
+    },
+    action: {
+      type: jPlayerActionTypes.FOCUS,
+      uid: playerIdOne,
+    },
+  },
+]);

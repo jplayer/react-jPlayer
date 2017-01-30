@@ -43,7 +43,7 @@ const AudioPlayer = props => (
 
 AudioPlayer.options = {
   muted: true,
-  keyEnabled: true,
+  keyEnabled: false,
   media: {
     title: 'Fade',
     artist: 'Alan Walker',

@@ -3,7 +3,7 @@ import merge from 'lodash.merge';
 
 import reducer from './reducer';
 import { clearMediaData, pauseData, playData, playHeadData, volumeData, muteData,
-  durationData, playbackRateData, loopData, fullScreenData } from './constants.spec';
+  durationData, playbackRateData, loopData, fullScreenData, focusData } from './constants.spec';
 import { actionTypes, statusDefaultValues, defaultOptions, errors, hints } from '../util/constants';
 import { getJPlayerState } from '../util/common.spec';
 
@@ -234,9 +234,7 @@ describe('jPlayer reducer', () => {
   // });
 
   it('should focus on the jPlayer for every action apart from focus', () => {
-    state[playerIdOne] = merge({}, statusDefaultValues, defaultOptions, {
-      global: Object.keys(jPlayerActionTypes),
-    });
+    state[playerIdOne] = merge({}, defaultOptions);
 
     Object.keys(jPlayerActionTypes).forEach((type) => {
       if (type !== jPlayerActionTypes.FOCUS) {
@@ -246,13 +244,31 @@ describe('jPlayer reducer', () => {
         });
 
         Object.keys(jPlayers).forEach((key) => {
-          if (key === playerIdOne) {
-            expect(jPlayers[key].focus).toBeTruthy();
-          } else {
+          if (key !== playerIdOne) {
             expect(jPlayers[key].focus).toBeFalsy();
+          } else {
+            expect(jPlayers[key].focus).toBeTruthy();
           }
         });
       }
+    });
+  });
+
+  it('should handle FOCUS', () => {
+    state = getJPlayerState(3).jPlayers;
+
+    focusData.forEach((test) => {
+      state[test.uid] = test.state;
+
+      const jPlayers = reducer(state, test.action);
+
+      Object.keys(jPlayers).forEach((key) => {
+        if (test.uid !== key) {
+          expect(jPlayers[key].focus).toBeFalsy();
+        } else {
+          expect(jPlayers[key].focus).toBeTruthy();
+        }
+      });
     });
   });
 
