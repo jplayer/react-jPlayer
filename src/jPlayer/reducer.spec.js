@@ -1,14 +1,17 @@
-import expect from 'expect';
+import expect, { spyOn } from 'expect';
 import merge from 'lodash.merge';
 
 import reducer from './reducer';
 import { setMediaData, clearMediaData, pauseData, playData, playHeadData, volumeData, muteData,
   durationData, playbackRateData, loopData, fullScreenData, focusData } from './constants.spec';
-import { actionTypes, statusDefaultValues, defaultOptions, errors, hints } from '../util/constants';
+import { actionTypes, statusDefaultValues, defaultOptions, errors, hints,
+  formats } from '../util/constants';
 import { getJPlayerState } from '../util/common.spec';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
 const playerIdOne = 'player-1';
+const playerIdTwo = 'player-2';
+const playerIdThree = 'player-3';
 
 describe('jPlayer reducer', () => {
   let state;
@@ -21,240 +24,58 @@ describe('jPlayer reducer', () => {
     expect(reducer(state, '@@jPlayer-test')).toBe(state);
   });
 
-  // it('should set the global option for every action that requires it', () => {
-  //   state[playerIdOne].global = Object.keys(mockActions);
-  //   state[playerIdTwo].global = [jPlayerActionTypes.MUTE];
-  //   state[playerIdThree].global = Object.keys(mockActions);
+  it('SET_MEDIA should handle all possible formats', () => {
+    Object.keys(formats).forEach((key) => {
+      const media = document.createElement(formats[key].MEDIA);
 
-  //   Object.keys(state).forEach(key => (state[key].src = 'test'));
+      spyOn(document, 'createElement').andReturn(media);
+      spyOn(media, 'canPlayType').andReturn('probably');
 
-  //   const globalTest = [
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.SET_OPTION,
-  //         uid: playerIdOne,
-  //         key: 'autoplay',
-  //         value: true,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           autoplay: state[playerIdTwo].autoplay,
-  //         },
-  //         [playerIdThree]: {
-  //           autoplay: true,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.SET_MEDIA,
-  //         uid: playerIdOne,
-  //         media: {
-  //           sources: {
-  //             mp3: 'test.mp3',
-  //           },
-  //         },
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           media: state[playerIdTwo].media,
-  //         },
-  //         [playerIdThree]: {
-  //           media: {
-  //             sources: {
-  //               mp3: 'test.mp3',
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.CLEAR_MEDIA,
-  //         uid: playerIdOne,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           media: state[playerIdTwo].media,
-  //         },
-  //         [playerIdThree]: {
-  //           media: {},
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.PAUSE,
-  //         uid: playerIdOne,
-  //         time: 30,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           newTime: state[playerIdTwo].newTime,
-  //           paused: state[playerIdTwo].paused,
-  //         },
-  //         [playerIdThree]: {
-  //           newTime: 30,
-  //           paused: true,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.PLAY,
-  //         uid: playerIdOne,
-  //         time: 35,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           newTime: state[playerIdTwo].newTime,
-  //           paused: state[playerIdTwo].paused,
-  //         },
-  //         [playerIdThree]: {
-  //           newTime: 35,
-  //           paused: false,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.PLAY_HEAD,
-  //         uid: playerIdOne,
-  //         percent: 15,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           playHeadPercent: state[playerIdTwo].playHeadPercent,
-  //         },
-  //         [playerIdThree]: {
-  //           playHeadPercent: 15,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.VOLUME,
-  //         uid: playerIdOne,
-  //         volume: 0.75,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           volume: state[playerIdTwo].volume,
-  //           muted: state[playerIdTwo].muted,
-  //         },
-  //         [playerIdThree]: {
-  //           volume: 0.75,
-  //           muted: false,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.MUTE,
-  //         uid: playerIdOne,
-  //         mute: true,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           muted: true,
-  //         },
-  //         [playerIdThree]: {
-  //           muted: true,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.DURATION,
-  //         uid: playerIdOne,
-  //         remainingDuration: false,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           remainingDuration: state[playerIdTwo].remainingDuration,
-  //         },
-  //         [playerIdThree]: {
-  //           remainingDuration: true,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.PLAYBACK_RATE,
-  //         uid: playerIdOne,
-  //         playbackRate: 2.5,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           playbackRate: state[playerIdTwo].playbackRate,
-  //         },
-  //         [playerIdThree]: {
-  //           playbackRate: 2.5,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.LOOP,
-  //         uid: playerIdOne,
-  //         loop: 'loop',
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           loop: state[playerIdTwo].loop,
-  //         },
-  //         [playerIdThree]: {
-  //           loop: 'loop',
-  //         },
-  //       },
-  //     },
-  //     {
-  //       action: {
-  //         type: jPlayerActionTypes.FULL_SCREEN,
-  //         uid: playerIdOne,
-  //         fullScreen: true,
-  //       },
-  //       expected: {
-  //         [playerIdTwo]: {
-  //           fullScreen: state[playerIdTwo].fullScreen,
-  //         },
-  //         [playerIdThree]: {
-  //           fullScreen: true,
-  //         },
-  //       },
-  //     },
-  //   ];
+      const jPlayer = reducer(state, {
+        type: jPlayerActionTypes.SET_MEDIA,
+        uid: playerIdOne,
+        media: {
+          sources: {
+            [key]: `test.${key}`,
+          },
+        },
+      })[playerIdOne];
 
-  //   globalTest.forEach((test) => {
-  //     const jPlayers = reducer(state, test.action);
+      expect(jPlayer).toContain({
+        mediaSettings: {
+          video: formats[key].MEDIA === 'video',
+          formats: [
+            {
+              supplied: key,
+              supported: 'probably',
+            },
+          ],
+        },
+        src: `test.${key}`,
+        paused: true,
+        media: {
+          ...{ ...defaultOptions.media, ...{ sources: { [key]: `test.${key}` } } },
+        },
+      });
 
-  //     expect(jPlayers).toContain(test.expected, null,
-  //       `action type: ${test.action.type} did not match expected output`);
-  //   });
-  // });
+      document.createElement.restore();
+    });
+  });
 
   it('should handle SET_MEDIA', () => {
+    const audio = document.createElement('audio');
+
+    spyOn(document, 'createElement').andReturn(audio);
+    spyOn(audio, 'canPlayType').andReturn('probably');
+
     setMediaData.forEach((test) => {
-      const newState = {
-        ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
-          ...test.state,
-        },
-      };
-      const audio = document.createElement('audio');
-
-      expect.spyOn(document, 'createElement').andReturn(audio);
-      expect.spyOn(audio, 'canPlayType').andReturn('probably');
-
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
-
-      audio.canPlayType.restore();
+      const jPlayer = reducer(state, test.action)[playerIdOne];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
       });
     });
+    document.createElement.restore();
   });
 
   it('should handle CLEAR_MEDIA', () => {
@@ -440,6 +261,24 @@ describe('jPlayer reducer', () => {
           expect(jPlayers[key].focus).toBeTruthy();
         }
       });
+    });
+  });
+
+  it('should set the global option for every action that requires it', () => {
+    state = getJPlayerState(3).jPlayers;
+
+    state[playerIdOne].global = Object.keys(jPlayerActionTypes);
+    state[playerIdTwo].global = [jPlayerActionTypes.MUTE];
+    state[playerIdThree].global = Object.keys(jPlayerActionTypes);
+
+    Object.values(jPlayerActionTypes).forEach((actionType) => {
+      const jPlayers = reducer(state, {
+        type: actionType,
+        uid: playerIdOne,
+      });
+
+      // expect(jPlayers).toContain(test.expected, null,
+      //  `action type: ${test.action.type} did not match expected output`);
     });
   });
 });

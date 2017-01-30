@@ -13,11 +13,13 @@ const updateFormats = (state, media) => {
   const newFormats = [];
 
   Object.keys(media.sources).forEach((supplied) => {
-    const mediaElement = document.createElement(formats[supplied].MEDIA);
+    const suppliedIsValid = Object.prototype.hasOwnProperty.call(formats, supplied);
+    const canPlayType = suppliedIsValid ? document.createElement(formats[supplied].MEDIA)
+      .canPlayType(formats[supplied].CODEC) : '';
 
     newFormats.push({
       supplied,
-      supported: mediaElement.canPlayType(formats[supplied].CODEC),
+      supported: canPlayType,
     });
   });
 
@@ -37,7 +39,7 @@ const setMedia = (state, { media = { sources: [] } }) => {
   };
 
   newState.mediaSettings.formats.forEach((format) => {
-    if (format.supported) {
+    if (format.supported && !foundSupported) {
       newState.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
       newState.src = media.sources[format.supplied];
       newState.paused = true;
@@ -135,10 +137,6 @@ const setFocus = (state, { uid }) => {
   return newState;
 };
 
-const isInitializing = actionType => (
-  !Object.keys(actionTypes.jPlayer).every(currentActionType => currentActionType !== actionType)
-);
-
 const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
   switch (actionType) {
     case actionTypes.jPlayer.SET_OPTION:
@@ -174,20 +172,18 @@ const setGlobalOptions = (state, action) => {
   let newState = { ...state };
 
   Object.keys(newState).forEach((key) => {
-    const jPlayer = newState[key];
-
-    if (jPlayer.global !== undefined) {
-      jPlayer.global.forEach((actionType) => {
-        if (key !== action.uid && action.type === actionType) {
-          newState = updateObject(newState, {
-            [key]: updatePlayer(newState[key], action, actionType),
-          });
-        }
+    if (key !== action.uid) {
+      newState = updateObject(newState, {
+        [key]: updatePlayer(newState[key], action, action.type),
       });
     }
   });
   return newState;
 };
+
+const isInitializing = actionType => (
+  !Object.keys(actionTypes.jPlayer).every(currentActionType => currentActionType !== actionType)
+);
 
 const jPlayerReducer = (state = {}, action) => {
   if (!isInitializing(action.type)) {

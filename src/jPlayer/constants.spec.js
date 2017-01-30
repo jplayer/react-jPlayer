@@ -30,17 +30,13 @@ export const clearMediaData = ([
 
 export const setMediaData = ([
   {
-    state: {
-      mediaSettings: {
-        video: false,
-      },
-    },
     action: {
       type: jPlayerActionTypes.SET_MEDIA,
       uid: playerIdOne,
       media: {
         sources: {
           mp3: 'test.mp3',
+          oga: 'test.ogg',
         },
       },
     },
@@ -52,12 +48,34 @@ export const setMediaData = ([
             supplied: 'mp3',
             supported: 'probably',
           },
+          {
+            supplied: 'oga',
+            supported: 'probably',
+          },
         ],
       },
       src: 'test.mp3',
       paused: true,
       media: {
-        ...{ ...defaultOptions.media, ...{ sources: { mp3: 'test.mp3' } } },
+        ...{ ...defaultOptions.media, ...{ sources: { mp3: 'test.mp3', oga: 'test.ogg' } } },
+      },
+    },
+  },
+  {
+    action: {
+      type: jPlayerActionTypes.SET_MEDIA,
+      uid: playerIdOne,
+      media: {
+        sources: {
+          test: 'test.mp3',
+        },
+      },
+    },
+    expected: {
+      error: {
+        context: '{ media.sources: \'test\' }',
+        hint: hints.FORMAT_NO_SUPPORT,
+        message: errors.FORMAT_NO_SUPPORT,
       },
     },
   },
