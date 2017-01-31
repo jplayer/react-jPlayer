@@ -1,8 +1,17 @@
 import React from 'react';
-import { compose, getContext } from 'recompose';
 import { connect } from 'react-redux';
 
 import { errors, hints, defaultOptions } from './constants';
+
+const getContext = contextTypes => (Component) => {
+  const GetContext = (ownerProps, context) => <Component {...ownerProps} {...context} />;
+
+  GetContext.contextTypes = contextTypes;
+
+  return GetContext;
+};
+
+const compose = (...funcs) => funcs.reduce((a, b) => (...args) => a(b(...args)));
 
 export const connectWithId = (...args) => compose(
   getContext({ uid: React.PropTypes.string }),

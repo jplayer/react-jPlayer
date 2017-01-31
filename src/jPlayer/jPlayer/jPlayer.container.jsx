@@ -26,7 +26,6 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   seeking: jPlayers[uid].seeking,
   loop: jPlayers[uid].loop,
   keyEnabled: jPlayers[uid].keyEnabled,
-  currentTime: jPlayers[uid].currentTime,
   children,
   attributes,
 });
@@ -57,7 +56,6 @@ class JPlayerContainer extends React.Component {
         message: React.PropTypes.string,
         hint: React.PropTypes.string,
       }),
-      currentTime: React.PropTypes.number,
       paused: React.PropTypes.bool.isRequired,
       fullScreen: React.PropTypes.bool.isRequired,
       muted: React.PropTypes.bool.isRequired,
@@ -74,7 +72,6 @@ class JPlayerContainer extends React.Component {
   static get defaultProps() {
     return {
       attributes: {},
-      currentTime: statusDefaultValues.currentTime,
       timeFormats: defaultOptions.timeFormats,
       video: defaultOptions.video,
       error: statusDefaultValues.error,

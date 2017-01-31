@@ -9,11 +9,12 @@ const setup = () => mountedSetup(BufferBarContainer);
 describe('<BufferBarContainer />', () => {
   it('renders component and maps state', () => {
     const { wrapper, props } = setup();
+    const bufferBarContainer = wrapper.find(BufferBarContainer);
     const bufferBar = wrapper.find(BufferBar);
 
     expect(bufferBar.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.type()).toBe(BufferBarContainer);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(bufferBarContainer.type()).toBe(BufferBarContainer);
+    expect(bufferBarContainer.prop('uid')).toNotExist();
+    expect(bufferBarContainer.prop('dispatch')).toNotExist();
   });
 });

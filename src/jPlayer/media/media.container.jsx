@@ -17,7 +17,6 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
   volume: jPlayers[uid].volume,
   muted: jPlayers[uid].muted,
   autoplay: jPlayers[uid].autoplay,
-  title: jPlayers[uid].media.title,
   newTime: jPlayers[uid].newTime,
   fullScreen: jPlayers[uid].fullScreen,
   require: jPlayers[uid].mediaSettings.require,
@@ -64,23 +63,22 @@ class MediaContainer extends React.Component {
       loop: React.PropTypes.string,
       showRemainingDuration: React.PropTypes.bool.isRequired,
       src: React.PropTypes.string.isRequired,
-      currentTime: React.PropTypes.number,
       playHeadPercent: React.PropTypes.number.isRequired,
       paused: React.PropTypes.bool.isRequired,
       setOption: React.PropTypes.func.isRequired,
       pause: React.PropTypes.func.isRequired,
+      /* eslint-disable react/no-unused-prop-types */
       autoplay: React.PropTypes.bool,
       defaultPlaybackRate: React.PropTypes.number,
       muted: React.PropTypes.bool,
       playbackRate: React.PropTypes.number,
       preload: React.PropTypes.string,
       volume: React.PropTypes.number,
-      title: React.PropTypes.string,
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
+      /* eslint-enable react/no-unused-prop-types */
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
-      ]),
+      ]).isRequired,
     };
   }
   static get defaultProps() {
@@ -118,7 +116,6 @@ class MediaContainer extends React.Component {
       playbackRate: defaultOptions.playbackRate,
       preload: defaultOptions.preload,
       volume: defaultOptions.volume,
-      title: defaultOptions.media.title,
     };
   }
   constructor(props) {

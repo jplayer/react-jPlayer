@@ -116,7 +116,7 @@ export const mountedSetup = (component, props, state) => {
       </Provider>, {
         context: { uid: newState.uid }, childContextTypes: { uid: React.PropTypes.string },
       },
-    ).find(Component);
+    );
   };
 
   return setup(mountedComponent, props, state);

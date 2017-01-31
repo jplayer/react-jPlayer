@@ -20,9 +20,8 @@
   "homepage": "https://github.com/MartinDawson/react-jPlayer",
   "license": "MIT",
   "scripts": {
-    "lint:src": "eslint ./src --fix",
-    "lint:examples": "eslint ./examples --fix",
-    "test": "mocha -w --opts ./mocha.opts src/**/*.spec*{js,jsx}"
+    "lint": "eslint --fix --ext .jsx ./examples ./src",
+    "test": "mocha -w --opts ./mocha.opts src/**/*.spec*{js,jsx} && npm run-script lint:src && npm run-script lint:examples"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",
@@ -75,7 +74,6 @@
     "react-dom": "^15.4.1",
     "react-motion": "^0.4.4",
     "react-redux": "^5.0.2",
-    "recompose": "^0.21.2",
     "redux": "^3.6.0",
     "screenfull": "^3.0.2"
   },

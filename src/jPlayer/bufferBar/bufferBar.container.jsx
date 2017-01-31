@@ -11,6 +11,8 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   attributes,
 });
 
+const mergeProps = stateProps => ({ ...stateProps });
+
 class BufferBarContainer extends React.Component {
   static get propTypes() {
     return {
@@ -19,8 +21,10 @@ class BufferBarContainer extends React.Component {
         start: React.PropTypes.number.isRequired,
         end: React.PropTypes.number.isRequired,
       })).isRequired,
+      /* eslint-disable react/no-unused-prop-types */
       bufferColour: React.PropTypes.string,
       duration: React.PropTypes.number.isRequired,
+      /* eslint-enable react/no-unused-prop-types */
     };
   }
   static get defaultProps() {
@@ -59,4 +63,4 @@ class BufferBarContainer extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps)(BufferBarContainer);
+export default connectWithId(mapStateToProps, null, mergeProps)(BufferBarContainer);
