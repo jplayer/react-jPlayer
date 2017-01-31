@@ -2,17 +2,11 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const VolumeMax = ({ onClick, children, ...attributes }) => (
-  <a {...attributes} className={classes.VOLUME_MAX} onClick={onClick}>
-    {children}
-  </a>
-);
+const VolumeMax = ({ onClick, ...attributes }) =>
+  <button {...attributes} className={classes.VOLUME_MAX} onClick={onClick} />;
 
 VolumeMax.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
+  children: React.PropTypes.node.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };
 

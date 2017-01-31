@@ -9,7 +9,7 @@ const setup = () => {
   const props = {
     currentPercentAbsolute: 20,
     currentPercentRelative: 30,
-    children: (<i className="fa fa-play" />),
+    children: (<i className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
   };
 
@@ -33,7 +33,7 @@ describe('<PlayBar />', () => {
     const playBar = wrapper.dive();
 
     expect(playBar.prop('style').width).toBe(`${props.currentPercentRelative}%`);
-    expect(playBar.prop('children')).toBe(props.children);
+    expect(playBar.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(playBar.hasClass(classes.PLAY_BAR)).toBeTruthy();
     expect(playBar.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });

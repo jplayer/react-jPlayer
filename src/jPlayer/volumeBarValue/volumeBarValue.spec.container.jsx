@@ -14,7 +14,7 @@ describe('TitleContainer', () => {
     expect(wrapper.prop('verticalVolume')).toBe(jPlayer.verticalVolume);
     expect(wrapper.prop('muted')).toBe(jPlayer.muted);
     expect(wrapper.prop('volume')).toBe(jPlayer.volume);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

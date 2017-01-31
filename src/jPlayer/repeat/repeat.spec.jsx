@@ -8,7 +8,7 @@ import Repeat from './repeat';
 const setup = () => {
   const props = {
     onClick: createSpy(),
-    children: (<i className="fa fa-repeat" />),
+    children: (<i className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
   };
 
@@ -32,7 +32,7 @@ describe('<Repeat />', () => {
     wrapper.simulate('click');
 
     expect(props.onClick).toHaveBeenCalled();
-    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });

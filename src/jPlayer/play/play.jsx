@@ -2,17 +2,11 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Play = ({ onClick, children, ...attributes }) => (
-  <a {...attributes} className={classes.PLAY} onClick={onClick}>
-    {children}
-  </a>
-);
+const Play = ({ onClick, ...attributes }) =>
+  <button {...attributes} className={classes.PLAY} onClick={onClick} />;
 
 Play.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
+  children: React.PropTypes.node.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };
 

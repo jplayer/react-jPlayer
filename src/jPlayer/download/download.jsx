@@ -14,10 +14,7 @@ const Download = ({ free, href, children, ...attributes }) => (
 );
 
 Download.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
+  children: React.PropTypes.node.isRequired,
   href: React.PropTypes.string.isRequired,
   free: React.PropTypes.bool.isRequired,
 };

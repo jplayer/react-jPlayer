@@ -6,7 +6,7 @@ import AudioContainer from './audio.container';
 import Audio from './audio';
 
 const setup = state => shallowSetup(AudioContainer, {
-  children: (<track />),
+  children: (<track className="@@jPlayer-test" />),
 }, state);
 
 describe('AudioContainer', () => {
@@ -14,8 +14,8 @@ describe('AudioContainer', () => {
     const { wrapper, props } = setup();
 
     expect(wrapper.type()).toBe(Audio);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

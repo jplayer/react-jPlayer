@@ -20,7 +20,7 @@ const JPlayer = ({ video, paused, fullScreen, muted,
     // 'jp-video-full': sizeFullCssClass !== undefined,
   });
   return (
-    <div ref={setJPlayer} {...attributes} className={playerClasses}>
+    <div {...attributes} ref={setJPlayer} className={playerClasses}>
       {children}
       {keyEnabled && <KeyControl />}
     </div>

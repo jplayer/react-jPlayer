@@ -8,7 +8,7 @@ import Mute from './mute';
 const setup = () => {
   const props = {
     onClick: createSpy(),
-    children: (<i className="fa fa-mute" />),
+    children: (<i className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
   };
 
@@ -32,7 +32,7 @@ describe('<Mute />', () => {
     wrapper.simulate('click');
 
     expect(props.onClick).toHaveBeenCalled();
-    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });

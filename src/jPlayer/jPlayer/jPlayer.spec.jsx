@@ -35,7 +35,7 @@ const classTests = [
 
 const setup = () => {
   const props = {
-    children: (<div />),
+    children: (<div className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
   };
 
@@ -56,8 +56,8 @@ describe('<JPlayer />', () => {
   });
 
   it('renders self and subcomponents', () => {
-    expect(wrapper.children(props.children.type).type()).toBe(props.children.type);
     expect(wrapper.hasClass(classes.JPLAYER)).toBeTruthy();
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.children(KeyControl).exists()).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });

@@ -11,8 +11,8 @@ describe('<BufferBarContainer />', () => {
     const { wrapper, props } = setup();
     const bufferBar = wrapper.find(BufferBar);
 
+    expect(bufferBar.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.type()).toBe(BufferBarContainer);
-    expect(bufferBar.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

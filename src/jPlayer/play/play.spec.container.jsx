@@ -7,7 +7,7 @@ import PlayContainer from './play.container';
 import Play from './play';
 
 const setup = state => shallowSetup(PlayContainer, {
-  children: (<i />),
+  children: (<i className="@@jPlayer-test" />),
 }, state);
 
 describe('PlayContainer', () => {
@@ -15,8 +15,8 @@ describe('PlayContainer', () => {
     const { wrapper, props } = setup();
 
     expect(wrapper.type()).toBe(Play);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

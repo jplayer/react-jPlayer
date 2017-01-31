@@ -8,16 +8,16 @@ import RepeatContainer from './repeat.container';
 import Repeat from './repeat';
 
 const setup = state => shallowSetup(RepeatContainer, {
-  children: (<i />),
+  children: (<i className="@@jPlayer-test" />),
 }, state);
 
 describe('RepeatContainer', () => {
   it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+    const { wrapper, props } = setup();
 
     expect(wrapper.type()).toBe(Repeat);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

@@ -11,7 +11,7 @@ const setup = () => {
     onClick: createSpy(),
     setSeekBar: Function.prototype,
     seekPercent: 33,
-    children: (<div />),
+    children: (<div className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
   };
 
@@ -38,7 +38,7 @@ describe('<SeekBar />', () => {
     expect(props.onMouseDown).toHaveBeenCalled();
     expect(props.onClick).toHaveBeenCalled();
     expect(wrapper.prop('style').width).toBe(`${props.seekPercent}%`);
-    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.SEEK_BAR)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });

@@ -2,17 +2,11 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Repeat = ({ onClick, children, ...attributes }) => (
-  <a {...attributes} className={classes.REPEAT} onClick={onClick}>
-    {children}
-  </a>
-);
+const Repeat = ({ onClick, ...attributes }) =>
+  <button {...attributes} className={classes.REPEAT} onClick={onClick} />;
 
 Repeat.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
+  children: React.PropTypes.node.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };
 

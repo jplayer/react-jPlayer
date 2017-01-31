@@ -12,7 +12,7 @@ describe('CurrentTimeContainer', () => {
 
     expect(wrapper.type()).toBe(CurrentTime);
     expect(wrapper.prop('children')).toBe(jPlayer.currentTimeText);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

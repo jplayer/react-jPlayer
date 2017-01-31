@@ -6,9 +6,8 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
   paused: jPlayers[uid].paused,
 });
 
-const mergeProps = ({ paused }, { dispatch }, { uid, children, ...attributes }) => ({
+const mergeProps = ({ paused }, { dispatch }, { uid, ...attributes }) => ({
   onClick: () => (paused ? dispatch(play(uid)) : dispatch(pause(uid))),
-  children,
   ...attributes,
 });
 

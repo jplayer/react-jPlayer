@@ -1,10 +1,9 @@
 import { connectWithId } from '../../util/index';
 import Download from './download';
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   free: jPlayers[uid].media.free,
   href: jPlayers[uid].src,
-  children,
   ...attributes,
 });
 

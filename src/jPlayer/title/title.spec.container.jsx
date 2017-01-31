@@ -14,7 +14,7 @@ describe('TitleContainer', () => {
 
     expect(wrapper.type()).toBe(Title);
     expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

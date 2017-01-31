@@ -3,29 +3,22 @@ import React from 'react';
 import Media from '../media/media.container';
 import { defaultOptions } from '../../util/constants';
 
-const Video = ({ children, require, events, ...attributes }) => (
+const Video = ({ require, events, ...attributes }) => (
   require ?
     <Media {...events}>
       <video
         {...attributes}
-      >
-        {children}
-      </video>
+      />
     </Media>
   : null
 );
 
 Video.defaultProps = {
-  children: null,
   events: null,
   require: defaultOptions.mediaSettings.video,
 };
 
 Video.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]),
   require: React.PropTypes.bool,
   events: React.PropTypes.shape({
     onProgress: React.PropTypes.func,

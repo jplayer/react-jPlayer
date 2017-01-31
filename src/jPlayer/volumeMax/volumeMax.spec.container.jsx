@@ -7,7 +7,7 @@ import VolumeMaxContainer from './volumeMax.container';
 import VolumeMax from './volumeMax';
 
 const setup = state => shallowSetup(VolumeMaxContainer, {
-  children: (<i />),
+  children: (<i className="@@jPlayer-test" />),
 }, state);
 
 describe('VolumeMaxContainer', () => {
@@ -15,8 +15,8 @@ describe('VolumeMaxContainer', () => {
     const { wrapper, props } = setup();
 
     expect(wrapper.type()).toBe(VolumeMax);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

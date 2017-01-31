@@ -8,7 +8,7 @@ import Gui from './gui';
 const setup = () => {
   const props = {
     onMouseEnter: createSpy(),
-    children: (<div className="title-container" />),
+    children: (<div className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
   };
 
@@ -34,7 +34,7 @@ describe('<Gui />', () => {
     gui.simulate('mouseenter');
 
     expect(props.onMouseEnter).toHaveBeenCalled();
-    expect(gui.prop('children')).toBe(props.children);
+    expect(gui.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(gui.hasClass(classes.GUI)).toBeTruthy();
     expect(gui.prop('data-attribute-test')).toBe(props['data-attribute-test']);
   });

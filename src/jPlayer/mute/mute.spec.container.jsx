@@ -7,7 +7,7 @@ import MuteContainer from './mute.container';
 import Mute from './mute';
 
 const setup = state => shallowSetup(MuteContainer, {
-  children: (<i />),
+  children: (<i className="@@jPlayer-test" />),
 }, state);
 
 describe('MuteContainer', () => {
@@ -15,8 +15,8 @@ describe('MuteContainer', () => {
     const { wrapper, props } = setup();
 
     expect(wrapper.type()).toBe(Mute);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

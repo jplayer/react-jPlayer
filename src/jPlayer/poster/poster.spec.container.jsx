@@ -18,7 +18,7 @@ describe('PosterContainer', () => {
     expect(wrapper.prop('currentTime')).toEqual(jPlayer.currentTime);
     expect(wrapper.prop('video')).toEqual(jPlayer.mediaSettings.video);
     expect(wrapper.prop('alt')).toEqual(props.alt);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

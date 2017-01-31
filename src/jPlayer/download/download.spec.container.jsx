@@ -6,7 +6,7 @@ import DownloadContainer from './download.container';
 import Download from './download';
 
 const setup = () => shallowSetup(DownloadContainer, {
-  children: (<i />),
+  children: (<i className="@@jPlayer-test" />),
 });
 
 describe('DownloadContainer', () => {
@@ -16,8 +16,8 @@ describe('DownloadContainer', () => {
     expect(wrapper.type()).toBe(Download);
     expect(wrapper.prop('free')).toBe(jPlayer.media.free);
     expect(wrapper.prop('href')).toBe(jPlayer.src);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

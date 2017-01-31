@@ -6,13 +6,13 @@ import Duration from './duration';
 
 const setup = () => shallowSetup(DurationContainer);
 
-describe('CurrentTimeContainer', () => {
+describe('DurationContainer', () => {
   it('renders component and maps state', () => {
     const { wrapper, props, jPlayer } = setup();
 
     expect(wrapper.type()).toBe(Duration);
     expect(wrapper.prop('children')).toBe(jPlayer.durationText);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

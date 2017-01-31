@@ -2,14 +2,13 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const CurrentTime = ({ children, ...attributes }) => (
-  <div {...attributes} className={classes.CURRENT_TIME}>
-    {children}
-  </div>
-);
+const CurrentTime = ({ ...attributes }) => <div {...attributes} className={classes.CURRENT_TIME} />;
 
 CurrentTime.propTypes = {
-  children: React.PropTypes.string.isRequired,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number,
+  ]).isRequired,
 };
 
 export default CurrentTime;

@@ -6,7 +6,7 @@ import PlayBar from './playBar';
 
 const setup = state => shallowSetup(PlayBarContainer, null, state);
 
-describe('MuteContainer', () => {
+describe('PlayBarContainer', () => {
   it('renders component and maps state', () => {
     const { wrapper, props, jPlayer } = setup();
 
@@ -14,7 +14,7 @@ describe('MuteContainer', () => {
     expect(wrapper.prop('smoothPlayBar')).toEqual(jPlayer.smoothPlayBar);
     expect(wrapper.prop('currentPercentAbsolute')).toEqual(jPlayer.currentPercentAbsolute);
     expect(wrapper.prop('currentPercentRelative')).toEqual(jPlayer.currentPercentRelative);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

@@ -15,7 +15,7 @@ describe('PlaybackRateBarValueContainer', () => {
     expect(wrapper.prop('minPlaybackRate')).toEqual(jPlayer.minPlaybackRate);
     expect(wrapper.prop('maxPlaybackRate')).toEqual(jPlayer.maxPlaybackRate);
     expect(wrapper.prop('playbackRate')).toEqual(jPlayer.playbackRate);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });

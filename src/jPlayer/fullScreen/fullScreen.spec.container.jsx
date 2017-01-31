@@ -7,16 +7,16 @@ import FullScreenContainer from './fullScreen.container';
 import FullScreen from './fullScreen';
 
 const setup = state => shallowSetup(FullScreenContainer, {
-  children: (<i />),
+  children: (<i className="@@jPlayer-test" />),
 }, state);
 
-describe('CurrentTimeContainer', () => {
+describe('FullScreenContainer', () => {
   it('renders component and maps state', () => {
     const { wrapper, props } = setup();
 
     expect(wrapper.type()).toBe(FullScreen);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.prop('data-attribute-test')).toEqual(props['data-attribute-test']);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
     expect(wrapper.prop('dispatch')).toNotExist();
   });
