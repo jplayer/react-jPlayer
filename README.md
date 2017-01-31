@@ -1,4 +1,4 @@
-# react-jPlayer
+# react-jPlayer (In Dev. Don't use yet)
 Based on the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/).
 
 ## What is react-jPlayer?
