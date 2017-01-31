@@ -21,8 +21,13 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --fix --ext .jsx ./examples ./src",
-    "test": "mocha -w --opts ./mocha.opts src/**/*.spec*{js,jsx} && npm run-script lint:src && npm run-script lint:examples"
+    "test": "mocha --opts ./mocha.opts src/**/*.spec*{js,jsx}",
+    "test:watch": "npm run test -- -w"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "devDependencies": {
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.4",
@@ -54,6 +59,7 @@
     "less-loader": "^2.2.3",
     "mocha": "^3.2.0",
     "postcss-loader": "^1.2.1",
+    "pre-commit": "^1.2.2",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.0.0",
