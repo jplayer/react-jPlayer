@@ -27,3 +27,8 @@ react-jPlayer is licensed under the [MIT license](http://opensource.org/licenses
 * [jPlayer.org](http://jplayer.org/)
 * [Quick Start Guide](http://www.jplayer.org/latest/quick-start-guide/)
 * [Developer Guide and API Reference](http://www.jplayer.org/latest/developer-guide/)
+
+## Thanks
+![BrowserStack](https://cloud.githubusercontent.com/assets/15030491/22504241/4240e478-e86d-11e6-8147-d2771655346a.png)
+
+BrowserStack is a cloud-based cross-browser testing tool that enables developers to test their websites across various browsers on different operating systems and mobile devices, without requiring users to install virtual machines, devices or emulators.
