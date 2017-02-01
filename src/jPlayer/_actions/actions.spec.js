@@ -1,6 +1,6 @@
 import expect from 'expect';
 import * as actions from './actions';
-import { actionTypes } from '../util/constants';
+import { actionTypes } from '../../util/constants';
 
 describe('jPlayer actions', () => {
   const jPlayerActionTypes = actionTypes.jPlayer;

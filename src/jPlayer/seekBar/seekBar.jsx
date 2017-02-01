@@ -22,10 +22,7 @@ SeekBar.propTypes = {
   seekPercent: React.PropTypes.number.isRequired,
   onClick: React.PropTypes.func.isRequired,
   onMouseDown: React.PropTypes.func,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
+  children: React.PropTypes.node.isRequired,
 };
 
 export default SeekBar;

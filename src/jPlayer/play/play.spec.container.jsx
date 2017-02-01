@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 
 import { shallowSetup } from '../../util/common.spec';
-import { play, pause } from '../actions';
+import { play, pause } from '../_actions/actions';
 import PlayContainer from './play.container';
 import Play from './play';
 

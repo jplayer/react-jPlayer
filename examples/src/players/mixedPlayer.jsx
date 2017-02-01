@@ -45,7 +45,7 @@ const MixedPlayer = (props) => {
   return (
     <div>
       <button className="btn btn-default toggle-media" onClick={changeMedia}>Toggle Media</button>
-      <JPlayer data-type="jp-default">
+      <JPlayer className="jp-sleek">
         <div className="jp-media">
           <Poster style={posterStyle} />
           <Video events={props.events}>
@@ -59,7 +59,7 @@ const MixedPlayer = (props) => {
           <div className="jp-title-container">
             <Title />
           </div>
-          <div className="jp-controls">
+          <div className="jp-controls jp-icon-controls">
             <Play><i className="fa">{/* Icon set in css*/}</i></Play>
             <FullScreen><i className="fa fa-expand" /></FullScreen>
             <Repeat><i className="fa fa-repeat" /></Repeat>

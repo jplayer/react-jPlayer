@@ -1,4 +1,4 @@
-import { actionTypes } from '../util/constants';
+import { actionTypes } from '../../util/constants';
 
 export const setOption = (key, value, uid) => ({
   type: actionTypes.jPlayer.SET_OPTION,

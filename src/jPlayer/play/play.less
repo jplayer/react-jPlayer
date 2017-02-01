@@ -1,9 +1,21 @@
 .jp-play {
   left:625px;
-  [data-type="jp-default"]& i:before {
+}
+
+.iconControls() {
+  .jp-play {
+    .jp-sleek& i:before {
       content:"\f04b";
+    }
+    .jp-state-playing& i:before {
+        content:"\f04c";
+    }
   }
-  .jp-state-playing& i:before {
-      content:"\f04c";
+}
+
+.textControls() {
+  .jp-state-playing& .jp-play {
+    content:"Pause";
+    font-size: 50px;
   }
 }

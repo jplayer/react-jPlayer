@@ -3,7 +3,7 @@ import expect from 'expect';
 
 import { loopOptions } from '../../util/constants';
 import { shallowSetup } from '../../util/common.spec';
-import { setLoop } from '../actions';
+import { setLoop } from '../_actions/actions';
 import RepeatContainer from './repeat.container';
 import Repeat from './repeat';
 

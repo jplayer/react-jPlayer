@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 
 import { shallowSetup } from '../../util/common.spec';
-import { setFullScreen } from '../actions';
+import { setFullScreen } from '../_actions/actions';
 import FullScreenContainer from './fullScreen.container';
 import FullScreen from './fullScreen';
 

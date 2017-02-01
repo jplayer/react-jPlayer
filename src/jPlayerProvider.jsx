@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import merge from 'lodash.merge';
 
-import jPlayerReducer from './jPlayer/reducer';
+import jPlayerReducer from './jPlayer/_reducer/reducer';
 import { defaultOptions, statusDefaultValues } from './util/constants';
 
 const reducers = combineReducers({ jPlayers: jPlayerReducer });

@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as jPlayerActions from './jPlayer/actions';
+import * as jPlayerActions from './jPlayer/_actions/actions';
 
 const mapStateToProps = (state, { uid, ...props }) => {
   const otherPlayers = {};

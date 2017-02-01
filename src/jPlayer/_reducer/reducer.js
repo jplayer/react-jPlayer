@@ -1,5 +1,5 @@
-import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../util/constants';
-import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
+import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../../util/constants';
+import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../../util/index';
 
 const resetStatus = state => updateObject(state, { ...statusDefaultValues });
 

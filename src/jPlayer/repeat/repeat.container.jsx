@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import { setLoop } from '../actions';
+import { setLoop } from '../_actions/actions';
 import { loopOptions } from '../../util/constants';
 import Repeat from './repeat';
 

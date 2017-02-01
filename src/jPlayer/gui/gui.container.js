@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import { setOption } from '../actions';
+import { setOption } from '../_actions/actions';
 import Gui from './gui';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({

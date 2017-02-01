@@ -8,6 +8,7 @@ import '../assets/examples.less';
 import AudioPlayer from './players/audioPlayer';
 import VideoPlayer from './players/videoPlayer';
 import MixedPlayer from './players/mixedPlayer';
+import TextPlayer from './players/textPlayer';
 import NavContainer from './helpers/navContainer';
 import NavContentContainer from './helpers/navContentContainer';
 import NavBar from './helpers/navBar';
@@ -22,6 +23,7 @@ const App = () => (
       <NavLink>Audio</NavLink>
       <NavLink>Video</NavLink>
       <NavLink>Mixed</NavLink>
+      <NavLink>Text Player</NavLink>
     </NavBar>
     <NavContentContainer>
       <NavContent>
@@ -33,12 +35,15 @@ const App = () => (
       <NavContent>
         <StatusWrapper uid={MixedPlayer.uid}><MixedPlayer /></StatusWrapper>
       </NavContent>
+      <NavContent>
+        <StatusWrapper uid={TextPlayer.uid}><TextPlayer /></StatusWrapper>
+      </NavContent>
     </NavContentContainer>
   </NavContainer>
 );
 
 ReactDOM.render((
-  <JPlayerProvider jPlayers={[AudioPlayer, VideoPlayer, MixedPlayer]}>
+  <JPlayerProvider jPlayers={[AudioPlayer, VideoPlayer, MixedPlayer, TextPlayer]}>
     <App />
   </JPlayerProvider>
 ), document.getElementById('app'));

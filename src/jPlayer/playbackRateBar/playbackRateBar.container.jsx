@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connectWithId, getWidth, getHeight, getOffset } from '../../util/index';
 import { defaultOptions } from '../../util/constants';
-import { setPlaybackRate } from '../actions';
+import { setPlaybackRate } from '../_actions/actions';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValue.container';
 
@@ -24,10 +24,7 @@ class PlaybackRateBarContainer extends React.Component {
   static get propTypes() {
     return {
       attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.element),
-        React.PropTypes.element,
-      ]),
+      children: React.PropTypes.node,
       setPlaybackRate: React.PropTypes.func.isRequired,
       verticalPlaybackRate: React.PropTypes.bool,
       minPlaybackRate: React.PropTypes.number,

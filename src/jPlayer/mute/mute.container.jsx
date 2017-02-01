@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import { setMute } from '../actions';
+import { setMute } from '../_actions/actions';
 import Mute from './mute';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({

@@ -20,7 +20,7 @@
   "homepage": "https://github.com/MartinDawson/react-jPlayer",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --fix --ext .jsx ./examples ./src",
+    "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "test": "mocha --opts ./mocha.opts src/**/*.spec*{js,jsx}",
     "test:watch": "npm run test -- -w"
   },

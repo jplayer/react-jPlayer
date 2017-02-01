@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 
 import { shallowSetup } from '../../util/common.spec';
-import { setVolume, setMute } from '../actions';
+import { setVolume, setMute } from '../_actions/actions';
 import VolumeMaxContainer from './volumeMax.container';
 import VolumeMax from './volumeMax';
 

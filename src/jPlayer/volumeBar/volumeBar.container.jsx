@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connectWithId, getWidth, getHeight, getOffset } from '../../util/index';
 import { defaultOptions } from '../../util/constants';
-import { setVolume } from '../actions';
+import { setVolume } from '../_actions/actions';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValue.container';
 
@@ -25,10 +25,7 @@ class VolumeBarContainer extends React.Component {
       setVolume: React.PropTypes.func.isRequired,
       verticalVolume: React.PropTypes.bool,
       barDrag: React.PropTypes.bool,
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.element),
-        React.PropTypes.element,
-      ]),
+      children: React.PropTypes.node,
     };
   }
   static get defaultProps() {

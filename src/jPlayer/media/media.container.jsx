@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connectWithId, urlNotSupportedError, convertTime } from '../../util/index';
 import { loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
-import { setOption, pause } from '../actions';
+import { setOption, pause } from '../_actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
   loop: jPlayers[uid].loop,

@@ -1,4 +1,4 @@
-import { play, pause } from '../actions';
+import { play, pause } from '../_actions/actions';
 import { connectWithId } from '../../util/index';
 import Play from './play';
 

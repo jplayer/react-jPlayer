@@ -9,7 +9,7 @@ import poster from '../../assets/Alan Walker - Fade.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const AudioPlayer = props => (
-  <JPlayer data-type="jp-default">
+  <JPlayer className="jp-sleek">
     <Audio events={props.events}>
       {props.browserUnsupportedHtml}
     </Audio>
@@ -18,7 +18,7 @@ const AudioPlayer = props => (
         <Poster />
         <Title />
       </div>
-      <div className="jp-controls">
+      <div className="jp-controls jp-icon-controls">
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
         <FullScreen><i className="fa fa-expand" /></FullScreen>
         <Repeat><i className="fa fa-repeat" /></Repeat>

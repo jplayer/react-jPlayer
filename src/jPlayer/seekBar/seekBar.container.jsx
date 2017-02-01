@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectWithId, getWidth, getOffset } from '../../util/index';
 import { defaultOptions } from '../../util/constants';
-import { setPlayHead } from '../actions';
+import { setPlayHead } from '../_actions/actions';
 import SeekBar from './seekBar';
 
 const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
@@ -23,10 +23,7 @@ class SeekBarContainer extends React.Component {
       seekPercent: React.PropTypes.number.isRequired,
       playHead: React.PropTypes.func.isRequired,
       barDrag: React.PropTypes.bool,
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.element),
-        React.PropTypes.element,
-      ]).isRequired,
+      children: React.PropTypes.node.isRequired,
     };
   }
   static get defaultProps() {

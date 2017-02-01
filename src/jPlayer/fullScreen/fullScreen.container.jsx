@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import { setFullScreen } from '../actions';
+import { setFullScreen } from '../_actions/actions';
 import FullScreen from './fullScreen';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({

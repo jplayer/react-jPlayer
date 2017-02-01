@@ -2,9 +2,9 @@ import expect, { spyOn } from 'expect';
 import merge from 'lodash.merge';
 
 import reducer from './reducer';
-import * as reducerData from './constants.spec';
-import { actionTypes, defaultOptions, formats } from '../util/constants';
-import { getJPlayerState } from '../util/common.spec';
+import * as reducerData from '../_specData/data.spec';
+import { actionTypes, defaultOptions, formats } from '../../util/constants';
+import { getJPlayerState } from '../../util/common.spec';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
 const playerIdOne = 'player-1';
