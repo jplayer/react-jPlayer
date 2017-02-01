@@ -121,6 +121,7 @@ class JPlayerContainer extends React.Component {
   }
   logErrors = ({ error }) => {
     if (error !== this.props.error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   }
