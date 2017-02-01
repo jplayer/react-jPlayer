@@ -1,10 +1,13 @@
 @import "../play/play";
+@import "../progress/progress";
+@import "../download/download";
+@import "../repeat/repeat";
+@import "../fullScreen/fullScreen";
+@import "../playbackRateBar/playbackRateBar";
+@import "../mute/mute";
+@import "../volumeBar/volumeBar";
+
 .jp-controls {
-  @import "../progress/progress";
-  @import "../download/download";
-  @import "../repeat/repeat";
-  @import "../fullScreen/fullScreen";
-  @import "../playbackRateBar/playbackRateBar";
   height: 100%;
   position:relative;
   margin:auto;
@@ -35,8 +38,6 @@
     position: absolute;
   }
   .jp-volume-controls {
-    @import "../mute/mute";
-    @import "../volumeBar/volumeBar";
     #centerChildren;
     right: 565px;
   }
@@ -47,5 +48,5 @@
 }
 
 .jp-text-controls {
- .textControls;
+  .textControls;
 }

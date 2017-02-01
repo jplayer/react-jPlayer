@@ -2,7 +2,7 @@ import expect, { spyOn } from 'expect';
 import merge from 'lodash.merge';
 
 import reducer from './reducer';
-import * as reducerData from '../_specData/data.spec';
+import * as reducerData from './data.spec';
 import { actionTypes, defaultOptions, formats } from '../../util/constants';
 import { getJPlayerState } from '../../util/common.spec';
 

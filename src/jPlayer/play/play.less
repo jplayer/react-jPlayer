@@ -14,8 +14,12 @@
 }
 
 .textControls() {
-  .jp-state-playing& .jp-play {
-    content:"Pause";
-    font-size: 50px;
+  .jp-play {
+    span:before {
+      content:"Play";
+    }
+    .jp-state-playing& span:before {
+      content:"Pause";
+    }
   }
 }

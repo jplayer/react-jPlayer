@@ -1,3 +1,14 @@
 .jp-full-screen {
   right: 760px;
 }
+
+.textControls() {
+  .jp-full-screen {
+    span:before {
+      content:"FullScreen";
+    }
+    .jp-state-full-screen& span:before {
+      content:"Exit";
+    }
+  }
+}

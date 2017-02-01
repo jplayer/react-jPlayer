@@ -19,12 +19,12 @@ const TextPlayer = props => (
         <Title />
       </div>
       <div className="jp-controls jp-text-controls">
-        <Play>Play</Play>
-        <FullScreen>FullScreen</FullScreen>
-        <Repeat>Repeat</Repeat>
+        <Play><span>{/* Set in css */}</span></Play>
+        <FullScreen><span>{/* Set in css*/}</span></FullScreen>
+        <Repeat><span>{ /* Set in css */}</span></Repeat>
         <PlaybackRateBar>{'<---->'}</PlaybackRateBar>
         <div className="jp-volume-controls">
-          <Mute>Mute</Mute>
+          <Mute><span>{ /* Set in css */}</span></Mute>
           <VolumeBar>{'<-------->'}</VolumeBar>
         </div>
         <Download>Download</Download>

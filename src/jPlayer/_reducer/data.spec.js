@@ -1,5 +1,5 @@
 import { defaultOptions, statusDefaultValues, actionTypes, loopOptions,
-   errors, hints } from '../../util/constants';
+   classes, errors, hints } from '../../util/constants';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
 const playerIdOne = 'player-1';

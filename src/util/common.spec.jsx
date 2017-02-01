@@ -85,6 +85,7 @@ const setup = (component, props, state) => {
   expect.spyOn(newState.store, 'dispatch');
 
   const wrapper = component(newProps, newState);
+  var p = newState.store.getState();
 
   return {
     wrapper,
