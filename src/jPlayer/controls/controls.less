@@ -14,6 +14,7 @@
   font-size:24px;
   display: flex;
   align-items: center;
+  width: 50%;
 
   a {
     cursor:pointer;
@@ -34,19 +35,19 @@
     background: initial;
   }
 
-  > * {
-    position: absolute;
-  }
   .jp-volume-controls {
-    #centerChildren;
-    right: 565px;
+    .centerChildren;
   }
 }
 
 .jp-icon-controls {
   .iconControls;
+  .volumeBar;
+  .progressBar;
 }
 
 .jp-text-controls {
   .textControls;
+  .volumeBar(initial);
+  .progressBar(initial);
 }

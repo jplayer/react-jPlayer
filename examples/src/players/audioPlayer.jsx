@@ -19,15 +19,6 @@ const AudioPlayer = props => (
         <Title />
       </div>
       <div className="jp-controls jp-icon-controls">
-        <Play><i className="fa">{/* Icon set in css*/}</i></Play>
-        <FullScreen><i className="fa fa-expand" /></FullScreen>
-        <Repeat><i className="fa fa-repeat" /></Repeat>
-        <PlaybackRateBar />
-        <div className="jp-volume-controls">
-          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <VolumeBar />
-        </div>
-        <Download><i className="fa fa-download" /></Download>
         <div className="jp-progress">
           <SeekBar>
             <PlayBar />

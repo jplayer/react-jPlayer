@@ -1,13 +1,15 @@
-.jp-progress {
-  @import "../currentTime/currentTime";
-  @import "../duration/duration";
-  @import "../bufferBar/bufferBar";
-  @import "../seekBar/seekBar";
-  background-color:@backgroundColour;
-  height:100%;
-  left:0;
-  right:0;
-  margin:auto;
-  width:300px;
-  font-size: 20px;
+.progressBar(@backgroundColour: @backgroundColour) {
+  .jp-progress {
+    @import "../currentTime/currentTime";
+    @import "../duration/duration";
+    @import "../bufferBar/bufferBar";
+    @import "../seekBar/seekBar";
+    background-color:@backgroundColour;
+    height:100%;
+    left:0;
+    right:0;
+    margin:auto;
+    width:20%;
+    font-size: 20px;
+  }
 }

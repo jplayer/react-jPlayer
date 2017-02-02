@@ -1,12 +1,14 @@
-.jp-volume-bar {
-  margin-left: 10px;
-  background-color:@backgroundColour;
-  cursor: pointer;
-  width: 100px;
-  display: inline-block;
-  border-radius: 1px;
-  .jp-volume-bar-value {
-    background-color:@foregroundColour;
-    height:6px;
+.volumeBar(@backgroundColour: @backgroundColour) {
+  .jp-volume-bar {
+    margin-left: 10px;
+    background-color:@backgroundColour;
+    cursor: pointer;
+    width: 100px;
+    display: inline-block;
+    border-radius: 1px;
+    .jp-volume-bar-value {
+      background-color:@foregroundColour;
+      height:6px;
+    }
   }
 }
