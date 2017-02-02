@@ -14,19 +14,27 @@ const AudioPlayer = props => (
       {props.browserUnsupportedHtml}
     </Audio>
     <Gui>
-      <div className="jp-title-container">
-        <Poster />
-        <Title />
-      </div>
       <div className="jp-controls jp-icon-controls">
+        <div className="jp-title-container">
+          <Poster />
+          <Title />
+        </div>
+        <Play><i className="fa">{/* Icon set in css*/}</i></Play>
+        <Repeat><i className="fa fa-repeat" /></Repeat>
+        <PlaybackRateBar />
         <div className="jp-progress">
           <SeekBar>
-            <PlayBar />
             <BufferBar />
+            <PlayBar />
             <CurrentTime />
             <Duration />
           </SeekBar>
         </div>
+        <div className="jp-volume-controls">
+          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
+          <VolumeBar />
+        </div>
+        <FullScreen><i className="fa fa-expand" /></FullScreen>
       </div>
     </Gui>
   </JPlayer>
