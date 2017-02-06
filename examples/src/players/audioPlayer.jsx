@@ -3,7 +3,7 @@ import React from 'react';
 
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
+  VolumeBar, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
 import poster from '../../assets/Alan Walker - Fade.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
