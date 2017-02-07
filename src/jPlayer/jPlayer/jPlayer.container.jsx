@@ -91,7 +91,9 @@ class JPlayerContainer extends React.Component {
     this.timeFormats = merge(defaultOptions.timeFormats, this.props.timeFormats);
   }
   componentWillMount() {
-    document.addEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
+    if (screenfull.enabled) {
+      document.addEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
+    }
   }
   componentDidMount() {
     this.props.setMedia(this.props.media);
@@ -101,12 +103,14 @@ class JPlayerContainer extends React.Component {
     this.setFullScreen(nextProps);
   }
   componentWillUnmount() {
-    document.removeEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
-    window.removeEventListener('unload', this.unload);
+    if (screenfull.enabled) {
+      document.removeEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
+    }
   }
   setJPlayer = ref => (this.jPlayer = ref)
   setFullScreen = ({ fullScreen }) => {
-    if (fullScreen !== this.props.fullScreen) {
+    if (fullScreen !== this.props.fullScreen &&
+        screenfull.enabled) {
       if (fullScreen) {
         screenfull.request(this.jPlayer);
       } else {

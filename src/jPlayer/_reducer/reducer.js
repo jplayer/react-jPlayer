@@ -1,3 +1,5 @@
+import includes from 'lodash.includes';
+
 import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../../util/index';
 
@@ -174,7 +176,7 @@ const setGlobalOptions = (state, action) => {
   Object.keys(newState).forEach((key) => {
     const { global = [] } = newState[key];
 
-    if (key !== action.uid && global.includes(action.type)) {
+    if (key !== action.uid && includes(global, action.type)) {
       newState = updateObject(newState, {
         [key]: updatePlayer(newState[key], action, action.type),
       });

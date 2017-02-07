@@ -94,7 +94,7 @@ class StatusWrapper extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <PropsInRealTime uid={this.props.uid} />
-            <EventsInRealTime uid={this.props.uid} mediaEvents={this.state.eventCalls} />
+            <EventsInRealTime uid={this.props.uid} eventCalls={this.state.eventCalls} />
           </div>
         </div>
       </div>

@@ -2,24 +2,24 @@ import React from 'react';
 
 import Event from './event';
 
-const EventsInRealTime = ({ mediaEvents }) => (
+const EventsInRealTime = ({ eventCalls }) => (
   <div className="col-md-4">
     <h2>Media Events</h2>
     <p>Events that have been called in the last second</p>
     <div className="events">
-      {Object.entries(mediaEvents).map(val => (
-        <Event key={val[0]} eventName={val[0]} callNumber={val[1]} />
+      {Object.keys(eventCalls).map(key => (
+        <Event key={key} eventName={key} callNumber={eventCalls[key]} />
       ))}
     </div>
   </div>
 );
 
 EventsInRealTime.defaultProps = {
-  mediaEvents: {},
+  eventCalls: {},
 };
 
 EventsInRealTime.propTypes = {
-  mediaEvents: React.PropTypes.object,
+  eventCalls: React.PropTypes.object,
 };
 
 export default EventsInRealTime;
