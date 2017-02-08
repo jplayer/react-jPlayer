@@ -25,7 +25,7 @@ const TextPlayer = props => (
         <div className="jp-volume-controls">
           <Mute><span>{ /* Set in css */}</span></Mute>
           <VolumeBar>{'<-------->'}</VolumeBar>
-        </div>
+        </div> 
         <div className="jp-progress">
           <CurrentTime />
           <Duration />
