@@ -45,7 +45,7 @@ export const keys = {
 };
 
 export const errors = {
-  FORMAT_NO_SUPPORT: 'It is not possible to play any media format' +
+  FORMAT_NO_SUPPORT: 'It is not possible to play any media format ' +
   'provided on this browser using your current options.',
   URL_NO_SUPPORT: 'The media URL could not be loaded.',
   URL_NOT_SET: 'Attempted to issue media playback commands while no media url is set.',

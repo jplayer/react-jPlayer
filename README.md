@@ -15,6 +15,13 @@ Use if:
 * Supports IE8+ (same as React)
 * Filesize reduced 45%~
 
+## Supported browsers
+* Chrome v15+
+* FireFox v22+
+* Opera v16+
+* Yandex
+* Safari 5.1+ (No Windows Safari support)
+
 ## Bower Install
 * simple install using `bower install react-jPlayer`
 * see <http://bower.io/> for more information.

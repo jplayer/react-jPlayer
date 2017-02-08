@@ -5,6 +5,7 @@ import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration, CurrentTime } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
+import oga from '../../assets/Alan Walker - Fade.ogg';
 import poster from '../../assets/Alan Walker - Fade.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
@@ -22,9 +23,9 @@ const AudioPlayer = props => (
           <SeekBar>
             <BufferBar />
             <PlayBar />
-            <CurrentTime />
-            <Duration />
           </SeekBar>
+          <CurrentTime />
+          <Duration />
         </div>
         <FullScreen><i className="fa fa-expand" /></FullScreen>
         <div className="jp-volume-controls">
@@ -48,6 +49,7 @@ AudioPlayer.options = {
     artist: 'Alan Walker',
     sources: {
       mp3,
+      oga,
     },
     poster,
     free: true,
