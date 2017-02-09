@@ -8,24 +8,31 @@
   }
 }
 
+.fitScreen() {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .jp-jplayer.jp-state-full-screen {
+  .fitScreen;
   width: 100%;
   height: 100%;
   background-color: black;
-  position: absolute;
-  
+  visibility: visible;
+  position: fixed;
+  z-index: -2;
+
   .jp-gui {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
 
     .jp-poster {
+      .fitScreen;
       max-width: 100%;
       z-index: -1;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       margin: auto;
       position: fixed;
       max-height: initial;

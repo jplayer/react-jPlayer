@@ -46,9 +46,8 @@ class SeekBarContainer extends React.Component {
     const x = e.pageX - offset.left;
     const w = getWidth(this.seekBar);
     const percentage = 100 * (x / w);
-    const isInSeekRange = percentage <= this.props.seekPercent;
 
-    this.props.playHead(isInSeekRange ? percentage : this.props.seekPercent);
+    this.props.playHead(percentage);
   }
   componentWillUnMount() {
     document.removeEventListener('mouseup', this.onMouseUp);

@@ -109,12 +109,17 @@ class JPlayerContainer extends React.Component {
   }
   setJPlayer = ref => (this.jPlayer = ref)
   setFullScreen = ({ fullScreen }) => {
-    if (fullScreen !== this.props.fullScreen &&
-        screenfull.enabled) {
+    if (fullScreen !== this.props.fullScreen) {
       if (fullScreen) {
-        screenfull.request(this.jPlayer);
-      } else {
+        if (screenfull.enabled) {
+          screenfull.request(this.jPlayer);
+        } else {
+          document.body.style.visibility = 'hidden';
+        }
+      } else if (screenfull.enabled) {
         screenfull.exit();
+      } else {
+        document.body.style.visibility = 'visible';
       }
     }
   }
