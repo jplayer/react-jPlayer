@@ -7,13 +7,18 @@
 @import "../mute/mute";
 @import "../volumeBar/volumeBar";
 
+@keyframes fadeIn {
+    from { width: 0; }
+      to { width: 100px; }
+}
+
 .jp-controls {
   height: 100%;
   position:relative;
-  margin:auto;
   font-size:24px;
-  width: 50%;
-  display: flex;
+  margin: 0 auto;
+  display: inline-flex;
+  min-width: 450px;
 
   > * {
     margin-left: 5px;
@@ -40,7 +45,11 @@
   }
 
   .jp-volume-controls {
-    .centerChildren;
+    .centerChildren;   
+  }
+
+  .jp-volume-controls:hover  .jp-volume-bar {
+    animation: fadeIn 150ms ease-in-out both;
   }
 }
 
@@ -53,7 +62,6 @@
     min-width: 42px;
   }
 }
-
 .jp-text-controls {
   .textControls;
   .volumeBar(initial);
