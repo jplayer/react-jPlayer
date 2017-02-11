@@ -2,11 +2,14 @@
   .jp-volume-bar {
     background-color:@backgroundColour;
     cursor: pointer;
-    width: 0;
-    border-radius: 1px;
+    border-radius: 1px; 
+    height: 80px;
+    margin: 0 auto;
+    display: none;
+    transform: rotate(180deg);
     .jp-volume-bar-value {
       background-color:@foregroundColour;
-      height:6px;
+      width:8px;
     }
   }
 }

@@ -30,7 +30,9 @@ const AudioPlayer = props => (
         <FullScreen><i className="fa fa-expand" /></FullScreen>
         <div className="jp-volume-controls">
           <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <VolumeBar />
+          <div className="jp-volume-bar-container">
+            <VolumeBar />
+          </div>
         </div>
         <div className="jp-title-container">
           <Poster />
@@ -44,6 +46,7 @@ const AudioPlayer = props => (
 AudioPlayer.options = {
   muted: true,
   keyEnabled: false,
+  verticalVolume: true,
   media: {
     title: 'Fade',
     artist: 'Alan Walker',

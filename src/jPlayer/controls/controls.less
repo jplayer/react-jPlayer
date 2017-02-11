@@ -18,7 +18,7 @@
   font-size:24px;
   margin: 0 auto;
   display: inline-flex;
-  min-width: 450px;
+  min-width: 300px;
 
   > * {
     margin-left: 5px;
@@ -45,11 +45,30 @@
   }
 
   .jp-volume-controls {
-    .centerChildren;   
+    position: relative;
+    .centerChildren;
+
+    .jp-volume-bar-container {
+      background-color: #e5e5e5;
+      position: absolute;
+      height: 0;
+      width: 24px;
+      left: 8px;
+      bottom: 100%;
+      display: flex;
+      align-items: center;
+      transition-duration: 0.3s;
+    }
   }
 
-  .jp-volume-controls:hover  .jp-volume-bar {
-    animation: fadeIn 150ms ease-in-out both;
+  .jp-volume-controls:hover .jp-volume-bar {
+    display: initial;
+  }
+
+  .jp-volume-controls:hover .jp-volume-bar-container {
+    height: 100px;
+    transition-duration: 0.3s;
+    outline: solid 1px #cfcfcf;
   }
 }
 
