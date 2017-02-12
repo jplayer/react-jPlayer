@@ -67,6 +67,9 @@ export const limitValue = (value, min, max) => {
 };
 
 export const convertTime = (seconds) => {
+  if (isNaN(seconds)) {
+    return '';
+  }
   const myTime = new Date(seconds * 1000);
   const { timeFormats } = defaultOptions;
 
