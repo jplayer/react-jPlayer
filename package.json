@@ -28,6 +28,13 @@
     "lint",
     "test"
   ],
+  "browserslist": [
+    "explorer >= 10",
+    "chrome >= 15",
+    "firefox >= 22",
+    "opera >= 16",
+    "iOS >= 5.1"
+  ],
   "devDependencies": {
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.4",
