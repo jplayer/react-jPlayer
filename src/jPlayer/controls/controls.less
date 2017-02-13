@@ -13,15 +13,25 @@
 }
 
 .jp-controls {
-  height: 100%;
+  height: inherit; /*42px from the parent*/
   position:relative;
   font-size:24px;
-  display: flex;
-  min-width: 300px;
+ // position: absolute;
+  //left: 50%;
+  //transform: translate(-50%);
+  white-space: nowrap;
+  //display: flex;
+  display: table;
+  //display: table;
+  border-spacing: 5px 0;
 
   > * {
-    margin-left: 5px;
-    margin-right: 5px;
+    //margin-left: 5px;
+   // margin-right: 5px;
+    height: 100%;
+    vertical-align: top;
+    height: inherit;
+    display: table-cell;
   }
 
   a {
@@ -46,7 +56,6 @@
   .jp-volume-controls {
     position: relative;
     min-width: 42px;
-    .centerChildren;
 
     .jp-volume-bar-container {
       background-color: #e5e5e5;
@@ -55,15 +64,12 @@
       width: 24px;
       left: 8px;
       bottom: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       transition-duration: 0.3s;
     }
   }
 
   .jp-volume-controls:hover .jp-volume-bar {
-    display: initial;
+    display: block;
   }
 
   .jp-volume-controls:hover .jp-volume-bar-container {
