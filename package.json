@@ -29,7 +29,7 @@
     "test"
   ],
   "browserslist": [
-    "explorer >= 10",
+    "explorer >= 9",
     "chrome >= 15",
     "firefox >= 22",
     "opera >= 16",

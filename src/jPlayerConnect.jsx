@@ -33,9 +33,13 @@ const mapDispatchToProps = dispatch => ({ ...bindActionCreators(jPlayerActions, 
 const jPlayerConnect = (player) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(player);
 
+  // IE9 doesn't support fn.name
+  const playerName = player.name === undefined ? player.toString().match(/^function\s*([^\s(]+)/)[1]
+    : player.name;
+
   return class extends React.Component {
     static get uid() {
-      return player.name;
+      return playerName;
     }
     static get options() {
       return player.options;
@@ -46,10 +50,10 @@ const jPlayerConnect = (player) => {
       };
     }
     getChildContext = () => ({
-      uid: player.name,
+      uid: playerName,
     });
     render() {
-      return <ConnectedPlayer uid={player.name} {...this.props} />;
+      return <ConnectedPlayer uid={playerName} {...this.props} />;
     }
   };
 };
