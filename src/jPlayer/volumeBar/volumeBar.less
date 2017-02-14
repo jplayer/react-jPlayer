@@ -4,8 +4,7 @@
     cursor: pointer;
     border-radius: 1px; 
     display: none;
-    transform: rotate(180deg);
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(180deg);
     width: 8px;
     height: 80px;
     position: absolute;
@@ -13,7 +12,7 @@
     left: 50%;
     .jp-volume-bar-value {
       background-color:@foregroundColour;
-      width:8px;
+      border-radius: inherit; 
     }
   }
 }

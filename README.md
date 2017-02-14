@@ -17,7 +17,7 @@ Use if:
 
 ## Supported browsers
 * Chrome v15+
-* FireFox v22+
+* FireFox v15+
 * Internet Explorer 9+
 * Opera v16+
 * Yandex

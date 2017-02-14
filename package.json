@@ -31,7 +31,7 @@
   "browserslist": [
     "explorer >= 9",
     "chrome >= 15",
-    "firefox >= 22",
+    "firefox >= 15",
     "opera >= 16",
     "iOS >= 5.1"
   ],

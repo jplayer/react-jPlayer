@@ -48,15 +48,22 @@
 
   .jp-volume-controls {
     min-width: 42px;
+    position: relative;
+    
+    .jp-volume-container {
+      /* Legacy Firefox fix for position absolute and table cell */
+      position: relative;
+      height: 100%;
 
-    .jp-volume-bar-container {
-      background-color: #e5e5e5;
-      position: absolute;
-      height: 0;
-      width: 24px;
-      left: 8px;
-      bottom: 100%;
-      transition-duration: 0.2s;
+      .jp-volume-bar-container {
+        background-color: #e5e5e5;
+        position: absolute;
+        height: 0;
+        width: 24px;
+        left: 8px;
+        bottom: 100%;
+        transition-duration: 0.3s;
+      }
     }
   }
 
@@ -66,7 +73,7 @@
       bottom: 10%;
     }
     height: 100px;
-    transition-duration: 0.2s;
+    transition-duration: 0.3s;
     outline: solid 1px #cfcfcf;
   }
 }
