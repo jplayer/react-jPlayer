@@ -12,9 +12,7 @@ const VideoPlayer = props => (
   <JPlayer className="jp-sleek">
     <div className="jp-media">
       <Poster />
-      <Video events={props.events}>
-        {props.browserUnsupportedHtml}
-      </Video>
+      <Video events={props.events} />
     </div>
     <Gui>
       <div className="jp-title-container">

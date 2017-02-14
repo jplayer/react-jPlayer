@@ -10,7 +10,7 @@
   }
 
   .jp-sleek .jp-poster {
-    height: initial !important;
+    height: auto !important;
   }
 }
 
@@ -29,6 +29,15 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.jp-state-no-browser-support {
+  .jp-gui {
+    height: auto !important;
+    .jp-controls {
+      display: none !important;
+    }
+  }
 }
 
 .jp-jplayer.jp-state-full-screen {
@@ -51,7 +60,6 @@
       z-index: -1;
       margin: auto;
       position: fixed;
-      max-height: initial;
     }
   }
 

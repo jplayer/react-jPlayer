@@ -56,15 +56,6 @@ class StatusWrapper extends React.Component {
         ));
       };
     });
-
-    this.browserUnsupportedHtml = (
-      <div>
-        <h2>Browser Unsupported</h2>
-        <div>
-          To play the media you will need to update your browser to a more recent version.
-        </div>
-      </div>
-    );
   }
   componentWillUnmount() {
     this.eventTimeouts.forEach(timeoutNumber => clearTimeout(timeoutNumber));
@@ -89,7 +80,6 @@ class StatusWrapper extends React.Component {
       <div className="example-wrapper">
         {React.cloneElement(React.Children.only(this.props.children), {
           events: this.events,
-          browserUnsupportedHtml: this.browserUnsupportedHtml,
         })}
         <div className="container-fluid">
           <div className="row">

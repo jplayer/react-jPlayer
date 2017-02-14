@@ -21,8 +21,9 @@ import VolumeBarValue from './jPlayer/volumeBarValue/volumeBarValue.container';
 import Download from './jPlayer/download/download.container';
 import Duration from './jPlayer/duration/duration.container';
 import CurrentTime from './jPlayer/currentTime/currentTime.container';
+import BrowserUnsupported from './jPlayer/browserUnsupported/browserUnsupported.container';
 
 export { JPlayerProvider, JPlayer, Gui, KeyControl, SeekBar, PlayBar,
    BufferBar, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
-    VolumeBar, VolumeBarValue, Download, Duration, CurrentTime };
+    VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };

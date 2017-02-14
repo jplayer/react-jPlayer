@@ -48,12 +48,8 @@ const MixedPlayer = (props) => {
       <JPlayer className="jp-sleek">
         <div className="jp-media">
           <Poster style={posterStyle} />
-          <Video events={props.events}>
-            {props.browserUnsupportedHtml}
-          </Video>
-          <Audio events={props.events}>
-            {props.browserUnsupportedHtml}
-          </Audio>
+          <Video events={props.events} />
+          <Audio events={props.events} />
         </div>
         <Gui>
           <div className="jp-title-container">

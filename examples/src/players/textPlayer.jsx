@@ -10,9 +10,7 @@ import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const TextPlayer = props => (
   <JPlayer className="jp-sleek">
-    <Audio events={props.events}>
-      {props.browserUnsupportedHtml}
-    </Audio>
+    <Audio events={props.events} />
     <Gui>
       <div className="jp-title-container">
         <Poster />

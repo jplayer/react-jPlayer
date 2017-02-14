@@ -15,9 +15,15 @@ const updateFormats = (state, media) => {
   const newFormats = [];
 
   Object.keys(media.sources).forEach((supplied) => {
-    const suppliedIsValid = Object.prototype.hasOwnProperty.call(formats, supplied);
-    const canPlayType = suppliedIsValid ? document.createElement(formats[supplied].MEDIA)
-      .canPlayType(formats[supplied].CODEC) : '';
+    let canPlayType;
+
+    try {
+      // Some legacy browsers don't have canPlayType property
+      canPlayType = document.createElement(formats[supplied].MEDIA)
+        .canPlayType(formats[supplied].CODEC);
+    } catch (error) {
+      canPlayType = '';
+    }
 
     newFormats.push({
       supplied,
@@ -33,7 +39,6 @@ const updateFormats = (state, media) => {
 };
 
 const setMedia = (state, { media = { sources: [] } }) => {
-  let foundSupported = false;
   const newState = {
     ...state,
     ...resetStatus(state),
@@ -41,15 +46,15 @@ const setMedia = (state, { media = { sources: [] } }) => {
   };
 
   newState.mediaSettings.formats.forEach((format) => {
-    if (format.supported && !foundSupported) {
+    if (format.supported && !newState.mediaSettings.foundSupported) {
       newState.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
       newState.src = media.sources[format.supplied];
       newState.paused = true;
-      foundSupported = true;
+      newState.mediaSettings.foundSupported = true;
     }
   });
 
-  if (!foundSupported) {
+  if (!newState.mediaSettings.foundSupported) {
     newState.error = noFormatSupportedError(
       `{ media.sources: '${Object.keys(media.sources).join(', ')}' }`,
     );

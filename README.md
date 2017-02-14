@@ -21,7 +21,7 @@ Use if:
 * Internet Explorer 9+
 * Opera v16+
 * Yandex
-* Safari 5.1+ (No Windows Safari support)
+* Windows Safari 5.1
 
 ## Bower Install
 * simple install using `bower install react-jPlayer`

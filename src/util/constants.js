@@ -30,7 +30,7 @@ export const keys = {
   PLAYBACK_RATE_BAR_CLASS: 'playbackRateBarClass',
   PLAYBACK_RATE_BAR_VALUE_CLASS: 'playbackRateBarValueClass',
   SEEK_BAR_CLASS: 'seekBarClass',
-  NO_SOLUTION_CLASS: 'noSolutionClass',
+  NO_BROWSER_SUPPORT: 'noBrowserSupportClass',
   POSTER_CLASS: 'posterClass',
   VIDEO_CLASS: 'videoClass',
   VIDEO_PLAY_CLASS: 'videoPlayClass',
@@ -52,7 +52,7 @@ export const errors = {
 };
 
 export const hints = {
-  FORMAT_NO_SUPPORT: 'Video or audio formats defined in the supplied option may be missing.',
+  FORMAT_NO_SUPPORT: 'The browser may not support these file types.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
   URL_NOT_SET: 'Pass the media through the options or use the setMedia()' +
   'action that is passed into the component props.',
@@ -76,7 +76,7 @@ export const classes = {
   PLAY_BAR: 'jp-play-bar',
   SEEKING: 'jp-seeking-bg',
   GUI: 'jp-gui',
-  NO_SOLUTION: 'jp-no-solution',
+  NO_BROWSER_SUPPORT: 'jp-no-browser-support',
   PLAY: 'jp-play',
   PAUSE: 'jp-pause',
   STOP: 'jp-stop',
@@ -102,6 +102,7 @@ export const classes = {
     FULL_SCREEN: 'jp-state-full-screen',
     NO_VOLUME: 'jp-state-no-volume',
     SHUFFLED: 'jp-state-shuffled',
+    NO_BROWSER_SUPPORT: 'jp-state-no-browser-support',
   },
 };
 

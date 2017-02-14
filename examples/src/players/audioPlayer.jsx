@@ -3,7 +3,7 @@ import React from 'react';
 
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Duration, CurrentTime } from '../../../src/index';
+  VolumeBar, Duration, CurrentTime, BrowserUnsupported } from '../../../src/index';
 import mp3 from '../../assets/Alan Walker - Fade.mp3';
 import oga from '../../assets/Alan Walker - Fade.ogg';
 import poster from '../../assets/Alan Walker - Fade.jpg';
@@ -11,9 +11,7 @@ import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const AudioPlayer = props => (
   <JPlayer className="jp-sleek">
-    <Audio events={props.events}>
-      {props.browserUnsupportedHtml}
-    </Audio>
+    <Audio events={props.events} />
     <Gui>
       <div className="jp-controls jp-icon-controls">
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
@@ -39,6 +37,7 @@ const AudioPlayer = props => (
           <Title />
         </div>
       </div>
+      <BrowserUnsupported />
     </Gui>
   </JPlayer>
 );
