@@ -47,7 +47,6 @@
   }
 
   .jp-volume-controls {
-    position: relative;
     min-width: 42px;
 
     .jp-volume-bar-container {
@@ -57,17 +56,17 @@
       width: 24px;
       left: 8px;
       bottom: 100%;
-      transition-duration: 0.3s;
+      transition-duration: 0.2s;
     }
   }
 
-  .jp-volume-controls:hover .jp-volume-bar {
-    display: block;
-  }
-
   .jp-volume-controls:hover .jp-volume-bar-container {
+    .jp-volume-bar {
+      display: block;
+      bottom: 10%;
+    }
     height: 100px;
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     outline: solid 1px #cfcfcf;
   }
 }
