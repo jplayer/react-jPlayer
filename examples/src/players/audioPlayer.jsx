@@ -27,10 +27,12 @@ const AudioPlayer = props => (
         </div>
         <FullScreen><i className="fa fa-expand" /></FullScreen>
         <div className="jp-volume-controls">
-          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <div className="jp-volume-bar-container">
-            <VolumeBar />
-          </div>
+          <Mute>
+            <div className="jp-volume-bar-container">
+              <VolumeBar />
+            </div>
+            <i className="fa">{/* Icon set in css*/}</i>
+          </Mute>
         </div>
         <div className="jp-title-container">
           <Poster />
