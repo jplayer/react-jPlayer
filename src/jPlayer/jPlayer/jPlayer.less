@@ -1,11 +1,16 @@
 @media (max-width: 630px) {
   .jp-sleek .jp-playback-rate-bar,
   .jp-sleek .jp-repeat,
-  .jp-sleek .jp-title-container,
+  .jp-sleek:not(.jp-state-full-screen) .jp-poster,
+  .jp-sleek .jp-title,
   .jp-sleek .jp-full-screen,
   .jp-sleek .jp-volume-max,
   .jp-sleek .jp-download {
     display: none !important;
+  }
+
+  .jp-sleek .jp-poster {
+    height: initial !important;
   }
 }
 
