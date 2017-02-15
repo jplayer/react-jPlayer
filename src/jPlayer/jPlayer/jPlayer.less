@@ -31,6 +31,15 @@
   bottom: 0;
 }
 
+.jp-state-no-volume-support {
+  .jp-mute,
+  .jp-volume-max,
+  .jp-volume-bar,
+  .jp-volume-bar-value {
+    display: none !important;
+  }
+}
+
 .jp-state-no-browser-support {
   .jp-gui {
     height: auto !important;
@@ -38,14 +47,6 @@
       display: none !important;
     }
   }
-}
-
-html {
-  visibility: "visible";
-}
-
-html:fullscreen {
-  visibility: "hidden";
 }
 
 .jp-jplayer.jp-state-full-screen {

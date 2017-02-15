@@ -34,8 +34,8 @@
     "explorer >= 9",
     "edge >= 13",
     "opera >= 16",
-    "ios_saf >= 5.1",
-    "safari >= 5.1"
+    "safari >= 5.1",
+    "ios_saf >= 5.1"
   ],
   "devDependencies": {
     "babel-cli": "^6.6.4",

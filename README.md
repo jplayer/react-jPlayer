@@ -23,6 +23,7 @@ Use if:
 * Opera v16+
 * Yandex
 * Windows Safari 5.1
+* IOS Safari 5.1+
 
 ## Bower Install
 * simple install using `bower install react-jPlayer`

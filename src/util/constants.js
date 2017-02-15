@@ -103,6 +103,7 @@ export const classes = {
     NO_VOLUME: 'jp-state-no-volume',
     SHUFFLED: 'jp-state-shuffled',
     NO_BROWSER_SUPPORT: 'jp-state-no-browser-support',
+    NO_VOLUME_SUPPORT: 'jp-state-no-volume-support',
   },
 };
 

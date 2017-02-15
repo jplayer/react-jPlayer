@@ -35,6 +35,7 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
       [classes.states.SEEKING]: jPlayers[uid].seeking,
       [classes.states.LOOPED]: jPlayers[uid].loop === loopOptions.LOOP,
       [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[uid].mediaSettings.foundSupported,
+      [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[uid].volumeSupported,
       // 'jp-video-270p': sizeCssClass !== undefined,
       // 'jp-video-full': sizeFullCssClass !== undefined,
     }),

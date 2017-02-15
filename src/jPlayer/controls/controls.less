@@ -49,6 +49,10 @@
   .jp-volume-controls {
     min-width: 42px;
     position: relative;
+
+    .jp-state-no-volume-support& {
+      display: none !important;
+    }
     
     .jp-volume-container {
       /* Legacy Firefox fix for position absolute and table cell */

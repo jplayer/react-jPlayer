@@ -45,7 +45,7 @@ const AudioPlayer = props => (
 );
 
 AudioPlayer.options = {
-  muted: true,
+  muted: false,
   keyEnabled: false,
   verticalVolume: true,
   media: {

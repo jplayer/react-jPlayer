@@ -66,6 +66,14 @@ export const limitValue = (value, min, max) => {
   return value;
 };
 
+// Some IOS versions don't allow manually changing volume or mute
+export const canSetVolume = () => {
+  const audio = new Audio();
+  audio.volume = 0.5;
+
+  return audio.volume === 0.5;
+};
+
 export const convertTime = (seconds) => {
   if (isNaN(seconds)) {
     return '';

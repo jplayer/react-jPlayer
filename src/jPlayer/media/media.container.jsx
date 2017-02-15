@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { connectWithId, urlNotSupportedError, convertTime } from '../../util/index';
+import { connectWithId, urlNotSupportedError, convertTime, canSetVolume } from '../../util/index';
 import { loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
 import { setOption, pause } from '../_actions/actions';
 
@@ -189,6 +189,7 @@ class MediaContainer extends React.Component {
   }
   componentDidMount() {
     this.currentMedia.src = this.props.src;
+    this.props.setOption('volumeSupported', canSetVolume());
 
     this.updateCurrentMedia(this.props);
   }
