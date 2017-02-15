@@ -114,12 +114,14 @@ class JPlayerContainer extends React.Component {
       if (fullScreen) {
         if (screenfull.enabled) {
           screenfull.request(this.jPlayer);
-        } else {
-          document.body.style.visibility = 'hidden';
         }
-      } else if (screenfull.enabled) {
-        screenfull.exit();
+        // Legacy browsers don't implement full screen api
+        // Safari 5.1 doesn't hide the other elements even with fullscreen api
+        document.body.style.visibility = 'hidden';
       } else {
+        if (screenfull.enabled) {
+          screenfull.exit();
+        }
         document.body.style.visibility = 'visible';
       }
     }

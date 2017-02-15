@@ -18,6 +18,7 @@ Use if:
 ## Supported browsers
 * Chrome v15+
 * FireFox v15+
+* Edge 13+
 * Internet Explorer 9+
 * Opera v16+
 * Yandex

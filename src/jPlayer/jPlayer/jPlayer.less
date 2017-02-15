@@ -40,6 +40,14 @@
   }
 }
 
+html {
+  visibility: "visible";
+}
+
+html:fullscreen {
+  visibility: "hidden";
+}
+
 .jp-jplayer.jp-state-full-screen {
   .fitScreen;
   width: 100%;
@@ -47,7 +55,6 @@
   background-color: black;
   visibility: visible;
   position: fixed;
-  z-index: -2;
 
   .jp-gui {
     position: absolute;
