@@ -3,7 +3,7 @@ import React from 'react';
 
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Duration, CurrentTime, BrowserUnsupported } from '../../../src/index';
+  VolumeBar, Duration, CurrentTime, Download, BrowserUnsupported } from '../../../src/index';
 import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
@@ -32,6 +32,7 @@ const AudioPlayer = props => (
             </div>
           </div>
         </div>
+        <Download><i className="fa fa-download" /></Download>
         <div className="jp-title-container">
           <Poster />
           <Title />
