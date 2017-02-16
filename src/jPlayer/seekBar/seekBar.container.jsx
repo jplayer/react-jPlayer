@@ -1,69 +1,48 @@
 import React from 'react';
 import { connectWithId, getWidth, getOffset } from '../../util/index';
-import { defaultOptions } from '../../util/constants';
 import { setPlayHead } from '../_actions/actions';
+import BarEvents from '../barEvents';
 import SeekBar from './seekBar';
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
-  seekPercent: jPlayers[uid].seekPercent,
-  barDrag: jPlayers[uid].barDrag,
-  children,
-  attributes,
+const mapStateToProps = ({ jPlayers }, { uid }) => {
+  const { seekPercent } = jPlayers[uid];
+
+  return {
+    seekPercent,
+    movePlayHead: (bar, dispatch, e) => {
+      const offset = getOffset(bar);
+      const x = e.pageX - offset.left;
+      const w = getWidth(bar);
+      const percentage = 100 * (x / w);
+
+      dispatch(setPlayHead(percentage, uid));
+    },
+  };
+};
+
+// eslint-disable-next-line no-unused-vars
+const mergeProps = ({ seekPercent, movePlayHead }, { dispatch }, { uid, ...attributes }) => ({
+  touchMovePlayHead: (bar, e) => {
+    // Stop page scrolling
+    e.preventDefault();
+
+    movePlayHead(bar, dispatch, e.touches[0]);
+  },
+  clickMovePlayHead: (bar, e) => movePlayHead(bar, dispatch, e),
+  seekPercent,
+  ...attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid }) => ({
-  playHead: percentage => dispatch(setPlayHead(percentage, uid)),
-  ...stateProps,
-});
+const SeekBarContainer = ({ clickMovePlayHead, touchMovePlayHead, seekPercent, ...attributes }) => (
+  <BarEvents clickMoveBar={clickMovePlayHead} touchMoveBar={touchMovePlayHead}>
+    <SeekBar seekPercent={seekPercent} {...attributes} />
+  </BarEvents>
+);
 
-class SeekBarContainer extends React.Component {
-  static get propTypes() {
-    return {
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      seekPercent: React.PropTypes.number.isRequired,
-      playHead: React.PropTypes.func.isRequired,
-      barDrag: React.PropTypes.bool,
-      children: React.PropTypes.node.isRequired,
-    };
-  }
-  static get defaultProps() {
-    return {
-      attributes: {},
-      barDrag: defaultOptions.barDrag,
-    };
-  }
-  componentWillMount() {
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('mousemove', this.onMouseMove);
-  }
-  onClick = e => this.movePlayHead(e)
-  onMouseMove = e => (this.props.barDrag && this.dragging ? this.movePlayHead(e) : null)
-  onMouseDown = () => (this.dragging = true)
-  onMouseUp = () => (this.dragging = false)
-  setSeekBar = ref => (this.seekBar = ref)
-  movePlayHead = (e) => {
-    const offset = getOffset(this.seekBar);
-    const x = e.pageX - offset.left;
-    const w = getWidth(this.seekBar);
-    const percentage = 100 * (x / w);
-
-    this.props.playHead(percentage);
-  }
-  componentWillUnMount() {
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onMouseMove);
-  }
-  render() {
-    return (
-      <SeekBar
-        setSeekBar={this.setSeekBar} onClick={this.onClick}
-        onMouseDown={this.onMouseDown} seekPercent={this.props.seekPercent}
-        {...this.props.attributes}
-      >
-        {this.props.children}
-      </SeekBar>
-    );
-  }
-}
+SeekBarContainer.propTypes = {
+  clickMovePlayHead: React.PropTypes.func.isRequired,
+  touchMovePlayHead: React.PropTypes.func.isRequired,
+  seekPercent: React.PropTypes.number.isRequired,
+};
 
 export default connectWithId(mapStateToProps, null, mergeProps)(SeekBarContainer);

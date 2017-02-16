@@ -12,7 +12,6 @@ Use if:
 ### What's new?
 * Dropped support for Flash/Aurora fallback
 * Removed the jQuery/Zepto dependency
-* Supports IE8+ (same as React)
 * Filesize reduced 45%~
 
 ## Supported browsers
@@ -24,6 +23,9 @@ Use if:
 * Yandex
 * Windows Safari 5.1
 * IOS Safari 5.1+
+* Chrome for Android v36+
+* Android browser 4+
+* Internet Explorer 11 Mobile
 
 ## Bower Install
 * simple install using `bower install react-jPlayer`

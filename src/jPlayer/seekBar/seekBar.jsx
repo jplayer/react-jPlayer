@@ -2,26 +2,30 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const SeekBar = ({ setSeekBar, onClick, onMouseDown,
+const SeekBar = ({ setBar, onClick, onMouseDown, onTouchStart,
   seekPercent, children, ...attributes }) => (
     <div
-      {...attributes} ref={setSeekBar} className={classes.SEEK_BAR}
+      {...attributes} ref={setBar} className={classes.SEEK_BAR}
       style={{ width: `${seekPercent}%` }} onClick={onClick}
-      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart} onMouseDown={onMouseDown}
     >
       {children}
     </div>
 );
 
 SeekBar.defaultProps = {
+  setBar: null,
+  onClick: null,
   onMouseDown: null,
+  onTouchStart: null,
 };
 
 SeekBar.propTypes = {
-  setSeekBar: React.PropTypes.func.isRequired,
   seekPercent: React.PropTypes.number.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  setBar: React.PropTypes.func,
+  onClick: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
+  onTouchStart: React.PropTypes.func,
   children: React.PropTypes.node.isRequired,
 };
 
