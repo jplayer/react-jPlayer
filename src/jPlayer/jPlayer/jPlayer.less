@@ -1,17 +1,31 @@
-@media (max-width: 630px) {
-  .jp-sleek .jp-playback-rate-bar,
-  .jp-sleek .jp-repeat,
-  .jp-sleek:not(.jp-state-full-screen) .jp-poster,
-  .jp-sleek .jp-title,
-  .jp-sleek .jp-full-screen,
-  .jp-sleek .jp-volume-max,
-  .jp-sleek .jp-download {
-    display: none !important;
+.jp-jplayer {
+  @media (max-width: 630px) {
+  .jp-state-full-screen .jp-poster {
+      height: auto !important;
+    }
   }
+}
 
-  .jp-sleek .jp-poster {
-    height: auto !important;
+.hideElement(@selector, @maxWidth) {
+  @media (max-width: @maxWidth) {
+    @{selector} {
+      display: none !important;
+    }
   }
+}
+
+.jp-sleek.jp-video,
+.jp-sleek.jp-audio.jp-state-no-volume-support {
+  .hideElement(~'.jp-repeat', 400px);
+  .hideElement(~':not(.jp-state-full-screen) .jp-title-container', 530px);
+  .hideElement(~'.jp-download', 580px);
+}
+
+.jp-sleek.jp-audio:not(.jp-state-no-volume-support) {
+  .hideElement(~'.jp-full-screen', 400px);
+  .hideElement(~'.jp-repeat', 450px);
+  .hideElement(~':not(.jp-state-full-screen) .jp-title-container', 580px);
+  .hideElement(~'.jp-download', 630px);
 }
 
 .jp-jplayer {

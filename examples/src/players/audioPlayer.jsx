@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { JPlayer, Gui, SeekBar, BufferBar,
-  Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
+  Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat,
   VolumeBar, Duration, CurrentTime, Download, BrowserUnsupported } from '../../../src/index';
 import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
@@ -13,7 +13,6 @@ const AudioPlayer = props => (
     <Gui>
       <div className="jp-controls jp-icon-controls">
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
-        <PlaybackRateBar />
         <Repeat><i className="fa fa-repeat" /></Repeat>
         <div className="jp-progress">
           <SeekBar>
@@ -23,7 +22,6 @@ const AudioPlayer = props => (
           <CurrentTime />
           <Duration />
         </div>
-        <FullScreen><i className="fa fa-expand" /></FullScreen>
         <div className="jp-volume-controls">
           <div className="jp-volume-container">
             <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
@@ -32,6 +30,7 @@ const AudioPlayer = props => (
             </div>
           </div>
         </div>
+        <FullScreen><i className="fa fa-expand" /></FullScreen>
         <Download><i className="fa fa-download" /></Download>
         <div className="jp-title-container">
           <Poster />
