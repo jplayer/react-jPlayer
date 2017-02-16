@@ -4,9 +4,7 @@ import React from 'react';
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
-import mp3 from '../../assets/Alan Walker - Fade.mp3';
-import audioPoster from '../../assets/Alan Walker - Fade.jpg';
-import webmv from '../../assets/Big Buck Bunny Trailer.webm';
+import audioPoster from '../../assets/Miaow - Bubble.jpg';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
@@ -14,15 +12,17 @@ const medias = {
   video: {
     title: 'Big Buck Bunny Trailer',
     sources: {
-      webmv,
+      m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
+      ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
+      webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
     },
     poster: videoPoster,
   },
   audio: {
-    title: 'Fade',
-    artist: 'Alan Walker',
+    title: 'Bubble',
+    artist: 'Miaow',
     sources: {
-      mp3,
+      m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
     },
     poster: audioPoster,
     free: true,

@@ -40,7 +40,7 @@ export default {
         loader: 'url-loader?limit=100000',
       },
       {
-        test: /\.(mp3|ogg|webm|jpg)$/,
+        test: /\.(jpg)$/,
         loader: 'file-loader',
       },
       {

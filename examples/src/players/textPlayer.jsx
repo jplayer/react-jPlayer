@@ -4,8 +4,7 @@ import React from 'react';
 import { JPlayer, Gui, Poster, Audio, Title,
   FullScreen, Mute, Play, Repeat,
   VolumeBar, Duration, CurrentTime } from '../../../src/index';
-import mp3 from '../../assets/Alan Walker - Fade.mp3';
-import poster from '../../assets/Alan Walker - Fade.jpg';
+import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const TextPlayer = props => (
@@ -37,10 +36,10 @@ TextPlayer.options = {
   muted: true,
   keyEnabled: true,
   media: {
-    title: 'Fade',
-    artist: 'Alan Walker',
+    title: 'Bubble',
+    artist: 'Miaow',
     sources: {
-      mp3,
+      m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
     },
     poster,
   },

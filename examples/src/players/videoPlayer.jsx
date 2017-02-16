@@ -4,7 +4,6 @@ import React from 'react';
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration, CurrentTime } from '../../../src/index';
-import webmv from '../../assets/Big Buck Bunny Trailer.webm';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
@@ -46,7 +45,8 @@ VideoPlayer.options = {
   media: {
     title: 'Big Buck Bunny Trailer',
     sources: {
-      webmv,
+      ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
+      webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
     },
     poster: videoPoster,
   },

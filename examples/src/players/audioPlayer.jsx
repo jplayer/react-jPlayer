@@ -4,9 +4,7 @@ import React from 'react';
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Duration, CurrentTime, BrowserUnsupported } from '../../../src/index';
-import mp3 from '../../assets/Alan Walker - Fade.mp3';
-import oga from '../../assets/Alan Walker - Fade.ogg';
-import poster from '../../assets/Alan Walker - Fade.jpg';
+import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const AudioPlayer = props => (
@@ -45,15 +43,15 @@ const AudioPlayer = props => (
 );
 
 AudioPlayer.options = {
-  muted: false,
+  muted: true,
   keyEnabled: false,
   verticalVolume: true,
   media: {
-    title: 'Fade',
-    artist: 'Alan Walker',
+    title: 'Bubble',
+    artist: 'Miaow',
     sources: {
-      mp3,
-      oga,
+      m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
+      oga: 'http://jplayer.org/audio/ogg/Miaow-07-Bubble.ogg',
     },
     poster,
     free: true,
