@@ -84,7 +84,6 @@ export const classes = {
   FULL_SCREEN: 'jp-full-screen',
   CURRENT_TIME: 'jp-current-time',
   DURATION: 'jp-duration',
-  HIDDEN: 'jp-hidden',
   DETAILS: 'jp-details',
   TITLE: 'jp-title',
   SHUFFLE: 'jp-shuffle',
@@ -93,6 +92,7 @@ export const classes = {
   POSTER: 'jp-poster',
   states: {
     PLAYING: 'jp-state-playing',
+    IDLE: 'jp-state-idle',
     SEEKING: 'jp-state-seeking',
     MUTED: 'jp-state-muted',
     VOLUME_LOW: 'jp-state-volume-low',

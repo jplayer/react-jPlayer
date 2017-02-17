@@ -4,8 +4,12 @@ import React from 'react';
 import { defaultOptions } from '../../util/constants';
 import KeyControl from '../keyControl/keyControl.container';
 
+/* Stops the user being able to drag the jPlayer
+  and see a ghost image */
+const preventDragging = e => e.preventDefault();
+
 const JPlayer = ({ keyEnabled, setJPlayer, children, ...attributes }) => (
-  <div {...attributes} ref={setJPlayer}>
+  <div {...attributes} ref={setJPlayer} onMouseDown={preventDragging}>
     {children}
     {keyEnabled && <KeyControl />}
   </div>

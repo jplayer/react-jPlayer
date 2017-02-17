@@ -28,6 +28,7 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
       [classes.AUDIO]: !jPlayers[uid].mediaSettings.video,
       [classes.VIDEO]: jPlayers[uid].mediaSettings.video,
       [classes.states.PLAYING]: !jPlayers[uid].paused,
+      [classes.states.IDLE]: jPlayers[uid].currentTime === 0,
       [classes.states.FULL_SCREEN]: jPlayers[uid].fullScreen,
       [classes.states.MUTED]: jPlayers[uid].muted,
       [classes.states.VOLUME_LOW]: !jPlayers[uid].muted && jPlayers[uid].volume < 0.5,

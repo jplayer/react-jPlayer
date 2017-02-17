@@ -2,8 +2,7 @@
 import React from 'react';
 
 import { JPlayer, Gui, Poster, Audio, Title,
-  FullScreen, Mute, Play, Repeat,
-  VolumeBar, Duration, CurrentTime } from '../../../src/index';
+  FullScreen, Mute, Play, Repeat, Duration, CurrentTime } from '../../../src/index';
 import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
@@ -21,12 +20,9 @@ const TextPlayer = props => (
         <Repeat><span>{ /* Set in css */}</span></Repeat>
         <div className="jp-volume-controls">
           <Mute><span>{ /* Set in css */}</span></Mute>
-          <VolumeBar>{'<-------->'}</VolumeBar>
         </div>
-        <div className="jp-progress">
-          <CurrentTime />
-          <Duration />
-        </div>
+        <CurrentTime />
+        <Duration />
       </div>
     </Gui>
   </JPlayer>

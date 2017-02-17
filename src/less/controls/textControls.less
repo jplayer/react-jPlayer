@@ -1,0 +1,28 @@
+.jp-text-controls {
+  .jp-mute {
+    span:before {
+      content:"Mute";
+    }
+    .jp-state-muted & span:before {
+      content:"Unmute";
+    }
+  }
+
+  .jp-play {
+    span:before {
+      content:"Play";
+    }
+    .jp-state-playing & span:before {
+      content:"Pause";
+    }
+  }
+
+  .jp-repeat {
+    span:before {
+      content:"Loop";
+    }
+    .jp-state-looped& span:before {
+      content:"Unloop";
+    }
+  }
+}

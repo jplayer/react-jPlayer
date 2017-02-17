@@ -1,57 +1,12 @@
+@import "../../less/mixins";
+@import "../../less/variables";
+
 .jp-jplayer {
   @media (max-width: 630px) {
   .jp-state-full-screen .jp-poster {
-      height: auto !important;
+      height: auto;
     }
   }
-}
-
-.hideElement(@selector, @maxWidth) {
-  @media (max-width: @maxWidth) {
-    @{selector} {
-      display: none !important;
-    }
-  }
-}
-
-.jp-sleek.jp-video,
-.jp-sleek.jp-audio.jp-state-no-volume-support:not(.jp-state-full-screen) {
-  .hideElement(~'.jp-poster', 530px);
-}
-
-.jp-sleek.jp-audio:not(.jp-state-no-volume-support):not(.jp-state-full-screen)  {
-  .hideElement(~'.jp-poster', 580px);
-}
-
-.jp-sleek.jp-video,
-.jp-sleek.jp-audio.jp-state-no-volume-support {
-  .hideElement(~'.jp-repeat', 400px);
-  .hideElement(~'.jp-title', 530px);
-  .hideElement(~'.jp-download', 580px);
-}
-
-.jp-sleek.jp-audio:not(.jp-state-no-volume-support) {
-  .hideElement(~'.jp-full-screen', 400px);
-  .hideElement(~'.jp-repeat', 450px);
-  .hideElement(~'.jp-title', 530px);
-  .hideElement(~'.jp-download', 630px);
-}
-
-.jp-jplayer {
-  .jp-hidden {
-    display:none;
-  }
-
-  .jp-gui {
-    user-select: none
-  }
-}
-
-.fitScreen() {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .jp-state-no-volume-support {
@@ -59,16 +14,7 @@
   .jp-volume-max,
   .jp-volume-bar,
   .jp-volume-bar-value {
-    display: none !important;
-  }
-}
-
-.jp-state-no-browser-support {
-  .jp-gui {
-    height: auto !important;
-    .jp-controls {
-      display: none !important;
-    }
+    display: none;
   }
 }
 

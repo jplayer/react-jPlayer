@@ -1,0 +1,207 @@
+@import "../mixins";
+@import "../variables";
+
+.jp-sleek.jp-video,
+.jp-sleek.jp-audio.jp-state-no-volume-support {
+  .hideElement(~'.jp-repeat', 400px);
+  .hideElement(~'.jp-title', 530px);
+  .hideElement(~'.jp-download', 580px);
+  &:not(.jp-state-full-screen) {
+    .hideElement(~'.jp-poster', 530px);
+  }
+}
+
+.jp-sleek.jp-audio:not(.jp-state-no-volume-support) {
+  .hideElement(~'.jp-full-screen', 400px);
+  .hideElement(~'.jp-repeat', 450px);
+  .hideElement(~'.jp-title', 530px);
+  .hideElement(~'.jp-download', 630px);
+  &:not(.jp-state-full-screen) {
+    .hideElement(~'.jp-poster', 580px);
+  }
+}
+
+.jp-sleek {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  font-family:"Source Sans Pro", sans-serif;
+
+  .jp-video.jp-state-idle& .jp-poster,
+  .jp-video.jp-state-playing& .jp-poster {
+    display: none;
+  }
+  .jp-audio& .jp-media,
+  .jp-video& .jp-media {
+    position: relative;
+
+    .jp-poster {
+        max-height: 100%;
+        max-width: 100%;
+    }
+  }
+  .jp-video& .jp-media {
+    display: inline-block;
+    overflow: hidden;
+
+    video {
+      display: block;
+    }
+    .jp-poster {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);   
+    }
+  }
+  .jp-gui {
+    &.jp-state-no-browser-support {
+      height: auto;
+      .jp-controls {
+        display: none;
+      }
+    }
+    .jp-no-browser-support {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 14px;
+      padding: 4px;
+      h4 {
+        font-weight: bold;
+        font-size: 16px;
+        margin-top: 5px;
+        margin-bottom: 6px;
+      }
+    }
+    height:42px;
+    background-color: #e5e5e5;
+    position: relative;
+    .jp-controls {
+      height: inherit;
+      position:relative;
+      font-size:24px;
+      white-space: nowrap;
+      display: table;
+      border-spacing: 5px 0;
+      margin: 0 auto;
+
+      .jp-title-container {
+        font-size: 12px;
+        .jp-title {
+          font-weight:bold;
+          max-width: 135px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .jp-audio& .jp-title {
+          margin-left:10px;
+        }
+        .jp-audio& .jp-poster {
+          max-height: 100%;
+          height: 100%;
+        }
+      }
+
+      > * {
+        vertical-align: middle;
+        height: inherit;
+        display: table-cell;
+      }
+
+      .jp-repeat {
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+
+      .jp-progress {
+        .jp-current-time,
+        .jp-duration {
+          .time;
+        }
+        .jp-duration {
+          right: 0;
+        }
+        .jp-seek-bar {
+          .jp-play-bar {
+            background-color:@foregroundColour;
+            height:100%;
+            position:absolute;
+          }
+          .jp-buffer-bar {
+            height: 100%;
+            width: 100%;
+            position:absolute;
+          }
+          cursor:pointer;
+          height:100%;
+        }
+        background-color:@backgroundColour;
+        width:500px;
+        min-width: 180px;
+        max-width: 500px;
+        font-size: 20px;
+        position: relative;
+      }
+
+      .jp-volume-container {
+        min-width: 42px;
+        position: relative;
+
+        &:hover .jp-volume-controls .jp-volume-bar-container {
+          .jp-volume-bar {
+            display: block;
+            bottom: 10%;
+          }
+          height: 100px;
+          transition-duration: 0.3s;
+          outline: solid 1px #cfcfcf;
+        }
+
+        .jp-mute {
+          height: inherit;
+        }
+        .jp-state-no-volume-support& {
+          display: none !important;
+        }
+        
+        .jp-volume-controls {
+          /* Legacy Firefox fix for position absolute and table cell */
+          position: absolute;
+          top: 0;
+          height: 100%;
+
+          .jp-volume-bar-container {
+            background-color: #e5e5e5;
+            position: absolute;
+            height: 0;
+            width: 24px;
+            left: 8px;
+            bottom: 100%;
+            transition-duration: 0.3s;
+
+            .jp-volume-bar {
+              background-color:@backgroundColour;
+              cursor: pointer;
+              border-radius: 1px; 
+              display: none;
+              transform: translateX(-50%) rotate(180deg);
+              width: 8px;
+              height: 80px;
+              position: absolute;
+              bottom: 100%;
+              left: 50%;
+              .jp-volume-bar-value {
+                background-color:@foregroundColour;
+                border-radius: inherit; 
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

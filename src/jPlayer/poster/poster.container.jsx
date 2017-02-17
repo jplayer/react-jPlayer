@@ -3,9 +3,6 @@ import Poster from './poster';
 
 const mapStateToProps = ({ jPlayers }, { uid, alt, ...attributes }) => ({
   src: jPlayers[uid].media.poster,
-  paused: jPlayers[uid].paused,
-  currentTime: jPlayers[uid].currentTime,
-  video: jPlayers[uid].mediaSettings.video,
   alt,
   ...attributes,
 });

@@ -1,0 +1,48 @@
+.jp-icon-controls {
+  a:hover,
+  button:hover {
+    color: @iconHoverColour;
+  }
+ 
+  button:focus {
+    outline: none;
+  }
+
+  button {
+    color:@iconColour;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    min-width: 42px;
+    vertical-align: middle;
+  }
+
+  a {
+    cursor:pointer;
+    text-decoration:none;
+    color:@iconColour;
+    text-align: center;
+    min-width: 42px;
+  }
+
+  .jp-play {
+    .jp-jplayer & i:before {
+      content:"\f04b";
+    }
+    .jp-jplayer.jp-state-playing & i:before {
+        content:"\f04c";
+    }
+  }
+
+  .jp-mute {
+    .jp-jplayer.jp-state-muted & i:before {
+        content:"\f026";
+    }
+    .jp-jplayer.jp-state-volume-low & i:before {
+        content:"\f027";
+    }
+    .jp-jplayer.jp-state-volume-high & i:before {
+        content:"\f028";
+    }
+  }
+}
