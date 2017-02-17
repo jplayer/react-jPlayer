@@ -18,9 +18,9 @@ const AudioPlayer = props => (
           <SeekBar>
             <BufferBar />
             <PlayBar />
+            <CurrentTime />
+            <Duration />
           </SeekBar>
-          <CurrentTime />
-          <Duration />
         </div>
         <div className="jp-volume-controls">
           <div className="jp-volume-container">

@@ -19,7 +19,7 @@ class BarEvents extends React.Component {
   componentWillMount() {
     document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('touchmove', this.onTouchMove);
+    document.addEventListener('touchmove', this.onTouchMove, { passive: false });
     document.addEventListener('touchend', this.onTouchEnd);
   }
   onClick = e => this.props.clickMoveBar(this.bar, e)
