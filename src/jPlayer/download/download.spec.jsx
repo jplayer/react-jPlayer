@@ -7,7 +7,7 @@ import Download from './download';
 
 const setup = () => {
   const props = {
-    href: 'http://www.test.mp3',
+    url: 'http://www.test.mp3',
     free: true,
     children: (<i className="@@jPlayer-test" />),
     'data-attribute-test': 'test',
@@ -31,7 +31,7 @@ describe('<Download />', () => {
 
   it('renders self and subcomponents', () => {
     expect(wrapper.prop('download')).toBeTruthy();
-    expect(wrapper.prop('href')).toBe(props.href);
+    expect(wrapper.prop('url')).toBe(props.href);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);

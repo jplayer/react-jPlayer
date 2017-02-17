@@ -15,16 +15,25 @@
 }
 
 .jp-sleek.jp-video,
+.jp-sleek.jp-audio.jp-state-no-volume-support:not(.jp-state-full-screen) {
+  .hideElement(~'.jp-poster', 530px);
+}
+
+.jp-sleek.jp-audio:not(.jp-state-no-volume-support):not(.jp-state-full-screen)  {
+  .hideElement(~'.jp-poster', 580px);
+}
+
+.jp-sleek.jp-video,
 .jp-sleek.jp-audio.jp-state-no-volume-support {
   .hideElement(~'.jp-repeat', 400px);
-  .hideElement(~':not(.jp-state-full-screen) .jp-title-container', 530px);
+  .hideElement(~'.jp-title', 530px);
   .hideElement(~'.jp-download', 580px);
 }
 
 .jp-sleek.jp-audio:not(.jp-state-no-volume-support) {
   .hideElement(~'.jp-full-screen', 400px);
   .hideElement(~'.jp-repeat', 450px);
-  .hideElement(~':not(.jp-state-full-screen) .jp-title-container', 580px);
+  .hideElement(~'.jp-title', 530px);
   .hideElement(~'.jp-download', 630px);
 }
 

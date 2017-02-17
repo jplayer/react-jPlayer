@@ -15,7 +15,7 @@ describe('DownloadContainer', () => {
 
     expect(wrapper.type()).toBe(Download);
     expect(wrapper.prop('free')).toBe(jPlayer.media.free);
-    expect(wrapper.prop('href')).toBe(jPlayer.src);
+    expect(wrapper.prop('url')).toBe(jPlayer.src);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
     expect(wrapper.prop('uid')).toNotExist();
