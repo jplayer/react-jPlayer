@@ -3,13 +3,13 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const VolumeBar = ({ setBar, onClick, onMouseDown,
-  onTouchStart, children, ...attributes }) => (
-    <div
-      {...attributes} ref={setBar} className={classes.VOLUME_BAR}
-      onClick={onClick} onMouseDown={onMouseDown} onTouchStart={onTouchStart}
-    >
-      {children}
-    </div>
+onTouchStart, children, ...attributes }) => (
+  <div
+    {...attributes} ref={setBar} className={classes.VOLUME_BAR}
+    onClick={onClick} onMouseDown={onMouseDown} onTouchStart={onTouchStart}
+  >
+    {children}
+  </div>
 );
 
 VolumeBar.defaultProps = {

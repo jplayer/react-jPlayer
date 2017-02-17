@@ -8,8 +8,8 @@
 @import "../volumeBar/volumeBar";
 
 @keyframes fadeIn {
-    from { width: 0; }
-      to { width: 100px; }
+    0% { width: 0; }
+    100% { width: 100px; }
 }
 
 .jp-controls {
@@ -34,13 +34,16 @@
     text-align: center;
     min-width: 42px;
   }
+
   a:hover,
   button:hover {
     color: @iconHoverColour;
   }
+
   button:focus {
     outline: none;
   }
+
   button {
     color:@iconColour;
     padding: 0;
@@ -48,7 +51,7 @@
     background-color: transparent;
   }
 
-  .jp-volume-controls {
+  .jp-volume-container {
     min-width: 42px;
     position: relative;
 
@@ -56,9 +59,10 @@
       display: none !important;
     }
     
-    .jp-volume-container {
+    .jp-volume-controls {
       /* Legacy Firefox fix for position absolute and table cell */
-      position: relative;
+      position: absolute;
+      top: 0;
       height: 100%;
 
       .jp-volume-bar-container {
@@ -73,15 +77,14 @@
     }
   }
 
-  .jp-volume-controls:hover .jp-volume-bar-container {
-    .jp-volume-bar {
-      display: block;
-      bottom: 10%;
-    }
-    height: 100px;
-    transition-duration: 0.3s;
-    outline: solid 1px #cfcfcf;
+.jp-volume-container:hover .jp-volume-bar-container {
+  .jp-volume-bar {
+    display: block;
+    bottom: 10%;
   }
+  height: 100px;
+  transition-duration: 0.3s;
+  outline: solid 1px #cfcfcf;
 }
 
 .jp-icon-controls {
