@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connectWithId, urlNotSupportedError, convertTime, canSetVolume } from '../../util/index';
-import { loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
+import { loopOptions, defaultOptions } from '../../util/constants';
 import { setOption, pause } from '../_actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
@@ -18,7 +18,6 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
   muted: jPlayers[uid].muted,
   autoplay: jPlayers[uid].autoplay,
   newTime: jPlayers[uid].newTime,
-  fullScreen: jPlayers[uid].fullScreen,
   require: jPlayers[uid].mediaSettings.require,
   children,
   ...props,
@@ -56,7 +55,6 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      fullScreen: React.PropTypes.bool,
       loop: React.PropTypes.string,
       showRemainingDuration: React.PropTypes.bool.isRequired,
       src: React.PropTypes.string.isRequired,
@@ -103,7 +101,6 @@ class MediaContainer extends React.Component {
       onLoadedData: null,
       onCanPlay: null,
       onCanPlayThrough: null,
-      fullScreen: statusDefaultValues.fullScreen,
       loop: loopOptions.OFF,
       autoplay: defaultOptions.autoplay,
       defaultPlaybackRate: defaultOptions.defaultPlaybackRate,
