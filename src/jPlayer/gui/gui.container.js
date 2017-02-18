@@ -4,18 +4,20 @@ import Gui from './gui';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({
   fullScreen: jPlayers[uid].fullScreen,
+  paused: jPlayers[uid].paused,
   guiFadeOut: jPlayers[uid].guiFadeOut,
   guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
 });
 
-const mergeProps = ({ fullScreen, guiFadeOut, guiFadeHoldTimeout }, { dispatch },
+const mergeProps = ({ fullScreen, paused, guiFadeOut, guiFadeHoldTimeout }, { dispatch },
 { uid, ...attributes }) => ({
-  onMouseEnter: () => {
-    if (fullScreen) {
+  onMouseMove: () => {
+    if (fullScreen && !paused) {
       dispatch(setOption('guiFadeOut', false, uid));
       clearTimeout(guiFadeHoldTimeout);
     }
   },
+  fullScreen,
   guiFadeOut,
   ...attributes,
 });

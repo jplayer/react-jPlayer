@@ -21,6 +21,9 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   error: jPlayers[uid].error,
   fullScreen: jPlayers[uid].fullScreen,
   keyEnabled: jPlayers[uid].keyEnabled,
+  paused: jPlayers[uid].paused,
+  guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
+  guiFadeHoldTime: jPlayers[uid].guiFadeHoldTime,
   children,
   attributes: {
     ...attributes,
@@ -74,6 +77,9 @@ class JPlayerContainer extends React.Component {
         React.PropTypes.element,
       ]).isRequired,
       keyEnabled: React.PropTypes.bool,
+      paused: React.PropTypes.bool,
+      guiFadeHoldTime: React.PropTypes.number,
+      guiFadeHoldTimeout: React.PropTypes.number,
     };
   }
   static get defaultProps() {
@@ -84,6 +90,9 @@ class JPlayerContainer extends React.Component {
       media: defaultOptions.media,
       supplied: defaultOptions.supplied,
       keyEnabled: defaultOptions.keyEnabled,
+      paused: statusDefaultValues.paused,
+      guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
+      guiFadeHoldTimeout: null,
     };
   }
   constructor(props) {
@@ -104,10 +113,31 @@ class JPlayerContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.logErrors(nextProps);
     this.setFullScreen(nextProps);
+
+    if (nextProps.paused !== this.props.paused) {
+      this.startGuiFadeOut();
+    }
   }
   componentWillUnmount() {
     if (screenfull.enabled) {
       document.removeEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
+    }
+  }
+  onMouseMove = (e) => {
+    if (this.props.fullScreen) {
+      let element = e.target;
+
+      if (this.props.paused) {
+        while (element.parentNode) {
+          element = element.parentNode;
+
+          if (element.className !== undefined &&
+              element.className.includes(classes.GUI)) {
+            return;
+          }
+        }
+      }
+      this.startGuiFadeOut();
     }
   }
   setJPlayer = ref => (this.jPlayer = ref)
@@ -128,6 +158,17 @@ class JPlayerContainer extends React.Component {
       }
     }
   }
+  startGuiFadeOut = () => {
+    if (this.props.fullScreen && !this.props.paused) {
+      clearTimeout(this.props.guiFadeHoldTimeout);
+      this.props.setOption('guiFadeOut', false);
+      this.props.setOption('guiFadeHoldTimeout', setTimeout(() => {
+        if (this.props.fullScreen && !this.props.paused) {
+          this.props.setOption('guiFadeOut', true);
+        }
+      }, this.props.guiFadeHoldTime));
+    }
+  }
   closeFullScreen = () => {
     if (!screenfull.isFullscreen) {
       this.props.setOption('fullScreen', false);
@@ -143,7 +184,7 @@ class JPlayerContainer extends React.Component {
     return (
       <JPlayer
         setJPlayer={this.setJPlayer} keyEnabled={this.props.keyEnabled}
-        {...this.props.attributes}
+        onMouseMove={this.onMouseMove} {...this.props.attributes}
       >
         {this.props.children}
       </JPlayer>

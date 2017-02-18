@@ -220,7 +220,7 @@ export const statusDefaultValues = {
   playHeadPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
-  newTime: null, // Needed to set a newTime as currentTime is autoUpdated by the audio
+  newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
   currentTime: 0,
   duration: 0,
   remaining: 0,

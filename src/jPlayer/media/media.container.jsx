@@ -20,7 +20,6 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
   newTime: jPlayers[uid].newTime,
   fullScreen: jPlayers[uid].fullScreen,
   require: jPlayers[uid].mediaSettings.require,
-  guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
   children,
   ...props,
 });
@@ -57,8 +56,6 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      guiFadeHoldTime: React.PropTypes.number,
-      guiFadeHoldTimeout: React.PropTypes.number,
       fullScreen: React.PropTypes.bool,
       loop: React.PropTypes.string,
       showRemainingDuration: React.PropTypes.bool.isRequired,
@@ -106,8 +103,6 @@ class MediaContainer extends React.Component {
       onLoadedData: null,
       onCanPlay: null,
       onCanPlayThrough: null,
-      guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
-      guiFadeHoldTimeout: null,
       fullScreen: statusDefaultValues.fullScreen,
       loop: loopOptions.OFF,
       autoplay: defaultOptions.autoplay,
@@ -224,17 +219,6 @@ class MediaContainer extends React.Component {
       }
     }
   }
-  onMouseMove = () => {
-    if (this.props.fullScreen) {
-      clearTimeout(this.props.guiFadeHoldTimeout);
-      this.props.setOption('guiFadeOut', false);
-      this.props.setOption('guiFadeHoldTimeout', setTimeout(() => {
-        if (this.props.fullScreen) {
-          this.props.setOption('guiFadeOut', true);
-        }
-      }, this.props.guiFadeHoldTime));
-    }
-  }
   getCurrentPercentRelative = () => {
     let currentPercentRelative = 0;
 
@@ -291,7 +275,6 @@ class MediaContainer extends React.Component {
         {
           ...this.events,
           ref: this.setCurrentMedia,
-          onMouseMove: this.onMouseMove,
         },
       )
     );
