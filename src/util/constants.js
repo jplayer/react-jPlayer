@@ -26,7 +26,6 @@ export const actionTypes = {
 export const keys = {
   VOLUME_BAR_CLASS: 'volumeBarClass',
   VOLUME_BAR_VALUE_CLASS: 'volumeBarValueClass',
-  VOLUME_MAX_CLASS: 'volumeMaxClass',
   PLAYBACK_RATE_BAR_CLASS: 'playbackRateBarClass',
   PLAYBACK_RATE_BAR_VALUE_CLASS: 'playbackRateBarValueClass',
   SEEK_BAR_CLASS: 'seekBarClass',
@@ -67,7 +66,6 @@ export const classes = {
   DOWNLOAD: 'jp-download',
   VOLUME_BAR: 'jp-volume-bar',
   VOLUME_BAR_VALUE: 'jp-volume-bar-value',
-  VOLUME_MAX: 'jp-volume-max',
   PLAYBACK_RATE_BAR: 'jp-playback-rate-bar',
   PLAYBACK_RATE_BAR_VALUE: 'jp-playback-rate-bar-value',
   BUFFER_BAR: 'jp-buffer-bar',

@@ -3,7 +3,8 @@ import React from 'react';
 
 import { JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat,
-  VolumeBar, Duration, CurrentTime, Download, BrowserUnsupported } from '../../../src/index';
+  VolumeBar, Duration, CurrentTime, Download, BrowserUnsupported,
+ } from '../../../src/index';
 import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
