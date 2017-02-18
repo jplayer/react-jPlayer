@@ -2,8 +2,8 @@
 import React from 'react';
 
 import { JPlayer, Gui, SeekBar, BufferBar,
-  Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat, PlaybackRateBar,
-  VolumeBar, Duration, CurrentTime } from '../../../src/index';
+  Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat,
+  VolumeBar, Duration, CurrentTime, BrowserUnsupported } from '../../../src/index';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
@@ -14,27 +14,31 @@ const VideoPlayer = props => (
       <Video events={props.events} />
     </div>
     <Gui>
-      <div className="jp-title-container">
-        <Title />
-      </div>
       <div className="jp-controls jp-icon-controls">
         <Play><i className="fa">{/* Icon set in css*/}</i></Play>
-        <FullScreen><i className="fa fa-expand" /></FullScreen>
         <Repeat><i className="fa fa-repeat" /></Repeat>
-        <PlaybackRateBar />
-        <div className="jp-volume-controls">
-          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <VolumeBar />
-        </div>
         <div className="jp-progress">
           <SeekBar>
-            <PlayBar />
             <BufferBar />
+            <PlayBar />
             <CurrentTime />
             <Duration />
           </SeekBar>
         </div>
+        <div className="jp-volume-container">
+          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
+          <div className="jp-volume-slider">
+            <div className="jp-volume-bar-container">
+              <VolumeBar />
+            </div>
+          </div>
+        </div>
+        <FullScreen><i className="fa fa-expand" /></FullScreen>
+        <div className="jp-title-container">
+          <Title />
+        </div>
       </div>
+      <BrowserUnsupported />
     </Gui>
   </JPlayer>
 );
@@ -42,6 +46,7 @@ const VideoPlayer = props => (
 VideoPlayer.options = {
   muted: true,
   keyEnabled: true,
+  verticalVolume: true,
   media: {
     title: 'Big Buck Bunny Trailer',
     sources: {
