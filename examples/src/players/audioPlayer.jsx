@@ -24,7 +24,7 @@ const AudioPlayer = props => (
         </div>
         <div className="jp-volume-container">
           <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
-          <div className="jp-volume-controls">
+          <div className="jp-volume-slider">
             <div className="jp-volume-bar-container">
               <VolumeBar />
             </div>

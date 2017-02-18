@@ -118,14 +118,24 @@
       }
 
       .jp-progress {
+        background-color:@backgroundColour;
+        width:500px;
+        min-width: 180px;
+        max-width: 500px;
+        font-size: 20px;
+        position: relative;
         .jp-current-time,
         .jp-duration {
           .time;
         }
+        .jp-current-time {
+          float: left;
+        }
         .jp-duration {
-          right: 0;
+          float: right;
         }
         .jp-seek-bar {
+          position: relative;
           .jp-play-bar {
             background-color:@foregroundColour;
             height:100%;
@@ -135,23 +145,18 @@
             height: 100%;
             width: 100%;
             position:absolute;
+            display: block;
           }
           cursor:pointer;
           height:100%;
         }
-        background-color:@backgroundColour;
-        width:500px;
-        min-width: 180px;
-        max-width: 500px;
-        font-size: 20px;
-        position: relative;
       }
 
       .jp-volume-container {
         min-width: 42px;
         position: relative;
 
-        &:hover .jp-volume-controls .jp-volume-bar-container {
+        &:hover .jp-volume-slider .jp-volume-bar-container {
           .jp-volume-bar {
             display: block;
             bottom: 10%;
@@ -164,12 +169,12 @@
         .jp-mute {
           height: inherit;
         }
+
         .jp-state-no-volume-support& {
-          display: none !important;
+          display: none;
         }
         
-        .jp-volume-controls {
-          /* Legacy Firefox fix for position absolute and table cell */
+        .jp-volume-slider {
           position: absolute;
           top: 0;
           height: 100%;
