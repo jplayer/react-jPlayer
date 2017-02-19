@@ -1,4 +1,4 @@
-import './jPlayer/jPlayer/jPlayer.less';
+//import './less/jPlayer.less';
 import JPlayerProvider from './jPlayerProvider';
 import Gui from './jPlayer/gui/gui.container';
 import Video from './jPlayer/video/video.container';

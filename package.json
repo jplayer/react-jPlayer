@@ -1,7 +1,7 @@
 {
   "name": "react-jplayer-dev",
   "version": "0.0.1",
-  "description": "Audio & Video library for React",
+  "description": "Audio & Video player library for React",
   "author": "Martin Dawson <u1356770@unimail.hud.ac.uk>",
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "ie_mob >= 9"
   ],
   "devDependencies": {
+    "autoprefixer": "^6.7.3",
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.4",
     "babel-eslint": "^7.1.1",
@@ -53,6 +54,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.18.0",
+    "babili-webpack-plugin": "0.0.10",
     "css-loader": "^0.26.1",
     "editorconfig": "^0.13.2",
     "enzyme": "^2.2.0",
@@ -70,6 +72,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^3.2.0",
+    "optimize-css-assets-webpack-plugin": "^1.3.0",
     "postcss-loader": "^1.2.1",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.4.1",

@@ -5,7 +5,7 @@ import BarEvents from '../barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValue.container';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => {
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => {
   const { verticalVolume } = jPlayers[uid];
 
   return {
@@ -23,11 +23,11 @@ const mapStateToProps = ({ jPlayers }, { uid }) => {
         dispatch(setVolume(x / w, uid));
       }
     },
+    ...attributes,
   };
 };
 
-// eslint-disable-next-line no-unused-vars
-const mergeProps = ({ verticalVolume, moveVolumeBar }, { dispatch }, { uid, ...attributes }) => ({
+const mergeProps = ({ verticalVolume, moveVolumeBar, ...attributes }, { dispatch }) => ({
   touchMoveVolumeBar: (bar, e) => {
     // Stop page scrolling
     e.preventDefault();

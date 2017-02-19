@@ -25,7 +25,6 @@ Use if:
 * IOS Safari 5.1+
 * Chrome for Android v36+
 * Android browser 4+
-* Internet Explorer 11 Mobile
 
 ## Bower Install
 * simple install using `bower install react-jPlayer`

@@ -1,6 +1,11 @@
 @import "../mixins";
 @import "../variables";
 
+@keyframes fadeIn {
+    0% { width: 0; }
+    100% { width: 100px; }
+}
+
 .jp-sleek.jp-video,
 .jp-sleek.jp-audio.jp-state-no-volume-support {
   .hideElement(~'.jp-repeat', 400px);
