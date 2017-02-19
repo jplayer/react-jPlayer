@@ -16,30 +16,31 @@ import NavContent from './helpers/navContent';
 import StatusWrapper from './helpers/statusWrapper';
 import { JPlayerProvider } from '../../src/index';
 
+const jPlayers = [
+  AudioPlayer,
+  VideoPlayer,
+  MixedPlayer,
+];
+
 const App = () => (
   <NavContainer>
     <NavBar>
       <NavLink>Audio</NavLink>
       <NavLink>Video</NavLink>
       <NavLink>Mixed</NavLink>
-      <NavLink>Text Player</NavLink>
     </NavBar>
     <NavContentContainer>
-      <NavContent>
-        <StatusWrapper uid={AudioPlayer.uid}><AudioPlayer /></StatusWrapper>
-      </NavContent>
-      <NavContent>
-        <StatusWrapper uid={VideoPlayer.uid}><VideoPlayer /></StatusWrapper>
-      </NavContent>
-      <NavContent>
-        <StatusWrapper uid={MixedPlayer.uid}><MixedPlayer /></StatusWrapper>
-      </NavContent>
+      {jPlayers.map(JPlayer =>
+        <NavContent key={JPlayer.uid}>
+          <StatusWrapper uid={JPlayer.uid}><JPlayer /></StatusWrapper>
+        </NavContent>,
+      )}
     </NavContentContainer>
   </NavContainer>
 );
 
 ReactDOM.render((
-  <JPlayerProvider jPlayers={[AudioPlayer, VideoPlayer, MixedPlayer]}>
+  <JPlayerProvider jPlayers={jPlayers}>
     <App />
   </JPlayerProvider>
 ), document.getElementById('app'));

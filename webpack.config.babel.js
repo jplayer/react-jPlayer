@@ -1,10 +1,13 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
-import autoprefixer from 'autoprefixer';
 import BabiliPlugin from 'babili-webpack-plugin';
+import autoprefixer from 'autoprefixer';
+import nodeExternals from 'webpack-node-externals';
 
 export default {
   context: __dirname,
+  target: 'node',
+  externals: [nodeExternals()],
   entry: {
     'js/jPlayer.js': './src/index.js',
     'js/jPlayer.min.js': './src/index.js',

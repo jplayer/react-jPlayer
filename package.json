@@ -83,7 +83,8 @@
     "sinon": "^1.17.7",
     "style-loader": "^0.13.1",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "webpack-node-externals": "^1.5.4"
   },
   "dependencies": {
     "babel-runtime": "^6.6.1",
