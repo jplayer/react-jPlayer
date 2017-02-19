@@ -1,18 +1,29 @@
-# react-jPlayer (In Dev. Don't use yet)
-Based on the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/).
+# react-jPlayer
+A Html5 audio/video player that is based on the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/) but without the jQuery dependency.
 
-## What is react-jPlayer?
-react-jPlayer is built in React and based on the jQuery plugin jPlayer with updated features and a smaller filesize without the jQuery dependency. This documentation only covers changes and what is not in the original [jPlayer](https://github.com/happyworm/jPlayer).
+### Installation
+```npm install --save react-jPlayer```
 
-## Should I use react-jPlayer?
-Use if:
-* You are using React (obviously)
-* You need a fully styled audio/video with complex functionaility that is worth the extra KB's.
+### Examples
+Run the jPlayer examples:
 
-### What's new?
-* Dropped support for Flash/Aurora fallback
+```
+git clone https://github.com/MartinDawson/react-jPlayer.git
+
+cd react-jPlayer/examples
+
+npm install
+npm run dev
+
+open http://localhost:8080/
+```
+
+### Features
+* Cross compatible with many different Html5 browsers
+* Removed the redundant Flash/Aurora fallback
 * Removed the jQuery/Zepto dependency
-* Filesize reduced 45%~
+* All [Html5 audio/video file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats) are supported
+* Dependency on [Redux](https://github.com/reactjs/redux)
 
 ## Supported browsers
 * Chrome v15+
@@ -25,24 +36,13 @@ Use if:
 * IOS Safari 5.1+
 * Chrome for Android v36+
 * Android browser 4+
-* Internet Explorer 11 Mobile
-
-## Bower Install
-* simple install using `bower install react-jPlayer`
-* see <http://bower.io/> for more information.
 
 ## License
-react-jPlayer is licensed under the [MIT license](http://opensource.org/licenses/MIT).
-
-## More information:
-* [jPlayer Github](https://github.com/happyworm/jPlayer)
-* [jPlayer.org](http://jplayer.org/)
-* [Quick Start Guide](http://www.jplayer.org/latest/quick-start-guide/)
-* [Developer Guide and API Reference](http://www.jplayer.org/latest/developer-guide/)
+[MIT license](http://opensource.org/licenses/MIT).
 
 ## Thanks
 [1]: https://www.browserstack.com/
 [2]: https://cloud.githubusercontent.com/assets/15030491/22504241/4240e478-e86d-11e6-8147-d2771655346a.png
 [![BrowserStack][2]][1]
 
-BrowserStack is a cloud-based cross-browser testing tool that enables developers to test their websites across various browsers on different operating systems and mobile devices, without requiring users to install virtual machines, devices or emulators.
+BrowserStack for giving me access to their testing software for free. Contact them if you have a free open-source project for a free account.
