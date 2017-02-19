@@ -8,6 +8,8 @@ export default {
   entry: {
     'js/jPlayer.js': './src/index.js',
     'js/jPlayer.min.js': './src/index.js',
+    'css/jPlayer.css': './src/less/jPlayer.less',
+    'css/jPlayer.min.css': './src/less/jPlayer.less',
     'css/skins/sleek.css': './src/less/skins/sleek.less',
     'css/skins/sleek.min.css': './src/less/skins/sleek.less',
   },
