@@ -2,3 +2,4 @@
 --require src/jsdom.js
 --require expect
 --compilers jsx:babel-register
+src/**/*.spec*{js,jsx}

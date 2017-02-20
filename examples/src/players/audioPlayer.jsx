@@ -16,7 +16,7 @@ const volumeControlOnClick = (e) => {
   if (volumeBarContainer.clientHeight === 0) {
     e.stopPropagation();
     e.preventDefault();
-    console.log("stop propogation")
+    console.log('stop propogation');
   }
 };
 

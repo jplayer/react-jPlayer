@@ -23,7 +23,6 @@ open http://localhost:8080/
 * Removed the redundant Flash/Aurora fallback
 * Removed the jQuery/Zepto dependency
 * All [Html5 audio/video file types](https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats) are supported
-* Dependency on [Redux](https://github.com/reactjs/redux)
 
 ## Supported browsers
 * Chrome v15+
