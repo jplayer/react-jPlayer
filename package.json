@@ -22,8 +22,7 @@
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "test": "babel-node ./node_modules/babel-istanbul/lib/cli.js cover --include-all-sources --root ./src ./node_modules/mocha/bin/_mocha -- --opts ./mocha.opts",
-    "test:watch": "npm run test -- -w",
-    "coverall": "npm run test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test:watch": "npm run test -- -w"
   },
   "pre-commit": [
     "lint",
@@ -57,6 +56,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.18.0",
     "babili-webpack-plugin": "0.0.10",
+    "coveralls": "^2.11.16",
     "css-loader": "^0.26.1",
     "editorconfig": "^0.13.2",
     "enzyme": "^2.2.0",
