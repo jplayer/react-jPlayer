@@ -22,7 +22,8 @@
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "test": "babel-node ./node_modules/babel-istanbul/lib/cli.js cover --include-all-sources --root ./src ./node_modules/mocha/bin/_mocha -- --opts ./mocha.opts",
-    "test:watch": "npm run test -- -w"
+    "test:watch": "npm run test -- -w",
+    "coverall": "npm run test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "pre-commit": [
     "lint",
