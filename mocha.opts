@@ -2,4 +2,3 @@
 --require src/jsdom.js
 --require expect
 --compilers jsx:babel-register
---timeout 15000

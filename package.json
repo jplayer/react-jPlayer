@@ -23,7 +23,7 @@
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "test": "babel-node ./node_modules/babel-istanbul/lib/cli.js cover --include-all-sources --root ./src ./node_modules/mocha/bin/_mocha src/**/*.spec*{js,jsx} -- --opts ./mocha.opts",
     "test:watch": "npm run test -- -w",
-    "selenium": "mocha src/**/*.acceptance.js -t 15000 --opts ./mocha.opts"
+    "selenium": "mocha src/**/*.acceptance.js -t 50000ms --opts ./mocha.opts"
   },
   "pre-commit": [
     "lint",
