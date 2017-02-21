@@ -1,23 +1,14 @@
 import expect from 'expect';
-import webdriver, { By } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 import test from 'selenium-webdriver/testing';
+
+import setupDriver from '../../util/common.acceptance';
 
 test.describe('Repeat', () => {
   let driver;
 
   test.before(() => {
-    const capabilities = {
-      browserName: 'chrome',
-      project: 'react-jPlayer',
-      'browserstack.user': 'martindawson1',
-      'browserstack.key': 'NznA2zTmUAgDxdKhssC3',
-      'browserstack.local': true,
-    };
-    driver = new webdriver.Builder()
-      .usingServer('http://hub-cloud.browserstack.com/wd/hub')
-      .withCapabilities(capabilities)
-      .build();
-    driver.get('http://localhost:8080');
+    driver = setupDriver();
   });
 
   test.it('should toggle loop when repeat clicked', () => {
