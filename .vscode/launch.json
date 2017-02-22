@@ -22,7 +22,7 @@
       "type": "node2",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "args": [
-        "src/**/*.acceptance.js",
+        "src/**/play.acceptance.js",
         "-t",
         "100000ms",
         "--opts",

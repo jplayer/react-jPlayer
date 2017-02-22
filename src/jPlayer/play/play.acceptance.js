@@ -8,20 +8,28 @@ test.describe('Play', () => {
   let driver;
   const testData = [
     {
-      fn: () => driver.executeScript('document.querySelector("audio").setAttribute("paused", true)'),
-      expected: false,
+      fn: () => driver.executeScript('document.querySelector("audio").pause();'),
+      expectedPause: false,
     },
     {
-      fn: () => driver.executeScript('document.querySelector("audio").setAttribute("paused", false)'),
-      expected: true,
+      fn: () => driver.executeScript('document.querySelector("audio").play();'),
+      expectedPause: true,
     },
   ];
 
-  const getPlayIcon = () => driver.findElement(By.className('jp-play'));
-  const clickPlay = playIcon => playIcon.click();
+  const getPlayIcon = (fn) => driver.findElement(By.className('jp-play')).then(x => {
+    fn();
+    return x;
+   });
+  const playOrPause = (fn) => fn;
+  const clickPlay = playIcon => {
+    var p = playIcon;
+    playIcon.click();
+  }
   const getPaused = (initalPaused) => {
     driver.findElement(By.css('audio')).getAttribute('paused').then((paused) => {
       const p = initalPaused;
+      var e = paused;
       expect(paused).toBe(initalPaused ? null : 'true');
     });
   };
@@ -32,8 +40,10 @@ test.describe('Play', () => {
 
   test.it('should toggle play when play icon clicked', () => {
     testData.forEach((testDatum) => {
-      testDatum.fn();
-      getPlayIcon().then(clickPlay).then(() => getPaused(testDatum.expected));
+     // playOrPause(testDatum.fn)
+        getPlayIcon(testDatum.fn)
+        .then(clickPlay)
+        .then(() => getPaused(testDatum.expected));
     });
   });
 
