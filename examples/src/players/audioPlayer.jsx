@@ -8,16 +8,18 @@ import { JPlayer, Gui, SeekBar, BufferBar,
 import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
 
-const volumeControlOnClick = (e) => {
-  const volumeBarContainer =
-    e.currentTarget.nextElementSibling.querySelector('.jp-volume-bar-container');
-  /* Stop propogation is for mobiles to stop
-    triggering mute when showing volume bar */
-  if (volumeBarContainer.clientHeight === 0) {
-    e.stopPropagation();
-    e.preventDefault();
-    console.log('stop propogation');
+let isVolumeBarVisible;
+
+const onTouchStartMute = e => (
+  isVolumeBarVisible = e.currentTarget.nextElementSibling
+    .querySelector('.jp-volume-bar-container').clientHeight > 0
+);
+
+const onClickMute = (setMute, muted) => () => {
+  if (isVolumeBarVisible !== false) {
+    setMute(!muted, 'AudioPlayer');
   }
+  isVolumeBarVisible = undefined;
 };
 
 const AudioPlayer = props => (
@@ -36,7 +38,12 @@ const AudioPlayer = props => (
           </SeekBar>
         </div>
         <div className="jp-volume-container">
-          <Mute onTouchStart={volumeControlOnClick}><i className="fa">{/* Icon set in css*/}</i></Mute>
+          <Mute
+            aria-haspopup onTouchStart={onTouchStartMute}
+            onClick={onClickMute(props.setMute, props.muted)}
+          >
+            <i className="fa">{/* Icon set in css*/}</i>
+          </Mute>
           <div className="jp-volume-slider">
             <div className="jp-volume-bar-container">
               <VolumeBar />
