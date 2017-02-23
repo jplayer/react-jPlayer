@@ -96,6 +96,20 @@ export const playData = [
     },
   },
   {
+    state: {
+      src: 'test.mp3',
+    },
+    action: {
+      type: jPlayerActionTypes.PLAY,
+      time: NaN,
+      uid: playerIdOne,
+    },
+    expected: {
+      newTime: null,
+      paused: false,
+    },
+  },
+  {
     action: {
       type: jPlayerActionTypes.PLAY,
       time: 30,
@@ -179,6 +193,20 @@ export const pauseData = [
     },
     expected: {
       newTime: 30,
+      paused: true,
+    },
+  },
+  {
+    state: {
+      src: 'test.mp3',
+    },
+    action: {
+      type: jPlayerActionTypes.PAUSE,
+      time: NaN,
+      uid: playerIdOne,
+    },
+    expected: {
+      newTime: null,
       paused: true,
     },
   },

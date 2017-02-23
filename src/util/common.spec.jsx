@@ -57,11 +57,11 @@ export const setJPlayerState = (...states) => {
   };
 };
 
-export const getJPlayerState = (numberOfJPlayers) => {
+export const getJPlayerState = (numberOfJPlayers, mergeDefault) => {
   const jPlayers = {};
 
   for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
-    jPlayers[`player-${i}`] = {};// merge({}, statusDefaultValues, defaultOptions);
+    jPlayers[`player-${i}`] = mergeDefault ? merge({}, statusDefaultValues, defaultOptions) : {};
   }
 
   return {

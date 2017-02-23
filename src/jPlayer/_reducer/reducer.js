@@ -1,7 +1,8 @@
 import includes from 'lodash.includes';
 
 import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../../util/constants';
-import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../../util/index';
+import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
+  InvalidGlobalMethodException } from '../../util/index';
 
 const resetStatus = state => updateObject(state, { ...statusDefaultValues });
 
@@ -144,7 +145,8 @@ const setFocus = (state, { uid }) => {
   return newState;
 };
 
-const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
+// eslint-disable-next-line consistent-return
+const updatePlayer = (jPlayer, action, actionType = action.type) => {
   switch (actionType) {
     case actionTypes.jPlayer.SET_OPTION:
       return updateObject(jPlayer, { [action.key]: action.value });
@@ -170,16 +172,24 @@ const updatePlayer = (jPlayer = {}, action, actionType = action.type) => {
       return setLoop(jPlayer, action);
     case actionTypes.jPlayer.FULL_SCREEN:
       return setFullScreen(jPlayer, action);
-    default:
-      return jPlayer;
+    // no default
   }
 };
+
+const actionTypeValid = actionType =>
+  Object.keys(actionTypes.jPlayer).some(currentActionType => currentActionType === actionType);
 
 const setGlobalOptions = (state, action) => {
   let newState = { ...state };
 
   Object.keys(newState).forEach((key) => {
     const { global = [] } = newState[key];
+
+    global.forEach((actionType) => {
+      if (!actionTypeValid(actionType)) {
+        throw new InvalidGlobalMethodException(actionType);
+      }
+    });
 
     if (key !== action.uid && includes(global, action.type)) {
       newState = updateObject(newState, {
@@ -190,20 +200,24 @@ const setGlobalOptions = (state, action) => {
   return newState;
 };
 
-const isInitializing = actionType => (
-  !Object.keys(actionTypes.jPlayer).every(currentActionType => currentActionType !== actionType)
-);
-
 const jPlayerReducer = (state = {}, action) => {
-  if (!isInitializing(action.type)) {
-    return state;
-  }
   let newState = { ...state };
 
   switch (action.type) {
     case actionTypes.jPlayer.FOCUS:
       return updateObject(newState, setFocus(newState, action));
-    default:
+    case actionTypes.jPlayer.SET_OPTION:
+    case actionTypes.jPlayer.CLEAR_MEDIA:
+    case actionTypes.jPlayer.SET_MEDIA:
+    case actionTypes.jPlayer.PLAY:
+    case actionTypes.jPlayer.PAUSE:
+    case actionTypes.jPlayer.PLAY_HEAD:
+    case actionTypes.jPlayer.VOLUME:
+    case actionTypes.jPlayer.MUTE:
+    case actionTypes.jPlayer.DURATION:
+    case actionTypes.jPlayer.PLAYBACK_RATE:
+    case actionTypes.jPlayer.LOOP:
+    case actionTypes.jPlayer.FULL_SCREEN:
       newState = setGlobalOptions(state, action);
       newState = updateObject(newState, {
         [action.uid]: updatePlayer(newState[action.uid], action),
@@ -213,6 +227,8 @@ const jPlayerReducer = (state = {}, action) => {
         type: actionTypes.jPlayer.FOCUS,
         uid: action.uid,
       });
+    default:
+      return state;
   }
 };
 

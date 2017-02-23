@@ -38,7 +38,9 @@ open http://localhost:8080/
 * IOS Safari 5.1+
 * Chrome for Android v36+
 * Android browser 4+
-* IEMobile 11
+* IEMobile 11¹
+
+¹partially tested without audio/video because browserstack emulators don't support it.
 
 ## License
 [MIT license](http://opensource.org/licenses/MIT).

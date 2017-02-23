@@ -1,15 +1,17 @@
 import expect, { spyOn } from 'expect';
-import merge from 'lodash.merge';
 
 import reducer from './reducer';
 import * as reducerData from './data.spec';
 import { actionTypes, defaultOptions, formats } from '../../util/constants';
+import { InvalidGlobalMethodException } from '../../util/index';
 import { getJPlayerState } from '../../util/common.spec';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
-const playerIdOne = 'player-1';
-const playerIdTwo = 'player-2';
-const playerIdThree = 'player-3';
+const jPlayerIds = [
+  'player-1',
+  'player-2',
+  'player-3',
+];
 
 export const setup = (mediaType) => {
   const media = document.createElement(mediaType);
@@ -33,13 +35,17 @@ describe('jPlayer reducer', () => {
     expect(reducer(state, '@@jPlayer-test')).toBe(state);
   });
 
+  it('should return empty state if the state is not specified', () => {
+    expect(reducer(undefined, '@@jPlayer-test')).toEqual({});
+  });
+
   it('should handle SET_OPTION', () => {
     const jPlayer = reducer(state, {
       type: jPlayerActionTypes.SET_OPTION,
-      uid: playerIdOne,
+      uid: jPlayerIds[0],
       key: 'preload',
       value: 'test',
-    })[playerIdOne];
+    })[jPlayerIds[0]];
 
     expect(jPlayer).toEqual({
       preload: 'test',
@@ -50,13 +56,13 @@ describe('jPlayer reducer', () => {
     reducerData.clearMediaData.forEach((test) => {
       const newState = {
         ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
+        [jPlayerIds[0]]: {
+          ...state[jPlayerIds[0]],
           ...test.state,
         },
       };
 
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
+      const jPlayer = reducer(newState, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -70,13 +76,13 @@ describe('jPlayer reducer', () => {
 
       const jPlayer = reducer(state, {
         type: jPlayerActionTypes.SET_MEDIA,
-        uid: playerIdOne,
+        uid: jPlayerIds[0],
         media: {
           sources: {
             [key]: `test.${key}`,
           },
         },
-      })[playerIdOne];
+      })[jPlayerIds[0]];
 
       expect(jPlayer).toContain({
         mediaSettings: {
@@ -102,7 +108,7 @@ describe('jPlayer reducer', () => {
   it('should handle SET_MEDIA', () => {
     setup('audio');
     reducerData.fullScreenData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
+      const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -115,12 +121,12 @@ describe('jPlayer reducer', () => {
     reducerData.playData.forEach((test) => {
       const newState = {
         ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
+        [jPlayerIds[0]]: {
+          ...state[jPlayerIds[0]],
           ...test.state,
         },
       };
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
+      const jPlayer = reducer(newState, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -132,12 +138,12 @@ describe('jPlayer reducer', () => {
     reducerData.pauseData.forEach((test) => {
       const newState = {
         ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
+        [jPlayerIds[0]]: {
+          ...state[jPlayerIds[0]],
           ...test.state,
         },
       };
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
+      const jPlayer = reducer(newState, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -149,12 +155,12 @@ describe('jPlayer reducer', () => {
     reducerData.playHeadData.forEach((test) => {
       const newState = {
         ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
+        [jPlayerIds[0]]: {
+          ...state[jPlayerIds[0]],
           ...test.state,
         },
       };
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
+      const jPlayer = reducer(newState, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -164,7 +170,7 @@ describe('jPlayer reducer', () => {
 
   it('should handle VOLUME', () => {
     reducerData.volumeData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
+      const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -174,7 +180,7 @@ describe('jPlayer reducer', () => {
 
   it('should handle MUTE', () => {
     reducerData.muteData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
+      const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -184,7 +190,7 @@ describe('jPlayer reducer', () => {
 
   it('should handle DURATION', () => {
     reducerData.durationData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
+      const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -196,13 +202,13 @@ describe('jPlayer reducer', () => {
     reducerData.playbackRateData.forEach((test) => {
       const newState = {
         ...state,
-        [playerIdOne]: {
-          ...state[playerIdOne],
+        [jPlayerIds[0]]: {
+          ...state[jPlayerIds[0]],
           ...test.state,
         },
       };
 
-      const jPlayer = reducer(newState, test.action)[playerIdOne];
+      const jPlayer = reducer(newState, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -212,7 +218,7 @@ describe('jPlayer reducer', () => {
 
   it('should handle LOOP', () => {
     reducerData.loopData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
+      const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -222,7 +228,7 @@ describe('jPlayer reducer', () => {
 
   it('should handle FULL_SCREEN', () => {
     reducerData.fullScreenData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[playerIdOne];
+      const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
       Object.keys(test.expected).forEach((key) => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
@@ -249,17 +255,17 @@ describe('jPlayer reducer', () => {
   });
 
   it('should focus on the jPlayer for every action apart from focus', () => {
-    state[playerIdOne] = merge({}, defaultOptions);
+    state = getJPlayerState(2, true).jPlayers;
 
     Object.keys(jPlayerActionTypes).forEach((type) => {
       if (type !== jPlayerActionTypes.FOCUS) {
         const jPlayers = reducer(state, {
           type,
-          uid: playerIdOne,
+          uid: jPlayerIds[0],
         });
 
         Object.keys(jPlayers).forEach((key) => {
-          if (key !== playerIdOne) {
+          if (key !== jPlayerIds[0]) {
             expect(jPlayers[key].focus).toBeFalsy();
           } else {
             expect(jPlayers[key].focus).toBeTruthy();
@@ -269,6 +275,21 @@ describe('jPlayer reducer', () => {
     });
   });
 
+  it('should return an error when invalid action specified for the global option', () => {
+    state = getJPlayerState(2, true).jPlayers;
+    const actionType = 'INVALID_ACTION';
+
+    state[jPlayerIds[0]].global = [actionType];
+
+    expect(() => {
+      reducer(state, {
+        uid: jPlayerIds[1],
+        type: jPlayerActionTypes.MUTE,
+        muted: true,
+      });
+    }).toThrow(InvalidGlobalMethodException);
+  });
+
   it('should set the global option for every action that requires it', () => {
     // eslint-disable-next-line no-unused-vars
     const { focusData, ...globalActions } = reducerData;
@@ -276,9 +297,9 @@ describe('jPlayer reducer', () => {
     setup('audio');
 
     state = getJPlayerState(3).jPlayers;
-    state[playerIdOne].global = Object.keys(jPlayerActionTypes);
-    state[playerIdTwo].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
-    state[playerIdThree].global = Object.keys(jPlayerActionTypes);
+    state[jPlayerIds[0]].global = Object.keys(jPlayerActionTypes);
+    state[jPlayerIds[1]].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
+    state[jPlayerIds[2]].global = Object.keys(jPlayerActionTypes);
 
     Object.values(globalActions).forEach((dataArray) => {
       dataArray.forEach((data) => {
