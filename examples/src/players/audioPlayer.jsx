@@ -7,20 +7,7 @@ import { JPlayer, Gui, SeekBar, BufferBar,
  } from '../../../src/index';
 import poster from '../../assets/Miaow - Bubble.jpg';
 import jPlayerConnect from '../../../src/jPlayerConnect';
-
-let isVolumeBarVisible;
-
-const onTouchStartMute = e => (
-  isVolumeBarVisible = e.currentTarget.nextElementSibling
-    .querySelector('.jp-volume-bar-container').clientHeight > 0
-);
-
-const onClickMute = (setMute, muted) => () => {
-  if (isVolumeBarVisible !== false) {
-    setMute(!muted, 'AudioPlayer');
-  }
-  isVolumeBarVisible = undefined;
-};
+import { onTouchStart, onClick } from './hoverControl';
 
 const AudioPlayer = props => (
   <JPlayer className="jp-sleek">
@@ -39,13 +26,14 @@ const AudioPlayer = props => (
         </div>
         <div className="jp-volume-container">
           <Mute
-            aria-haspopup onTouchStart={onTouchStartMute}
-            onClick={onClickMute(props.setMute, props.muted)}
+            aria-haspopup
+            onTouchStart={onTouchStart}
+            onClick={onClick(props.setMute, props.muted, 'AudioPlayer')}
           >
             <i className="fa">{/* Icon set in css*/}</i>
           </Mute>
           <div className="jp-volume-slider">
-            <div className="jp-volume-bar-container">
+            <div className="jp-bar-container jp-volume-bar-container">
               <VolumeBar />
             </div>
           </div>

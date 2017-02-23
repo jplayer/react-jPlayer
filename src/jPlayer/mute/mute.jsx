@@ -10,5 +10,4 @@ Mute.propTypes = {
   onClick: React.PropTypes.func.isRequired,
 };
 
-
 export default Mute;
