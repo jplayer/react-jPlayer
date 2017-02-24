@@ -5,9 +5,9 @@ import { shallowSetup } from '../../util/common.spec';
 import VideoContainer from './video.container';
 import Video from './video';
 
-const setup = state => shallowSetup(VideoContainer, {
+const setup = () => shallowSetup(VideoContainer, {
   children: (<source className="@@jPlayer-test" />),
-}, state);
+});
 
 describe('VideoContainer', () => {
   it('renders component and maps state', () => {

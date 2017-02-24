@@ -1,12 +1,16 @@
 {
-    "presets": [
-        "es2015",
-        "stage-2",
-        "react"
-    ],
-    "plugins": [
-        "transform-es2015-modules-umd"
-    ],
-    "retainLines": true,
-    "sourceMaps": true
+  "presets": [
+    "es2015",
+    "stage-2",
+    "react"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "babel-plugin-rewire"
+      ]
+    }
+  },
+  "retainLines": true,
+  "sourceMaps": true
 }

@@ -4,7 +4,7 @@ import { shallowSetup } from '../../util/common.spec';
 import VolumeBarValueContainer from './volumeBarValue.container';
 import VolumeBarValue from './volumeBarValue';
 
-const setup = state => shallowSetup(VolumeBarValueContainer, null, state);
+const setup = () => shallowSetup(VolumeBarValueContainer);
 
 describe('TitleContainer', () => {
   it('renders component and maps state', () => {

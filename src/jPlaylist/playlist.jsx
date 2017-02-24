@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { Motion, spring } from 'react-motion';
 
 const Playlist = (props) => {
@@ -24,4 +24,4 @@ Playlist.propTypes = {
   children: React.PropTypes.element.isRequired,
 };
 
-export default Playlist;
+export default Playlist;*/

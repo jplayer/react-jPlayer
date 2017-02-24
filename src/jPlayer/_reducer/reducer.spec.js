@@ -27,6 +27,8 @@ export const tearDown = () => {
 describe('jPlayer reducer', () => {
   let state;
 
+  const p = reducer.__get__('resetStatus');
+
   beforeEach(() => {
     state = getJPlayerState(1).jPlayers;
   });

@@ -4,7 +4,7 @@ import { shallowSetup } from '../../util/common.spec';
 import PlayBarContainer from './playBar.container';
 import PlayBar from './playBar';
 
-const setup = state => shallowSetup(PlayBarContainer, null, state);
+const setup = () => shallowSetup(PlayBarContainer);
 
 describe('PlayBarContainer', () => {
   it('renders component and maps state', () => {

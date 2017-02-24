@@ -259,6 +259,7 @@ export const defaultOptions = {
   keyEnabled: true,
   mediaSettings: {
     video: false,
+    foundSupported: false,
     formats: [],
   },
   timeFormats: {

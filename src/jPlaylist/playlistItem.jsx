@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { Motion, spring } from 'react-motion';
 
 export default class extends React.Component {
@@ -55,4 +55,4 @@ export default class extends React.Component {
       </div>
     );
   }
-}
+}*/

@@ -9,7 +9,7 @@ const setup = () => {
   const props = {
     url: 'http://www.test.mp3',
     free: true,
-    children: (<i className="@@jPlayer-test" />),
+    children: <i className="@@jPlayer-test" />,
     'data-attribute-test': 'test',
   };
 

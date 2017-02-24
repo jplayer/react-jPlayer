@@ -21,7 +21,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
-    "test": "babel-node ./node_modules/babel-istanbul/lib/cli.js cover --include-all-sources --root ./src ./node_modules/mocha/bin/_mocha src/**/*.spec*{js,jsx} -- --opts ./mocha.opts",
+    "test": "cross-env BABEL_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover --include-all-sources --root ./src ./node_modules/mocha/bin/_mocha src/**/*.spec*{js,jsx} -- --opts ./mocha.opts",
     "test:watch": "npm run test -- -w",
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts"
   },
@@ -58,6 +58,7 @@
     "babel-register": "^6.18.0",
     "babili-webpack-plugin": "0.0.10",
     "coveralls": "^2.11.16",
+    "cross-env": "^3.1.4",
     "css-loader": "^0.26.1",
     "editorconfig": "^0.13.2",
     "enzyme": "^2.2.0",

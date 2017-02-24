@@ -4,9 +4,9 @@ import { shallowSetup } from '../../util/common.spec';
 import TitleContainer from './title.container';
 import Title from './title';
 
-const setup = state => shallowSetup(TitleContainer, {
+const setup = () => shallowSetup(TitleContainer, {
   children: 'fade',
-}, state);
+});
 
 describe('TitleContainer', () => {
   it('renders component and maps state', () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import merge from 'lodash.merge';
 import maxBy from 'lodash/maxBy';
 import store from '../store';
@@ -323,4 +323,4 @@ export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(
         );
       }
     },
-);
+);*/

@@ -4,9 +4,9 @@ import { shallowSetup } from '../../util/common.spec';
 import PosterContainer from './poster.container';
 import Poster from './poster';
 
-const setup = state => shallowSetup(PosterContainer, {
+const setup = () => shallowSetup(PosterContainer, {
   alt: 'image',
-}, state);
+});
 
 describe('PosterContainer', () => {
   it('renders component and maps state', () => {
