@@ -36,7 +36,9 @@ const setup = () => {
     events,
     require: true,
     children: (<track className="@@jPlayer-test" />),
-    'data-attribute-test': 'test',
+    attribute: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Audio {...props} />);

@@ -1,19 +1,25 @@
 import expect from 'expect';
 
-import { shallowSetup } from '../../util/common.spec';
-import CurrentTimeContainer from './currentTime.container';
-import CurrentTime from './currentTime';
+import { setJPlayers } from '../../util/common.spec';
+import { statusDefaultValues } from '../../util/constants';
+import { __get__ } from './currentTime.container';
 
-const setup = () => shallowSetup(CurrentTimeContainer);
+const mapStateToProps = __get__('mapStateToProps');
+const state = {
+  currentTimeText: statusDefaultValues.currentTimeText,
+};
 
 describe('CurrentTimeContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+  it('maps current time to children if none specified', () => {
+    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1' });
 
-    expect(wrapper.type()).toBe(CurrentTime);
-    expect(wrapper.prop('children')).toBe(jPlayer.currentTimeText);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected.children).toBe(state.currentTimeText);
+  });
+
+  it('maps custom children if specified', () => {
+    const children = 30;
+    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1', children });
+
+    expect(expected.children).toBe(children);
   });
 });

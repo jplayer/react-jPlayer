@@ -2,35 +2,38 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { classes } from '../../util/constants';
-import { shallowSetup } from '../../util/common.spec';
-import BrowserUnsupportedContainer from './browserUnsupported.container';
-import BrowserUnsupported from './browserUnsupported';
+import { setJPlayers } from '../../util/common.spec';
+import { classes, defaultOptions } from '../../util/constants';
+import { __get__ } from './browserUnsupported.container';
 
-const setup = () => shallowSetup(BrowserUnsupportedContainer, null, {
-  mediaSettings: {
-    foundSupported: true,
+const mapStateToProps = __get__('mapStateToProps');
+const state = {
+  mediaSettings: defaultOptions.mediaSettings,
+};
+const props = {
+  children: <div className="@@jPlayer-test" />,
+  attributes: {
+    'data-attribute-test': 'test',
   },
-});
+};
 
 describe('BrowserUnsupportedContainer', () => {
-  it('render component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
-    const children = shallow(wrapper.prop('children'));
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1',
+      children: props.children });
 
-    expect(wrapper.type()).toBe(BrowserUnsupported);
-    expect(children.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(children.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
-    expect(wrapper.prop('foundSupported')).toBe(jPlayer.mediaSettings.foundSupported);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      foundSupported: defaultOptions.mediaSettings.foundSupported,
+      children: props.children,
+    });
   });
 
-  it('custom children overwrite default children', () => {
-    const { wrapper } = setup();
-    wrapper.setProps({ children: <div className="@@jPlayer-test" /> });
+  it('no children renders default', () => {
+    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1',
+      attributes: props.attributes });
+    const children = shallow(expected.children);
 
-    const children = shallow(wrapper.prop('children'));
-    expect(children.hasClass('@@jPlayer-test')).toBeTruthy();
+    expect(children.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(children.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
   });
 });

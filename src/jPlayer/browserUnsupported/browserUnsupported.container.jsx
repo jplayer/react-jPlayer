@@ -14,11 +14,9 @@ const getDefaultChildren = attributes => (
   </div>
 );
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, children, attributes }) => ({
   foundSupported: jPlayers[uid].mediaSettings.foundSupported,
   children: children || getDefaultChildren(attributes),
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(BrowserUnsupported);
+export default connectWithId(mapStateToProps)(BrowserUnsupported);

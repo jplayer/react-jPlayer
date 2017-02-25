@@ -1,10 +1,8 @@
 import { connectWithId } from '../../util/index';
 import CurrentTime from './currentTime';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
-  ...{ children: jPlayers[uid].currentTimeText, ...attributes },
+const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
+  children: children || jPlayers[uid].currentTimeText,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(CurrentTime);
+export default connectWithId(mapStateToProps)(CurrentTime);
