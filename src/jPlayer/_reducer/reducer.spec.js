@@ -27,8 +27,6 @@ export const tearDown = () => {
 describe('jPlayer reducer', () => {
   let state;
 
-  const p = reducer.__get__('resetStatus');
-
   beforeEach(() => {
     state = getJPlayerState(1).jPlayers;
   });
@@ -102,8 +100,6 @@ describe('jPlayer reducer', () => {
           ...{ ...defaultOptions.media, ...{ sources: { [key]: `test.${key}` } } },
         },
       });
-
-      tearDown();
     });
   });
 
@@ -116,7 +112,6 @@ describe('jPlayer reducer', () => {
         expect(jPlayer[key]).toEqual(test.expected[key]);
       });
     });
-    tearDown();
   });
 
   it('should handle PLAY', () => {
@@ -293,8 +288,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should set the global option for every action that requires it', () => {
-    // eslint-disable-next-line no-unused-vars
-    const { focusData, ...globalActions } = reducerData;
+    const { ...globalActions } = reducerData;
 
     setup('audio');
 
@@ -303,40 +297,47 @@ describe('jPlayer reducer', () => {
     state[jPlayerIds[1]].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
     state[jPlayerIds[2]].global = Object.keys(jPlayerActionTypes);
 
-    Object.values(globalActions).forEach((dataArray) => {
-      dataArray.forEach((data) => {
-        const jPlayersWithGlobalOption = Object.keys(state).filter(key => (
-          state[key].global.includes(data.action.type)),
-        );
-        const jPlayersWithoutGlobalOption = Object.keys(state).filter(key => (
-          !state[key].global.includes(data.action.type)),
-        );
-        const newState = { ...state };
+    Object.keys(globalActions).forEach((globalAction) => {
+      const globalActionData = globalActions[globalAction];
 
-        jPlayersWithGlobalOption.forEach((key) => {
-          newState[key] = {
-            ...newState[key],
-            ...data.state,
-          };
-        });
+      if (Array.isArray(globalActionData) && globalAction !== 'focusData') {
+        globalActionData.forEach((data) => {
+          const jPlayersWithGlobalOption = Object.keys(state).filter(key => (
+            state[key].global.includes(data.action.type)),
+          );
+          const jPlayersWithoutGlobalOption = Object.keys(state).filter(key => (
+            !state[key].global.includes(data.action.type)),
+          );
+          const newState = { ...state };
 
-        const jPlayers = reducer(newState, {
-          ...data.action,
-        });
+          jPlayersWithGlobalOption.forEach((key) => {
+            newState[key] = {
+              ...newState[key],
+              ...data.state,
+            };
+          });
 
-        jPlayersWithoutGlobalOption.forEach((key) => {
-          expect(jPlayers[key]).toExclude(data.expected, null,
-            `Action ${data.action.type}: 
-            Expected ${JSON.stringify(jPlayers[key])} to exclude ${JSON.stringify(data.expected)}`);
-        });
+          const jPlayers = reducer(newState, {
+            ...data.action,
+          });
 
-        jPlayersWithGlobalOption.forEach((key) => {
-          expect(jPlayers[key]).toInclude(data.expected, null,
-            `Action ${data.action.type}: 
-            Expected ${JSON.stringify(jPlayers[key])} to include ${JSON.stringify(data.expected)}`);
+          jPlayersWithoutGlobalOption.forEach((key) => {
+            expect(jPlayers[key]).toExclude(data.expected, null,
+              `Action ${data.action.type}: 
+              Expected ${JSON.stringify(jPlayers[key])} to
+              exclude ${JSON.stringify(data.expected)}`);
+          });
+
+          jPlayersWithGlobalOption.forEach((key) => {
+            expect(jPlayers[key]).toInclude(data.expected, null,
+              `Action ${data.action.type}: 
+              Expected ${JSON.stringify(jPlayers[key])} to
+              include ${JSON.stringify(data.expected)}`);
+          });
         });
-      });
+      }
     });
-    tearDown();
   });
+
+  after(() => tearDown());
 });
