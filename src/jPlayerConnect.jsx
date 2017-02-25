@@ -29,19 +29,19 @@ const mapStateToProps = (state, { uid, ...props }) => {
 
 const mapDispatchToProps = dispatch => ({ ...bindActionCreators(jPlayerActions, dispatch) });
 
-const jPlayerConnect = (player) => {
-  const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(player);
+const jPlayerConnect = (jPlayer) => {
+  const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
 
   // IE9 doesn't support fn.name
-  const playerName = player.name === undefined ? player.toString().match(/^function\s*([^\s(]+)/)[1]
-    : player.name;
+  const playerName = jPlayer.name === undefined ? jPlayer.toString().match(/^function\s*([^\s(]+)/)[1]
+    : jPlayer.name;
 
   return class extends React.Component {
     static get uid() {
       return playerName;
     }
     static get options() {
-      return player.options;
+      return jPlayer.options;
     }
     static get childContextTypes() {
       return {

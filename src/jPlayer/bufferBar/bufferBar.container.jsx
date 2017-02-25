@@ -1,17 +1,13 @@
 import React from 'react';
 
 import { connectWithId } from '../../util/index';
-import { defaultOptions } from '../../util/constants';
 import BufferBar from './bufferBar';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
   bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
   duration: jPlayers[uid].duration,
   bufferColour: jPlayers[uid].bufferColour,
-  attributes,
 });
-
-const mergeProps = stateProps => ({ ...stateProps });
 
 class BufferBarContainer extends React.Component {
   static get propTypes() {
@@ -22,7 +18,7 @@ class BufferBarContainer extends React.Component {
         end: React.PropTypes.number.isRequired,
       })).isRequired,
       /* eslint-disable react/no-unused-prop-types */
-      bufferColour: React.PropTypes.string,
+      bufferColour: React.PropTypes.string.isRequired,
       duration: React.PropTypes.number.isRequired,
       /* eslint-enable react/no-unused-prop-types */
     };
@@ -30,7 +26,6 @@ class BufferBarContainer extends React.Component {
   static get defaultProps() {
     return {
       attributes: {},
-      bufferColour: defaultOptions.bufferColour,
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -42,9 +37,9 @@ class BufferBarContainer extends React.Component {
     }
   }
   setCanvas = ref => (this.canvas = ref)
-  clearBuffer = () => (
-    this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height)
-  )
+  clearBuffer = () => {
+    this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
   fillBufferPartially = ({ bufferedTimeRanges, bufferColour, duration }) => {
     const modifier = this.canvas.width / duration;
     const context = this.canvas.getContext('2d');
@@ -63,4 +58,4 @@ class BufferBarContainer extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps, null, mergeProps)(BufferBarContainer);
+export default connectWithId(mapStateToProps)(BufferBarContainer);

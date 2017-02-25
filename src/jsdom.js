@@ -1,3 +1,10 @@
-import jsdomGlobal from 'jsdom-global';
+import jsdom from 'jsdom';
 
-jsdomGlobal();
+const document = jsdom.jsdom();
+const window = document.defaultView;
+
+Object.keys(window).forEach((property) => {
+  if (typeof global[property] === 'undefined') {
+    global[property] = window[property];
+  }
+});

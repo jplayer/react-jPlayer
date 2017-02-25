@@ -1,7 +1,7 @@
 {
   "name": "react-jplayer-dev",
   "version": "0.0.1",
-  "description": "Audio & Video player library for React",
+  "description": "Audio & Video jPlayer library for React",
   "author": "Martin Dawson <u1356770@unimail.hud.ac.uk>",
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
-    "test": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec*{js,jsx} --opts ./mocha.opts",
+    "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec*{js,jsx} --opts ./mocha.opts",
+    "test": "cross-env BABEL_ENV=test mocha src/**/*.spec*{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm run test -- -w",
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts"
   },
@@ -88,10 +89,10 @@
     "expect": "^1.20.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "jsdom": "9.11.0",
-    "jsdom-global": "2.1.1",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^3.2.0",
+    "node-gyp": "^3.5.0",
     "nyc": "^10.1.2",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "postcss-loader": "^1.2.1",

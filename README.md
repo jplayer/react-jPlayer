@@ -42,6 +42,9 @@ open http://localhost:8080/
 
 ¹partially tested without audio/video because browserstack emulators don't support it.
 
+## Dev Guide
+To run all of the jPlayer unit tests succesfuly you will need to install the [canvas api](https://www.npmjs.com/package/canvas).
+
 ## License
 [MIT license](http://opensource.org/licenses/MIT).
 

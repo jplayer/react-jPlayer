@@ -4,7 +4,7 @@ import { actionTypes } from '../../util/constants';
 
 describe('jPlayer actions', () => {
   const jPlayerActionTypes = actionTypes.jPlayer;
-  const uid = 'player-1';
+  const uid = 'jPlayer-1';
 
   it('should create an action to set the jPlayer options', () => {
     const key = 'verticalVolume';

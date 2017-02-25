@@ -27,7 +27,7 @@
              "**/*.acceptance.js",
              "**/*.config.*js"
         ] }],
-        "no-underscore-dangle": "off",
+        "no-underscore-dangle": "off"
     },
     "plugins": [
         "react"

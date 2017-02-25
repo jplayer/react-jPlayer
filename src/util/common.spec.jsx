@@ -1,6 +1,6 @@
 import React from 'react';
 import merge from 'lodash.merge';
-import expect from 'expect';
+import expect, { createSpy, isSpy } from 'expect';
 import configureMockStore from 'redux-mock-store';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
@@ -44,12 +44,52 @@ export const barDraggingTests = (wrapper, { barValueFn }) => {
   });
 };
 
+export const setJPlayers = (...options) => {
+  const jPlayers = {};
+
+  options.forEach((option, i) => {
+    const current = i + 1;
+    jPlayers[`jPlayer-${current}`] = merge({}, statusDefaultValues, defaultOptions, option);
+  });
+  return {
+    jPlayers,
+  };
+};
+
+export const mockCanvasContext = {
+  fillRect: createSpy(),
+  clearRect: createSpy(),
+  getImageData: createSpy().andReturn([]),
+  putImageData: createSpy(),
+  createImageData: createSpy().andReturn([]),
+  setTransform: createSpy(),
+  drawImage: createSpy(),
+  save: createSpy(),
+  fillText: createSpy(),
+  restore: createSpy(),
+  beginPath: createSpy(),
+  moveTo: createSpy(),
+  lineTo: createSpy(),
+  closePath: createSpy(),
+  stroke: createSpy(),
+  translate: createSpy(),
+  scale: createSpy(),
+  rotate: createSpy(),
+  arc: createSpy(),
+  fill: createSpy(),
+  resetSpies: () => Object.values(mockCanvasContext).forEach((spy) => {
+    if (isSpy(spy)) {
+      spy.reset();
+    }
+  }),
+};
+
 export const setJPlayerState = (...states) => {
   const jPlayers = {};
 
   states.forEach((state, i) => {
     const current = i + 1;
-    jPlayers[`player-${current}`] = state;
+    jPlayers[`jPlayer-${current}`] = state;
   });
 
   return {
@@ -61,7 +101,7 @@ export const getJPlayerState = (numberOfJPlayers, mergeDefault) => {
   const jPlayers = {};
 
   for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
-    jPlayers[`player-${i}`] = mergeDefault ? merge({}, statusDefaultValues, defaultOptions) : {};
+    jPlayers[`jPlayer-${i}`] = mergeDefault ? merge({}, statusDefaultValues, defaultOptions) : {};
   }
 
   return {
@@ -74,7 +114,7 @@ const setup = (component, props, state) => {
     store: configureMockStore()(setJPlayerState({
       ...merge({}, statusDefaultValues, defaultOptions, state),
     })),
-    uid: 'player-1',
+    uid: 'jPlayer-1',
   };
 
   const newProps = {

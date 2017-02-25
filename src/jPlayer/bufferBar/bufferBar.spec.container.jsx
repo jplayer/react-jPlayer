@@ -1,20 +1,80 @@
-import expect from 'expect';
+import React from 'react';
+import expect, { spyOn } from 'expect';
+import { mount, shallow } from 'enzyme';
 
-import { mountedSetup } from '../../util/common.spec';
-import BufferBarContainer from './bufferBar.container';
+import { setJPlayers, mockCanvasContext } from '../../util/common.spec';
+import { __get__ } from './bufferBar.container';
 import BufferBar from './bufferBar';
 
-const setup = () => mountedSetup(BufferBarContainer);
+const props = {
+  bufferedTimeRanges: [
+    { start: 0, end: 20 },
+    { start: 30, end: 50 },
+  ],
+  duration: 150,
+  bufferColour: '#eee',
+};
+
+const mapStateToProps = __get__('mapStateToProps');
+const BufferBarContainer = __get__('BufferBarContainer');
 
 describe('<BufferBarContainer />', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props } = setup();
-    const bufferBarContainer = wrapper.find(BufferBarContainer);
-    const bufferBar = wrapper.find(BufferBar);
+  afterEach(() => {
+    mockCanvasContext.resetSpies();
+  });
 
-    expect(bufferBar.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(bufferBarContainer.type()).toBe(BufferBarContainer);
-    expect(bufferBarContainer.prop('uid')).toNotExist();
-    expect(bufferBarContainer.prop('dispatch')).toNotExist();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(props), { uid: 'jPlayer-1' });
+    expect(props).toEqual(expected);
+  });
+
+  it('clears buffer bar if not buffered', () => {
+    const wrapper = mount(<BufferBarContainer {...props} />);
+    const instance = wrapper.instance();
+
+    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+
+    wrapper.setProps({ bufferedTimeRanges: [] });
+
+    expect(mockCanvasContext.clearRect)
+      .toHaveBeenCalledWith(0, 0, instance.canvas.width, instance.canvas.height);
+  });
+
+  it('doesn\'t fill buffer bar if values are same as previous', () => {
+    const wrapper = mount(<BufferBarContainer {...props} />);
+    const instance = wrapper.instance();
+
+    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+
+    wrapper.setProps({ bufferedTimeRanges: props.bufferedTimeRanges });
+
+    expect(mockCanvasContext.fillRect).toNotHaveBeenCalled();
+  });
+
+  it('fills buffer bar if buffering', () => {
+    const wrapper = mount(<BufferBarContainer {...props} />);
+    const instance = wrapper.instance();
+    const bufferedTimeRanges = [
+       { start: 0, end: 10 },
+       { start: 10, end: 25 },
+    ];
+
+    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+
+    wrapper.setProps({ bufferedTimeRanges });
+
+    expect(mockCanvasContext.fillRect.calls.length)
+      .toBe(bufferedTimeRanges.length);
+    expect(mockCanvasContext.fillStyle).toBe(props.bufferColour);
+  });
+
+  it('renders BufferBar', () => {
+    const attributes = {
+      'data-attribute-test': 'test',
+    };
+    const wrapper = shallow(<BufferBarContainer {...props} attributes={attributes} />);
+
+    expect(wrapper.type()).toBe(BufferBar);
+    expect(wrapper.prop('data-attribute-test')).toBe(attributes['data-attribute-test']);
   });
 });

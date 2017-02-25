@@ -8,9 +8,9 @@ import { getJPlayerState } from '../../util/common.spec';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
 const jPlayerIds = [
-  'player-1',
-  'player-2',
-  'player-3',
+  'jPlayer-1',
+  'jPlayer-2',
+  'jPlayer-3',
 ];
 
 export const setup = (mediaType) => {

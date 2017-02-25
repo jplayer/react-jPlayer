@@ -2,8 +2,8 @@ import { defaultOptions, statusDefaultValues, actionTypes, loopOptions,
   errors, hints } from '../../util/constants';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
-const playerIdOne = 'player-1';
-const playerIdTwo = 'player-2';
+const playerIdOne = 'jPlayer-1';
+const playerIdTwo = 'jPlayer-2';
 
 export const clearMediaData = [
   {
