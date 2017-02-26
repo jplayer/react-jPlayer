@@ -1,19 +1,24 @@
 import expect from 'expect';
 
-import { shallowSetup } from '../../util/common.spec';
-import DurationContainer from './duration.container';
-import Duration from './duration';
+import { setJPlayers } from '../../util/common.spec';
+import { statusDefaultValues } from '../../util/constants';
+import { __get__ } from './duration.container';
 
-const setup = () => shallowSetup(DurationContainer);
+const mapStateToProps = __get__('mapStateToProps');
 
 describe('DurationContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1' });
 
-    expect(wrapper.type()).toBe(Duration);
-    expect(wrapper.prop('children')).toBe(jPlayer.durationText);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      children: statusDefaultValues.durationText,
+    });
+  });
+
+  it('maps custom children if specified', () => {
+    const children = '2:35';
+    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1', children });
+
+    expect(expected.children).toBe(children);
   });
 });

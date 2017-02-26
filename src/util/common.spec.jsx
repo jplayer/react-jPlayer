@@ -47,10 +47,18 @@ export const barDraggingTests = (wrapper, { barValueFn }) => {
 export const setJPlayers = (...options) => {
   const jPlayers = {};
 
+  const setJPlayer = (jPlayerNumber = 1, option) => {
+    jPlayers[`jPlayer-${jPlayerNumber}`] = merge({}, statusDefaultValues, defaultOptions, option);
+  };
+
   options.forEach((option, i) => {
-    const current = i + 1;
-    jPlayers[`jPlayer-${current}`] = merge({}, statusDefaultValues, defaultOptions, option);
+    setJPlayer(i + 1, option);
   });
+
+  if (options.length === 0) {
+    setJPlayer();
+  }
+
   return {
     jPlayers,
   };
@@ -107,6 +115,10 @@ export const getJPlayerState = (numberOfJPlayers, mergeDefault) => {
   return {
     jPlayers,
   };
+};
+
+export const dispatchProps = {
+  dispatch: createSpy(),
 };
 
 const setup = (component, props, state) => {

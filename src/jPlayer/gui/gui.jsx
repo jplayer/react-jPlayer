@@ -3,7 +3,7 @@ import { Motion, spring } from 'react-motion';
 
 import { classes } from '../../util/constants';
 
-const Gui = ({ fullScreen, guiFadeOut, ...attributes }) => (
+const Gui = ({ fullScreen, guiFadeOut, onMouseEnter, children, attributes }) => (
   <Motion
     defaultStyle={{ opacity: 1 }}
     style={{ opacity: fullScreen ? spring(guiFadeOut ? 0 : 1, [250]) : 1 }}
@@ -11,17 +11,26 @@ const Gui = ({ fullScreen, guiFadeOut, ...attributes }) => (
     {values => (
       <div
         {...attributes} className={classes.GUI}
+        onMouseEnter={onMouseEnter}
         style={{
           opacity: values.opacity,
           display: values.opacity === 0 ? 'none' : '',
         }}
-      />
+      >
+        {children}
+      </div>
       )
     }
   </Motion>
 );
 
+Gui.defaultProps = {
+  attributes: {},
+};
+
 Gui.propTypes = {
+  attributes: React.PropTypes.node,
+  onMouseEnter: React.PropTypes.func.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),
     React.PropTypes.element,

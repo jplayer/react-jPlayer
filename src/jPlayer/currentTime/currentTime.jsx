@@ -14,10 +14,7 @@ CurrentTime.defaultProps = {
 
 CurrentTime.propTypes = {
   attributes: React.PropTypes.node,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
-  ]).isRequired,
+  children: React.PropTypes.string.isRequired,
 };
 
 export default CurrentTime;

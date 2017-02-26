@@ -7,9 +7,7 @@ import { classes, defaultOptions } from '../../util/constants';
 import { __get__ } from './browserUnsupported.container';
 
 const mapStateToProps = __get__('mapStateToProps');
-const state = {
-  mediaSettings: defaultOptions.mediaSettings,
-};
+
 const props = {
   children: <div className="@@jPlayer-test" />,
   attributes: {
@@ -19,7 +17,7 @@ const props = {
 
 describe('BrowserUnsupportedContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1',
+    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1',
       children: props.children });
 
     expect(expected).toEqual({
@@ -29,7 +27,7 @@ describe('BrowserUnsupportedContainer', () => {
   });
 
   it('no children renders default', () => {
-    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1',
+    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1',
       attributes: props.attributes });
     const children = shallow(expected.children);
 

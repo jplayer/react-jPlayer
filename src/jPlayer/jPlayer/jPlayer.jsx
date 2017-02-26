@@ -1,21 +1,21 @@
 import React from 'react';
 
-
 import { defaultOptions } from '../../util/constants';
 import KeyControl from '../keyControl/keyControl.container';
 
-/* Stops the user being able to drag the jPlayer
-  and see a ghost image */
-const preventDragging = e => e.preventDefault();
-
-const JPlayer = ({ keyEnabled, setJPlayer, children, ...attributes }) => (
-  <div {...attributes} ref={setJPlayer} onMouseDown={preventDragging}>
+const JPlayer = ({ keyEnabled, setJPlayer, children, attributes }) => (
+  <div {...attributes} ref={setJPlayer} draggable={false}>
     {children}
     {keyEnabled && <KeyControl />}
   </div>
 );
 
+JPlayer.defaultProps = {
+  attributes: {},
+};
+
 JPlayer.propTypes = {
+  attributes: React.PropTypes.node,
   setJPlayer: React.PropTypes.func,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),

@@ -1,72 +1,92 @@
 import React from 'react';
 import expect from 'expect';
 
-import { classes, loopOptions } from '../../util/constants';
-import { mountedSetup } from '../../util/common.spec';
-import JPlayerContainer from './jPlayer.container';
-import JPlayer from './jPlayer';
+import { setJPlayers, dispatchProps } from '../../util/common.spec';
+import { setMedia, setOption } from '../_actions/actions';
+import { classes, loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
+import { __get__ } from './jPlayer.container';
 
-const classTests = [
+const stateClassTests = [
   { state: {
     // default state
   },
-    expected: [classes.JPLAYER, classes.AUDIO, classes.states.VOLUME_HIGH],
+    expected: [classes.JPLAYER, classes.states.AUDIO, classes.states.IDLE,
+      classes.states.VOLUME_HIGH, classes.states.NO_BROWSER_SUPPORT,
+      classes.states.NO_VOLUME_SUPPORT],
   },
   { state: {
     mediaSettings: {
       video: true,
+      foundSupported: false,
     },
-    paused: true,
+    volumeSupported: false,
+    paused: false,
     fullScreen: true,
     muted: true,
-    volume: 0.3,
     seeking: true,
     loop: loopOptions.LOOP,
+    currentTime: 30,
   },
-    expected: [classes.VIDEO, classes.states.FULL_SCREEN,
-      classes.states.MUTED, classes.states.SEEKING, classes.states.LOOPED,
+    expected: [classes.JPLAYER, classes.states.VIDEO, classes.states.PLAYING,
+      classes.states.FULL_SCREEN, classes.states.MUTED, classes.states.SEEKING,
+      classes.states.LOOPED, classes.states.NO_BROWSER_SUPPORT, classes.states.NO_VOLUME_SUPPORT,
     ],
   },
   { state: {
     muted: false,
     volume: 0.45,
   },
-    expected: [classes.states.VOLUME_LOW],
+    expected: [classes.JPLAYER, classes.states.AUDIO, classes.states.IDLE,
+      classes.states.VOLUME_LOW, classes.states.NO_BROWSER_SUPPORT,
+      classes.states.NO_VOLUME_SUPPORT],
   },
 ];
-
-const setup = state => mountedSetup(JPlayerContainer, {
-  children: (<div className="@@jPlayer-test" />),
-}, {
-  media: {
-    sources: {
-      mp3: 'test.mp3',
-    },
-  },
-  ...state,
-});
+const uid = 'jPlayer-1';
+const mapStateToProps = __get__('mapStateToProps');
+const mergeProps = __get__('mergeProps');
 
 describe('<JPlayerContainer />', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props } = setup();
-    const jPlayerContainer = wrapper.find('JPlayerContainer');
-    const jPlayer = wrapper.find(JPlayer);
+  it('maps state', () => {
+    const children = <div className="@@jPlayer-test" />;
+    const expected = mapStateToProps(setJPlayers({
+      guiFadeHoldTimeout: 0,
+    }), { uid, children });
 
-    expect(jPlayer.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(jPlayerContainer.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(jPlayerContainer.prop('uid')).toNotExist();
-    expect(jPlayerContainer.prop('dispatch')).toNotExist();
+    delete expected.attributes;
+
+    expect(expected).toEqual({
+      media: defaultOptions.media,
+      error: statusDefaultValues.error,
+      fullScreen: false,
+      keyEnabled: defaultOptions.keyEnabled,
+      paused: true,
+      guiFadeHoldTimeout: 0,
+      guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
+      children,
+    });
   });
 
-  classTests.forEach((test) => {
-    it(`state (${Object.entries(test.state).join(' & ')}) match classes`,
-    () => {
-      const { wrapper } = setup(test.state);
-      const jPlayerContainer = wrapper.find('JPlayerContainer');
+  it('maps stateClasses', () => {
+    stateClassTests.forEach((stateClassTest) => {
+      const expected = mapStateToProps(setJPlayers(stateClassTest.state), { uid });
+      const classStatesString = stateClassTest.expected.join(' ');
 
-      expect(test.expected.every(x =>
-        jPlayerContainer.prop('attributes').className.includes(x),
-      )).toBeTruthy();
+      expect(classStatesString).toBe(expected.attributes.className);
     });
+  });
+
+  it('merges props', () => {
+    const expected = mergeProps(setJPlayers(), dispatchProps, { uid });
+
+    expected.setMedia(defaultOptions.media);
+    expected.setOption('muted', true);
+
+    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, uid));
+    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
+    expect(expected.jPlayers).toExist();
+  });
+
+  afterEach(() => {
+    dispatchProps.dispatch.reset();
   });
 });

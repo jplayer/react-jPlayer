@@ -1,5 +1,4 @@
 import React from 'react';
-import merge from 'lodash.merge';
 import screenfull from 'screenfull';
 import classNames from 'classnames';
 
@@ -15,8 +14,7 @@ Object.keys(formats).forEach((key) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
-  timeFormats: jPlayers[uid].timeFormats,
+const mapStateToProps = ({ jPlayers }, { uid, children, attributes = {} }) => ({
   media: jPlayers[uid].media,
   error: jPlayers[uid].error,
   fullScreen: jPlayers[uid].fullScreen,
@@ -28,8 +26,8 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   attributes: {
     ...attributes,
     className: classNames(attributes.className, classes.JPLAYER, {
-      [classes.AUDIO]: !jPlayers[uid].mediaSettings.video,
-      [classes.VIDEO]: jPlayers[uid].mediaSettings.video,
+      [classes.states.AUDIO]: !jPlayers[uid].mediaSettings.video,
+      [classes.states.VIDEO]: jPlayers[uid].mediaSettings.video,
       [classes.states.PLAYING]: !jPlayers[uid].paused,
       [classes.states.IDLE]: jPlayers[uid].currentTime === 0,
       [classes.states.FULL_SCREEN]: jPlayers[uid].fullScreen,
@@ -40,8 +38,8 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
       [classes.states.LOOPED]: jPlayers[uid].loop === loopOptions.LOOP,
       [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[uid].mediaSettings.foundSupported,
       [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[uid].volumeSupported,
-      // 'jp-video-270p': sizeCssClass !== undefined,
-      // 'jp-video-full': sizeFullCssClass !== undefined,
+      // 'jp-state-video-270p': sizeCssClass !== undefined,
+      // 'jp-state-video-full': sizeFullCssClass !== undefined,
     }),
   },
 });
@@ -55,8 +53,7 @@ const mergeProps = (stateProps, { dispatch }, { uid }) => ({
 class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
-      timeFormats: React.PropTypes.object,
+      attributes: React.PropTypes.node,
       media: React.PropTypes.shape({
         title: React.PropTypes.string,
         artist: React.PropTypes.string,
@@ -94,13 +91,6 @@ class JPlayerContainer extends React.Component {
       guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
       guiFadeHoldTimeout: null,
     };
-  }
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-
-    this.timeFormats = merge(defaultOptions.timeFormats, this.props.timeFormats);
   }
   componentWillMount() {
     if (screenfull.enabled) {
@@ -184,7 +174,7 @@ class JPlayerContainer extends React.Component {
     return (
       <JPlayer
         setJPlayer={this.setJPlayer} keyEnabled={this.props.keyEnabled}
-        onMouseMove={this.onMouseMove} {...this.props.attributes}
+        onMouseMove={this.onMouseMove} attributes={this.props.attributes}
       >
         {this.props.children}
       </JPlayer>

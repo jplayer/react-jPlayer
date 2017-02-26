@@ -9,7 +9,9 @@ const setup = () => {
   const props = {
     onMouseEnter: createSpy(),
     children: (<div className="@@jPlayer-test" />),
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Gui {...props} />);
@@ -36,6 +38,10 @@ describe('<Gui />', () => {
     expect(props.onMouseEnter).toHaveBeenCalled();
     expect(gui.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(gui.hasClass(classes.GUI)).toBeTruthy();
-    expect(gui.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(gui.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+  });
+
+  afterEach(() => {
+    props.onMouseEnter.reset();
   });
 });

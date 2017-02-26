@@ -60,8 +60,6 @@ export const hints = {
 };
 
 export const classes = {
-  AUDIO: 'jp-audio',
-  VIDEO: 'jp-video',
   MEDIA: 'jp-media',
   JPLAYER: 'jp-jplayer',
   MUTE: 'jp-mute',
@@ -91,6 +89,8 @@ export const classes = {
   NEXT: 'jp-next',
   POSTER: 'jp-poster',
   states: {
+    AUDIO: 'jp-state-audio',
+    VIDEO: 'jp-state-video',
     PLAYING: 'jp-state-playing',
     IDLE: 'jp-state-idle',
     SEEKING: 'jp-state-seeking',
@@ -100,7 +100,6 @@ export const classes = {
     LOOPED: 'jp-state-looped',
     LOOPED_PLAYLIST: 'jp-state-looped-playlist',
     FULL_SCREEN: 'jp-state-full-screen',
-    NO_VOLUME: 'jp-state-no-volume',
     SHUFFLED: 'jp-state-shuffled',
     NO_BROWSER_SUPPORT: 'jp-state-no-browser-support',
     NO_VOLUME_SUPPORT: 'jp-state-no-volume-support',

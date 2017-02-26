@@ -6,7 +6,7 @@ import { setJPlayers, mockCanvasContext } from '../../util/common.spec';
 import { __get__ } from './bufferBar.container';
 import BufferBar from './bufferBar';
 
-const props = {
+const state = {
   bufferedTimeRanges: [
     { start: 0, end: 20 },
     { start: 30, end: 50 },
@@ -24,12 +24,12 @@ describe('<BufferBarContainer />', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(props), { uid: 'jPlayer-1' });
-    expect(props).toEqual(expected);
+    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1' });
+    expect(state).toEqual(expected);
   });
 
   it('clears buffer bar if not buffered', () => {
-    const wrapper = mount(<BufferBarContainer {...props} />);
+    const wrapper = mount(<BufferBarContainer {...state} />);
     const instance = wrapper.instance();
 
     spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
@@ -41,18 +41,18 @@ describe('<BufferBarContainer />', () => {
   });
 
   it('doesn\'t fill buffer bar if values are same as previous', () => {
-    const wrapper = mount(<BufferBarContainer {...props} />);
+    const wrapper = mount(<BufferBarContainer {...state} />);
     const instance = wrapper.instance();
 
     spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
-    wrapper.setProps({ bufferedTimeRanges: props.bufferedTimeRanges });
+    wrapper.setProps({ bufferedTimeRanges: state.bufferedTimeRanges });
 
     expect(mockCanvasContext.fillRect).toNotHaveBeenCalled();
   });
 
   it('fills buffer bar if buffering', () => {
-    const wrapper = mount(<BufferBarContainer {...props} />);
+    const wrapper = mount(<BufferBarContainer {...state} />);
     const instance = wrapper.instance();
     const bufferedTimeRanges = [
        { start: 0, end: 10 },
@@ -65,14 +65,14 @@ describe('<BufferBarContainer />', () => {
 
     expect(mockCanvasContext.fillRect.calls.length)
       .toBe(bufferedTimeRanges.length);
-    expect(mockCanvasContext.fillStyle).toBe(props.bufferColour);
+    expect(mockCanvasContext.fillStyle).toBe(state.bufferColour);
   });
 
   it('renders BufferBar', () => {
     const attributes = {
       'data-attribute-test': 'test',
     };
-    const wrapper = shallow(<BufferBarContainer {...props} attributes={attributes} />);
+    const wrapper = shallow(<BufferBarContainer {...state} attributes={attributes} />);
 
     expect(wrapper.type()).toBe(BufferBar);
     expect(wrapper.prop('data-attribute-test')).toBe(attributes['data-attribute-test']);

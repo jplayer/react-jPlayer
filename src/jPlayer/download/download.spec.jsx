@@ -10,7 +10,9 @@ const setup = () => {
     url: 'http://www.test.mp3',
     free: true,
     children: <i className="@@jPlayer-test" />,
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Download {...props} />);
@@ -34,7 +36,7 @@ describe('<Download />', () => {
     expect(wrapper.prop('url')).toBe(props.href);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
   });
 
   it('renders null when audio is not free', () => {

@@ -10,7 +10,7 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
 });
 
 const mergeProps = ({ fullScreen, paused, guiFadeOut, guiFadeHoldTimeout }, { dispatch },
-{ uid, ...attributes }) => ({
+{ uid }) => ({
   onMouseMove: () => {
     if (fullScreen && !paused) {
       dispatch(setOption('guiFadeOut', false, uid));
@@ -19,7 +19,6 @@ const mergeProps = ({ fullScreen, paused, guiFadeOut, guiFadeHoldTimeout }, { di
   },
   fullScreen,
   guiFadeOut,
-  ...attributes,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(Gui);

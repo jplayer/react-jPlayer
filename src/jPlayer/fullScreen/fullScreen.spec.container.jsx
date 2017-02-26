@@ -1,45 +1,40 @@
-import React from 'react';
 import expect from 'expect';
 
-import { shallowSetup } from '../../util/common.spec';
+import { setJPlayers, dispatchProps } from '../../util/common.spec';
 import { setFullScreen } from '../_actions/actions';
-import FullScreenContainer from './fullScreen.container';
-import FullScreen from './fullScreen';
+import { __get__ } from './fullScreen.container';
 
-const setup = state => shallowSetup(FullScreenContainer, {
-  children: (<i className="@@jPlayer-test" />),
-}, state);
+const mapStateToProps = __get__('mapStateToProps');
+const mergeProps = __get__('mergeProps');
+const fullScreenStates = [
+   { fullScreen: false },
+   { fullScreen: true },
+];
+const uid = 'jPlayer-1';
 
 describe('FullScreenContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props } = setup();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid });
 
-    expect(wrapper.type()).toBe(FullScreen);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      fullScreen: false,
+    });
   });
 
-  it('onClick toggles fullScreen on when fullScreen false', () => {
-    const { wrapper, state, jPlayer } = setup();
+  fullScreenStates.forEach((fullScreenState) => {
+    it(`onClick toggles fullScreen (value: ${fullScreenState.fullScreen})`, () => {
+      const expected = mergeProps(fullScreenState, dispatchProps, { uid });
 
-    wrapper.simulate('click');
+      expected.onClick();
 
-    expect(state.store.dispatch).toHaveBeenCalledWith(setFullScreen(
-      !jPlayer.fullScreen,
-      state.uid,
-    ));
+      expect(dispatchProps.dispatch).toHaveBeenCalledWith(setFullScreen(
+        !fullScreenState.fullScreen,
+        uid,
+      ));
+    });
   });
 
-  it('onClick toggles fullScreen off when fullScreen true', () => {
-    const { wrapper, state, jPlayer } = setup({ fullScreen: true });
-
-    wrapper.simulate('click');
-
-    expect(state.store.dispatch).toHaveBeenCalledWith(setFullScreen(
-      !jPlayer.fullScreen,
-      state.uid,
-    ));
+  afterEach(() => {
+    dispatchProps.dispatch.reset();
   });
 });

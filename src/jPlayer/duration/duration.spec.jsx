@@ -8,7 +8,9 @@ import Duration from './duration';
 const setup = () => {
   const props = {
     children: '50',
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Duration {...props} />);
@@ -30,6 +32,6 @@ describe('<Duration />', () => {
   it('renders self and subcomponents', () => {
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
   });
 });

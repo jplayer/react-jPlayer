@@ -6,8 +6,8 @@
     100% { width: 100px; }
 }
 
-.jp-sleek.jp-video,
-.jp-sleek.jp-audio.jp-state-no-volume-support {
+.jp-sleek.jp-state-video,
+.jp-sleek.jp-state-audio.jp-state-no-volume-support {
   .hideElement(~'.jp-repeat', 400px);
   .hideElement(~'.jp-title', 530px);
   .hideElement(~'.jp-download', 580px);
@@ -16,7 +16,7 @@
   }
 }
 
-.jp-sleek.jp-audio:not(.jp-state-no-volume-support) {
+.jp-sleek.jp-state-audio:not(.jp-state-no-volume-support) {
   .hideElement(~'.jp-full-screen', 400px);
   .hideElement(~'.jp-repeat', 450px);
   .hideElement(~'.jp-title', 530px);
@@ -29,12 +29,12 @@
 .jp-sleek {
   font-family:"Source Sans Pro", sans-serif;
 
-  .jp-video:not(.jp-state-idle)& .jp-poster,
-  .jp-video.jp-state-playing& .jp-poster {
+  .jp-state-video:not(.jp-state-idle)& .jp-poster,
+  .jp-state-video.jp-state-playing& .jp-poster {
     display: none;
   }
 
-  .jp-video& .jp-media {
+  .jp-state-video& .jp-media {
     position: relative;
 
     .jp-poster {
@@ -42,7 +42,7 @@
         max-width: 100%;
     }
   }
-  .jp-video& .jp-media {
+  .jp-state-video& .jp-media {
     overflow: hidden;
     display: table;
     margin: 0 auto;
@@ -106,10 +106,10 @@
           vertical-align: middle;
         }
 
-        .jp-audio& .jp-title {
+        .jp-state-audio& .jp-title {
           margin-left:10px;
         }
-        .jp-audio& .jp-poster {
+        .jp-state-audio& .jp-poster {
           max-height: 100%;
           height: 100%;
         }
