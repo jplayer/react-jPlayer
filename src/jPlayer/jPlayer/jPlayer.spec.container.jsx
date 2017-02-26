@@ -1,10 +1,11 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy, spyOn, restoreSpies } from 'expect';
+import { mount, shallow } from 'enzyme';
 
 import { setJPlayers, dispatchProps } from '../../util/common.spec';
 import { setMedia, setOption } from '../_actions/actions';
 import { classes, loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
-import { __get__ } from './jPlayer.container';
+import { __get__, __Rewire__, __ResetDependency__ } from './jPlayer.container';
 
 const stateClassTests = [
   { state: {
@@ -44,8 +45,19 @@ const stateClassTests = [
 const uid = 'jPlayer-1';
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
+const JPlayerContainer = __get__('JPlayerContainer');
+
+const MockJPlayer = ({ setJPlayer }) => <div ref={setJPlayer} />;
+
+MockJPlayer.propTypes = {
+  setJPlayer: React.PropTypes.func.isRequired,
+};
 
 describe('<JPlayerContainer />', () => {
+  before(() => {
+    __Rewire__('JPlayer', MockJPlayer);
+  });
+
   it('maps state', () => {
     const children = <div className="@@jPlayer-test" />;
     const expected = mapStateToProps(setJPlayers({
@@ -86,7 +98,48 @@ describe('<JPlayerContainer />', () => {
     expect(expected.jPlayers).toExist();
   });
 
+  it('listens for closing full screen if screenFull is enabled', () => {
+    const fullscreenchange = 'fullscreenchange';
+    const props = setJPlayers().jPlayers['jPlayer-1'];
+    spyOn(document, 'addEventListener');
+
+    __Rewire__('screenfull', {
+      enabled: true,
+      raw: {
+        fullscreenchange,
+      },
+    });
+
+    const wrapper = shallow(<JPlayerContainer {...props} />);
+
+    expect(document.addEventListener).toHaveBeenCalledWith(fullscreenchange,
+      wrapper.instance().closeFullScreen);
+  });
+
+  // it('doesn\'t listen for closing full screen if screenfull is not enabled', () => {
+  //   const props = setJPlayers().jPlayers['jPlayer-1'];
+  //   shallow(<JPlayerContainer {...props} />);
+  //   spyOn(document, 'addEventListener');
+
+  //   expect(document.addEventListener).toNotHaveBeenCalled();
+  // });
+
+  it('sets media on load', () => {
+    const props = setJPlayers().jPlayers['jPlayer-1'];
+    const setMediaSpy = createSpy();
+
+    mount(<JPlayerContainer {...props} setMedia={setMediaSpy} />);
+
+    expect(setMediaSpy).toHaveBeenCalledWith(props.media);
+  });
+
   afterEach(() => {
     dispatchProps.dispatch.reset();
+    __ResetDependency__('screenfull');
+    restoreSpies();
+  });
+
+  after(() => {
+    __ResetDependency__('JPlayer');
   });
 });

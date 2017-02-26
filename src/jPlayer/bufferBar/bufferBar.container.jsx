@@ -36,7 +36,9 @@ class BufferBarContainer extends React.Component {
       this.fillBufferPartially(nextProps);
     }
   }
-  setCanvas = ref => (this.canvas = ref)
+  setCanvas = ref => {
+    this.canvas = ref;
+  }
   clearBuffer = () => {
     this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
@@ -54,6 +56,7 @@ class BufferBarContainer extends React.Component {
     });
   }
   render() {
+    const e = BufferBar;
     return <BufferBar setCanvas={this.setCanvas} {...this.props.attributes} />;
   }
 }

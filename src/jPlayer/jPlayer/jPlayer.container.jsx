@@ -3,7 +3,7 @@ import screenfull from 'screenfull';
 import classNames from 'classnames';
 
 import { connectWithId } from '../../util/index';
-import { defaultOptions, statusDefaultValues, formats,
+import { formats,
    classes, loopOptions } from '../../util/constants';
 import JPlayer from './jPlayer';
 import { setOption, setMedia } from '../_actions/actions';
@@ -67,28 +67,21 @@ class JPlayerContainer extends React.Component {
         context: React.PropTypes.string,
         message: React.PropTypes.string,
         hint: React.PropTypes.string,
-      }),
+      }).isRequired,
       fullScreen: React.PropTypes.bool.isRequired,
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
         React.PropTypes.element,
       ]).isRequired,
-      keyEnabled: React.PropTypes.bool,
-      paused: React.PropTypes.bool,
-      guiFadeHoldTime: React.PropTypes.number,
+      keyEnabled: React.PropTypes.bool.isRequired,
+      paused: React.PropTypes.bool.isRequired,
+      guiFadeHoldTime: React.PropTypes.number.isRequired,
       guiFadeHoldTimeout: React.PropTypes.number,
     };
   }
   static get defaultProps() {
     return {
       attributes: {},
-      timeFormats: defaultOptions.timeFormats,
-      error: statusDefaultValues.error,
-      media: defaultOptions.media,
-      supplied: defaultOptions.supplied,
-      keyEnabled: defaultOptions.keyEnabled,
-      paused: statusDefaultValues.paused,
-      guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
       guiFadeHoldTimeout: null,
     };
   }

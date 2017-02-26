@@ -3,7 +3,7 @@ import expect, { spyOn } from 'expect';
 import { mount, shallow } from 'enzyme';
 
 import { setJPlayers, mockCanvasContext } from '../../util/common.spec';
-import { __get__ } from './bufferBar.container';
+import { __get__, __Rewire__, __ResetDependency__ } from './bufferBar.container';
 import BufferBar from './bufferBar';
 
 const state = {
@@ -18,9 +18,15 @@ const state = {
 const mapStateToProps = __get__('mapStateToProps');
 const BufferBarContainer = __get__('BufferBarContainer');
 
+const MockBufferBar = ({ setCanvas }) => <canvas ref={setCanvas} />;
+
+MockBufferBar.propTypes = {
+  setCanvas: React.PropTypes.func.isRequired,
+};
+
 describe('<BufferBarContainer />', () => {
-  afterEach(() => {
-    mockCanvasContext.resetSpies();
+  before(() => {
+    __Rewire__('BufferBar', MockBufferBar);
   });
 
   it('maps state', () => {
@@ -69,6 +75,8 @@ describe('<BufferBarContainer />', () => {
   });
 
   it('renders BufferBar', () => {
+    __ResetDependency__('BufferBar');
+
     const attributes = {
       'data-attribute-test': 'test',
     };
@@ -76,5 +84,13 @@ describe('<BufferBarContainer />', () => {
 
     expect(wrapper.type()).toBe(BufferBar);
     expect(wrapper.prop('data-attribute-test')).toBe(attributes['data-attribute-test']);
+  });
+
+  afterEach(() => {
+    mockCanvasContext.resetSpies();
+  });
+
+  after(() => {
+    __ResetDependency__('BufferBar');
   });
 });
