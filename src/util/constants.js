@@ -247,6 +247,8 @@ export const defaultOptions = {
     poster: '',
     free: false,
   },
+  keyBindings: {},
+  focus: false,
   showRemainingDuration: false,
   muted: false,
   loop: loopOptions.OFF,

@@ -7,8 +7,6 @@ import { connectWithId } from '../../util/index';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({
   paused: jPlayers[uid].paused,
-  mediaSettings: jPlayers[uid].mediaSettings,
-  audioFullScreen: jPlayers[uid].audioFullScreen,
   fullScreen: jPlayers[uid].fullScreen,
   muted: jPlayers[uid].muted,
   volume: jPlayers[uid].volume,
@@ -27,12 +25,7 @@ const mergeProps = (stateProps, { dispatch }, { uid }) => ({
     },
     fullScreen: {
       key: 70, // f
-      fn: () => {
-        if ((stateProps.mediaSettings.available && stateProps.mediaSettings.video)
-            || stateProps.audioFullScreen) {
-          dispatch(setFullScreen(!stateProps.fullScreen, uid));
-        }
-      },
+      fn: () => dispatch(setFullScreen(!stateProps.fullScreen, uid)),
     },
     mute: {
       key: 77, // m
