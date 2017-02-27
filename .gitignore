@@ -7,5 +7,5 @@
 npm-debug.log
 node_modules
 .vscode
-coverage/lcov-report
+coverage
 .nyc_output
