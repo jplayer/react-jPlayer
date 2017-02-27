@@ -63,6 +63,7 @@ class MediaContainer extends React.Component {
       setOption: React.PropTypes.func.isRequired,
       pause: React.PropTypes.func.isRequired,
       /* eslint-disable react/no-unused-prop-types */
+      newTime: React.PropTypes.number.isRequired,
       autoplay: React.PropTypes.bool,
       defaultPlaybackRate: React.PropTypes.number,
       muted: React.PropTypes.bool,
