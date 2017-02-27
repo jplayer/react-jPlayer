@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - node
+before_script: "cd examples | npm install"
 script:
   - npm run lint
   - npm run coverage

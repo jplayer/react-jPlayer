@@ -33,8 +33,8 @@ const jPlayerConnect = (jPlayer) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
 
   // IE9 doesn't support fn.name
-  const playerName = jPlayer.name === undefined ? jPlayer.toString().match(/^function\s*([^\s(]+)/)[1]
-    : jPlayer.name;
+  const playerName = jPlayer.name === undefined ?
+    jPlayer.toString().match(/^function\s*([^\s(]+)/)[1] : jPlayer.name;
 
   return class extends React.Component {
     static get uid() {
