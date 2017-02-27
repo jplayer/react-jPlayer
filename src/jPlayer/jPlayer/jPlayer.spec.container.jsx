@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { mount, shallow } from 'enzyme';
 
-import { setJPlayers, dispatchProps } from '../../util/common.spec';
+import { setJPlayers } from '../../util/common.spec';
 import { noFormatSupportedError } from '../../util/index';
 import { setMedia, setOption } from '../_actions/actions';
 import { classes, loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
@@ -50,7 +50,9 @@ const mergeProps = __get__('mergeProps');
 const JPlayerContainer = __get__('JPlayerContainer');
 const fullscreenchange = 'fullscreenchange';
 const guiFadeHoldTimeout = 10;
-
+const dispatchProps = {
+  dispatch: createSpy(),
+};
 const MockJPlayer = ({ setJPlayer }) =>
   <div ref={setJPlayer} />;
 

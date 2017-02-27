@@ -1,6 +1,6 @@
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 
-import { setJPlayers, dispatchProps } from '../../util/common.spec';
+import { setJPlayers } from '../../util/common.spec';
 import { setFullScreen } from '../_actions/actions';
 import { __get__ } from './fullScreen.container';
 
@@ -11,6 +11,9 @@ const fullScreenStates = [
    { fullScreen: true },
 ];
 const uid = 'jPlayer-1';
+const dispatchProps = {
+  dispatch: createSpy(),
+};
 
 describe('FullScreenContainer', () => {
   it('maps state', () => {

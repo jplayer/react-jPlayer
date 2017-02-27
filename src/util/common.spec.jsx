@@ -117,10 +117,6 @@ export const getJPlayerState = (numberOfJPlayers, mergeDefault) => {
   };
 };
 
-export const dispatchProps = {
-  dispatch: createSpy(),
-};
-
 const setup = (component, props, state) => {
   const newState = {
     store: configureMockStore()(setJPlayerState({

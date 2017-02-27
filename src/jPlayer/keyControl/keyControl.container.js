@@ -50,16 +50,11 @@ const mergeProps = (stateProps, { dispatch }, { uid }) => ({
   }, stateProps.keyBindings),
 });
 
-class KeyControl extends React.Component {
+class KeyControlContainer extends React.Component {
   static get propTypes() {
     return {
-      focus: React.PropTypes.bool,
+      focus: React.PropTypes.bool.isRequired,
       keyBindings: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
-    };
-  }
-  static get defaultProps() {
-    return {
-      focus: false,
     };
   }
   componentWillMount() {
@@ -70,7 +65,7 @@ class KeyControl extends React.Component {
   }
   onKeyDown = (event) => {
     if (keyIgnoreElementNames.some(name => name.toUpperCase()
-          === event.target.nodeName.toUpperCase()) || !this.props.focus) {
+        === event.target.nodeName.toUpperCase()) || !this.props.focus) {
       return;
     }
     Object.keys(this.props.keyBindings).forEach((key) => {
@@ -87,4 +82,4 @@ class KeyControl extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps, null, mergeProps)(KeyControl);
+export default connectWithId(mapStateToProps, null, mergeProps)(KeyControlContainer);
