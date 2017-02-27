@@ -2,7 +2,7 @@ import React from 'react';
 import screenfull from 'screenfull';
 import classNames from 'classnames';
 
-import { connectWithId } from '../../util/index';
+import { connectWithId, traverseParentsUntilClassName } from '../../util/index';
 import { formats,
    classes, loopOptions } from '../../util/constants';
 import JPlayer from './jPlayer';
@@ -94,11 +94,16 @@ class JPlayerContainer extends React.Component {
     this.props.setMedia(this.props.media);
   }
   componentWillReceiveProps(nextProps) {
-    this.logErrors(nextProps);
-    this.setFullScreen(nextProps);
-
-    if (nextProps.paused !== this.props.paused) {
-      this.startGuiFadeOut();
+    if (nextProps.error !== this.props.error) {
+      this.logError(nextProps);
+    }
+    if (nextProps.fullScreen !== this.props.fullScreen) {
+      this.setFullScreen(nextProps);
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.paused !== this.props.paused) {
+      this.startGuiFadeOutTimer();
     }
   }
   componentWillUnmount() {
@@ -108,48 +113,41 @@ class JPlayerContainer extends React.Component {
   }
   onMouseMove = (e) => {
     if (this.props.fullScreen) {
-      let element = e.target;
-
       if (this.props.paused) {
-        while (element.parentNode) {
-          element = element.parentNode;
-
-          if (element.className !== undefined &&
-              element.className.includes(classes.GUI)) {
-            return;
-          }
+        if (traverseParentsUntilClassName(e.target, classes.GUI)) {
+          return;
         }
       }
-      this.startGuiFadeOut();
+      this.startGuiFadeOutTimer();
     }
   }
   setJPlayer = ref => (this.jPlayer = ref)
   setFullScreen = ({ fullScreen }) => {
-    if (fullScreen !== this.props.fullScreen) {
-      if (fullScreen) {
-        if (screenfull.enabled) {
-          screenfull.request(this.jPlayer);
-        }
-        // Legacy browsers don't implement full screen api
-        // Safari 5.1 doesn't hide the other elements even with fullscreen api
-        document.body.style.visibility = 'hidden';
-      } else {
-        if (screenfull.enabled) {
-          screenfull.exit();
-        }
-        document.body.style.visibility = 'visible';
+    if (fullScreen) {
+      if (screenfull.enabled) {
+        screenfull.request(this.jPlayer);
       }
+      // Legacy browsers don't implement full screen api
+      // Safari 5.1 doesn't hide the other elements even with fullscreen api
+      document.body.style.visibility = 'hidden';
+    } else {
+      if (screenfull.enabled) {
+        screenfull.exit();
+      }
+      document.body.style.visibility = 'visible';
+    }
+  }
+  startGuiFadeOutTimer = () => {
+    if (this.props.fullScreen && !this.props.paused) {
+      clearTimeout(this.props.guiFadeHoldTimeout);
+      this.props.setOption('guiFadeOut', false);
+      this.props.setOption('guiFadeHoldTimeout', setTimeout(this.startGuiFadeOut,
+        this.props.guiFadeHoldTime));
     }
   }
   startGuiFadeOut = () => {
     if (this.props.fullScreen && !this.props.paused) {
-      clearTimeout(this.props.guiFadeHoldTimeout);
-      this.props.setOption('guiFadeOut', false);
-      this.props.setOption('guiFadeHoldTimeout', setTimeout(() => {
-        if (this.props.fullScreen && !this.props.paused) {
-          this.props.setOption('guiFadeOut', true);
-        }
-      }, this.props.guiFadeHoldTime));
+      this.props.setOption('guiFadeOut', true);
     }
   }
   closeFullScreen = () => {
@@ -157,12 +155,8 @@ class JPlayerContainer extends React.Component {
       this.props.setOption('fullScreen', false);
     }
   }
-  logErrors = ({ error }) => {
-    if (error !== this.props.error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  }
+  // eslint-disable-next-line no-console
+  logError = ({ error }) => console.error(error);
   render() {
     return (
       <JPlayer

@@ -18,6 +18,20 @@ export const connectWithId = (...args) => compose(
   connect(...args),
 );
 
+export const traverseParentsUntilClassName = (currentElement, className) => {
+  let element = currentElement;
+
+  while (element.parentNode) {
+    element = element.parentNode;
+
+    if (element.className !== undefined &&
+        element.className.includes(className)) {
+      return element;
+    }
+  }
+  return false;
+};
+
 export const mapObject = (obj, fn) =>
   Object.assign(...Object.keys(obj).map(k => ({ [k]: fn(obj[k]) })));
 

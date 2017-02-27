@@ -29,9 +29,9 @@ describe('BrowserUnsupportedContainer', () => {
   it('no children renders default', () => {
     const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1',
       attributes: props.attributes });
-    const children = shallow(expected.children);
+    const wrapper = shallow(expected.children);
 
-    expect(children.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
-    expect(children.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
   });
 });
