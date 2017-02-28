@@ -259,6 +259,7 @@ export const defaultOptions = {
   verticalVolume: false,
   keyEnabled: true,
   mediaSettings: {
+    require: false,
     video: false,
     foundSupported: false,
     formats: [],

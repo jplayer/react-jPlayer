@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { connectWithId, urlNotSupportedError, convertTime, canSetVolume } from '../../util/index';
-import { loopOptions, defaultOptions } from '../../util/constants';
+import { loopOptions } from '../../util/constants';
+import { connectWithId, urlNotSupportedError, convertTime, canSetVolume,
+  toPercentage, toRelativePercentage } from '../../util/index';
 import { setOption, pause } from '../_actions/actions';
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
   loop: jPlayers[uid].loop,
   showRemainingDuration: jPlayers[uid].showRemainingDuration,
   src: jPlayers[uid].src,
@@ -20,7 +21,6 @@ const mapStateToProps = ({ jPlayers }, { uid, children, ...props }) => ({
   newTime: jPlayers[uid].newTime,
   require: jPlayers[uid].mediaSettings.require,
   children,
-  ...props,
 });
 
 const mergeProps = (stateProps, { dispatch }, { uid }) => ({
@@ -55,7 +55,7 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      loop: React.PropTypes.string,
+      loop: React.PropTypes.string.isRequired,
       showRemainingDuration: React.PropTypes.bool.isRequired,
       src: React.PropTypes.string.isRequired,
       playHeadPercent: React.PropTypes.number.isRequired,
@@ -64,12 +64,12 @@ class MediaContainer extends React.Component {
       pause: React.PropTypes.func.isRequired,
       /* eslint-disable react/no-unused-prop-types */
       newTime: React.PropTypes.number.isRequired,
-      autoplay: React.PropTypes.bool,
-      defaultPlaybackRate: React.PropTypes.number,
-      muted: React.PropTypes.bool,
-      playbackRate: React.PropTypes.number,
-      preload: React.PropTypes.string,
-      volume: React.PropTypes.number,
+      autoplay: React.PropTypes.bool.isRequired,
+      defaultPlaybackRate: React.PropTypes.number.isRequired,
+      muted: React.PropTypes.bool.isRequired,
+      playbackRate: React.PropTypes.number.isRequired,
+      preload: React.PropTypes.string.isRequired,
+      volume: React.PropTypes.number.isRequired,
       /* eslint-enable react/no-unused-prop-types */
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.element),
@@ -102,13 +102,6 @@ class MediaContainer extends React.Component {
       onLoadedData: null,
       onCanPlay: null,
       onCanPlayThrough: null,
-      loop: loopOptions.OFF,
-      autoplay: defaultOptions.autoplay,
-      defaultPlaybackRate: defaultOptions.defaultPlaybackRate,
-      muted: defaultOptions.muted,
-      playbackRate: defaultOptions.playbackRate,
-      preload: defaultOptions.preload,
-      volume: defaultOptions.volume,
     };
   }
   constructor(props) {
@@ -202,8 +195,8 @@ class MediaContainer extends React.Component {
       // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
       // Hasn't fully loaded the song????
       if (this.currentMedia.seekable.length > 0) {
-        this.currentMedia.currentTime = nextProps.playHeadPercent *
-                (this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) / 100);
+        this.currentMedia.currentTime = toPercentage(nextProps.playHeadPercent,
+          this.getSeekableEnd());
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
         this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
       }
@@ -221,24 +214,26 @@ class MediaContainer extends React.Component {
     let currentPercentRelative = 0;
 
     if (this.currentMedia.seekable.length > 0) {
-      currentPercentRelative = 100 * (this.currentMedia.currentTime /
-            this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1));
+      currentPercentRelative = toRelativePercentage(this.currentMedia.currentTime,
+        this.getSeekableEnd());
     }
     return currentPercentRelative;
   }
-  setCurrentMedia = ref => (this.currentMedia = ref)
+  setCurrentMedia = (ref) => {
+    this.currentMedia = ref;
+  }
+  getSeekableEnd = () => this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1)
   updateMediaStatus = () => {
     let seekPercent = 0;
     let durationText = '';
 
     const remaining = this.currentMedia.duration - this.currentMedia.currentTime;
     const currentTimeText = convertTime(this.currentMedia.currentTime);
-    const currentPercentAbsolute = 100 * (this.currentMedia.currentTime /
-            this.currentMedia.duration);
+    const currentPercentAbsolute = toPercentage(this.currentMedia.currentTime,
+      this.currentMedia.duration);
 
     if (this.currentMedia.seekable.length > 0) {
-      seekPercent = 100 * (this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1) /
-             this.currentMedia.duration);
+      seekPercent = toPercentage(this.getSeekableEnd(), this.currentMedia.duration);
     }
 
     if (this.props.showRemainingDuration) {
@@ -265,14 +260,14 @@ class MediaContainer extends React.Component {
     this.currentMedia.volume = volume;
     this.currentMedia.muted = muted;
     this.currentMedia.autoplay = autoplay;
-    this.currentMedia.loop = loop === 'loop';
+    this.currentMedia.loop = loop === loopOptions.LOOP;
   }
   render() {
     return (
       React.cloneElement(React.Children.only(this.props.children),
         {
           ...this.events,
-          ref: this.setCurrentMedia,
+          setCurrentMedia: this.setCurrentMedia,
         },
       )
     );

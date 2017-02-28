@@ -18,6 +18,9 @@ export const connectWithId = (...args) => compose(
   connect(...args),
 );
 
+export const toPercentage = (number, max) => number * (max / 100);
+export const toRelativePercentage = (number, max) => 100 * (number / max);
+
 export const traverseParentsUntilClassName = (currentElement, className) => {
   let element = currentElement;
 
