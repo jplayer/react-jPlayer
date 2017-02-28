@@ -1,13 +1,14 @@
 import React from 'react';
 import expect, { createSpy, spyOn } from 'expect';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { setJPlayers } from '../../util/common.spec';
 import { defaultOptions, loopOptions } from '../../util/constants';
-import { toPercentage, toRelativePercentage } from '../../util/index';
+import { toPercentage, toRelativePercentage, urlNotSupportedError } from '../../util/index';
 import { setOption, pause } from '../_actions/actions';
 import { __get__, __Rewire__, __ResetDependency__ } from './media.container';
 
+let mockCurrentMedia;
 const uid = 'jPlayer-1';
 const dispatchProps = {
   dispatch: createSpy(),
@@ -15,33 +16,48 @@ const dispatchProps = {
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const MediaContainer = __get__('MediaContainer');
-const setOptionSpy = createSpy();
-const pauseSpy = createSpy();
 const getProps = state => ({
   ...setJPlayers(state).jPlayers[uid],
-  setOption: setOptionSpy,
-  pause: pauseSpy,
-});
-const mockCurrentMedia = {
-  currentTime: 30,
-  duration: 90,
-  seekable: {
-    length: 22,
-    end: end => end,
-  },
-  playbackRate: 0.35,
-  play: createSpy(),
+  setOption: createSpy(),
   pause: createSpy(),
-};
-const MockChildren = ({ setCurrentMedia }) => {
+});
+const MockAudio = ({ setCurrentMedia, ...events }) => {
   setCurrentMedia(mockCurrentMedia);
-  return null;
+  return <audio {...events} className="@@test-media" />;
+};
+MockAudio.propTypes = {
+  setCurrentMedia: React.PropTypes.func.isRequired,
+};
+const MockVideo = ({ setCurrentMedia, ...events }) => {
+  setCurrentMedia(mockCurrentMedia);
+  return <video {...events} className="@@test-media" />;
+};
+MockVideo.propTypes = {
+  setCurrentMedia: React.PropTypes.func.isRequired,
 };
 __Rewire__('canSetVolume', () => true);
 
 describe('MediaContainer', () => {
+  beforeEach(() => {
+    mockCurrentMedia = {
+      currentTime: 90,
+      duration: 250,
+      buffered: {
+        length: 2,
+        start: start => start,
+        end: end => end,
+      },
+      seekable: {
+        length: 22,
+        end: end => end,
+      },
+      playbackRate: 0.35,
+      play: createSpy(),
+      pause: createSpy(),
+    };
+  });
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid, children: MockChildren });
+    const expected = mapStateToProps(setJPlayers(), { uid, children: MockAudio });
 
     expect(expected).toEqual({
       loop: loopOptions.OFF,
@@ -58,7 +74,7 @@ describe('MediaContainer', () => {
       autoplay: false,
       newTime: null,
       require: false,
-      children: MockChildren,
+      children: MockAudio,
     });
   });
 
@@ -97,7 +113,7 @@ describe('MediaContainer', () => {
     const props = getProps({ ...media, loop: loopOptions.LOOP });
     const wrapper = mount(
       <MediaContainer {...props}>
-        <MockChildren />
+        <MockAudio />
       </MediaContainer>,
     );
     const instance = wrapper.instance();
@@ -123,7 +139,7 @@ describe('MediaContainer', () => {
     };
     const wrapper = mount(
       <MediaContainer {...getProps()}>
-        <MockChildren />
+        <MockAudio />
       </MediaContainer>,
     );
     const instance = wrapper.instance();
@@ -149,7 +165,7 @@ describe('MediaContainer', () => {
   it('updates playHeadPercent when props change and seekable media', () => {
     const wrapper = mount(
       <MediaContainer {...getProps()}>
-        <MockChildren />
+        <MockAudio />
       </MediaContainer>,
     );
     const instance = wrapper.instance();
@@ -172,7 +188,7 @@ describe('MediaContainer', () => {
     const expectedCurrentPercentRelative = toRelativePercentage(instance.currentMedia.currentTime,
       seekEnd);
     expect(instance.currentMedia.currentTime).toBe(expectedCurrentTime);
-    expect(setOptionSpy).toHaveBeenCalledWith(
+    expect(props.setOption).toHaveBeenCalledWith(
       'currentPercentRelative', expectedCurrentPercentRelative,
     );
   });
@@ -186,7 +202,7 @@ describe('MediaContainer', () => {
     pauseData.forEach((pauseDatum) => {
       const wrapper = mount(
         <MediaContainer {...getProps({ paused: !pauseDatum.paused })}>
-          <MockChildren />
+          <MockAudio />
         </MediaContainer>,
       );
       const instance = wrapper.instance();
@@ -206,21 +222,276 @@ describe('MediaContainer', () => {
     });
   });
 
-  it('updateMediaStatus updates relevant props', () => {
+  it('updateMediaStatus updates status properties to correct values', () => {
+    const props = getProps();
+
     const wrapper = mount(
-      <MediaContainer {...getProps()}>
-        <MockChildren />
+      <MediaContainer {...props}>
+        <MockAudio />
       </MediaContainer>,
     );
     const instance = wrapper.instance();
 
     instance.updateMediaStatus();
+
+    expect(props.setOption).toHaveBeenCalledWith('durationText', '04:10');
+    expect(props.setOption).toHaveBeenCalledWith('currentTimeText', '01:30');
+    expect(props.setOption).toHaveBeenCalledWith('seekPercent', 52.5);
+    expect(props.setOption).toHaveBeenCalledWith('currentPercentRelative', 428.57142857142856);
+    expect(props.setOption).toHaveBeenCalledWith('currentPercentAbsolute', 225);
+    expect(props.setOption).toHaveBeenCalledWith('currentTime', instance.currentMedia.currentTime);
+    expect(props.setOption).toHaveBeenCalledWith('remaining', 160);
+    expect(props.setOption).toHaveBeenCalledWith('duration', instance.currentMedia.duration);
+    expect(props.setOption)
+      .toHaveBeenCalledWith('playbackRate', instance.currentMedia.playbackRate);
+  });
+
+  it('updateMediaStatus sets durationText correctly when showRemainingDuration', () => {
+    const props = getProps({ showRemainingDuration: true });
+
+    const wrapper = mount(
+      <MediaContainer {...props}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.updateMediaStatus();
+
+    expect(props.setOption).toHaveBeenCalledWith('durationText', '-02:40');
+  });
+
+  it('updateMediaStatus sets durationText to 00:00 if time remaining is 0', () => {
+    const props = getProps({ showRemainingDuration: true });
+    mockCurrentMedia.duration = 90;
+    mockCurrentMedia.currentTime = 90;
+
+    const wrapper = mount(
+      <MediaContainer {...props}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.updateMediaStatus();
+
+    expect(props.setOption).toHaveBeenCalledWith('durationText', '00:00');
+  });
+
+  it('getSeekableEnd gets the end of the seekable time', () => {
+    const props = getProps();
+    const wrapper = mount(
+      <MediaContainer {...props}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+    const seekEnd = instance.getSeekableEnd();
+
+    expect(seekEnd).toBe(mockCurrentMedia.seekable.length - 1);
+  });
+
+  it('getCurrentPercentRelative doesn\'t get the current percent relative if not seekable', () => {
+    mockCurrentMedia.seekable.length = 0;
+    const props = getProps();
+    const wrapper = mount(
+      <MediaContainer {...props}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+    const currentPercentRelative = instance.getCurrentPercentRelative();
+
+    expect(currentPercentRelative).toBe(0);
+  });
+
+  it('onProgress event updates media status', () => {
+    const props = getProps();
+    const onProgress = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onProgress={onProgress}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    spyOn(instance, 'updateMediaStatus');
+
+    instance.events.onProgress();
+
+    const expected = [
+      { start: 0, end: 0 },
+      { start: 1, end: 1 },
+    ];
+
+    expect(props.setOption).toHaveBeenCalledWith('bufferedTimeRanges', expected);
+    expect(onProgress).toHaveBeenCalled();
+    expect(instance.updateMediaStatus).toHaveBeenCalled();
+  });
+
+  it('onTimeUpdate event updates media status', () => {
+    const props = getProps();
+    const onTimeUpdate = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onTimeUpdate={onTimeUpdate}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    spyOn(instance, 'updateMediaStatus');
+
+    instance.events.onTimeUpdate();
+
+    expect(onTimeUpdate).toHaveBeenCalled();
+    expect(instance.updateMediaStatus).toHaveBeenCalled();
+  });
+
+  it('onDurationChange event updates media status', () => {
+    const props = getProps();
+    const onDurationChange = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onDurationChange={onDurationChange}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    spyOn(instance, 'updateMediaStatus');
+
+    instance.events.onDurationChange();
+
+    expect(onDurationChange).toHaveBeenCalled();
+    expect(instance.updateMediaStatus).toHaveBeenCalled();
+  });
+
+  it('onSeeking event sets seeking to true', () => {
+    const props = getProps();
+    const onSeeking = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onSeeking={onSeeking}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.events.onSeeking();
+
+    expect(onSeeking).toHaveBeenCalled();
+    expect(props.setOption).toHaveBeenCalledWith('seeking', true);
+  });
+
+  it('onSeeked event sets seeking to false', () => {
+    const props = getProps();
+    const onSeeked = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onSeeked={onSeeked}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.events.onSeeked();
+
+    expect(onSeeked).toHaveBeenCalled();
+    expect(props.setOption).toHaveBeenCalledWith('seeking', false);
+  });
+
+  it('onPlay event sets paused to false', () => {
+    const props = getProps();
+    const onPlay = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onPlay={onPlay}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.events.onPlay();
+
+    expect(onPlay).toHaveBeenCalled();
+    expect(props.setOption).toHaveBeenCalledWith('paused', false);
+  });
+
+  it('onEnded event updates media status', () => {
+    const props = getProps();
+    const onEnded = createSpy();
+    const onRepeat = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onEnded={onEnded} onRepeat={onRepeat}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    spyOn(instance, 'updateMediaStatus');
+
+    instance.events.onEnded();
+
+    expect(instance.updateMediaStatus).toHaveBeenCalled();
+    expect(props.pause).toHaveBeenCalledWith(0);
+    expect(onEnded).toHaveBeenCalled();
+    expect(onRepeat).toNotHaveBeenCalled();
+  });
+
+  it('onEnded calls loop callback if looping', () => {
+    const props = getProps({ loop: loopOptions.LOOP });
+    const onRepeat = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onRepeat={onRepeat}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.events.onEnded();
+
+    expect(onRepeat).toHaveBeenCalled();
+  });
+
+  it('onError sets error to urlNotSupported', () => {
+    const props = getProps();
+    const onError = createSpy();
+    const wrapper = mount(
+      <MediaContainer {...props} onError={onError}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.events.onError();
+
+    expect(props.setOption)
+      .toHaveBeenCalledWith('error', urlNotSupportedError(props.src));
+    expect(onError).toHaveBeenCalled();
+  });
+
+  const renderData = [
+    { video: true },
+    { video: false },
+  ];
+
+  it('renders children with events passed in', () => {
+    renderData.forEach((renderDatum) => {
+      const props = getProps();
+      const wrapper = mount(
+        <MediaContainer {...props}>
+          {renderDatum.video ? <MockVideo /> : <MockAudio />}
+        </MediaContainer>,
+      );
+      const childProps = wrapper.find('.@@test-media').props();
+      const instance = wrapper.instance();
+
+      Object.keys(instance.events).forEach((key) => {
+        const event = instance.events[key];
+
+        expect(event).toBe(childProps[key]);
+      });
+    });
   });
 
   afterEach(() => {
     dispatchProps.dispatch.reset();
-    setOptionSpy.reset();
-    pauseSpy.reset();
     mockCurrentMedia.play.reset();
     mockCurrentMedia.pause.reset();
   });

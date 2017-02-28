@@ -79,29 +79,29 @@ class MediaContainer extends React.Component {
   }
   static get defaultProps() {
     return {
-      onProgress: null,
-      onTimeUpdate: null,
-      onDurationChange: null,
-      onRateChange: null,
-      onSeeking: null,
-      onSeeked: null,
-      onPlay: null,
-      onRepeat: null,
-      onEnded: null,
-      onError: null,
-      onPlaying: null,
-      onPause: null,
-      onWaiting: null,
-      onSuspend: null,
-      onVolumeChange: null,
-      onLoadStart: null,
-      onLoadedMetadata: null,
-      onAbort: null,
-      onEmptied: null,
-      onStalled: null,
-      onLoadedData: null,
-      onCanPlay: null,
-      onCanPlayThrough: null,
+      onProgress: Function.prototype,
+      onTimeUpdate: Function.prototype,
+      onDurationChange: Function.prototype,
+      onRateChange: Function.prototype,
+      onSeeking: Function.prototype,
+      onSeeked: Function.prototype,
+      onPlay: Function.prototype,
+      onRepeat: Function.prototype,
+      onEnded: Function.prototype,
+      onError: Function.prototype,
+      onPlaying: Function.prototype,
+      onPause: Function.prototype,
+      onWaiting: Function.prototype,
+      onSuspend: Function.prototype,
+      onVolumeChange: Function.prototype,
+      onLoadStart: Function.prototype,
+      onLoadedMetadata: Function.prototype,
+      onAbort: Function.prototype,
+      onEmptied: Function.prototype,
+      onStalled: Function.prototype,
+      onLoadedData: Function.prototype,
+      onCanPlay: Function.prototype,
+      onCanPlayThrough: Function.prototype,
     };
   }
   constructor(props) {
@@ -188,7 +188,7 @@ class MediaContainer extends React.Component {
 
     if (nextProps.newTime !== null) {
       this.currentMedia.currentTime = nextProps.newTime;
-      this.props.setOption('newTime', null);
+      nextProps.setOption('newTime', null);
     }
 
     if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
@@ -198,7 +198,7 @@ class MediaContainer extends React.Component {
         this.currentMedia.currentTime = toPercentage(nextProps.playHeadPercent,
           this.getSeekableEnd());
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-        this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
+        nextProps.setOption('currentPercentRelative', this.getCurrentPercentRelative());
       }
     }
 
