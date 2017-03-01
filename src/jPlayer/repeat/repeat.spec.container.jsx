@@ -1,40 +1,39 @@
-import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 
-import { loopOptions } from '../../util/constants';
-import { shallowSetup } from '../../util/common.spec';
+import { setJPlayers } from '../../util/common.spec';
 import { setLoop } from '../_actions/actions';
-import RepeatContainer from './repeat.container';
-import Repeat from './repeat';
+import { loopOptions } from '../../util/constants';
+import { __get__ } from './repeat.container';
 
-const setup = state => shallowSetup(RepeatContainer, {
-  children: (<i className="@@jPlayer-test" />),
-}, state);
+const mapStateToProps = __get__('mapStateToProps');
+const mergeProps = __get__('mergeProps');
+const uid = 'jPlayer-1';
 
 describe('RepeatContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props } = setup();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid });
 
-    expect(wrapper.type()).toBe(Repeat);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      loop: loopOptions.OFF,
+    });
   });
 
-  it('onClick toggles looped if off', () => {
-    const { wrapper, state } = setup();
+  const onClickData = [
+    { loop: loopOptions.OFF },
+    { loop: loopOptions.LOOP },
+  ];
 
-    wrapper.simulate('click');
+  it('mergeProps onClick toggles loop', () => {
+    onClickData.forEach((onClickDatum) => {
+      const dispatch = createSpy();
+      const expected = onClickDatum.loop === loopOptions.LOOP ? loopOptions.OFF
+        : loopOptions.LOOP;
+      const mergedProps = mergeProps(setJPlayers(onClickDatum).jPlayers[uid],
+        { dispatch }, { uid });
 
-    expect(state.store.dispatch).toHaveBeenCalledWith(setLoop(loopOptions.LOOP, state.uid));
-  });
+      mergedProps.onClick();
 
-  it('onClick toggles loop off if looped', () => {
-    const { wrapper, state } = setup({ loop: loopOptions.LOOP });
-
-    wrapper.simulate('click');
-
-    expect(state.store.dispatch).toHaveBeenCalledWith(setLoop(loopOptions.OFF, state.uid));
+      expect(dispatch).toHaveBeenCalledWith(setLoop(expected, uid));
+    });
   });
 });

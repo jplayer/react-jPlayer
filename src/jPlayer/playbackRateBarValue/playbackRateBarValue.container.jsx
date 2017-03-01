@@ -1,14 +1,11 @@
 import { connectWithId } from '../../util/index';
 import PlaybackRateBarValue from './playbackRateBarValue';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
   verticalPlaybackRate: jPlayers[uid].verticalPlaybackRate,
   minPlaybackRate: jPlayers[uid].minPlaybackRate,
   maxPlaybackRate: jPlayers[uid].maxPlaybackRate,
   playbackRate: jPlayers[uid].playbackRate,
-  ...attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(PlaybackRateBarValue);
+export default connectWithId(mapStateToProps)(PlaybackRateBarValue);

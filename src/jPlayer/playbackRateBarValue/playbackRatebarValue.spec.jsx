@@ -30,7 +30,9 @@ const styleTests = [
 const setup = () => {
   const props = {
     playbackRate: 1.0,
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<PlaybackRateBarValue {...props} />);
@@ -51,7 +53,7 @@ describe('<PlaybackRateBarValue />', () => {
 
   it('renders self and subcomponents', () => {
     expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR_VALUE)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
   });
 
   styleTests.forEach((test) => {

@@ -1,22 +1,16 @@
 import expect from 'expect';
 
-import { shallowSetup } from '../../util/common.spec';
-import PosterContainer from './poster.container';
-import Poster from './poster';
+import { setJPlayers } from '../../util/common.spec';
+import { __get__ } from './poster.container';
 
-const setup = () => shallowSetup(PosterContainer, {
-  alt: 'image',
-});
+const mapStateToProps = __get__('mapStateToProps');
 
 describe('PosterContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1' });
 
-    expect(wrapper.type()).toBe(Poster);
-    expect(wrapper.prop('src')).toEqual(jPlayer.media.poster);
-    expect(wrapper.prop('alt')).toEqual(props.alt);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      src: '',
+    });
   });
 });

@@ -1,12 +1,8 @@
 import { connectWithId } from '../../util/index';
 import Poster from './poster';
 
-const mapStateToProps = ({ jPlayers }, { uid, alt, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
   src: jPlayers[uid].media.poster,
-  alt,
-  ...attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(Poster);
+export default connectWithId(mapStateToProps)(Poster);

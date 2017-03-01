@@ -1,10 +1,8 @@
 import { connectWithId } from '../../util/index';
 import Title from './title';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
-  ...{ children: jPlayers[uid].media.title, ...attributes },
+const mapStateToProps = ({ jPlayers }, { children, uid }) => ({
+  children: children || jPlayers[uid].media.title,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(Title);
+export default connectWithId(mapStateToProps)(Title);

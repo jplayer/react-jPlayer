@@ -9,7 +9,9 @@ const setup = () => {
   const props = {
     src: 'http://www.test.jpg',
     alt: 'test-poster',
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Poster {...props} />);
@@ -32,6 +34,6 @@ describe('<Poster />', () => {
     expect(wrapper.hasClass(classes.POSTER)).toBeTruthy();
     expect(wrapper.prop('alt')).toBe(props.alt);
     expect(wrapper.prop('src')).toBe(props.src);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
   });
 });

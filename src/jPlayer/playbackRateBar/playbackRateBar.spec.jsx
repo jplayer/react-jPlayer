@@ -11,7 +11,9 @@ const setup = () => {
     onMouseDown: createSpy(),
     setPlaybackRate: Function.prototype,
     children: (<div className="@@jPlayer-test" />),
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<PlaybackRateBar {...props} />);
@@ -38,6 +40,6 @@ describe('<PlaybackRateBar />', () => {
     expect(props.onMouseDown).toHaveBeenCalled();
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
   });
 });

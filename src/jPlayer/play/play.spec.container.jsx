@@ -1,39 +1,38 @@
-import React from 'react';
-import expect from 'expect';
-
-import { shallowSetup } from '../../util/common.spec';
+import expect, { createSpy } from 'expect';
+import { setJPlayers } from '../../util/common.spec';
 import { play, pause } from '../_actions/actions';
-import PlayContainer from './play.container';
-import Play from './play';
+import { __get__ } from './play.container';
 
-const setup = state => shallowSetup(PlayContainer, {
-  children: (<i className="@@jPlayer-test" />),
-}, state);
+const mapStateToProps = __get__('mapStateToProps');
+const mergeProps = __get__('mergeProps');
+const uid = 'jPlayer-1';
 
-describe('PlayContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props } = setup();
+describe('MuteContainer', () => {
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid });
 
-    expect(wrapper.type()).toBe(Play);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      paused: true,
+    });
   });
 
-  it('onClick toggles play if paused', () => {
-    const { wrapper, state } = setup();
+  it('mergeProps onClick when paused will play', () => {
+    const dispatch = createSpy();
+    const mergedProps = mergeProps(setJPlayers().jPlayers[uid], { dispatch }, { uid });
 
-    wrapper.simulate('click');
+    mergedProps.onClick();
 
-    expect(state.store.dispatch).toHaveBeenCalledWith(play(state.uid));
+    expect(dispatch).toHaveBeenCalledWith(play(uid));
   });
 
-  it('onClick toggles pause if playing', () => {
-    const { wrapper, state } = setup({ paused: false });
+  it('mergeProps onClick when playing will pause', () => {
+    const dispatch = createSpy();
+    const mergedProps = mergeProps(setJPlayers({ paused: false }).jPlayers[uid],
+      { dispatch }, { uid });
 
-    wrapper.simulate('click');
+    mergedProps.onClick();
 
-    expect(state.store.dispatch).toHaveBeenCalledWith(pause(state.uid));
+    expect(dispatch).toHaveBeenCalledWith(pause(uid));
   });
 });
+

@@ -1,21 +1,18 @@
 import expect from 'expect';
+import { setJPlayers } from '../../util/common.spec';
+import { __get__ } from './playBar.container';
 
-import { shallowSetup } from '../../util/common.spec';
-import PlayBarContainer from './playBar.container';
-import PlayBar from './playBar';
-
-const setup = () => shallowSetup(PlayBarContainer);
+const mapStateToProps = __get__('mapStateToProps');
+const uid = 'jPlayer-1';
 
 describe('PlayBarContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid });
 
-    expect(wrapper.type()).toBe(PlayBar);
-    expect(wrapper.prop('smoothPlayBar')).toEqual(jPlayer.smoothPlayBar);
-    expect(wrapper.prop('currentPercentAbsolute')).toEqual(jPlayer.currentPercentAbsolute);
-    expect(wrapper.prop('currentPercentRelative')).toEqual(jPlayer.currentPercentRelative);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      smoothPlayBar: false,
+      currentPercentAbsolute: 0,
+      currentPercentRelative: 0,
+    });
   });
 });

@@ -8,7 +8,9 @@ import Title from './title';
 const setup = () => {
   const props = {
     children: 'fade',
-    'data-attribute-test': 'test',
+    attributes: {
+      'data-attribute-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Title {...props} />);
@@ -30,6 +32,6 @@ describe('<Title />', () => {
   it('renders self and subcomponents', () => {
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
+    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
   });
 });

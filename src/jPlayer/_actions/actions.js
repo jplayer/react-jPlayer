@@ -17,8 +17,8 @@ export const clearMedia = uid => ({
 });
 export const play = (uid, time) => ({
   type: actionTypes.jPlayer.PLAY,
-  time,
   uid,
+  time,
 });
 export const pause = (uid, time) => ({
   type: actionTypes.jPlayer.PAUSE,

@@ -1,22 +1,19 @@
 import expect from 'expect';
+import { setJPlayers } from '../../util/common.spec';
+import { __get__ } from './playbackRateBarValue.container';
 
-import { shallowSetup } from '../../util/common.spec';
-import PlaybackRateBarValueContainer from './playbackRateBarValue.container';
-import PlaybackRateBarValue from './playbackRateBarValue';
-
-const setup = state => shallowSetup(PlaybackRateBarValueContainer, null, state);
+const mapStateToProps = __get__('mapStateToProps');
+const uid = 'jPlayer-1';
 
 describe('PlaybackRateBarValueContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid });
 
-    expect(wrapper.type()).toBe(PlaybackRateBarValue);
-    expect(wrapper.prop('verticalPlaybackRate')).toEqual(jPlayer.verticalPlaybackRate);
-    expect(wrapper.prop('minPlaybackRate')).toEqual(jPlayer.minPlaybackRate);
-    expect(wrapper.prop('maxPlaybackRate')).toEqual(jPlayer.maxPlaybackRate);
-    expect(wrapper.prop('playbackRate')).toEqual(jPlayer.playbackRate);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      verticalPlaybackRate: false,
+      minPlaybackRate: 0.5,
+      maxPlaybackRate: 4,
+      playbackRate: 1,
+    });
   });
 });

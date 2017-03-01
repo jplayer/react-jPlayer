@@ -1,13 +1,10 @@
 import { connectWithId } from '../../util/index';
 import PlayBar from './playBar';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
   smoothPlayBar: jPlayers[uid].smoothPlayBar,
   currentPercentAbsolute: jPlayers[uid].currentPercentAbsolute,
   currentPercentRelative: jPlayers[uid].currentPercentRelative,
-  ...attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(PlayBar);
+export default connectWithId(mapStateToProps)(PlayBar);
