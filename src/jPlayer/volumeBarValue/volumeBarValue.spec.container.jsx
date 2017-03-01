@@ -1,21 +1,20 @@
 import expect from 'expect';
 
-import { shallowSetup } from '../../util/common.spec';
-import VolumeBarValueContainer from './volumeBarValue.container';
-import VolumeBarValue from './volumeBarValue';
+import { setJPlayers } from '../../util/common.spec';
+import { defaultOptions } from '../../util/constants';
+import { __get__ } from './volumeBarValue.container';
 
-const setup = () => shallowSetup(VolumeBarValueContainer);
+const mapStateToProps = __get__('mapStateToProps');
+const uid = 'jPlayer-1';
 
-describe('TitleContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
+describe('DurationContainer', () => {
+  it('maps state', () => {
+    const expected = mapStateToProps(setJPlayers(), { uid });
 
-    expect(wrapper.type()).toBe(VolumeBarValue);
-    expect(wrapper.prop('verticalVolume')).toBe(jPlayer.verticalVolume);
-    expect(wrapper.prop('muted')).toBe(jPlayer.muted);
-    expect(wrapper.prop('volume')).toBe(jPlayer.volume);
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+    expect(expected).toEqual({
+      verticalVolume: false,
+      muted: false,
+      volume: defaultOptions.volume,
+    });
   });
 });

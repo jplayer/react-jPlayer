@@ -5,52 +5,51 @@ import BarEvents from '../barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValue.container';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => {
-  const { verticalVolume } = jPlayers[uid];
+const mapStateToProps = ({ jPlayers }, { uid }) => ({
+  moveVolumeBar: (bar, dispatch, e) => {
+    const { verticalVolume } = jPlayers[uid];
+    const offset = getOffset(bar);
+    const x = e.pageX - offset.left;
+    const w = getWidth(bar);
+    const y = (getHeight(bar) - e.pageY) + offset.top;
+    const h = getHeight(bar);
 
-  return {
-    verticalVolume,
-    moveVolumeBar: (bar, dispatch, e) => {
-      const offset = getOffset(bar);
-      const x = e.pageX - offset.left;
-      const w = getWidth(bar);
-      const y = (getHeight(bar) - e.pageY) + offset.top;
-      const h = getHeight(bar);
+    if (verticalVolume) {
+      dispatch(setVolume(y / h, uid));
+    } else {
+      dispatch(setVolume(x / w, uid));
+    }
+  },
+});
 
-      if (verticalVolume) {
-        dispatch(setVolume(y / h, uid));
-      } else {
-        dispatch(setVolume(x / w, uid));
-      }
-    },
-    ...attributes,
-  };
-};
-
-const mergeProps = ({ verticalVolume, moveVolumeBar, ...attributes }, { dispatch }) => ({
-  touchMoveVolumeBar: (bar, e) => {
+const mergeProps = ({ moveVolumeBar }, { dispatch }) => ({
+  onClick: (bar, e) => moveVolumeBar(bar, dispatch, e),
+  onTouch: (bar, e) => {
     // Stop page scrolling
     e.preventDefault();
 
     moveVolumeBar(bar, dispatch, e.touches[0]);
   },
-  clickMoveVolumeBar: (bar, e) => moveVolumeBar(bar, dispatch, e),
-  ...attributes,
 });
 
-const VolumeBarContainer = ({ clickMoveVolumeBar, touchMoveVolumeBar, ...attributes }) => (
-  <BarEvents clickMoveBar={clickMoveVolumeBar} touchMoveBar={touchMoveVolumeBar}>
-    <VolumeBar {...attributes} />
+const VolumeBarContainer = ({ onClick, onTouch, children, attributes }) => (
+  <BarEvents clickMoveBar={onClick} touchMoveBar={onTouch}>
+    <VolumeBar attributes={attributes}>
+      {children}
+    </VolumeBar>
   </BarEvents>
 );
 
 VolumeBarContainer.defaultProps = {
   children: (<VolumeBarValue />),
+  attributes: null,
 };
 
 VolumeBarContainer.propTypes = {
-  clickMoveVolumeBar: React.PropTypes.func.isRequired,
-  touchMoveVolumeBar: React.PropTypes.func.isRequired,
+  attributes: React.PropTypes.node,
+  children: React.PropTypes.node,
+  onClick: React.PropTypes.func.isRequired,
+  onTouch: React.PropTypes.func.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(VolumeBarContainer);

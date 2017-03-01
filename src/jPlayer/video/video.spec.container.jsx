@@ -1,23 +1,19 @@
-import React from 'react';
 import expect from 'expect';
 
-import { shallowSetup } from '../../util/common.spec';
-import VideoContainer from './video.container';
-import Video from './video';
+import { setJPlayers } from '../../util/common.spec';
+import { __get__ } from './video.container';
 
-const setup = () => shallowSetup(VideoContainer, {
-  children: (<source className="@@jPlayer-test" />),
-});
+const mapStateToProps = __get__('mapStateToProps');
+const videoStates = [
+  { mediaSettings: { video: false } },
+  { mediaSettings: { video: true } },
+];
 
 describe('VideoContainer', () => {
-  it('renders component and maps state', () => {
-    const { wrapper, props, jPlayer } = setup();
-
-    expect(wrapper.type()).toBe(Video);
-    expect(wrapper.prop('require')).toBe(jPlayer.mediaSettings.video);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props['data-attribute-test']);
-    expect(wrapper.prop('uid')).toNotExist();
-    expect(wrapper.prop('dispatch')).toNotExist();
+  videoStates.forEach((videoState) => {
+    it(`require if video (value: ${videoState.mediaSettings.video})`, () => {
+      const expected = mapStateToProps(setJPlayers(videoState), { uid: 'jPlayer-1' });
+      expect(expected.require).toBe(videoState.mediaSettings.video);
+    });
   });
 });

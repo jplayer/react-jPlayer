@@ -39,13 +39,13 @@ const mergeProps = ({ movePlaybackRate }, { dispatch }) => ({
   },
 });
 
-const PlaybackRateBarContainer = props => (
+const PlaybackRateBarContainer = ({ onClick, onTouch, children, attributes }) => (
   <BarEvents
-    clickMoveBar={props.onClick}
-    touchMoveBar={props.onTouch}
+    clickMoveBar={onClick}
+    touchMoveBar={onTouch}
   >
-    <PlaybackRateBar attributes={props.attributes}>
-      {props.children}
+    <PlaybackRateBar attributes={attributes}>
+      {children}
     </PlaybackRateBar>
   </BarEvents>
 );

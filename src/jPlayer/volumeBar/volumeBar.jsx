@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const VolumeBar = ({ setBar, onClick, onMouseDown,
-onTouchStart, children, ...attributes }) => (
+onTouchStart, children, attributes }) => (
   <div
     {...attributes} ref={setBar} className={classes.VOLUME_BAR}
     onClick={onClick} onMouseDown={onMouseDown} onTouchStart={onTouchStart}
@@ -17,9 +17,11 @@ VolumeBar.defaultProps = {
   setBar: null,
   onMouseDown: null,
   onTouchStart: null,
+  attributes: null,
 };
 
 VolumeBar.propTypes = {
+  attributes: React.PropTypes.node,
   onClick: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onTouchStart: React.PropTypes.func,
