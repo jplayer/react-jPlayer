@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { spyOn } from 'expect';
 import { mount, shallow } from 'enzyme';
 
-import { setJPlayers, mockCanvasContext } from '../../util/common.spec';
+import { getJPlayers, mockCanvasContext } from '../../util/common.spec';
 import { __get__, __Rewire__, __ResetDependency__ } from './bufferBar.container';
 import BufferBar from './bufferBar';
 
@@ -30,7 +30,7 @@ describe('<BufferBarContainer />', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(state), { uid: 'jPlayer-1' });
+    const expected = mapStateToProps(getJPlayers(state), { uid: 'jPlayer-1' });
     expect(state).toEqual(expected);
   });
 

@@ -1,6 +1,6 @@
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { setOption } from '../_actions/actions';
 import { __get__ } from './gui.container';
 
@@ -17,7 +17,7 @@ describe('GuiContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers({
+    const expected = mapStateToProps(getJPlayers({
       guiFadeHoldTimeout: 0,
     }), { uid });
 

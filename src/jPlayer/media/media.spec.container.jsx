@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy, spyOn } from 'expect';
 import { mount } from 'enzyme';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, loopOptions } from '../../util/constants';
 import { toPercentage, toRelativePercentage, urlNotSupportedError } from '../../util/index';
 import { setOption, pause } from '../_actions/actions';
@@ -17,7 +17,7 @@ const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const MediaContainer = __get__('MediaContainer');
 const getProps = state => ({
-  ...setJPlayers(state).jPlayers[uid],
+  ...getJPlayers(state).jPlayers[uid],
   setOption: createSpy(),
   pause: createSpy(),
 });
@@ -57,7 +57,7 @@ describe('MediaContainer', () => {
     };
   });
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid, children: MockAudio });
+    const expected = mapStateToProps(getJPlayers(), { uid, children: MockAudio });
 
     expect(expected).toEqual({
       loop: loopOptions.OFF,

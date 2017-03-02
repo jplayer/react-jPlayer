@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow, mount } from 'enzyme';
 
-import { setJPlayers } from '../util/common.spec';
+import { getJPlayers } from '../util/common.spec';
 import { __get__ } from './barEvents';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -16,15 +16,11 @@ const getProps = props => ({
   ...props,
 });
 
-const MockChildren = ({ setBar }) => <div ref={setBar} />;
-
-MockChildren.propTypes = {
-  setBar: React.PropTypes.func.isRequired,
-};
+const MockChildren = ({ ...props }) => <div {...props} />;
 
 describe('BarEvents', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       barDrag: true,
@@ -60,7 +56,7 @@ describe('BarEvents', () => {
     it(`${moveBarDatum.eventName} calls moveBar if dragging and 
       barDrag`, () => {
       const props = getProps();
-      const event = new window.MouseEvent(moveBarDatum.eventName);
+      const event = new window.UIEvent(moveBarDatum.eventName);
       const wrapper = mount(<BarEvents {...props} />);
       const instance = wrapper.instance();
 
@@ -126,5 +122,39 @@ describe('BarEvents', () => {
 
       expect(props[moveBarUnmountDatum.moveBarKey]).toNotHaveBeenCalled();
     });
+  });
+
+  it('onClick moves bar', () => {
+    const props = getProps();
+    const wrapper = shallow(<BarEvents {...props} />);
+
+    wrapper.simulate('click');
+
+    expect(props.clickMoveBar).toHaveBeenCalled();
+  });
+
+  const renderDraggingData = [
+    { eventName: 'mouseDown' },
+    { eventName: 'touchStart' },
+  ];
+
+  renderDraggingData.forEach((renderDraggingDatum) => {
+    it(`${renderDraggingDatum.eventName} sets dragging to true`, () => {
+      const props = getProps();
+      const wrapper = shallow(<BarEvents {...props} />);
+      const instance = wrapper.instance();
+
+      wrapper.simulate(renderDraggingDatum.eventName);
+
+      expect(instance.dragging).toBe(true);
+    });
+  });
+
+  it('sets ref', () => {
+    const props = getProps();
+    const wrapper = mount(<BarEvents {...props} />);
+    const instance = wrapper.instance();
+
+    expect(instance.bar).toNotBe(undefined);
   });
 });

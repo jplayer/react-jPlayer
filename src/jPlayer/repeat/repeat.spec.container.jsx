@@ -1,6 +1,6 @@
 import expect, { createSpy } from 'expect';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { setLoop } from '../_actions/actions';
 import { loopOptions } from '../../util/constants';
 import { __get__ } from './repeat.container';
@@ -11,7 +11,7 @@ const uid = 'jPlayer-1';
 
 describe('RepeatContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       loop: loopOptions.OFF,
@@ -28,7 +28,7 @@ describe('RepeatContainer', () => {
       const dispatch = createSpy();
       const expected = onClickDatum.loop === loopOptions.LOOP ? loopOptions.OFF
         : loopOptions.LOOP;
-      const mergedProps = mergeProps(setJPlayers(onClickDatum).jPlayers[uid],
+      const mergedProps = mergeProps(getJPlayers(onClickDatum).jPlayers[uid],
         { dispatch }, { uid });
 
       mergedProps.onClick();

@@ -1,7 +1,7 @@
 import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { setPlayHead } from '../_actions/actions';
 import { __get__ } from './seekBar.container';
 import BarEvents from '../barEvents';
@@ -25,7 +25,7 @@ const getProps = props => ({
 
 describe('SeekBarContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     delete expected.movePlayHead;
 
@@ -35,7 +35,7 @@ describe('SeekBarContainer', () => {
   });
 
   it('merges props', () => {
-    const expected = mergeProps(setJPlayers().jPlayers[uid],
+    const expected = mergeProps(getJPlayers().jPlayers[uid],
       { dispatch: null });
 
     delete expected.onClick;
@@ -51,7 +51,7 @@ describe('SeekBarContainer', () => {
       getBoundingClientRect,
     });
     const dispatch = createSpy();
-    const mappedProps = mapStateToProps(setJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
@@ -65,7 +65,7 @@ describe('SeekBarContainer', () => {
       getBoundingClientRect,
     });
     const dispatch = createSpy();
-    const mappedProps = mapStateToProps(setJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {

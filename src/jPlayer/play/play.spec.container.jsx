@@ -1,5 +1,5 @@
 import expect, { createSpy } from 'expect';
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { play, pause } from '../_actions/actions';
 import { __get__ } from './play.container';
 
@@ -9,7 +9,7 @@ const uid = 'jPlayer-1';
 
 describe('MuteContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       paused: true,
@@ -18,7 +18,7 @@ describe('MuteContainer', () => {
 
   it('mergeProps onClick when paused will play', () => {
     const dispatch = createSpy();
-    const mergedProps = mergeProps(setJPlayers().jPlayers[uid], { dispatch }, { uid });
+    const mergedProps = mergeProps(getJPlayers().jPlayers[uid], { dispatch }, { uid });
 
     mergedProps.onClick();
 
@@ -27,7 +27,7 @@ describe('MuteContainer', () => {
 
   it('mergeProps onClick when playing will pause', () => {
     const dispatch = createSpy();
-    const mergedProps = mergeProps(setJPlayers({ paused: false }).jPlayers[uid],
+    const mergedProps = mergeProps(getJPlayers({ paused: false }).jPlayers[uid],
       { dispatch }, { uid });
 
     mergedProps.onClick();

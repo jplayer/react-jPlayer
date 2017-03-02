@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { __get__ } from './audio.container';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -12,7 +12,7 @@ const videoStates = [
 describe('AudioContainer', () => {
   videoStates.forEach((videoState) => {
     it(`require if no video (value: ${videoState.mediaSettings.video})`, () => {
-      const expected = mapStateToProps(setJPlayers(videoState), { uid: 'jPlayer-1' });
+      const expected = mapStateToProps(getJPlayers(videoState), { uid: 'jPlayer-1' });
       expect(expected.require).toBe(!videoState.mediaSettings.video);
     });
   });

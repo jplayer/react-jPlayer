@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { __get__ } from './title.container';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -11,7 +11,7 @@ describe('TitleContainer', () => {
   const title = 'Test Title';
 
   it('mapState maps title as default value to children', () => {
-    const expected = mapStateToProps(setJPlayers({
+    const expected = mapStateToProps(getJPlayers({
       media: {
         title,
       },
@@ -24,7 +24,7 @@ describe('TitleContainer', () => {
 
   it('mapState maps custom children if specified over title', () => {
     const children = <div className="@@jPlayer-test" />;
-    const expected = mapStateToProps(setJPlayers({
+    const expected = mapStateToProps(getJPlayers({
       media: {
         title,
       },

@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, loopOptions, keyIgnoreElementNames } from '../../util/constants';
 import { play, pause, setFullScreen, setMute, setVolume,
   setLoop } from '../_actions/actions';
@@ -13,13 +13,13 @@ const dispatchProps = {
   dispatch: createSpy(),
 };
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = state => __get__('mergeProps')(setJPlayers(state).jPlayers[uid],
+const mergeProps = state => __get__('mergeProps')(getJPlayers(state).jPlayers[uid],
   dispatchProps, { uid });
 const KeyControlContainer = __get__('KeyControlContainer');
 
 describe('KeyControlContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       paused: true,

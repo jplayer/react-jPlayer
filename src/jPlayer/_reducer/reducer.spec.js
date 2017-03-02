@@ -4,7 +4,7 @@ import reducer from './reducer';
 import * as reducerData from './data.spec';
 import { actionTypes, defaultOptions, formats } from '../../util/constants';
 import { InvalidGlobalMethodException } from '../../util/index';
-import { getJPlayerState } from '../../util/common.spec';
+import { getDefaultJPlayers } from '../../util/common.spec';
 
 const jPlayerActionTypes = actionTypes.jPlayer;
 const jPlayerIds = [
@@ -13,22 +13,18 @@ const jPlayerIds = [
   'jPlayer-3',
 ];
 
-export const setup = (mediaType) => {
+const mockMedia = (mediaType) => {
   const media = document.createElement(mediaType);
 
   spyOn(document, 'createElement').andReturn(media);
   spyOn(media, 'canPlayType').andReturn('probably');
 };
 
-export const tearDown = () => {
-  expect.restoreSpies();
-};
-
 describe('jPlayer reducer', () => {
   let state;
 
   beforeEach(() => {
-    state = getJPlayerState(1).jPlayers;
+    state = getDefaultJPlayers().jPlayers;
   });
 
   it('should return the state if action is invalid', () => {
@@ -72,7 +68,7 @@ describe('jPlayer reducer', () => {
 
   it('SET_MEDIA should handle all possible formats', () => {
     Object.keys(formats).forEach((key) => {
-      setup(formats[key].MEDIA);
+      mockMedia(formats[key].MEDIA);
 
       const jPlayer = reducer(state, {
         type: jPlayerActionTypes.SET_MEDIA,
@@ -104,7 +100,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle SET_MEDIA', () => {
-    setup('audio');
+    mockMedia('audio');
     reducerData.fullScreenData.forEach((test) => {
       const jPlayer = reducer(state, test.action)[jPlayerIds[0]];
 
@@ -234,7 +230,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should handle FOCUS', () => {
-    state = getJPlayerState(3).jPlayers;
+    state = getDefaultJPlayers(3).jPlayers;
 
     reducerData.focusData.forEach((test) => {
       state[test.uid] = test.state;
@@ -252,7 +248,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should focus on the jPlayer for every action apart from focus', () => {
-    state = getJPlayerState(2, true).jPlayers;
+    state = getDefaultJPlayers(2, true).jPlayers;
 
     Object.keys(jPlayerActionTypes).forEach((type) => {
       if (type !== jPlayerActionTypes.FOCUS) {
@@ -273,7 +269,7 @@ describe('jPlayer reducer', () => {
   });
 
   it('should return an error when invalid action specified for the global option', () => {
-    state = getJPlayerState(2, true).jPlayers;
+    state = getDefaultJPlayers(2, true).jPlayers;
     const actionType = 'INVALID_ACTION';
 
     state[jPlayerIds[0]].global = [actionType];
@@ -290,9 +286,9 @@ describe('jPlayer reducer', () => {
   it('should set the global option for every action that requires it', () => {
     const { ...globalActions } = reducerData;
 
-    setup('audio');
+    mockMedia('audio');
 
-    state = getJPlayerState(3).jPlayers;
+    state = getDefaultJPlayers(3).jPlayers;
     state[jPlayerIds[0]].global = Object.keys(jPlayerActionTypes);
     state[jPlayerIds[1]].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
     state[jPlayerIds[2]].global = Object.keys(jPlayerActionTypes);
@@ -339,5 +335,7 @@ describe('jPlayer reducer', () => {
     });
   });
 
-  after(() => tearDown());
+  afterEach(() => {
+    expect.restoreSpies();
+  });
 });

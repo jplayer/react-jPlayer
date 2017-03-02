@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions } from '../../util/constants';
 import { __get__ } from './volumeBarValue.container';
 
@@ -9,7 +9,7 @@ const uid = 'jPlayer-1';
 
 describe('DurationContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       verticalVolume: false,

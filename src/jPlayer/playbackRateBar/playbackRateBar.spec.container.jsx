@@ -1,7 +1,7 @@
 import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { setPlaybackRate } from '../_actions/actions';
 import { __get__ } from './playbackRateBar.container';
 import BarEvents from '../barEvents';
@@ -30,7 +30,7 @@ describe('PlaybackRateBarContainer', () => {
       getBoundingClientRect,
     });
     const dispatch = createSpy();
-    const mappedProps = mapStateToProps(setJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
@@ -44,7 +44,7 @@ describe('PlaybackRateBarContainer', () => {
       getBoundingClientRect,
     });
     const dispatch = createSpy();
-    const mappedProps = mapStateToProps(setJPlayers({
+    const mappedProps = mapStateToProps(getJPlayers({
       verticalPlaybackRate: true,
     }), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
@@ -60,7 +60,7 @@ describe('PlaybackRateBarContainer', () => {
       getBoundingClientRect,
     });
     const dispatch = createSpy();
-    const mappedProps = mapStateToProps(setJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {
@@ -81,7 +81,7 @@ describe('PlaybackRateBarContainer', () => {
       getBoundingClientRect,
     });
     const dispatch = createSpy();
-    const mappedProps = mapStateToProps(setJPlayers({
+    const mappedProps = mapStateToProps(getJPlayers({
       verticalPlaybackRate: true,
     }), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });

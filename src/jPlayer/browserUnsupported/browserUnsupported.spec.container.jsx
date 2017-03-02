@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { classes, defaultOptions } from '../../util/constants';
 import { __get__ } from './browserUnsupported.container';
 
@@ -17,7 +17,7 @@ const props = {
 
 describe('BrowserUnsupportedContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1',
+    const expected = mapStateToProps(getJPlayers(), { uid: 'jPlayer-1',
       children: props.children });
 
     expect(expected).toEqual({
@@ -27,7 +27,7 @@ describe('BrowserUnsupportedContainer', () => {
   });
 
   it('no children renders default', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid: 'jPlayer-1',
+    const expected = mapStateToProps(getJPlayers(), { uid: 'jPlayer-1',
       attributes: props.attributes });
     const wrapper = shallow(expected.children);
 

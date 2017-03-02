@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, statusDefaultValues } from '../../util/constants';
 import { __get__ } from './download.container';
 
@@ -9,7 +9,7 @@ const uid = 'jPlayer-1';
 
 describe('DownloadContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       free: defaultOptions.media.free,

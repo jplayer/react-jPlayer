@@ -1,5 +1,5 @@
 import expect, { createSpy } from 'expect';
-import { setJPlayers } from '../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { setMute } from '../_actions/actions';
 import { __get__ } from './mute.container';
 
@@ -9,7 +9,7 @@ const uid = 'jPlayer-1';
 
 describe('MuteContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(setJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       muted: false,
@@ -24,7 +24,7 @@ describe('MuteContainer', () => {
   it('mergeProps onClick toggle mute', () => {
     muteData.forEach((muteDatum) => {
       const dispatch = createSpy();
-      const mergedProps = mergeProps(setJPlayers(muteDatum).jPlayers[uid],
+      const mergedProps = mergeProps(getJPlayers(muteDatum).jPlayers[uid],
         { dispatch }, { uid });
 
       mergedProps.onClick();
