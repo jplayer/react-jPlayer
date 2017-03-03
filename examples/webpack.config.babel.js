@@ -23,15 +23,11 @@ export default {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015', 'stage-0'],
-          plugins: ['transform-class-properties', 'transform-decorators-legacy'],
-        },
       },
       {
         test: /\.(css|less)$/,
         loader: ExtractTextPlugin.extract('style-loader',
-          'css-loader?importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' +
+          'css-loader?importLoaders=1' +
           '!postcss-loader' +
           '!less-loader'),
       },
