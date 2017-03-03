@@ -4,12 +4,11 @@ import { shallow } from 'enzyme';
 
 import { getJPlayers, getDefaultJPlayers } from './util/common.spec';
 import { defaultOptions, statusDefaultValues } from './util/constants';
-import { __get__ } from './jPlayerConnect';
+import jPlayerConnect, { __get__ } from './jPlayerConnect';
 import * as actions from './jPlayer/_actions/actions';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
-const jPlayerConnect = __get__('jPlayerConnect');
 const uid = 'jPlayer-1';
 
 const MockPlayer = () => <div />;

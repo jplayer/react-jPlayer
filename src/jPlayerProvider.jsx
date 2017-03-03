@@ -8,7 +8,7 @@ import { defaultOptions, statusDefaultValues } from './util/constants';
 
 const reducers = combineReducers({ jPlayers: jPlayerReducer });
 
-class jPlayerProvider extends React.Component {
+class JPlayerProvider extends React.Component {
   static get propTypes() {
     return {
       jPlayers: React.PropTypes.oneOfType([
@@ -21,7 +21,7 @@ class jPlayerProvider extends React.Component {
   constructor(props) {
     super(props);
 
-    this.initialState = {
+    const initialState = {
       jPlayers: {},
     };
     let jPlayers = props.jPlayers;
@@ -31,13 +31,14 @@ class jPlayerProvider extends React.Component {
     }
 
     jPlayers.forEach((jPlayer) => {
-      this.initialState.jPlayers[jPlayer.uid] = {
-        ...merge({}, statusDefaultValues, defaultOptions, jPlayer.options),
+      initialState.jPlayers[jPlayer.uid] = merge({}, {
+        ...statusDefaultValues,
+        ...defaultOptions,
         id: jPlayer.uid,
-      };
+      }, jPlayer.options);
     });
 
-    this.store = createStore(reducers, this.initialState);
+    this.store = createStore(reducers, initialState);
   }
   render() {
     return (
@@ -48,4 +49,4 @@ class jPlayerProvider extends React.Component {
   }
 }
 
-export default jPlayerProvider;
+export default JPlayerProvider;
