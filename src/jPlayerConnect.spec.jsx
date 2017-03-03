@@ -1,6 +1,5 @@
 import React from 'react';
 import expect from 'expect';
-import { connect } from 'react-redux';
 import { shallow } from 'enzyme';
 
 import { getJPlayers, getDefaultJPlayers } from './util/common.spec';
@@ -67,7 +66,7 @@ describe('JPlayerConnect', () => {
     const Component = jPlayerConnect(MockPlayer);
     const wrapper = shallow(<Component test="test" />);
 
-    expect(wrapper.prop('uid')).toBe('MockPdlayer');
+    expect(wrapper.prop('uid')).toBe('MockPlayer');
     expect(wrapper.prop('test')).toBe('test');
   });
 });
