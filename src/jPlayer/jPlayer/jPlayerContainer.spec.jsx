@@ -294,11 +294,11 @@ describe('<JPlayerContainer />', () => {
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const instance = wrapper.instance();
 
-    __Rewire__('traverseParentsUntilClassName', () => false);
-
     spyOn(instance, 'startGuiFadeOutTimer');
 
-    wrapper.simulate('mouseMove', { target: '.jp-sleek' });
+    wrapper.simulate('mouseMove', {
+      target: document.body,
+    });
 
     expect(instance.startGuiFadeOutTimer).toHaveBeenCalled();
   });
@@ -309,11 +309,19 @@ describe('<JPlayerContainer />', () => {
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const instance = wrapper.instance();
 
-    __Rewire__('traverseParentsUntilClassName', () => true);
-
     spyOn(instance, 'startGuiFadeOutTimer');
 
-    wrapper.simulate('mouseMove', { target: '.jp-controls' });
+    wrapper.simulate('mouseMove', {
+      target: {
+        className: classes.PLAY,
+        parentNode: {
+          className: 'jp-controls',
+          parentNode: {
+            className: `${classes.GUI} test-gui`,
+          },
+        },
+      },
+    });
 
     expect(instance.startGuiFadeOutTimer).toNotHaveBeenCalled();
   });

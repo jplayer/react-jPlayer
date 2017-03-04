@@ -3,24 +3,25 @@ import { Motion, spring } from 'react-motion';
 
 import { classes } from '../../util/constants';
 
+const motion = (values, onMouseEnter, children, attributes) => (
+  <div
+    {...attributes} className={classes.GUI}
+    onMouseEnter={onMouseEnter}
+    style={{
+      opacity: values.opacity,
+      display: values.opacity === 0 ? 'none' : '',
+    }}
+  >
+    {children}
+  </div>
+);
+
 const Gui = ({ fullScreen, guiFadeOut, onMouseEnter, children, attributes }) => (
   <Motion
     defaultStyle={{ opacity: 1 }}
     style={{ opacity: fullScreen ? spring(guiFadeOut ? 0 : 1, [250]) : 1 }}
   >
-    {values => (
-      <div
-        {...attributes} className={classes.GUI}
-        onMouseEnter={onMouseEnter}
-        style={{
-          opacity: values.opacity,
-          display: values.opacity === 0 ? 'none' : '',
-        }}
-      >
-        {children}
-      </div>
-      )
-    }
+    {values => motion(values, onMouseEnter, children, attributes)}
   </Motion>
 );
 

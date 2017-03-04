@@ -62,7 +62,12 @@
     "all": true,
     "cache": true,
     "sourceMap": false,
-    "instrument": false
+    "instrument": false,
+    "check-coverage": true,
+    "lines": 99,
+    "statements": 99,
+    "functions": 99,
+    "branches": 99
   },
   "devDependencies": {
     "autoprefixer": "^6.7.3",
@@ -122,6 +127,7 @@
     "react-dom": "^15.4.1",
     "react-motion": "^0.4.4",
     "react-redux": "^5.0.2",
+    "recompose": "^0.22.0",
     "redux": "^3.6.0",
     "screenfull": "^3.0.2"
   },

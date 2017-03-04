@@ -420,3 +420,16 @@ export const focusData = [
     },
   },
 ];
+
+export const globalData = {
+  clearMediaData,
+  setMediaData,
+  playData,
+  playHeadData,
+  pauseData,
+  volumeData,
+  durationData,
+  playbackRateData,
+  loopData,
+  fullScreenData,
+};

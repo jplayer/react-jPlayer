@@ -1,17 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import getContext from 'recompose/getContext';
+import compose from 'recompose/compose';
 
 import { errors, hints, defaultOptions } from './constants';
-
-const getContext = contextTypes => (Component) => {
-  const GetContext = (ownerProps, context) => <Component {...ownerProps} {...context} />;
-
-  GetContext.contextTypes = contextTypes;
-
-  return GetContext;
-};
-
-const compose = (...funcs) => funcs.reduce((a, b) => (...args) => a(b(...args)));
 
 export const connectWithId = (...args) => compose(
   getContext({ uid: React.PropTypes.string }),
@@ -34,9 +26,6 @@ export const traverseParentsUntilClassName = (currentElement, className) => {
   }
   return false;
 };
-
-export const mapObject = (obj, fn) =>
-  Object.assign(...Object.keys(obj).map(k => ({ [k]: fn(obj[k]) })));
 
 export const updateObject = (existingObject, newValues) => ({
   ...existingObject,
@@ -93,18 +82,17 @@ export const limitValue = (value, min, max) => {
 
 // Some IOS versions don't allow manually changing volume or mute
 export const canSetVolume = () => {
-  const audio = new Audio();
+  const audio = new window.Audio();
   audio.volume = 0.5;
 
   return audio.volume === 0.5;
 };
 
-export const convertTime = (seconds) => {
+export const convertTime = (seconds, timeFormats) => {
   if (isNaN(seconds)) {
     return '';
   }
   const myTime = new Date(seconds * 1000);
-  const { timeFormats } = defaultOptions;
 
   const hour = myTime.getUTCHours();
   const min = timeFormats.showHour ? myTime.getUTCMinutes() : myTime.getUTCMinutes() + (hour * 60);

@@ -6,7 +6,7 @@ import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, loopOptions } from '../../util/constants';
 import { toPercentage, toRelativePercentage, urlNotSupportedError } from '../../util/index';
 import { setOption, pause } from '../_actions/actions';
-import { __get__, __Rewire__, __ResetDependency__ } from './mediaContainer';
+import { __get__ } from './mediaContainer';
 
 let mockCurrentMedia;
 const uid = 'jPlayer-1';
@@ -35,7 +35,6 @@ const MockVideo = ({ setCurrentMedia, ...events }) => {
 MockVideo.propTypes = {
   setCurrentMedia: React.PropTypes.func.isRequired,
 };
-__Rewire__('canSetVolume', () => true);
 
 describe('MediaContainer', () => {
   beforeEach(() => {
@@ -56,6 +55,7 @@ describe('MediaContainer', () => {
       pause: createSpy(),
     };
   });
+
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid, children: MockAudio });
 
@@ -75,6 +75,7 @@ describe('MediaContainer', () => {
       newTime: null,
       require: false,
       children: MockAudio,
+      timeFormats: defaultOptions.timeFormats,
     });
   });
 
@@ -244,6 +245,22 @@ describe('MediaContainer', () => {
     expect(props.setOption).toHaveBeenCalledWith('duration', instance.currentMedia.duration);
     expect(props.setOption)
       .toHaveBeenCalledWith('playbackRate', instance.currentMedia.playbackRate);
+  });
+
+  it('updateMediaStatus sets seekPercent to 0 when media not seekable', () => {
+    const props = getProps();
+    mockCurrentMedia.seekable.length = 0;
+
+    const wrapper = mount(
+      <MediaContainer {...props}>
+        <MockAudio />
+      </MediaContainer>,
+    );
+    const instance = wrapper.instance();
+
+    instance.updateMediaStatus();
+
+    expect(props.setOption).toHaveBeenCalledWith('seekPercent', 0);
   });
 
   it('updateMediaStatus sets durationText correctly when showRemainingDuration', () => {
@@ -494,9 +511,5 @@ describe('MediaContainer', () => {
     dispatchProps.dispatch.reset();
     mockCurrentMedia.play.reset();
     mockCurrentMedia.pause.reset();
-  });
-
-  after(() => {
-    __ResetDependency__('canSetVolume');
   });
 });

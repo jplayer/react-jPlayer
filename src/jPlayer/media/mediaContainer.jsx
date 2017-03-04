@@ -20,6 +20,7 @@ const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
   autoplay: jPlayers[uid].autoplay,
   newTime: jPlayers[uid].newTime,
   require: jPlayers[uid].mediaSettings.require,
+  timeFormats: jPlayers[uid].timeFormats,
   children,
 });
 
@@ -62,6 +63,17 @@ class MediaContainer extends React.Component {
       paused: React.PropTypes.bool.isRequired,
       setOption: React.PropTypes.func.isRequired,
       pause: React.PropTypes.func.isRequired,
+      timeFormats: React.PropTypes.shape({
+        showHour: React.PropTypes.bool.isRequired,
+        showMin: React.PropTypes.bool.isRequired,
+        showSec: React.PropTypes.bool.isRequired,
+        padHour: React.PropTypes.bool.isRequired,
+        padMin: React.PropTypes.bool.isRequired,
+        padSec: React.PropTypes.bool.isRequired,
+        sepHour: React.PropTypes.string.isRequired,
+        sepMin: React.PropTypes.string.isRequired,
+        sepSec: React.PropTypes.string.isRequired,
+      }).isRequired,
       /* eslint-disable react/no-unused-prop-types */
       newTime: React.PropTypes.number.isRequired,
       autoplay: React.PropTypes.bool.isRequired,
@@ -228,7 +240,7 @@ class MediaContainer extends React.Component {
     let durationText = '';
 
     const remaining = this.currentMedia.duration - this.currentMedia.currentTime;
-    const currentTimeText = convertTime(this.currentMedia.currentTime);
+    const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
     const currentPercentAbsolute = toPercentage(this.currentMedia.currentTime,
       this.currentMedia.duration);
 
@@ -237,9 +249,9 @@ class MediaContainer extends React.Component {
     }
 
     if (this.props.showRemainingDuration) {
-      durationText = (remaining > 0 ? '-' : '') + convertTime(remaining);
+      durationText = (remaining > 0 ? '-' : '') + convertTime(remaining, this.props.timeFormats);
     } else {
-      durationText = convertTime(this.currentMedia.duration);
+      durationText = convertTime(this.currentMedia.duration, this.props.timeFormats);
     }
 
     this.props.setOption('durationText', durationText);

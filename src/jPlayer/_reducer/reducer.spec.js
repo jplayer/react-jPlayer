@@ -283,9 +283,7 @@ describe('jPlayer reducer', () => {
     }).toThrow(InvalidGlobalMethodException);
   });
 
-  it('should set the global option for every action that requires it', () => {
-    const { ...globalActions } = reducerData;
-
+  it('jPlayer actions that are global should update other global actions', () => {
     mockMedia('audio');
 
     state = getDefaultJPlayers(3).jPlayers;
@@ -293,45 +291,60 @@ describe('jPlayer reducer', () => {
     state[jPlayerIds[1]].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
     state[jPlayerIds[2]].global = Object.keys(jPlayerActionTypes);
 
-    Object.keys(globalActions).forEach((globalAction) => {
-      const globalActionData = globalActions[globalAction];
+    Object.values(reducerData.globalData).forEach((globalDatum) => {
+      globalDatum.forEach((datum) => {
+        const jPlayersWithGlobalOption = Object.keys(state).filter(key => (
+          state[key].global.includes(datum.action.type)),
+        );
+        const newState = { ...state };
 
-      if (Array.isArray(globalActionData) && globalAction !== 'focusData') {
-        globalActionData.forEach((data) => {
-          const jPlayersWithGlobalOption = Object.keys(state).filter(key => (
-            state[key].global.includes(data.action.type)),
-          );
-          const jPlayersWithoutGlobalOption = Object.keys(state).filter(key => (
-            !state[key].global.includes(data.action.type)),
-          );
-          const newState = { ...state };
-
-          jPlayersWithGlobalOption.forEach((key) => {
-            newState[key] = {
-              ...newState[key],
-              ...data.state,
-            };
-          });
-
-          const jPlayers = reducer(newState, {
-            ...data.action,
-          });
-
-          jPlayersWithoutGlobalOption.forEach((key) => {
-            expect(jPlayers[key]).toExclude(data.expected, null,
-              `Action ${data.action.type}: 
-              Expected ${JSON.stringify(jPlayers[key])} to
-              exclude ${JSON.stringify(data.expected)}`);
-          });
-
-          jPlayersWithGlobalOption.forEach((key) => {
-            expect(jPlayers[key]).toInclude(data.expected, null,
-              `Action ${data.action.type}: 
-              Expected ${JSON.stringify(jPlayers[key])} to
-              include ${JSON.stringify(data.expected)}`);
-          });
+        jPlayersWithGlobalOption.forEach((key) => {
+          newState[key] = {
+            ...newState[key],
+            ...datum.state,
+          };
         });
-      }
+
+        const jPlayers = reducer(newState, {
+          ...datum.action,
+        });
+
+        jPlayersWithGlobalOption.forEach((key) => {
+          expect(jPlayers[key]).toInclude(datum.expected, null,
+            `Action ${datum.action.type}: 
+            Expected ${JSON.stringify(jPlayers[key])} to
+            include ${JSON.stringify(datum.expected)}`);
+        });
+      });
+    });
+  });
+
+  it('jPlayer actions that aren\'t global shouldn\'t update other global actions', () => {
+    mockMedia('audio');
+
+    state = getDefaultJPlayers(3).jPlayers;
+    state[jPlayerIds[0]].global = Object.keys(jPlayerActionTypes);
+    state[jPlayerIds[1]].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
+    state[jPlayerIds[2]].global = Object.keys(jPlayerActionTypes);
+
+    Object.values(reducerData.globalData).forEach((globalDatum) => {
+      globalDatum.forEach((datum) => {
+        const jPlayersWithoutGlobalOption = Object.keys(state).filter(key => (
+          !state[key].global.includes(datum.action.type)),
+        );
+        const newState = { ...state };
+
+        const jPlayers = reducer(newState, {
+          ...datum.action,
+        });
+
+        jPlayersWithoutGlobalOption.forEach((key) => {
+          expect(jPlayers[key]).toExclude(datum.expected, null,
+            `Action ${datum.action.type}: 
+            Expected ${JSON.stringify(jPlayers[key])} to
+            exclude ${JSON.stringify(datum.expected)}`);
+        });
+      });
     });
   });
 

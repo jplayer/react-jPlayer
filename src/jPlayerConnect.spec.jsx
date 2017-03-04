@@ -10,10 +10,18 @@ import * as actions from './jPlayer/_actions/actions';
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
 const uid = 'jPlayer-1';
-
-const MockPlayer = () => <div />;
+const mockPlayerName = 'MockPlayer';
+const mockPlayerOptions = {
+  muted: true,
+};
 
 describe('JPlayerConnect', () => {
+  let MockPlayer;
+
+  beforeEach(() => {
+    MockPlayer = () => <div />;
+    MockPlayer.options = mockPlayerOptions;
+  });
   it('maps state with custom props', () => {
     const expected = mapStateToProps(getJPlayers(), { uid, test: 'test' });
 
@@ -61,11 +69,31 @@ describe('JPlayerConnect', () => {
     expect(expected).toIncludeKeys(Object.keys(jPlayerActions));
   });
 
-  it('connects player to store', () => {
+  it('renders connected player', () => {
     const Component = jPlayerConnect(MockPlayer);
     const wrapper = shallow(<Component test="test" />);
 
-    expect(wrapper.prop('uid')).toBe('MockPlayer');
+    expect(wrapper.prop('uid')).toBe(mockPlayerName);
     expect(wrapper.prop('test')).toBe('test');
+  });
+
+  it('sets uid if function name is undefined', () => {
+    Object.defineProperty(MockPlayer, 'name', { value: undefined });
+    const Component = jPlayerConnect(MockPlayer);
+    const wrapper = shallow(<Component />);
+
+    expect(wrapper.prop('uid')).toBe(mockPlayerName);
+  });
+
+  it('component returns uid', () => {
+    const Component = jPlayerConnect(MockPlayer);
+
+    expect(Component.uid).toBe(mockPlayerName);
+  });
+
+  it('component returns options', () => {
+    const Component = jPlayerConnect(MockPlayer);
+
+    expect(Component.options).toBe(mockPlayerOptions);
   });
 });
