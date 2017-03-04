@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 
 import { getJPlayers } from '../../util/common.spec';
 import { classes, defaultOptions } from '../../util/constants';
-import { __get__ } from './browserUnsupported.container';
+import { __get__ } from './browserUnsupportedContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 

@@ -3,7 +3,7 @@ import expect, { createSpy } from 'expect';
 import { getJPlayers } from '../../util/common.spec';
 import { setLoop } from '../_actions/actions';
 import { loopOptions } from '../../util/constants';
-import { __get__ } from './repeat.container';
+import { __get__ } from './repeatContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');

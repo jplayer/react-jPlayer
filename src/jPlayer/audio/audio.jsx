@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Media from '../media/media.container';
+import Media from '../media/mediaContainer';
 
 const Audio = ({ require, events, attributes, children }) => (
   require ?

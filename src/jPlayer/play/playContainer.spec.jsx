@@ -1,7 +1,7 @@
 import expect, { createSpy } from 'expect';
 import { getJPlayers } from '../../util/common.spec';
 import { play, pause } from '../_actions/actions';
-import { __get__ } from './play.container';
+import { __get__ } from './playContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Media from '../media/media.container';
+import Media from '../media/mediaContainer';
 import { defaultOptions } from '../../util/constants';
 
 const Video = ({ require, events, children, attributes }) => (

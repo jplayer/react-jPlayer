@@ -3,7 +3,7 @@ import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index'
 import { setPlaybackRate } from '../_actions/actions';
 import BarEvents from '../barEvents';
 import PlaybackRateBar from './playbackRateBar';
-import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValue.container';
+import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({
   movePlaybackRate: (bar, dispatch, e) => {

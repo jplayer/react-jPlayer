@@ -3,7 +3,7 @@ import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index'
 import { setVolume } from '../_actions/actions';
 import BarEvents from '../barEvents';
 import VolumeBar from './volumeBar';
-import VolumeBarValue from '../volumeBarValue/volumeBarValue.container';
+import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({
   moveVolumeBar: (bar, dispatch, e) => {

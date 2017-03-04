@@ -3,7 +3,7 @@ import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
 import { setPlayHead } from '../_actions/actions';
-import { __get__ } from './seekBar.container';
+import { __get__ } from './seekBarContainer';
 import BarEvents from '../barEvents';
 import SeekBar from './seekBar';
 

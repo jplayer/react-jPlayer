@@ -6,7 +6,7 @@ import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, loopOptions, keyIgnoreElementNames } from '../../util/constants';
 import { play, pause, setFullScreen, setMute, setVolume,
   setLoop } from '../_actions/actions';
-import { __get__ } from './keyControl.container';
+import { __get__ } from './keyControlContainer';
 
 const uid = 'jPlayer-1';
 const dispatchProps = {

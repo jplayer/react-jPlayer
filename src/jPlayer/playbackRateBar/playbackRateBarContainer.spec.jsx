@@ -2,15 +2,15 @@ import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
-import { setVolume } from '../_actions/actions';
-import { __get__ } from './volumeBar.container';
+import { setPlaybackRate } from '../_actions/actions';
+import { __get__ } from './playbackRateBarContainer';
 import BarEvents from '../barEvents';
-import VolumeBar from './volumeBar';
-import VolumeBarValue from '../volumeBarValue/volumeBarValue.container';
+import PlaybackRateBar from './playbackRateBar';
+import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const VolumeBarContainer = __get__('VolumeBarContainer');
+const PlaybackRateBarContainer = __get__('PlaybackRateBarContainer');
 const uid = 'jPlayer-1';
 const getBoundingClientRect = () => ({
   top: 10,
@@ -23,41 +23,43 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
-const dispatch = createSpy();
 
-describe('VolumeBarContainer', () => {
-  it('onClick moves volume bar', () => {
+describe('PlaybackRateBarContainer', () => {
+  it('onClick moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
+    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, uid));
   });
 
-  it('onClick moves volume bar when verticalVolume', () => {
+  it('onClick moves playback rate when verticalPlaybackRate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
+    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers({
-      verticalVolume: true,
+      verticalPlaybackRate: true,
     }), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageY: 7 });
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, uid));
   });
 
-  it('onTouch moves volume bar', () => {
+  it('onTouch moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
+    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
@@ -70,16 +72,17 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, uid));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('onTouch moves volume bar when verticalVolume', () => {
+  it('onTouch moves playback rate when verticalPlaybackRate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
+    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers({
-      verticalVolume: true,
+      verticalPlaybackRate: true,
     }), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
@@ -92,54 +95,53 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, uid));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
   it('render passes move bar functions into barEvents', () => {
     const props = getProps();
-    const wrapper = shallow(<VolumeBarContainer {...props} />);
+    const wrapper = shallow(<PlaybackRateBarContainer {...props} />);
 
     expect(wrapper.type()).toBe(BarEvents);
     expect(wrapper.prop('clickMoveBar')).toBe(props.onClick);
     expect(wrapper.prop('touchMoveBar')).toBe(props.onTouch);
   });
 
-  it('renders VolumeBar', () => {
+  it('renders PlaybackRateBar', () => {
     const props = getProps({
       attributes: {
         'data-attribute-test': 'test',
       },
     });
-    const wrapper = shallow(<VolumeBarContainer {...props} />)
-      .find(VolumeBar);
+    const wrapper = shallow(<PlaybackRateBarContainer {...props} />)
+      .find(PlaybackRateBar);
 
-    expect(wrapper.type()).toBe(VolumeBar);
+    expect(wrapper.type()).toBe(PlaybackRateBar);
     expect(wrapper.prop('attributes')).toBe(props.attributes);
   });
 
-  it('children is VolumeBarValue as default', () => {
+  it('children is PlaybackRateBarValue as default', () => {
     const props = getProps();
-    const wrapper = shallow(<VolumeBarContainer {...props} />)
-      .find(VolumeBar);
+    const wrapper = shallow(<PlaybackRateBarContainer {...props} />)
+      .find(PlaybackRateBar);
 
-    expect(wrapper.children().type()).toBe(VolumeBarValue);
+    expect(wrapper.children().type()).toBe(PlaybackRateBarValue);
   });
 
   it('renders custom children', () => {
     const props = getProps();
     const wrapper = shallow(
-      <VolumeBarContainer {...props}>
+      <PlaybackRateBarContainer {...props}>
         <div className="@@jPlayer-test" />
-      </VolumeBarContainer>,
-    ).find(VolumeBar);
+      </PlaybackRateBarContainer>,
+    ).find(PlaybackRateBar);
 
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.children().type()).toNotBe(VolumeBarValue);
+    expect(wrapper.children().type()).toNotBe(PlaybackRateBarValue);
   });
 
   afterEach(() => {
     restoreSpies();
-    dispatch.reset();
   });
 });

@@ -1,7 +1,7 @@
 import expect from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { __get__ } from './poster.container';
+import { __get__ } from './posterContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 

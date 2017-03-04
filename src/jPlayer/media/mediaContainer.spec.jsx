@@ -6,7 +6,7 @@ import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, loopOptions } from '../../util/constants';
 import { toPercentage, toRelativePercentage, urlNotSupportedError } from '../../util/index';
 import { setOption, pause } from '../_actions/actions';
-import { __get__, __Rewire__, __ResetDependency__ } from './media.container';
+import { __get__, __Rewire__, __ResetDependency__ } from './mediaContainer';
 
 let mockCurrentMedia;
 const uid = 'jPlayer-1';

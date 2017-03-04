@@ -3,7 +3,7 @@ import expect, { spyOn } from 'expect';
 import { mount, shallow } from 'enzyme';
 
 import { getJPlayers, mockCanvasContext } from '../../util/common.spec';
-import { __get__, __Rewire__, __ResetDependency__ } from './bufferBar.container';
+import { __get__, __Rewire__, __ResetDependency__ } from './bufferBarContainer';
 import BufferBar from './bufferBar';
 
 const state = {

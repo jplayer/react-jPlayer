@@ -2,7 +2,7 @@ import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
 import { setOption } from '../_actions/actions';
-import { __get__ } from './gui.container';
+import { __get__ } from './guiContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');

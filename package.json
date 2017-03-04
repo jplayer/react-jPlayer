@@ -22,7 +22,7 @@
   "scripts": {
     "postinstall": "cd examples && npm install",
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
-    "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec*{js,jsx} --opts ./mocha.opts",
+    "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test": "cross-env BABEL_ENV=test mocha src/**/*.spec*{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm run test -- -w",
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts"
@@ -48,6 +48,10 @@
       ".jsx"
     ],
     "include": "src",
+    "exclude": [
+      "**/*.spec.{js,jsx}",
+      "**/*.acceptance.js"
+    ],
     "require": [
       "babel-register"
     ],

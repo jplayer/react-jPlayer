@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import Video from './video';
-import Media from '../media/media.container';
+import Media from '../media/mediaContainer';
 
 const events = {
   onProgress: null,

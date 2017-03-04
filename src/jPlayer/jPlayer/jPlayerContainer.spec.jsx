@@ -6,7 +6,7 @@ import { getJPlayers } from '../../util/common.spec';
 import { noFormatSupportedError } from '../../util/index';
 import { setMedia, setOption } from '../_actions/actions';
 import { classes, loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
-import { __get__, __Rewire__, __ResetDependency__ } from './jPlayer.container';
+import { __get__, __Rewire__, __ResetDependency__ } from './jPlayerContainer';
 import JPlayer from './jPlayer';
 
 const stateClassTests = [

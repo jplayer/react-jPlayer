@@ -1,18 +1,19 @@
 import expect from 'expect';
 import { getJPlayers } from '../../util/common.spec';
-import { __get__ } from './playBar.container';
+import { __get__ } from './playbackRateBarValueContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const uid = 'jPlayer-1';
 
-describe('PlayBarContainer', () => {
+describe('PlaybackRateBarValueContainer', () => {
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
-      smoothPlayBar: false,
-      currentPercentAbsolute: 0,
-      currentPercentRelative: 0,
+      verticalPlaybackRate: false,
+      minPlaybackRate: 0.5,
+      maxPlaybackRate: 4,
+      playbackRate: 1,
     });
   });
 });

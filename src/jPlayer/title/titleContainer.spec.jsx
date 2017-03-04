@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { __get__ } from './title.container';
+import { __get__ } from './titleContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const uid = 'jPlayer-1';

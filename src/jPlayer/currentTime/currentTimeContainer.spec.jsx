@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
 import { statusDefaultValues } from '../../util/constants';
-import { __get__ } from './currentTime.container';
+import { __get__ } from './currentTimeContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 
