@@ -50,7 +50,8 @@
     "include": "src",
     "exclude": [
       "**/*.spec.{js,jsx}",
-      "**/*.acceptance.js"
+      "**/*.acceptance.js",
+      "**/util/"
     ],
     "require": [
       "babel-register"
@@ -63,7 +64,7 @@
     "cache": true,
     "sourceMap": false,
     "instrument": false,
-    "check-coverage": true,
+    "check-coverage": false,
     "lines": 99,
     "statements": 99,
     "functions": 99,

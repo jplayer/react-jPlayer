@@ -42,6 +42,7 @@ export const setMediaData = [
     expected: {
       mediaSettings: {
         video: false,
+        foundSupported: true,
         formats: [
           {
             supplied: 'mp3',
@@ -405,7 +406,7 @@ export const focusData = [
     },
     action: {
       type: jPlayerActionTypes.MUTE,
-      muted: true,
+      mute: true,
       uid: playerIdOne,
     },
   },

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import getContext from 'recompose/getContext';
 import compose from 'recompose/compose';
 
-import { errors, hints, defaultOptions } from './constants';
+import { errors, hints } from './constants';
 
 export const connectWithId = (...args) => compose(
   getContext({ uid: React.PropTypes.string }),
