@@ -4,7 +4,7 @@
 # react-jPlayer
 A Html5 audio/video player that is based on the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/) but without the jQuery dependency.
 
-Coverage is actually 100% but an istanbul bug doesn't recognize default ES6 parameters.
+Coverage is actually 100% but an istanbul bug doesn't recognize ES6 default parameters.
 
 ### Installation
 ```npm install --save react-jPlayer```
