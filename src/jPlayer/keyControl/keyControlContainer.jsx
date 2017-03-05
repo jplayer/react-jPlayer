@@ -15,7 +15,7 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
   focus: jPlayers[uid].focus,
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+const mergeProps = (stateProps, { dispatch }, { uid, ...ownProps }) => ({
   focus: stateProps.focus,
   keyBindings: merge({}, {
     play: {
@@ -48,6 +48,8 @@ const mergeProps = (stateProps, { dispatch }, { uid }) => ({
                   dispatch(setLoop(loopOptions.LOOP, uid))),
     },
   }, stateProps.keyBindings),
+  uid,
+  ...ownProps,
 });
 
 class KeyControlContainer extends React.Component {

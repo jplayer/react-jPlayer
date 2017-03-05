@@ -22,7 +22,7 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
   },
 });
 
-const mergeProps = ({ moveVolumeBar }, { dispatch }) => ({
+const mergeProps = ({ moveVolumeBar }, { dispatch }, ownProps) => ({
   onClick: (bar, e) => moveVolumeBar(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -30,6 +30,7 @@ const mergeProps = ({ moveVolumeBar }, { dispatch }) => ({
 
     moveVolumeBar(bar, dispatch, e.touches[0]);
   },
+  ...ownProps,
 });
 
 const VolumeBarContainer = ({ onClick, onTouch, children, attributes }) => (

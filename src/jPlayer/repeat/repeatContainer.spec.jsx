@@ -1,3 +1,4 @@
+import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
@@ -8,8 +9,15 @@ import { __get__ } from './repeatContainer';
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const uid = 'jPlayer-1';
+const children = <div />;
 
 describe('RepeatContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid });
 
@@ -23,9 +31,19 @@ describe('RepeatContainer', () => {
     { loop: loopOptions.LOOP },
   ];
 
+  it('merges props', () => {
+    const expected = mergeProps({}, { dispatch }, { uid, children });
+
+    delete expected.onClick;
+
+    expect(expected).toEqual({
+      uid,
+      children,
+    });
+  });
+
   it('mergeProps onClick toggles loop', () => {
     onClickData.forEach((onClickDatum) => {
-      const dispatch = createSpy();
       const expected = onClickDatum.loop === loopOptions.LOOP ? loopOptions.OFF
         : loopOptions.LOOP;
       const mergedProps = mergeProps(getJPlayers(onClickDatum).jPlayers[uid],

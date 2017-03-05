@@ -1,3 +1,4 @@
+import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
@@ -10,6 +11,7 @@ const dispatchProps = {
   dispatch: createSpy(),
 };
 const uid = 'jPlayer-1';
+const children = <div />;
 
 describe('GuiContainer', () => {
   beforeEach(() => {
@@ -33,13 +35,15 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: true,
       guiFadeOut: false,
-    }, dispatchProps, { uid });
+    }, dispatchProps, { uid, children });
 
     delete expected.onMouseMove;
 
     expect(expected).toEqual({
       fullScreen: true,
       guiFadeOut: false,
+      uid,
+      children,
     });
   });
 

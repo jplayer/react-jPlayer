@@ -6,8 +6,9 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
   fullScreen: jPlayers[uid].fullScreen,
 });
 
-const mergeProps = ({ fullScreen }, { dispatch }, { uid }) => ({
-  onClick: () => dispatch(setFullScreen(!fullScreen, uid)),
+const mergeProps = ({ fullScreen }, { dispatch }, ownProps) => ({
+  onClick: () => dispatch(setFullScreen(!fullScreen, ownProps.uid)),
+  ...ownProps,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(FullScreen);

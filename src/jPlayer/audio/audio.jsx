@@ -2,7 +2,7 @@ import React from 'react';
 
 import Media from '../media/mediaContainer';
 
-const Audio = ({ require, events, attributes, children }) => (
+const Audio = ({ require, events, children, attributes }) => (
   require ?
     <Media {...events}>
       <audio {...attributes}>
@@ -14,7 +14,7 @@ const Audio = ({ require, events, attributes, children }) => (
 
 Audio.defaultProps = {
   events: null,
-  attributes: {},
+  attributes: null,
   children: null,
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
+
 import { getJPlayers } from '../../util/common.spec';
 import { setPlaybackRate } from '../_actions/actions';
 import { __get__ } from './playbackRateBarContainer';
@@ -23,13 +24,31 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
+const children = <div />;
 
 describe('PlaybackRateBarContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+
+  it('merges props', () => {
+    const expected = mergeProps({}, { dispatch }, { uid, children });
+
+    delete expected.onClick;
+    delete expected.onTouch;
+
+    expect(expected).toEqual({
+      uid,
+      children,
+    });
+  });
+
   it('onClick moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
@@ -43,7 +62,6 @@ describe('PlaybackRateBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers({
       verticalPlaybackRate: true,
     }), { uid });
@@ -59,7 +77,6 @@ describe('PlaybackRateBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
@@ -80,7 +97,6 @@ describe('PlaybackRateBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers({
       verticalPlaybackRate: true,
     }), { uid });

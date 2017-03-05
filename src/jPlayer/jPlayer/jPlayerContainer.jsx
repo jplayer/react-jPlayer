@@ -44,10 +44,11 @@ const mapStateToProps = ({ jPlayers }, { uid, children, attributes = {} }) => ({
   },
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid }) => ({
-  setMedia: media => dispatch(setMedia(media, uid)),
-  setOption: (key, value) => dispatch(setOption(key, value, uid)),
+const mergeProps = (stateProps, { dispatch }, ownProps) => ({
+  setMedia: media => dispatch(setMedia(media, ownProps.uid)),
+  setOption: (key, value) => dispatch(setOption(key, value, ownProps.uid)),
   ...stateProps,
+  ...ownProps,
 });
 
 class JPlayerContainer extends React.Component {
@@ -81,7 +82,7 @@ class JPlayerContainer extends React.Component {
   }
   static get defaultProps() {
     return {
-      attributes: {},
+      attributes: null,
       guiFadeHoldTimeout: null,
     };
   }

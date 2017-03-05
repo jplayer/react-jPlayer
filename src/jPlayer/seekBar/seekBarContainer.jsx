@@ -17,7 +17,7 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
 });
 
 // eslint-disable-next-line no-unused-vars
-const mergeProps = ({ movePlayHead, seekPercent }, { dispatch }) => ({
+const mergeProps = ({ movePlayHead, seekPercent }, { dispatch }, ownProps) => ({
   onClick: (bar, e) => movePlayHead(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -26,6 +26,7 @@ const mergeProps = ({ movePlayHead, seekPercent }, { dispatch }) => ({
     movePlayHead(bar, dispatch, e.touches[0]);
   },
   seekPercent,
+  ...ownProps,
 });
 
 const SeekBarContainer = ({ onClick, onTouch, seekPercent, attributes }) => (

@@ -29,7 +29,7 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
   },
 });
 
-const mergeProps = ({ movePlaybackRate }, { dispatch }) => ({
+const mergeProps = ({ movePlaybackRate }, { dispatch }, ownProps) => ({
   onClick: (bar, e) => movePlaybackRate(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -37,6 +37,7 @@ const mergeProps = ({ movePlaybackRate }, { dispatch }) => ({
 
     movePlaybackRate(bar, dispatch, e.touches[0]);
   },
+  ...ownProps,
 });
 
 const PlaybackRateBarContainer = ({ onClick, onTouch, children, attributes }) => (

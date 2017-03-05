@@ -9,7 +9,7 @@ const FullScreen = ({ onClick, children, attributes }) => (
 );
 
 FullScreen.defaultProps = {
-  attributes: {},
+  attributes: null,
 };
 
 FullScreen.propTypes = {

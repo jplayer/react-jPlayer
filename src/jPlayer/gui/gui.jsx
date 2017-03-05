@@ -26,7 +26,7 @@ const Gui = ({ fullScreen, guiFadeOut, onMouseEnter, children, attributes }) => 
 );
 
 Gui.defaultProps = {
-  attributes: {},
+  attributes: null,
 };
 
 Gui.propTypes = {

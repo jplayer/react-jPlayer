@@ -14,7 +14,7 @@ const Download = ({ free, url, children, attributes }) => (
 );
 
 Download.defaultProps = {
-  attributes: {},
+  attributes: null,
 };
 
 Download.propTypes = {

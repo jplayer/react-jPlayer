@@ -22,12 +22,12 @@ export const getJPlayers = (...options) => {
   };
 };
 
-export const getDefaultJPlayers = (numberOfJPlayers = 1, mergeDefaultValues = false) => {
+export const getDefaultJPlayers = (numberOfJPlayers = 1, mergeDefaultValues = false, options) => {
   const jPlayers = {};
 
   for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
     jPlayers[`jPlayer-${i}`] = mergeDefaultValues ?
-      merge({}, statusDefaultValues, defaultOptions) : {};
+      merge({}, statusDefaultValues, defaultOptions, options) : { ...options };
   }
 
   return {

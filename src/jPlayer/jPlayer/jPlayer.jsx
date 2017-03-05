@@ -11,7 +11,7 @@ const JPlayer = ({ keyEnabled, setJPlayer, children, attributes }) => (
 );
 
 JPlayer.defaultProps = {
-  attributes: {},
+  attributes: null,
 };
 
 JPlayer.propTypes = {

@@ -53,6 +53,7 @@ const guiFadeHoldTimeout = 10;
 const dispatchProps = {
   dispatch: createSpy(),
 };
+const children = <div className="@@jPlayer-test" />;
 const MockJPlayer = ({ setJPlayer }) =>
   <div ref={setJPlayer} />;
 
@@ -68,7 +69,6 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('maps state', () => {
-    const children = <div className="@@jPlayer-test" />;
     const expected = mapStateToProps(getJPlayers({
       guiFadeHoldTimeout: 0,
     }), { uid, children });
@@ -96,7 +96,7 @@ describe('<JPlayerContainer />', () => {
     });
   });
 
-  it('merges props', () => {
+  it('mergeProps setMedia sets the media', () => {
     const expected = mergeProps(getJPlayers(), dispatchProps, { uid });
 
     expected.setMedia(defaultOptions.media);
@@ -105,6 +105,28 @@ describe('<JPlayerContainer />', () => {
     expect(dispatchProps.dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, uid));
     expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
     expect(expected.jPlayers).toExist();
+  });
+
+  it('mergeProps setOption sets the option', () => {
+    const expected = mergeProps(getJPlayers(), dispatchProps, { uid });
+
+    expected.setOption('muted', true);
+
+    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
+  });
+
+  it('merges props', () => {
+    const test = 'test';
+    const expected = mergeProps({ test }, dispatchProps, { uid, children });
+
+    delete expected.setOption;
+    delete expected.setMedia;
+
+    expect(expected).toEqual({
+      test,
+      children,
+      uid,
+    });
   });
 
   it('listens for closing full screen if screenFull is enabled', () => {

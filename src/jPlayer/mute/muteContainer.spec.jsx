@@ -1,3 +1,4 @@
+import React from 'react';
 import expect, { createSpy } from 'expect';
 import { getJPlayers } from '../../util/common.spec';
 import { setMute } from '../_actions/actions';
@@ -6,13 +7,31 @@ import { __get__ } from './muteContainer';
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const uid = 'jPlayer-1';
+const children = <div />;
 
 describe('MuteContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid });
 
     expect(expected).toEqual({
       muted: false,
+    });
+  });
+
+  it('merges props', () => {
+    const expected = mergeProps({}, { dispatch }, { uid, children });
+
+    delete expected.onClick;
+
+    expect(expected).toEqual({
+      uid,
+      children,
     });
   });
 
@@ -23,7 +42,6 @@ describe('MuteContainer', () => {
 
   it('mergeProps onClick toggle mute', () => {
     muteData.forEach((muteDatum) => {
-      const dispatch = createSpy();
       const mergedProps = mergeProps(getJPlayers(muteDatum).jPlayers[uid],
         { dispatch }, { uid });
 

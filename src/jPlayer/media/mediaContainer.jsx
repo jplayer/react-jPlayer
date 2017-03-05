@@ -24,10 +24,9 @@ const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
   children,
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid }) => ({
-  setOption: (key, value) => dispatch(setOption(key, value, uid)),
-  pause: time => dispatch(pause(uid, time)),
-  ...stateProps,
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  setOption: (key, value) => dispatch(setOption(key, value, ownProps.uid)),
+  pause: time => dispatch(pause(ownProps.uid, time)),
 });
 
 class MediaContainer extends React.Component {
@@ -200,7 +199,7 @@ class MediaContainer extends React.Component {
 
     if (nextProps.newTime !== null) {
       this.currentMedia.currentTime = nextProps.newTime;
-      nextProps.setOption('newTime', null);
+      this.props.setOption('newTime', null);
     }
 
     if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
@@ -210,7 +209,7 @@ class MediaContainer extends React.Component {
         this.currentMedia.currentTime = toPercentage(nextProps.playHeadPercent,
           this.getSeekableEnd());
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-        nextProps.setOption('currentPercentRelative', this.getCurrentPercentRelative());
+        this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
       }
     }
 
@@ -279,11 +278,11 @@ class MediaContainer extends React.Component {
       React.cloneElement(React.Children.only(this.props.children),
         {
           ...this.events,
-          setCurrentMedia: this.setCurrentMedia,
+          ref: this.setCurrentMedia,
         },
       )
     );
   }
 }
 
-export default connectWithId(mapStateToProps, null, mergeProps)(MediaContainer);
+export default connectWithId(mapStateToProps, mapDispatchToProps)(MediaContainer);

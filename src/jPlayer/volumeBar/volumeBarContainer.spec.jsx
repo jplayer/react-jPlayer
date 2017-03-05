@@ -1,6 +1,7 @@
 import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
+
 import { getJPlayers } from '../../util/common.spec';
 import { setVolume } from '../_actions/actions';
 import { __get__ } from './volumeBarContainer';
@@ -23,9 +24,27 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
-const dispatch = createSpy();
+const children = <div />;
 
 describe('VolumeBarContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+  it('merges props', () => {
+    const expected = mergeProps(getJPlayers().jPlayers[uid],
+      { dispatch }, { uid, children });
+
+    delete expected.onClick;
+    delete expected.onTouch;
+
+    expect(expected).toEqual({
+      uid,
+      children,
+    });
+  });
+
   it('onClick moves volume bar', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
@@ -140,6 +159,5 @@ describe('VolumeBarContainer', () => {
 
   afterEach(() => {
     restoreSpies();
-    dispatch.reset();
   });
 });

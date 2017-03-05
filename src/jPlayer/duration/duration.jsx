@@ -11,7 +11,7 @@ const Duration = ({ children, attributes }) => (
 );
 
 Duration.defaultProps = {
-  attributes: {},
+  attributes: null,
 };
 
 Duration.propTypes = {

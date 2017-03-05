@@ -22,8 +22,15 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
+const children = <div />;
 
 describe('SeekBarContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid });
 
@@ -36,13 +43,15 @@ describe('SeekBarContainer', () => {
 
   it('merges props', () => {
     const expected = mergeProps(getJPlayers().jPlayers[uid],
-      { dispatch: null });
+      { dispatch: null }, { uid, children });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
       seekPercent: 0,
+      uid,
+      children,
     });
   });
 
@@ -50,7 +59,6 @@ describe('SeekBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
@@ -64,7 +72,6 @@ describe('SeekBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const dispatch = createSpy();
     const mappedProps = mapStateToProps(getJPlayers(), { uid });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');

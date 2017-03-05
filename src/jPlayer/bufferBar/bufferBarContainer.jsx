@@ -25,7 +25,7 @@ class BufferBarContainer extends React.Component {
   }
   static get defaultProps() {
     return {
-      attributes: {},
+      attributes: null,
     };
   }
   componentWillReceiveProps(nextProps) {

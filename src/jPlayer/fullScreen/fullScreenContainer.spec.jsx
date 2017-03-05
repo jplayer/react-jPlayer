@@ -1,3 +1,4 @@
+import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
@@ -14,6 +15,7 @@ const uid = 'jPlayer-1';
 const dispatchProps = {
   dispatch: createSpy(),
 };
+const children = <div />;
 
 describe('FullScreenContainer', () => {
   it('maps state', () => {
@@ -21,6 +23,19 @@ describe('FullScreenContainer', () => {
 
     expect(expected).toEqual({
       fullScreen: false,
+    });
+  });
+
+  it('merges props', () => {
+    const expected = mergeProps({
+      fullScreen: true,
+    }, dispatchProps, { uid, children });
+
+    delete expected.onClick;
+
+    expect(expected).toEqual({
+      uid,
+      children,
     });
   });
 

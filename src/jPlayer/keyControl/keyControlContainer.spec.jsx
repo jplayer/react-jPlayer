@@ -13,9 +13,11 @@ const dispatchProps = {
   dispatch: createSpy(),
 };
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = state => __get__('mergeProps')(getJPlayers(state).jPlayers[uid],
+const mergeProps = __get__('mergeProps');
+const mergePropsWithDefaultState = state => mergeProps(getJPlayers(state).jPlayers[uid],
   dispatchProps, { uid });
 const KeyControlContainer = __get__('KeyControlContainer');
+const children = <div />;
 
 describe('KeyControlContainer', () => {
   it('maps state', () => {
@@ -33,10 +35,13 @@ describe('KeyControlContainer', () => {
   });
 
   it('merges props', () => {
-    const { keyBindings, ...rest } = mergeProps();
+    const focus = true;
+    const { keyBindings, ...rest } = mergeProps({ focus }, dispatchProps, { uid, children });
 
     expect(rest).toEqual({
-      focus: false,
+      focus,
+      children,
+      uid,
     });
     expect(Object.keys(keyBindings)).toEqual(['play', 'fullScreen',
       'mute', 'volumeUp', 'volumeDown', 'loop']);
@@ -49,7 +54,7 @@ describe('KeyControlContainer', () => {
         fn: Function.prototype,
       },
     };
-    const expected = mergeProps({ keyBindings });
+    const expected = mergePropsWithDefaultState({ keyBindings });
 
     expected.keyBindings.loop.fn();
 
@@ -57,7 +62,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('plays when play key is pressed and media is paused', () => {
-    const { keyBindings } = mergeProps();
+    const { keyBindings } = mergePropsWithDefaultState();
 
     keyBindings.play.fn();
 
@@ -65,7 +70,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('pauses when play key is pressed and media is playing', () => {
-    const { keyBindings } = mergeProps({ paused: false });
+    const { keyBindings } = mergePropsWithDefaultState({ paused: false });
 
     keyBindings.play.fn();
 
@@ -79,7 +84,7 @@ describe('KeyControlContainer', () => {
 
   it('toggles full screen when full screen key is pressed', () => {
     fullScreenData.forEach((fullScreenDatum) => {
-      const { keyBindings } = mergeProps(fullScreenDatum);
+      const { keyBindings } = mergePropsWithDefaultState(fullScreenDatum);
 
       keyBindings.fullScreen.fn();
 
@@ -96,7 +101,7 @@ describe('KeyControlContainer', () => {
 
   it('toggles mute when mute key is pressed', () => {
     muteData.forEach((muteDatum) => {
-      const { keyBindings } = mergeProps(muteDatum);
+      const { keyBindings } = mergePropsWithDefaultState(muteDatum);
 
       keyBindings.mute.fn();
 
@@ -107,7 +112,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('increments volume on volume up key press', () => {
-    const { keyBindings } = mergeProps();
+    const { keyBindings } = mergePropsWithDefaultState();
 
     keyBindings.volumeUp.fn();
 
@@ -117,7 +122,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('decrements volume on volume down key press', () => {
-    const { keyBindings } = mergeProps();
+    const { keyBindings } = mergePropsWithDefaultState();
 
     keyBindings.volumeDown.fn();
 
@@ -127,7 +132,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('loops on loop key press when loop is off', () => {
-    const { keyBindings } = mergeProps();
+    const { keyBindings } = mergePropsWithDefaultState();
 
     keyBindings.loop.fn();
 
@@ -137,7 +142,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('turns loop off on loop key press when looping', () => {
-    const { keyBindings } = mergeProps({ loop: loopOptions.LOOP });
+    const { keyBindings } = mergePropsWithDefaultState({ loop: loopOptions.LOOP });
     keyBindings.loop.fn();
 
     expect(dispatchProps.dispatch).toHaveBeenCalledWith(
@@ -148,7 +153,7 @@ describe('KeyControlContainer', () => {
   it('Adds listener to onKeyDown event on startup', () => {
     spyOn(document, 'addEventListener');
 
-    const wrapper = shallow(<KeyControlContainer {...mergeProps()} />);
+    const wrapper = shallow(<KeyControlContainer {...mergePropsWithDefaultState()} />);
 
     expect(document.addEventListener)
       .toHaveBeenCalledWith('keydown', wrapper.instance().onKeyDown);
@@ -157,7 +162,7 @@ describe('KeyControlContainer', () => {
   it('Removes listener to onKeyDown event on unmount', () => {
     spyOn(document, 'removeEventListener');
 
-    const wrapper = shallow(<KeyControlContainer {...mergeProps()} />);
+    const wrapper = shallow(<KeyControlContainer {...mergePropsWithDefaultState()} />);
     const instance = wrapper.instance();
 
     wrapper.unmount();
@@ -169,7 +174,7 @@ describe('KeyControlContainer', () => {
   it('if focused element should be ignored then don\'t ' +
   'trigger key press function onKeyDown', () => {
     keyIgnoreElementNames.forEach((keyIgnoreElementName) => {
-      const props = mergeProps();
+      const props = mergePropsWithDefaultState();
       spyOn(props.keyBindings.play, 'fn');
 
       const wrapper = shallow(<KeyControlContainer {...props} />);
@@ -185,7 +190,7 @@ describe('KeyControlContainer', () => {
 
   it('if this jPlayer doesn\'t have focus then don\'t ' +
   'trigger key press function onKeyDown', () => {
-    const props = mergeProps();
+    const props = mergePropsWithDefaultState();
     spyOn(props.keyBindings.play, 'fn');
 
     const wrapper = shallow(<KeyControlContainer {...props} />);
@@ -200,7 +205,7 @@ describe('KeyControlContainer', () => {
 
   it('trigger key press function if focused, not an ignorable element ' +
   'and keyCode matches', () => {
-    const props = mergeProps({ focus: true });
+    const props = mergePropsWithDefaultState({ focus: true });
     spyOn(props.keyBindings.play, 'fn');
     const wrapper = shallow(<KeyControlContainer {...props} />);
     wrapper.instance().onKeyDown({
@@ -214,7 +219,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('Each keyBinding function triggered with correct key onKeyDown', () => {
-    const props = mergeProps({ focus: true });
+    const props = mergePropsWithDefaultState({ focus: true });
     Object.keys(props.keyBindings).forEach((key) => {
       const keyBinding = props.keyBindings[key];
 
@@ -234,7 +239,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('renders null', () => {
-    const wrapper = shallow(<KeyControlContainer {...mergeProps()} />);
+    const wrapper = shallow(<KeyControlContainer {...mergePropsWithDefaultState()} />);
 
     expect(wrapper.type()).toBe(null);
   });
