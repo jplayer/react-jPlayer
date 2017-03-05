@@ -36,7 +36,6 @@ describe('MuteContainer', () => {
   });
 
   it('mergeProps onClick when paused will play', () => {
-    const dispatch = createSpy();
     const mergedProps = mergeProps(getJPlayers().jPlayers[uid], { dispatch }, { uid });
 
     mergedProps.onClick();
@@ -45,7 +44,6 @@ describe('MuteContainer', () => {
   });
 
   it('mergeProps onClick when playing will pause', () => {
-    const dispatch = createSpy();
     const mergedProps = mergeProps(getJPlayers({ paused: false }).jPlayers[uid],
       { dispatch }, { uid });
 
