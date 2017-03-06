@@ -7,7 +7,7 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
   duration: jPlayers[uid].duration,
   bufferColour: jPlayers[uid].bufferColour,
-  ...attributes,
+  attributes,
 });
 
 const mergeProps = stateProps => ({ ...stateProps });
@@ -15,6 +15,7 @@ const mergeProps = stateProps => ({ ...stateProps });
 class BufferBarContainer extends React.Component {
   static get propTypes() {
     return {
+      attributes: React.PropTypes.object,
       bufferedTimeRanges: React.PropTypes.arrayOf(React.PropTypes.shape({
         start: React.PropTypes.number.isRequired,
         end: React.PropTypes.number.isRequired,
@@ -58,7 +59,7 @@ class BufferBarContainer extends React.Component {
     });
   }
   render() {
-    return <BufferBar setCanvas={this.setCanvas} {...this.props} />;
+    return <BufferBar setCanvas={this.setCanvas} {...this.props.attributes} />;
   }
 }
 

@@ -14,11 +14,11 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
 
     dispatch(setPlayHead(percentage, uid));
   },
-  ...attributes,
+  attributes,
 });
 
 // eslint-disable-next-line no-unused-vars
-const mergeProps = ({ movePlayHead, seekPercent, ...attributes }, { dispatch }) => ({
+const mergeProps = ({ movePlayHead, seekPercent, attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlayHead(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -27,10 +27,10 @@ const mergeProps = ({ movePlayHead, seekPercent, ...attributes }, { dispatch }) 
     movePlayHead(bar, dispatch, e.touches[0]);
   },
   seekPercent,
-  ...attributes,
+  attributes,
 });
 
-const SeekBarContainer = ({ onClick, onTouch, seekPercent, ...attributes }) => (
+const SeekBarContainer = ({ onClick, onTouch, seekPercent, attributes }) => (
   <BarEvents clickMoveBar={onClick} touchMoveBar={onTouch}>
     <SeekBar seekPercent={seekPercent} {...attributes} />
   </BarEvents>
@@ -41,7 +41,7 @@ SeekBarContainer.defaultProps = {
 };
 
 SeekBarContainer.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
   onTouch: React.PropTypes.func.isRequired,
   seekPercent: React.PropTypes.number.isRequired,

@@ -41,17 +41,17 @@ describe('<BufferBarContainer />', () => {
     const expected = mapStateToProps(getJPlayers(state), { uid, ...attributes });
     expect(expected).toEqual({
       ...state,
-      ...attributes,
+      attributes,
     });
   });
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { uid });
 
     expect(expected).toEqual({
       ...stateProps,
-      ...attributes,
+      attributes,
     });
   });
 
@@ -97,7 +97,7 @@ describe('<BufferBarContainer />', () => {
 
   it('renders BufferBar', () => {
     __ResetDependency__('BufferBar');
-    const wrapper = shallow(<BufferBarContainer {...state} {...attributes} />);
+    const wrapper = shallow(<BufferBarContainer {...state} attributes={attributes} />);
 
     expect(wrapper.type()).toBe(BufferBar);
     expect(wrapper.prop('data-test')).toBe(attributes['data-test']);

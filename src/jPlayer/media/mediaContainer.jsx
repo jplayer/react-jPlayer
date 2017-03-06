@@ -74,7 +74,7 @@ class MediaContainer extends React.Component {
         sepSec: React.PropTypes.string.isRequired,
       }).isRequired,
       /* eslint-disable react/no-unused-prop-types */
-      newTime: React.PropTypes.number.isRequired,
+      newTime: React.PropTypes.number,
       autoplay: React.PropTypes.bool.isRequired,
       defaultPlaybackRate: React.PropTypes.number.isRequired,
       muted: React.PropTypes.bool.isRequired,
@@ -113,6 +113,7 @@ class MediaContainer extends React.Component {
       onLoadedData: Function.prototype,
       onCanPlay: Function.prototype,
       onCanPlayThrough: Function.prototype,
+      newTime: null,
     };
   }
   constructor(props) {

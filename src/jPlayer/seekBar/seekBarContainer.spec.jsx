@@ -23,7 +23,6 @@ const getProps = props => ({
 });
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
 const uid = 'jPlayer-1';
 
@@ -41,20 +40,20 @@ describe('SeekBarContainer', () => {
 
     expect(expected).toEqual({
       seekPercent: 0,
-      ...attributes,
+      attributes,
     });
   });
 
   it('merges props', () => {
     const seekPercent = 10;
-    const expected = mergeProps({ seekPercent, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ seekPercent, attributes }, dispatch, { uid });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
       seekPercent,
-      ...attributes,
+      attributes,
     });
   });
 
@@ -102,17 +101,15 @@ describe('SeekBarContainer', () => {
 
   it('renders SeekBar', () => {
     const props = getProps({
-      attributes: {
-        'data-attribute-test': 'test',
-      },
       seekPercent: 77,
+      attributes,
     });
     const wrapper = shallow(<SeekBarContainer {...props} />)
       .find(SeekBar);
 
     expect(wrapper.type()).toBe(SeekBar);
     expect(wrapper.prop('seekPercent')).toBe(props.seekPercent);
-    expect(wrapper.prop('attributes')).toBe(props.attributes);
+    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
   });
 
   afterEach(() => {
