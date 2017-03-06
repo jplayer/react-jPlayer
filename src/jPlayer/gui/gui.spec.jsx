@@ -11,9 +11,7 @@ const setup = (newProps) => {
     children: (<div className="@@jPlayer-test" />),
     fullScreen: false,
     guiFadeOut: false,
-    attributes: {
-      'data-attribute-test': 'test',
-    },
+    'data-test': 'test',
     ...newProps,
   };
 
@@ -39,7 +37,7 @@ describe('<Gui />', () => {
     expect(props.onMouseEnter).toHaveBeenCalled();
     expect(gui.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(gui.hasClass(classes.GUI)).toBeTruthy();
-    expect(gui.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(gui.prop('data-test')).toBe(props['data-test']);
   });
 
   it('default opacity for motion is 1', () => {

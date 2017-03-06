@@ -7,7 +7,10 @@ import { __get__ } from './muteContainer';
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const uid = 'jPlayer-1';
-const children = <div />;
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
 
 describe('MuteContainer', () => {
   let dispatch;
@@ -25,13 +28,12 @@ describe('MuteContainer', () => {
   });
 
   it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { uid, children });
+    const expected = mergeProps({}, { dispatch }, { uid, ...attributes });
 
     delete expected.onClick;
 
     expect(expected).toEqual({
-      uid,
-      children,
+      ...attributes,
     });
   });
 

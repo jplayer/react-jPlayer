@@ -24,7 +24,10 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
-const children = <div />;
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
 
 describe('PlaybackRateBarContainer', () => {
   let dispatch;
@@ -33,15 +36,24 @@ describe('PlaybackRateBarContainer', () => {
     dispatch = createSpy();
   });
 
+  it('maps state', () => {
+    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+
+    delete expected.movePlaybackRate;
+
+    expect(expected).toEqual({
+      ...attributes,
+    });
+  });
+
   it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { uid, children });
+    const expected = mergeProps({ ...attributes }, { dispatch }, { uid });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
-      uid,
-      children,
+      ...attributes,
     });
   });
 

@@ -12,12 +12,18 @@ const fullScreenStates = [
    { fullScreen: true },
 ];
 const uid = 'jPlayer-1';
-const dispatchProps = {
-  dispatch: createSpy(),
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
 };
-const children = <div />;
 
 describe('FullScreenContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid });
 
@@ -29,30 +35,25 @@ describe('FullScreenContainer', () => {
   it('merges props', () => {
     const expected = mergeProps({
       fullScreen: true,
-    }, dispatchProps, { uid, children });
+    }, { dispatch }, { uid, ...attributes });
 
     delete expected.onClick;
 
     expect(expected).toEqual({
-      uid,
-      children,
+      ...attributes,
     });
   });
 
   fullScreenStates.forEach((fullScreenState) => {
     it(`onClick toggles fullScreen (value: ${fullScreenState.fullScreen})`, () => {
-      const expected = mergeProps(fullScreenState, dispatchProps, { uid });
+      const expected = mergeProps(fullScreenState, { dispatch }, { uid });
 
       expected.onClick();
 
-      expect(dispatchProps.dispatch).toHaveBeenCalledWith(setFullScreen(
+      expect(dispatch).toHaveBeenCalledWith(setFullScreen(
         !fullScreenState.fullScreen,
         uid,
       ));
     });
-  });
-
-  afterEach(() => {
-    dispatchProps.dispatch.reset();
   });
 });

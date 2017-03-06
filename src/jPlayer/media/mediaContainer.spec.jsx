@@ -9,9 +9,6 @@ import { setOption, pause } from '../_actions/actions';
 import { __get__ } from './mediaContainer';
 
 const uid = 'jPlayer-1';
-const dispatchProps = {
-  dispatch: createSpy(),
-};
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
 const MediaContainer = __get__('MediaContainer');
@@ -65,6 +62,12 @@ const setup = (state, newProps, isAudio = true) => {
 };
 
 describe('MediaContainer', () => {
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
+  });
+
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { uid, children: mockAudio });
 
@@ -91,16 +94,16 @@ describe('MediaContainer', () => {
   it('dispatches setOption in mapDispatchToProps when called', () => {
     const key = 'test';
     const value = true;
-    mapDispatchToProps(dispatchProps.dispatch, { uid }).setOption(key, value);
+    mapDispatchToProps(dispatch, { uid }).setOption(key, value);
 
-    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption(key, value, uid));
+    expect(dispatch).toHaveBeenCalledWith(setOption(key, value, uid));
   });
 
-  it('dispatches pause in mergeProps when called', () => {
+  it('dispatches pause in mapDispatchToProps when called', () => {
     const time = 30;
-    mapDispatchToProps(dispatchProps.dispatch, { uid }).pause(time);
+    mapDispatchToProps(dispatch, { uid }).pause(time);
 
-    expect(dispatchProps.dispatch).toHaveBeenCalledWith(pause(uid, time));
+    expect(dispatch).toHaveBeenCalledWith(pause(uid, time));
   });
 
   it('updates media on startup', () => {
@@ -369,9 +372,5 @@ describe('MediaContainer', () => {
         expect(event).toBe(childProps[key]);
       });
     });
-  });
-
-  afterEach(() => {
-    dispatchProps.dispatch.reset();
   });
 });

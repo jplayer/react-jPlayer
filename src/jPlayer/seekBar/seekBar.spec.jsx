@@ -12,9 +12,7 @@ const setup = () => {
     setSeekBar: Function.prototype,
     seekPercent: 33,
     children: (<div className="@@jPlayer-test" />),
-    attributes: {
-      'data-attribute-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Seekbar {...props} />);
@@ -42,6 +40,6 @@ describe('<SeekBar />', () => {
     expect(wrapper.prop('style').width).toBe(`${props.seekPercent}%`);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.SEEK_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

@@ -14,7 +14,7 @@ Object.keys(formats).forEach((key) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { uid, children, attributes = {} }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   media: jPlayers[uid].media,
   error: jPlayers[uid].error,
   fullScreen: jPlayers[uid].fullScreen,
@@ -22,7 +22,6 @@ const mapStateToProps = ({ jPlayers }, { uid, children, attributes = {} }) => ({
   paused: jPlayers[uid].paused,
   guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
   guiFadeHoldTime: jPlayers[uid].guiFadeHoldTime,
-  children,
   attributes: {
     ...attributes,
     className: classNames(attributes.className, classes.JPLAYER, {
@@ -44,11 +43,10 @@ const mapStateToProps = ({ jPlayers }, { uid, children, attributes = {} }) => ({
   },
 });
 
-const mergeProps = (stateProps, { dispatch }, ownProps) => ({
-  setMedia: media => dispatch(setMedia(media, ownProps.uid)),
-  setOption: (key, value) => dispatch(setOption(key, value, ownProps.uid)),
+const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+  setMedia: media => dispatch(setMedia(media, uid)),
+  setOption: (key, value) => dispatch(setOption(key, value, uid)),
   ...stateProps,
-  ...ownProps,
 });
 
 class JPlayerContainer extends React.Component {
@@ -162,7 +160,7 @@ class JPlayerContainer extends React.Component {
     return (
       <JPlayer
         setJPlayer={this.setJPlayer} keyEnabled={this.props.keyEnabled}
-        onMouseMove={this.onMouseMove} attributes={this.props.attributes}
+        onMouseMove={this.onMouseMove} {...this.props.attributes}
       >
         {this.props.children}
       </JPlayer>

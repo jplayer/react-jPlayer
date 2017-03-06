@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
-    verticalPlaybackRate, attributes }) => {
+    verticalPlaybackRate, ...attributes }) => {
   const style = () => {
     const ratio = (playbackRate - minPlaybackRate)
                   / (maxPlaybackRate - minPlaybackRate);
@@ -21,12 +21,7 @@ const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
   );
 };
 
-PlaybackRateBarValue.defaultProps = {
-  attributes: null,
-};
-
 PlaybackRateBarValue.propTypes = {
-  attributes: React.PropTypes.node,
   verticalPlaybackRate: React.PropTypes.bool.isRequired,
   minPlaybackRate: React.PropTypes.number.isRequired,
   maxPlaybackRate: React.PropTypes.number.isRequired,

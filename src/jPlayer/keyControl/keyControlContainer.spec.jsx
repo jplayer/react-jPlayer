@@ -36,11 +36,10 @@ describe('KeyControlContainer', () => {
 
   it('merges props', () => {
     const focus = true;
-    const { keyBindings, ...rest } = mergeProps({ focus }, dispatchProps, { uid, children });
+    const { keyBindings, ...rest } = mergeProps({ focus }, dispatchProps, { uid });
 
     expect(rest).toEqual({
       focus,
-      children,
       uid,
     });
     expect(Object.keys(keyBindings)).toEqual(['play', 'fullScreen',

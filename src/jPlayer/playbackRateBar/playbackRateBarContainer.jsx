@@ -5,7 +5,7 @@ import BarEvents from '../barEvents';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   movePlaybackRate: (bar, dispatch, e) => {
     const { verticalPlaybackRate, minPlaybackRate,
       maxPlaybackRate } = jPlayers[uid];
@@ -27,9 +27,10 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
 
     dispatch(setPlaybackRate(playbackRateValue, uid));
   },
+  ...attributes,
 });
 
-const mergeProps = ({ movePlaybackRate }, { dispatch }, ownProps) => ({
+const mergeProps = ({ movePlaybackRate, ...attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlaybackRate(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -37,15 +38,15 @@ const mergeProps = ({ movePlaybackRate }, { dispatch }, ownProps) => ({
 
     movePlaybackRate(bar, dispatch, e.touches[0]);
   },
-  ...ownProps,
+  ...attributes,
 });
 
-const PlaybackRateBarContainer = ({ onClick, onTouch, children, attributes }) => (
+const PlaybackRateBarContainer = ({ onClick, onTouch, children, ...attributes }) => (
   <BarEvents
     clickMoveBar={onClick}
     touchMoveBar={onTouch}
   >
-    <PlaybackRateBar attributes={attributes}>
+    <PlaybackRateBar {...attributes}>
       {children}
     </PlaybackRateBar>
   </BarEvents>

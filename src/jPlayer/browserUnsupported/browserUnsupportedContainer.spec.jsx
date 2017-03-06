@@ -8,30 +8,27 @@ import { __get__ } from './browserUnsupportedContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 
-const props = {
-  children: <div className="@@jPlayer-test" />,
-  attributes: {
-    'data-attribute-test': 'test',
-  },
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
 };
+const uid = 'jPlayer-1';
 
 describe('BrowserUnsupportedContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid: 'jPlayer-1',
-      children: props.children });
+    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
 
     expect(expected).toEqual({
       foundSupported: defaultOptions.mediaSettings.foundSupported,
-      children: props.children,
+      children: attributes.children,
     });
   });
 
-  it('no children renders default', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid: 'jPlayer-1',
-      attributes: props.attributes });
+  it('renders children as default', () => {
+    const expected = mapStateToProps(getJPlayers(), { uid, 'data-test': attributes['data-test'] });
     const wrapper = shallow(expected.children);
 
-    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
     expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
   });
 });

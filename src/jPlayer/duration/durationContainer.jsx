@@ -1,8 +1,11 @@
 import { connectWithId } from '../../util/index';
 import Duration from './duration';
 
-const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   children: children || jPlayers[uid].durationText,
+  ...attributes,
 });
 
-export default connectWithId(mapStateToProps)(Duration);
+const mergeProps = stateProps => ({ ...stateProps });
+
+export default connectWithId(mapStateToProps, null, mergeProps)(Duration);

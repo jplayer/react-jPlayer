@@ -8,9 +8,7 @@ import KeyControl from '../keyControl/keyControlContainer';
 const setup = () => {
   const props = {
     children: (<div className="@@jPlayer-test" />),
-    attributes: {
-      'data-attribute-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<JPlayer {...props} />);
@@ -32,7 +30,7 @@ describe('<JPlayer />', () => {
   it('renders self and subcomponents', () => {
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.children(KeyControl).exists()).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('doesn\'t enable keycontrols if !keyEnabled', () => {

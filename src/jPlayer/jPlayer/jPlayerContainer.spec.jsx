@@ -9,11 +9,12 @@ import { classes, loopOptions, defaultOptions, statusDefaultValues } from '../..
 import { __get__, __Rewire__, __ResetDependency__ } from './jPlayerContainer';
 import JPlayer from './jPlayer';
 
+const customClassName = '@@jPlayer-test';
 const stateClassTests = [
   { state: {
     // default state
   },
-    expected: [classes.JPLAYER, classes.states.AUDIO, classes.states.IDLE,
+    expected: [customClassName, classes.JPLAYER, classes.states.AUDIO, classes.states.IDLE,
       classes.states.VOLUME_HIGH, classes.states.NO_BROWSER_SUPPORT,
       classes.states.NO_VOLUME_SUPPORT],
   },
@@ -30,7 +31,7 @@ const stateClassTests = [
     loop: loopOptions.LOOP,
     currentTime: 30,
   },
-    expected: [classes.JPLAYER, classes.states.VIDEO, classes.states.PLAYING,
+    expected: [customClassName, classes.JPLAYER, classes.states.VIDEO, classes.states.PLAYING,
       classes.states.FULL_SCREEN, classes.states.MUTED, classes.states.SEEKING,
       classes.states.LOOPED, classes.states.NO_BROWSER_SUPPORT, classes.states.NO_VOLUME_SUPPORT,
     ],
@@ -39,21 +40,22 @@ const stateClassTests = [
     muted: false,
     volume: 0.45,
   },
-    expected: [classes.JPLAYER, classes.states.AUDIO, classes.states.IDLE,
+    expected: [customClassName, classes.JPLAYER, classes.states.AUDIO, classes.states.IDLE,
       classes.states.VOLUME_LOW, classes.states.NO_BROWSER_SUPPORT,
       classes.states.NO_VOLUME_SUPPORT],
   },
 ];
-const uid = 'jPlayer-1';
+
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const JPlayerContainer = __get__('JPlayerContainer');
 const fullscreenchange = 'fullscreenchange';
 const guiFadeHoldTimeout = 10;
-const dispatchProps = {
-  dispatch: createSpy(),
+const uid = 'jPlayer-1';
+const attributes = {
+  'data-test': 'test',
+  children: <div className="@@jPlayer-test" />,
 };
-const children = <div className="@@jPlayer-test" />;
 const MockJPlayer = ({ setJPlayer }) =>
   <div ref={setJPlayer} />;
 
@@ -62,7 +64,10 @@ MockJPlayer.propTypes = {
 };
 
 describe('<JPlayerContainer />', () => {
+  let dispatch;
+
   beforeEach(() => {
+    dispatch = createSpy();
     spyOn(global, 'clearTimeout');
     spyOn(global, 'setTimeout').andReturn(guiFadeHoldTimeout);
     __Rewire__('JPlayer', MockJPlayer);
@@ -71,9 +76,9 @@ describe('<JPlayerContainer />', () => {
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers({
       guiFadeHoldTimeout: 0,
-    }), { uid, children });
+    }), { uid, ...attributes });
 
-    delete expected.attributes;
+    delete expected.attributes.className;
 
     expect(expected).toEqual({
       media: defaultOptions.media,
@@ -83,50 +88,49 @@ describe('<JPlayerContainer />', () => {
       paused: true,
       guiFadeHoldTimeout: 0,
       guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
-      children,
+      attributes,
     });
   });
 
   it('maps stateClasses', () => {
     stateClassTests.forEach((stateClassTest) => {
-      const expected = mapStateToProps(getJPlayers(stateClassTest.state), { uid });
+      const expected = mapStateToProps(getJPlayers(stateClassTest.state),
+        { uid, className: customClassName });
       const classStatesString = stateClassTest.expected.join(' ');
 
       expect(classStatesString).toBe(expected.attributes.className);
     });
   });
 
-  it('mergeProps setMedia sets the media', () => {
-    const expected = mergeProps(getJPlayers(), dispatchProps, { uid });
-
-    expected.setMedia(defaultOptions.media);
-    expected.setOption('muted', true);
-
-    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, uid));
-    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
-    expect(expected.jPlayers).toExist();
-  });
-
-  it('mergeProps setOption sets the option', () => {
-    const expected = mergeProps(getJPlayers(), dispatchProps, { uid });
-
-    expected.setOption('muted', true);
-
-    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
-  });
-
   it('merges props', () => {
-    const test = 'test';
-    const expected = mergeProps({ test }, dispatchProps, { uid, children });
+    const stateProps = getJPlayers();
+    const expected = mergeProps(stateProps, { dispatch }, { uid });
 
     delete expected.setOption;
     delete expected.setMedia;
 
     expect(expected).toEqual({
-      test,
-      children,
-      uid,
+      ...stateProps,
     });
+  });
+
+  it('mergeProps setMedia sets the media', () => {
+    const expected = mergeProps(getJPlayers(), { dispatch }, { uid });
+
+    expected.setMedia(defaultOptions.media);
+    expected.setOption('muted', true);
+
+    expect(dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, uid));
+    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
+    expect(expected.jPlayers).toExist();
+  });
+
+  it('mergeProps setOption sets the option', () => {
+    const expected = mergeProps(getJPlayers(), { dispatch }, { uid });
+
+    expected.setOption('muted', true);
+
+    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
   });
 
   it('listens for closing full screen if screenFull is enabled', () => {
@@ -376,24 +380,20 @@ describe('<JPlayerContainer />', () => {
   it('renders JPlayer', () => {
     __ResetDependency__('JPlayer');
 
-    const attributes = {
-      'data-attribute-test': 'test',
-    };
     const props = getJPlayers().jPlayers['jPlayer-1'];
     const wrapper = shallow(
       <JPlayerContainer {...props} attributes={attributes}>
-        <div className="@@jPlayer-test" />
+        {attributes.children}
       </JPlayerContainer>,
     );
     expect(wrapper.prop('keyEnabled')).toBe(defaultOptions.keyEnabled);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.type()).toBe(JPlayer);
     expect(wrapper.prop('setJPlayer')).toBe(wrapper.instance().setJPlayer);
-    expect(wrapper.prop('attributes')).toEqual(attributes);
+    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('data-test')).toEqual(attributes['data-test']);
   });
 
   afterEach(() => {
-    dispatchProps.dispatch.reset();
     __ResetDependency__('screenfull');
     __ResetDependency__('JPlayer');
     restoreSpies();

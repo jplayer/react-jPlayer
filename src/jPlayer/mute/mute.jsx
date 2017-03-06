@@ -2,18 +2,11 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Mute = ({ onClick, children, attributes }) => (
-  <button {...attributes} className={classes.MUTE} onClick={onClick}>
-    {children}
-  </button>
+const Mute = ({ onClick, ...attributes }) => (
+  <button {...attributes} className={classes.MUTE} onClick={onClick} />
 );
 
-Mute.defaultProps = {
-  attributes: null,
-};
-
 Mute.propTypes = {
-  attributes: React.PropTypes.node,
   children: React.PropTypes.node.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };

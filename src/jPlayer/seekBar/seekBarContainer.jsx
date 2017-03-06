@@ -4,7 +4,7 @@ import { setPlayHead } from '../_actions/actions';
 import BarEvents from '../barEvents';
 import SeekBar from './seekBar';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   seekPercent: jPlayers[uid].seekPercent,
   movePlayHead: (bar, dispatch, e) => {
     const offset = getOffset(bar);
@@ -14,10 +14,11 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
 
     dispatch(setPlayHead(percentage, uid));
   },
+  ...attributes,
 });
 
 // eslint-disable-next-line no-unused-vars
-const mergeProps = ({ movePlayHead, seekPercent }, { dispatch }, ownProps) => ({
+const mergeProps = ({ movePlayHead, seekPercent, ...attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlayHead(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -26,12 +27,12 @@ const mergeProps = ({ movePlayHead, seekPercent }, { dispatch }, ownProps) => ({
     movePlayHead(bar, dispatch, e.touches[0]);
   },
   seekPercent,
-  ...ownProps,
+  ...attributes,
 });
 
-const SeekBarContainer = ({ onClick, onTouch, seekPercent, attributes }) => (
+const SeekBarContainer = ({ onClick, onTouch, seekPercent, ...attributes }) => (
   <BarEvents clickMoveBar={onClick} touchMoveBar={onTouch}>
-    <SeekBar seekPercent={seekPercent} attributes={attributes} />
+    <SeekBar seekPercent={seekPercent} {...attributes} />
   </BarEvents>
 );
 

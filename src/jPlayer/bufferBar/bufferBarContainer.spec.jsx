@@ -1,5 +1,5 @@
 import React from 'react';
-import expect, { spyOn } from 'expect';
+import expect, { createSpy, spyOn } from 'expect';
 import { mount, shallow } from 'enzyme';
 
 import { getJPlayers, mockCanvasContext } from '../../util/common.spec';
@@ -16,22 +16,43 @@ const state = {
 };
 
 const mapStateToProps = __get__('mapStateToProps');
+const mergeProps = __get__('mergeProps');
 const BufferBarContainer = __get__('BufferBarContainer');
-
+const uid = 'jPlayer-1';
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
 const MockBufferBar = ({ setCanvas }) => <canvas ref={setCanvas} />;
+__Rewire__('BufferBar', MockBufferBar);
 
 MockBufferBar.propTypes = {
   setCanvas: React.PropTypes.func.isRequired,
 };
 
 describe('<BufferBarContainer />', () => {
-  before(() => {
-    __Rewire__('BufferBar', MockBufferBar);
+  let dispatch;
+
+  beforeEach(() => {
+    dispatch = createSpy();
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(state), { uid: 'jPlayer-1' });
-    expect(state).toEqual(expected);
+    const expected = mapStateToProps(getJPlayers(state), { uid, ...attributes });
+    expect(expected).toEqual({
+      ...state,
+      ...attributes,
+    });
+  });
+
+  it('merges props', () => {
+    const stateProps = getJPlayers();
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+
+    expect(expected).toEqual({
+      ...stateProps,
+      ...attributes,
+    });
   });
 
   it('clears buffer bar if not buffered', () => {
@@ -76,14 +97,10 @@ describe('<BufferBarContainer />', () => {
 
   it('renders BufferBar', () => {
     __ResetDependency__('BufferBar');
-
-    const attributes = {
-      'data-attribute-test': 'test',
-    };
-    const wrapper = shallow(<BufferBarContainer {...state} attributes={attributes} />);
+    const wrapper = shallow(<BufferBarContainer {...state} {...attributes} />);
 
     expect(wrapper.type()).toBe(BufferBar);
-    expect(wrapper.prop('data-attribute-test')).toBe(attributes['data-attribute-test']);
+    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
   });
 
   afterEach(() => {

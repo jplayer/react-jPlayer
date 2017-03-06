@@ -3,16 +3,18 @@ import React from 'react';
 import { connectWithId } from '../../util/index';
 import BufferBar from './bufferBar';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
   duration: jPlayers[uid].duration,
   bufferColour: jPlayers[uid].bufferColour,
+  ...attributes,
 });
+
+const mergeProps = stateProps => ({ ...stateProps });
 
 class BufferBarContainer extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.objectOf(React.PropTypes.node),
       bufferedTimeRanges: React.PropTypes.arrayOf(React.PropTypes.shape({
         start: React.PropTypes.number.isRequired,
         end: React.PropTypes.number.isRequired,
@@ -56,8 +58,8 @@ class BufferBarContainer extends React.Component {
     });
   }
   render() {
-    return <BufferBar setCanvas={this.setCanvas} {...this.props.attributes} />;
+    return <BufferBar setCanvas={this.setCanvas} {...this.props} />;
   }
 }
 
-export default connectWithId(mapStateToProps)(BufferBarContainer);
+export default connectWithId(mapStateToProps, null, mergeProps)(BufferBarContainer);

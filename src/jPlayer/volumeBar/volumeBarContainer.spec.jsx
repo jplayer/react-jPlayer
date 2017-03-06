@@ -24,7 +24,10 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
-const children = <div />;
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
 
 describe('VolumeBarContainer', () => {
   let dispatch;
@@ -32,16 +35,27 @@ describe('VolumeBarContainer', () => {
   beforeEach(() => {
     dispatch = createSpy();
   });
+
+  it('maps state', () => {
+    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+
+    delete expected.moveVolumeBar;
+
+    expect(expected).toEqual({
+      ...attributes,
+    });
+  });
+
   it('merges props', () => {
-    const expected = mergeProps(getJPlayers().jPlayers[uid],
-      { dispatch }, { uid, children });
+    const stateProps = getJPlayers();
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
-      uid,
-      children,
+      ...stateProps,
+      ...attributes,
     });
   });
 

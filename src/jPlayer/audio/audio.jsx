@@ -2,25 +2,19 @@ import React from 'react';
 
 import Media from '../media/mediaContainer';
 
-const Audio = ({ require, events, children, attributes }) => (
+const Audio = ({ require, events, ...attributes }) => (
   require ?
     <Media {...events}>
-      <audio {...attributes}>
-        {children}
-      </audio>
+      <audio {...attributes} />
     </Media>
   : null
 );
 
 Audio.defaultProps = {
   events: null,
-  attributes: null,
-  children: null,
 };
 
 Audio.propTypes = {
-  children: React.PropTypes.node,
-  attributes: React.PropTypes.objectOf(React.PropTypes.node),
   require: React.PropTypes.bool.isRequired,
   events: React.PropTypes.shape({
     onProgress: React.PropTypes.func,

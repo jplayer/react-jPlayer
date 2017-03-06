@@ -1,8 +1,11 @@
 import { connectWithId } from '../../util/index';
 import Audio from './audio';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   require: !jPlayers[uid].mediaSettings.video,
+  ...attributes,
 });
 
-export default connectWithId(mapStateToProps)(Audio);
+const mergeProps = stateProps => ({ ...stateProps });
+
+export default connectWithId(mapStateToProps, null, mergeProps)(Audio);

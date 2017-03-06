@@ -7,14 +7,17 @@ import { __get__ } from './guiContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const dispatchProps = {
-  dispatch: createSpy(),
-};
 const uid = 'jPlayer-1';
-const children = <div />;
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
 
 describe('GuiContainer', () => {
+  let dispatch;
+
   beforeEach(() => {
+    dispatch = createSpy();
     spyOn(global, 'clearTimeout');
   });
 
@@ -35,15 +38,14 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: true,
       guiFadeOut: false,
-    }, dispatchProps, { uid, children });
+    }, { dispatch }, { uid, ...attributes });
 
     delete expected.onMouseMove;
 
     expect(expected).toEqual({
       fullScreen: true,
       guiFadeOut: false,
-      uid,
-      children,
+      ...attributes,
     });
   });
 
@@ -54,11 +56,11 @@ describe('GuiContainer', () => {
       paused: false,
       guiFadeHoldTimeout,
     },
-    dispatchProps, { uid });
+    { dispatch }, { uid });
 
     expected.onMouseMove();
 
-    expect(dispatchProps.dispatch).toHaveBeenCalledWith(setOption(
+    expect(dispatch).toHaveBeenCalledWith(setOption(
       'guiFadeOut',
       false,
       uid,
@@ -70,11 +72,11 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: false,
       paused: false,
-    }, dispatchProps, { uid });
+    }, { dispatch }, { uid });
 
     expected.onMouseMove();
 
-    expect(dispatchProps.dispatch).toNotHaveBeenCalled();
+    expect(dispatch).toNotHaveBeenCalled();
     expect(clearTimeout).toNotHaveBeenCalled();
   });
 
@@ -82,16 +84,15 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: true,
       paused: true,
-    }, dispatchProps, { uid });
+    }, { dispatch }, { uid });
 
     expected.onMouseMove();
 
-    expect(dispatchProps.dispatch).toNotHaveBeenCalled();
+    expect(dispatch).toNotHaveBeenCalled();
     expect(clearTimeout).toNotHaveBeenCalled();
   });
 
   afterEach(() => {
-    dispatchProps.dispatch.reset();
     restoreSpies();
   });
 });

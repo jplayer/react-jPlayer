@@ -5,7 +5,7 @@ import BarEvents from '../barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   moveVolumeBar: (bar, dispatch, e) => {
     const { verticalVolume } = jPlayers[uid];
     const offset = getOffset(bar);
@@ -20,9 +20,10 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
       dispatch(setVolume(x / w, uid));
     }
   },
+  ...attributes,
 });
 
-const mergeProps = ({ moveVolumeBar }, { dispatch }, ownProps) => ({
+const mergeProps = ({ moveVolumeBar, ...attributes }, { dispatch }) => ({
   onClick: (bar, e) => moveVolumeBar(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -30,12 +31,12 @@ const mergeProps = ({ moveVolumeBar }, { dispatch }, ownProps) => ({
 
     moveVolumeBar(bar, dispatch, e.touches[0]);
   },
-  ...ownProps,
+  ...attributes,
 });
 
-const VolumeBarContainer = ({ onClick, onTouch, children, attributes }) => (
+const VolumeBarContainer = ({ onClick, onTouch, children, ...attributes }) => (
   <BarEvents clickMoveBar={onClick} touchMoveBar={onTouch}>
-    <VolumeBar attributes={attributes}>
+    <VolumeBar {...attributes}>
       {children}
     </VolumeBar>
   </BarEvents>
@@ -43,11 +44,9 @@ const VolumeBarContainer = ({ onClick, onTouch, children, attributes }) => (
 
 VolumeBarContainer.defaultProps = {
   children: (<VolumeBarValue />),
-  attributes: null,
 };
 
 VolumeBarContainer.propTypes = {
-  attributes: React.PropTypes.node,
   children: React.PropTypes.node,
   onClick: React.PropTypes.func.isRequired,
   onTouch: React.PropTypes.func.isRequired,

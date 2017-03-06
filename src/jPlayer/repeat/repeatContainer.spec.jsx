@@ -8,8 +8,11 @@ import { __get__ } from './repeatContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
 const uid = 'jPlayer-1';
-const children = <div />;
 
 describe('RepeatContainer', () => {
   let dispatch;
@@ -32,13 +35,12 @@ describe('RepeatContainer', () => {
   ];
 
   it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { uid, children });
+    const expected = mergeProps({}, { dispatch }, { uid, ...attributes });
 
     delete expected.onClick;
 
     expect(expected).toEqual({
-      uid,
-      children,
+      ...attributes,
     });
   });
 

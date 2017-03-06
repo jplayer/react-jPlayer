@@ -10,7 +10,6 @@ import SeekBar from './seekBar';
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const SeekBarContainer = __get__('SeekBarContainer');
-const uid = 'jPlayer-1';
 const getBoundingClientRect = () => ({
   top: 10,
   left: 30,
@@ -22,7 +21,11 @@ const getProps = props => ({
   onTouch: Function.prototype,
   ...props,
 });
-const children = <div />;
+const attributes = {
+  'data-test': 'test',
+  children: <div />,
+};
+const uid = 'jPlayer-1';
 
 describe('SeekBarContainer', () => {
   let dispatch;
@@ -32,26 +35,26 @@ describe('SeekBarContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
 
     delete expected.movePlayHead;
 
     expect(expected).toEqual({
       seekPercent: 0,
+      ...attributes,
     });
   });
 
   it('merges props', () => {
-    const expected = mergeProps(getJPlayers().jPlayers[uid],
-      { dispatch: null }, { uid, children });
+    const seekPercent = 10;
+    const expected = mergeProps({ seekPercent, ...attributes }, dispatch, { uid });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
-      seekPercent: 0,
-      uid,
-      children,
+      seekPercent,
+      ...attributes,
     });
   });
 

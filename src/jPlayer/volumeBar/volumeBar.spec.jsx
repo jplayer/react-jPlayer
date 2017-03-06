@@ -11,9 +11,7 @@ const setup = () => {
     onMouseDown: createSpy(),
     setVolumeBar: Function.prototype,
     children: (<div className="@@jPlayer-test" />),
-    attributes: {
-      'data-attribute-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<VolumeBar {...props} />);
@@ -40,6 +38,6 @@ describe('<VolumeBar />', () => {
     expect(props.onMouseDown).toHaveBeenCalled();
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.VOLUME_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-attribute-test')).toBe(props.attributes['data-attribute-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

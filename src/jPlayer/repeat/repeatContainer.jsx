@@ -7,12 +7,12 @@ const mapStateToProps = ({ jPlayers }, { uid }) => ({
   loop: jPlayers[uid].loop,
 });
 
-const mergeProps = ({ loop }, { dispatch }, ownProps) => ({
+const mergeProps = ({ loop }, { dispatch }, { uid, ...attributes }) => ({
   onClick: () => {
     const loopOption = loop === loopOptions.LOOP ? loopOptions.OFF : loopOptions.LOOP;
-    dispatch(setLoop(loopOption, ownProps.uid));
+    dispatch(setLoop(loopOption, uid));
   },
-  ...ownProps,
+  ...attributes,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(Repeat);

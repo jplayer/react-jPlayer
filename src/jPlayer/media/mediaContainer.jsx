@@ -24,9 +24,9 @@ const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
   children,
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  setOption: (key, value) => dispatch(setOption(key, value, ownProps.uid)),
-  pause: time => dispatch(pause(ownProps.uid, time)),
+const mapDispatchToProps = (dispatch, { uid }) => ({
+  setOption: (key, value) => dispatch(setOption(key, value, uid)),
+  pause: time => dispatch(pause(uid, time)),
 });
 
 class MediaContainer extends React.Component {

@@ -3,19 +3,14 @@ import React from 'react';
 import { defaultOptions } from '../../util/constants';
 import KeyControl from '../keyControl/keyControlContainer';
 
-const JPlayer = ({ keyEnabled, setJPlayer, children, attributes }) => (
+const JPlayer = ({ keyEnabled, setJPlayer, children, ...attributes }) => (
   <div {...attributes} ref={setJPlayer} draggable={false}>
     {children}
     {keyEnabled && <KeyControl />}
   </div>
 );
 
-JPlayer.defaultProps = {
-  attributes: null,
-};
-
 JPlayer.propTypes = {
-  attributes: React.PropTypes.node,
   setJPlayer: React.PropTypes.func,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.element),

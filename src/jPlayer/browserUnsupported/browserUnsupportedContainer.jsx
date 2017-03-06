@@ -14,7 +14,7 @@ const getDefaultChildren = attributes => (
   </div>
 );
 
-const mapStateToProps = ({ jPlayers }, { uid, children, attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   foundSupported: jPlayers[uid].mediaSettings.foundSupported,
   children: children || getDefaultChildren(attributes),
 });
