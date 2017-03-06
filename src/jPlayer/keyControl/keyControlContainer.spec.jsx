@@ -17,7 +17,6 @@ const mergeProps = __get__('mergeProps');
 const mergePropsWithDefaultState = state => mergeProps(getJPlayers(state).jPlayers[uid],
   dispatchProps, { uid });
 const KeyControlContainer = __get__('KeyControlContainer');
-const children = <div />;
 
 describe('KeyControlContainer', () => {
   it('maps state', () => {
