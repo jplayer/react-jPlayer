@@ -80,6 +80,8 @@ describe('<JPlayerContainer />', () => {
 
     delete expected.attributes.className;
 
+    const { children, ...restOfAttributes } = attributes;
+
     expect(expected).toEqual({
       media: defaultOptions.media,
       error: statusDefaultValues.error,
@@ -88,7 +90,8 @@ describe('<JPlayerContainer />', () => {
       paused: true,
       guiFadeHoldTimeout: 0,
       guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
-      attributes,
+      children,
+      attributes: restOfAttributes,
     });
   });
 

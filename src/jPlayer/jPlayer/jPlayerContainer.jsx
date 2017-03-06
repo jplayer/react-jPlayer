@@ -14,7 +14,7 @@ Object.keys(formats).forEach((key) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
   media: jPlayers[uid].media,
   error: jPlayers[uid].error,
   fullScreen: jPlayers[uid].fullScreen,
@@ -22,6 +22,7 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
   paused: jPlayers[uid].paused,
   guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
   guiFadeHoldTime: jPlayers[uid].guiFadeHoldTime,
+  children,
   attributes: {
     ...attributes,
     className: classNames(attributes.className, classes.JPLAYER, {
@@ -52,7 +53,7 @@ const mergeProps = (stateProps, { dispatch }, { uid }) => ({
 class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.node,
+      attributes: React.PropTypes.object,
       media: React.PropTypes.shape({
         title: React.PropTypes.string,
         artist: React.PropTypes.string,
