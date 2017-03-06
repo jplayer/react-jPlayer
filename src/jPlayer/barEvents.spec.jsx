@@ -16,7 +16,10 @@ const getProps = props => ({
   ...props,
 });
 
-const MockChildren = ({ ...props }) => <div {...props} />;
+const MockChildren = ({ setBar }) => <div ref={setBar} />;
+MockChildren.propTypes = {
+  setBar: React.PropTypes.func.isRequired,
+};
 
 describe('BarEvents', () => {
   it('maps state', () => {

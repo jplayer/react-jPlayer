@@ -50,7 +50,7 @@ class BarEvents extends React.Component {
       onClick: this.onClick,
       onMouseDown: this.onMouseDown,
       onTouchStart: this.onTouchStart,
-      ref: this.setBar,
+      setBar: this.setBar,
     });
   }
 }

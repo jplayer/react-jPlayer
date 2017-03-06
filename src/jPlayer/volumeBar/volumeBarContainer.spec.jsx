@@ -42,20 +42,19 @@ describe('VolumeBarContainer', () => {
     delete expected.moveVolumeBar;
 
     expect(expected).toEqual({
-      ...attributes,
+      attributes,
     });
   });
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { uid });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
-      ...stateProps,
-      ...attributes,
+      attributes,
     });
   });
 
@@ -139,16 +138,15 @@ describe('VolumeBarContainer', () => {
   });
 
   it('renders VolumeBar', () => {
-    const props = getProps({
-      attributes: {
-        'data-attribute-test': 'test',
-      },
-    });
+    const props = {
+      ...getProps(),
+      attributes,
+    };
     const wrapper = shallow(<VolumeBarContainer {...props} />)
       .find(VolumeBar);
 
     expect(wrapper.type()).toBe(VolumeBar);
-    expect(wrapper.prop('attributes')).toBe(props.attributes);
+    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
   });
 
   it('children is VolumeBarValue as default', () => {

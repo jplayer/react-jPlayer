@@ -194,9 +194,9 @@ describe('MediaContainer', () => {
 
     expect(props.setOption).toHaveBeenCalledWith('durationText', '04:10');
     expect(props.setOption).toHaveBeenCalledWith('currentTimeText', '01:30');
-    expect(props.setOption).toHaveBeenCalledWith('seekPercent', 52.5);
+    expect(props.setOption).toHaveBeenCalledWith('seekPercent', 8.4);
     expect(props.setOption).toHaveBeenCalledWith('currentPercentRelative', 428.57142857142856);
-    expect(props.setOption).toHaveBeenCalledWith('currentPercentAbsolute', 225);
+    expect(props.setOption).toHaveBeenCalledWith('currentPercentAbsolute', 36);
     expect(props.setOption).toHaveBeenCalledWith('currentTime', instance.currentMedia.currentTime);
     expect(props.setOption).toHaveBeenCalledWith('remaining', 160);
     expect(props.setOption).toHaveBeenCalledWith('duration', instance.currentMedia.duration);

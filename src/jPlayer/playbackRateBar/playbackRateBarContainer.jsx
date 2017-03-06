@@ -27,10 +27,10 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
 
     dispatch(setPlaybackRate(playbackRateValue, uid));
   },
-  ...attributes,
+  attributes,
 });
 
-const mergeProps = ({ movePlaybackRate, ...attributes }, { dispatch }) => ({
+const mergeProps = ({ movePlaybackRate, attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlaybackRate(bar, dispatch, e),
   onTouch: (bar, e) => {
     // Stop page scrolling
@@ -38,10 +38,10 @@ const mergeProps = ({ movePlaybackRate, ...attributes }, { dispatch }) => ({
 
     movePlaybackRate(bar, dispatch, e.touches[0]);
   },
-  ...attributes,
+  attributes,
 });
 
-const PlaybackRateBarContainer = ({ onClick, onTouch, children, ...attributes }) => (
+const PlaybackRateBarContainer = ({ onClick, onTouch, children, attributes }) => (
   <BarEvents
     clickMoveBar={onClick}
     touchMoveBar={onTouch}
@@ -58,7 +58,7 @@ PlaybackRateBarContainer.defaultProps = {
 };
 
 PlaybackRateBarContainer.propTypes = {
-  attributes: React.PropTypes.node,
+  attributes: React.PropTypes.object,
   children: React.PropTypes.node,
   onClick: React.PropTypes.func.isRequired,
   onTouch: React.PropTypes.func.isRequired,

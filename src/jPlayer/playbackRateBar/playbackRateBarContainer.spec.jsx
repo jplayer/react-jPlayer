@@ -42,18 +42,18 @@ describe('PlaybackRateBarContainer', () => {
     delete expected.movePlaybackRate;
 
     expect(expected).toEqual({
-      ...attributes,
+      attributes,
     });
   });
 
   it('merges props', () => {
-    const expected = mergeProps({ ...attributes }, { dispatch }, { uid });
+    const expected = mergeProps({ attributes }, { dispatch }, { uid });
 
     delete expected.onClick;
     delete expected.onTouch;
 
     expect(expected).toEqual({
-      ...attributes,
+      attributes,
     });
   });
 
@@ -137,16 +137,15 @@ describe('PlaybackRateBarContainer', () => {
   });
 
   it('renders PlaybackRateBar', () => {
-    const props = getProps({
-      attributes: {
-        'data-attribute-test': 'test',
-      },
-    });
+    const props = {
+      ...getProps(),
+      attributes,
+    };
     const wrapper = shallow(<PlaybackRateBarContainer {...props} />)
       .find(PlaybackRateBar);
 
     expect(wrapper.type()).toBe(PlaybackRateBar);
-    expect(wrapper.prop('attributes')).toBe(props.attributes);
+    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
   });
 
   it('children is PlaybackRateBarValue as default', () => {

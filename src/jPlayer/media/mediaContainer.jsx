@@ -207,7 +207,7 @@ class MediaContainer extends React.Component {
       // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
       // Hasn't fully loaded the song????
       if (this.currentMedia.seekable.length > 0) {
-        this.currentMedia.currentTime = toPercentage(nextProps.playHeadPercent,
+        this.currentMedia.currentTime = toRelativePercentage(nextProps.playHeadPercent,
           this.getSeekableEnd());
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
         this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
@@ -226,7 +226,7 @@ class MediaContainer extends React.Component {
     let currentPercentRelative = 0;
 
     if (this.currentMedia.seekable.length > 0) {
-      currentPercentRelative = toRelativePercentage(this.currentMedia.currentTime,
+      currentPercentRelative = toPercentage(this.currentMedia.currentTime,
         this.getSeekableEnd());
     }
     return currentPercentRelative;

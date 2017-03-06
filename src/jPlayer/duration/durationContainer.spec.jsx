@@ -1,4 +1,3 @@
-import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
@@ -10,7 +9,6 @@ const mergeProps = __get__('mergeProps');
 const uid = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
 
 describe('DurationContainer', () => {
