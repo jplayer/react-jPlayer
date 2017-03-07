@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
 import { setPlaybackRate } from '../_actions/actions';
 import { __get__ } from './playbackRateBarContainer';
-import BarEvents from '../barEvents';
+import BarEvents from '../_barEvents/barEvents';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 

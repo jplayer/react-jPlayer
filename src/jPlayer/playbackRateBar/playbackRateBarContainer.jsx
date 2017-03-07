@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
 import { setPlaybackRate } from '../_actions/actions';
-import BarEvents from '../barEvents';
+import BarEvents from '../_barEvents/barEvents';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 

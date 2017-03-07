@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { connectWithId } from '../util/index';
+import { connectWithId } from '../../util/index';
 
 const mapStateToProps = ({ jPlayers }, { uid }) => ({
   barDrag: jPlayers[uid].barDrag,

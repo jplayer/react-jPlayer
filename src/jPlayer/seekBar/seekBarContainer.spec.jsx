@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
 import { setPlayHead } from '../_actions/actions';
 import { __get__ } from './seekBarContainer';
-import BarEvents from '../barEvents';
+import BarEvents from '../_barEvents/barEvents';
 import SeekBar from './seekBar';
 
 const mapStateToProps = __get__('mapStateToProps');

@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
 import { setVolume } from '../_actions/actions';
 import { __get__ } from './volumeBarContainer';
-import BarEvents from '../barEvents';
+import BarEvents from '../_barEvents/barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 

@@ -3,7 +3,6 @@ import Gui from './jPlayer/gui/guiContainer';
 import Video from './jPlayer/video/videoContainer';
 import Audio from './jPlayer/audio/audioContainer';
 import JPlayer from './jPlayer/jPlayer/jPlayerContainer';
-import KeyControl from './jPlayer/keyControl/keyControlContainer';
 import SeekBar from './jPlayer/seekBar/seekBarContainer';
 import PlayBar from './jPlayer/playBar/playBarContainer';
 import BufferBar from './jPlayer/bufferBar/bufferBarContainer';
@@ -22,7 +21,7 @@ import Duration from './jPlayer/duration/durationContainer';
 import CurrentTime from './jPlayer/currentTime/currentTimeContainer';
 import BrowserUnsupported from './jPlayer/browserUnsupported/browserUnsupportedContainer';
 
-export { JPlayerProvider, JPlayer, Gui, KeyControl, SeekBar, PlayBar,
+export { JPlayerProvider, JPlayer, Gui, SeekBar, PlayBar,
    BufferBar, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };

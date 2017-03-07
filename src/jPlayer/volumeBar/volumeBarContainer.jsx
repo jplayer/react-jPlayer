@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
 import { setVolume } from '../_actions/actions';
-import BarEvents from '../barEvents';
+import BarEvents from '../_barEvents/barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 

@@ -3,7 +3,7 @@ import expect, { restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
 
 import JPlayer from './jPlayer';
-import KeyControl from '../keyControl/keyControlContainer';
+import KeyControl from '../_keyControl/keyControlContainer';
 
 const setup = () => {
   const props = {

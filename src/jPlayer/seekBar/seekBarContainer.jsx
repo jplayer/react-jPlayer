@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectWithId, getWidth, getOffset } from '../../util/index';
 import { setPlayHead } from '../_actions/actions';
-import BarEvents from '../barEvents';
+import BarEvents from '../_barEvents/barEvents';
 import SeekBar from './seekBar';
 
 const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({

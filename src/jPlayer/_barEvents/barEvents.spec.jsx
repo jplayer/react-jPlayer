@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow, mount } from 'enzyme';
 
-import { getJPlayers } from '../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { __get__ } from './barEvents';
 
 const mapStateToProps = __get__('mapStateToProps');
