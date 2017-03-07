@@ -21,7 +21,7 @@ cd react-jPlayer
 
 npm install
 
-cd /examples
+cd ./examples
 
 npm run dev
 
