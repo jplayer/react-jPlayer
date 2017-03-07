@@ -2,6 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/MartinDawson/react-jPlayer/badge.svg?branch=master)](https://coveralls.io/github/MartinDawson/react-jPlayer?branch=master)
 [![dependencies Status](https://david-dm.org/martindawson/react-jPlayer/status.svg)](https://david-dm.org/martindawson/react-jPlayer)
 [![devDependencies Status](https://david-dm.org/martindawson/react-jPlayer/dev-status.svg)](https://david-dm.org/martindawson/react-jPlayer?type=dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # react-jPlayer
 A Html5 audio/video player that is based on the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/) but without the jQuery dependency.
@@ -48,9 +49,6 @@ open http://localhost:8080/
 * IEMobile 11¹
 
 ¹partially tested without audio/video because browserstack emulators don't support it.
-
-## License
-[MIT license](http://opensource.org/licenses/MIT).
 
 ## Thanks
 [1]: https://www.browserstack.com/
