@@ -6,7 +6,7 @@ const debug = process.env.NODE_ENV !== 'production';
 export default {
   context: __dirname,
   entry: {
-    jPlayerExample: './src/app.jsx',
+    'react-jPlayerExample': './src/app.jsx',
   },
   devtool: debug ? 'inline-sourcemap' : null,
   output: {

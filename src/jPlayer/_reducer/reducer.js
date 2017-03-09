@@ -201,6 +201,7 @@ const setGlobalOptions = (state, action) => {
 };
 
 const jPlayerReducer = (state, action) => {
+  debugger
   let newState = { ...state };
   const jPlayer = updatePlayer(newState[action.uid], action);
 
