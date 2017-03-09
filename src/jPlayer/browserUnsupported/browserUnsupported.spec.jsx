@@ -2,12 +2,13 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
+import { classes } from '../../util/constants';
 import BrowserUnsupported from './browserUnsupported';
 
-const setup = () => {
+const setup = (newProps) => {
   const props = {
     foundSupported: false,
-    children: <div className="@@jPlayer-test" />,
+    ...newProps,
   };
   const wrapper = shallow(<BrowserUnsupported {...props} />);
 
@@ -18,18 +19,24 @@ const setup = () => {
 };
 
 describe('<BrowserUnsupported />', () => {
-  let wrapper;
-
-  beforeEach(() => {
-    ({ wrapper } = setup());
-  });
-
   it('renders self and sub components when no supported media types', () => {
-    expect(wrapper.hasClass('@@jPlayer-test')).toBeTruthy();
+    const { wrapper } = setup();
+
+    expect(wrapper.hasClass('@@jPlayer-test')).toBeFalsy();
+    expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
   });
 
   it('renders null when supported media types', () => {
+    const { wrapper } = setup();
+
     wrapper.setProps({ foundSupported: true });
     expect(wrapper.type()).toBe(null);
+  });
+
+  it('custom children overwrite default if specified', () => {
+    const { wrapper } = setup({ children: <div className="@@jPlayer-test" /> });
+
+    expect(wrapper.hasClass('@@jPlayer-test')).toBeTruthy();
+    expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeFalsy();
   });
 });
