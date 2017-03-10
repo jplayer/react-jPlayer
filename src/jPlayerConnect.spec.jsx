@@ -1,5 +1,5 @@
 import React from 'react';
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { getJPlayers, getDefaultJPlayers } from './util/common.spec';
@@ -14,13 +14,34 @@ const mockPlayerName = 'MockPlayer';
 const mockPlayerOptions = {
   muted: true,
 };
+const getMappedActionsData = (newId, jPlayer = getDefaultJPlayers(1, true).jPlayers[uid]) => {
+  const time = 33;
+  const remaningDuration = 230;
+  return [
+    { action: 'setOption', args: ['muted', jPlayer.muted, newId] },
+    { action: 'setMedia', args: [jPlayer.media, newId] },
+    { action: 'clearMedia', args: [newId] },
+    { action: 'play', args: [{ time, uid: newId }] },
+    { action: 'pause', args: [{ time, uid: newId }] },
+    { action: 'setPlayHead', args: [jPlayer.playHeadPercent, newId] },
+    { action: 'setVolume', args: [jPlayer.volume, newId] },
+    { action: 'setMute', args: [jPlayer.muted, newId] },
+    { action: 'setDuration', args: [{ remaningDuration, uid: newId }] },
+    { action: 'setPlaybackRate', args: [jPlayer.playbackRate, newId] },
+    { action: 'setLoop', args: [jPlayer.loop, newId] },
+    { action: 'setFullScreen', args: [jPlayer.fullScreen, newId] },
+    { action: 'setFocus', args: [newId] },
+  ];
+};
 
 describe('JPlayerConnect', () => {
   let MockPlayer;
+  let dispatch;
 
   beforeEach(() => {
     MockPlayer = () => <div />;
     MockPlayer.options = mockPlayerOptions;
+    dispatch = createSpy();
   });
   it('maps state with custom props', () => {
     const expected = mapStateToProps(getJPlayers(), { uid, test: 'test' });
@@ -61,12 +82,37 @@ describe('JPlayerConnect', () => {
     });
   });
 
-  it('maps all actions to props', () => {
-    const expected = mapDispatchToProps(Function.prototype);
+  it('all actions are mapped', () => {
+    const mappedActions = mapDispatchToProps(Function.prototype, { uid });
     const jPlayerActions = actions;
+
     delete jPlayerActions.default;
 
-    expect(expected).toIncludeKeys(Object.keys(jPlayerActions));
+    const actionsLength = Object.keys(jPlayerActions).length;
+    const expectedLength = Object.keys(mappedActions).length;
+
+    expect(expectedLength).toBe(actionsLength);
+  });
+
+  getMappedActionsData(uid).forEach(({ action, args }) => {
+    it(`dispatches mapped ${action} when called with custom uid`, () => {
+      const mappedActions = mapDispatchToProps(dispatch, { currentId: 'TestPlayer' });
+
+      mappedActions[action](...args);
+      expect(dispatch).toHaveBeenCalledWith(actions[action](...args));
+    });
+  });
+
+  getMappedActionsData().forEach(({ action, args }, i) => {
+    it(`dispatches mapped ${action} when called with default uid`, () => {
+      const currentId = 'AudioPlayer';
+      const mappedActions = mapDispatchToProps(dispatch, { currentId });
+
+      mappedActions[action](...args);
+
+      const expectedActionsArgs = getMappedActionsData(currentId)[i].args;
+      expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedActionsArgs));
+    });
   });
 
   it('renders connected player', () => {

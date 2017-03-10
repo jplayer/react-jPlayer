@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as jPlayerActions from './jPlayer/_actions/actions';
+import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
+  setVolume, setMute, setDuration, setPlaybackRate, setLoop,
+  setFullScreen, setFocus } from './jPlayer/_actions/actions';
 
 const mapStateToProps = (state, { uid, ...props }) => {
   const otherPlayers = {};
@@ -27,12 +28,23 @@ const mapStateToProps = (state, { uid, ...props }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-
-  return {
-    ...bindActionCreators(jPlayerActions, dispatch),
-  };
-};
+const mapDispatchToProps = (dispatch, { currentId }) => ({
+  setOption: (key, value, uid = currentId) => dispatch(setOption(key, value, uid)),
+  setMedia: (media, uid = currentId) => dispatch(setMedia(media, uid)),
+  clearMedia: (uid = currentId) => dispatch(clearMedia(uid)),
+  play: ({ time, uid = currentId }) => dispatch(play({ time, uid })),
+  pause: ({ time, uid = currentId }) => dispatch(pause({ time, uid })),
+  setPlayHead: (percent, uid = currentId) => dispatch(setPlayHead(percent, uid)),
+  setVolume: (volume, uid = currentId) => dispatch(setVolume(volume, uid)),
+  setMute: (mute, uid = currentId) => dispatch(setMute(mute, uid)),
+  setDuration: ({ remainingDuration, uid = currentId }) =>
+    dispatch(setDuration({ remainingDuration, uid })),
+  setPlaybackRate: (playbackRate, uid = currentId) =>
+    dispatch(setPlaybackRate(playbackRate, uid)),
+  setLoop: (loop, uid = currentId) => dispatch(setLoop(loop, uid)),
+  setFullScreen: (fullScreen, uid = currentId) => dispatch(setFullScreen(fullScreen, uid)),
+  setFocus: (uid = currentId) => dispatch(setFocus(uid)),
+});
 
 const jPlayerConnect = (jPlayer) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
