@@ -27,7 +27,12 @@ const mapStateToProps = (state, { uid, ...props }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({ ...bindActionCreators(jPlayerActions, dispatch) });
+const mapDispatchToProps = (dispatch) => {
+
+  return {
+    ...bindActionCreators(jPlayerActions, dispatch),
+  };
+};
 
 const jPlayerConnect = (jPlayer) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);

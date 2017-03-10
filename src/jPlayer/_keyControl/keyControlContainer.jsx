@@ -20,8 +20,8 @@ const mergeProps = (stateProps, { dispatch }, { uid }) => ({
   keyBindings: merge({}, {
     play: {
       key: 80, // p
-      fn: () => (stateProps.paused ? dispatch(play(uid)) :
-                                      dispatch(pause(uid))),
+      fn: () => (stateProps.paused ? dispatch(play({ uid })) :
+                                      dispatch(pause({ uid }))),
     },
     fullScreen: {
       key: 70, // f

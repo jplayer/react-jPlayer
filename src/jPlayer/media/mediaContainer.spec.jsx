@@ -103,7 +103,7 @@ describe('MediaContainer', () => {
     const time = 30;
     mapDispatchToProps(dispatch, { uid }).pause(time);
 
-    expect(dispatch).toHaveBeenCalledWith(pause(uid, time));
+    expect(dispatch).toHaveBeenCalledWith(pause({ time, uid }));
   });
 
   it('updates media on startup', () => {
@@ -331,7 +331,7 @@ describe('MediaContainer', () => {
     instance.events.onEnded();
 
     expect(instance.updateMediaStatus).toHaveBeenCalled();
-    expect(props.pause).toHaveBeenCalledWith(0);
+    expect(props.pause).toHaveBeenCalledWith({ time: 0 });
     expect(onEnded).toHaveBeenCalled();
     expect(onRepeat).toNotHaveBeenCalled();
   });

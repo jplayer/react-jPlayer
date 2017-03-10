@@ -26,7 +26,7 @@ const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
 
 const mapDispatchToProps = (dispatch, { uid }) => ({
   setOption: (key, value) => dispatch(setOption(key, value, uid)),
-  pause: time => dispatch(pause(uid, time)),
+  pause: time => dispatch(pause({ time, uid })),
 });
 
 class MediaContainer extends React.Component {
@@ -157,7 +157,7 @@ class MediaContainer extends React.Component {
       },
       onEnded: () => {
         // Pause so that the play/pause button resets and the poster is shown again
-        this.props.pause(0);
+        this.props.pause({ time: 0 });
         this.updateMediaStatus();
 
         if (this.props.loop === 'loop') {

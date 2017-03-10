@@ -8,22 +8,22 @@ export const setOption = (key, value, uid) => ({
 });
 export const setMedia = (media, uid) => ({
   type: actionTypes.jPlayer.SET_MEDIA,
-  uid,
   media,
+  uid,
 });
 export const clearMedia = uid => ({
   type: actionTypes.jPlayer.CLEAR_MEDIA,
   uid,
 });
-export const play = (uid, time) => ({
+export const play = ({ time, uid }) => ({
   type: actionTypes.jPlayer.PLAY,
-  uid,
   time,
+  uid,
 });
-export const pause = (uid, time) => ({
+export const pause = ({ time, uid }) => ({
   type: actionTypes.jPlayer.PAUSE,
-  uid,
   time,
+  uid,
 });
 export const setPlayHead = (percent, uid) => ({
   type: actionTypes.jPlayer.PLAY_HEAD,
@@ -32,15 +32,15 @@ export const setPlayHead = (percent, uid) => ({
 });
 export const setVolume = (volume, uid) => ({
   type: actionTypes.jPlayer.VOLUME,
-  uid,
   volume,
+  uid,
 });
 export const setMute = (mute, uid) => ({
   type: actionTypes.jPlayer.MUTE,
   mute,
   uid,
 });
-export const setDuration = (uid, remainingDuration) => ({
+export const setDuration = ({ remainingDuration, uid }) => ({
   type: actionTypes.jPlayer.DURATION,
   remainingDuration,
   uid,

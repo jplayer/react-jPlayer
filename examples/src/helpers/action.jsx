@@ -36,7 +36,7 @@ class Action extends React.Component {
     const sortedParameters = [];
 
     this.parameterNames.forEach((parameterName) => {
-      sortedParameters.push(this.newParameters[parameterName]);
+      sortedParameters.push(JSON.parse(this.newParameters[parameterName]));
     });
     const action = jPlayerActions[this.props.actionName];
     this.props.dispatch(action(...sortedParameters));
@@ -44,7 +44,7 @@ class Action extends React.Component {
   render() {
     return (
       <li>
-        <strong>{this.props.actionName}</strong>
+        <h2>{this.props.actionName}</h2>
         = (
         <EditableParameters
           parameterNames={this.parameterNames}

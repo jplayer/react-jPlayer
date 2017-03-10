@@ -62,7 +62,7 @@ describe('KeyControlContainer', () => {
 
     keyBindings.play.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(play(uid));
+    expect(dispatch).toHaveBeenCalledWith(play({ uid }));
   });
 
   it('pauses when play key is pressed and media is playing', () => {
@@ -70,7 +70,7 @@ describe('KeyControlContainer', () => {
 
     keyBindings.play.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(pause(uid));
+    expect(dispatch).toHaveBeenCalledWith(pause({ uid }));
   });
 
   const fullScreenData = [
