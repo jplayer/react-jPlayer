@@ -1,12 +1,11 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, SeekBar, BufferBar,
+import { connect, JPlayer, Gui, SeekBar, BufferBar,
   Poster, Title, FullScreen, Mute, Play, Video, Audio, PlayBar, Repeat, PlaybackRateBar,
   VolumeBar, Download, Duration, CurrentTime } from '../../../src/index';
 import audioPoster from '../../assets/Miaow - Bubble.jpg';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
-import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const medias = {
   video: {
@@ -87,4 +86,4 @@ MixedPlayer.options = {
   media: medias[mediaId],
 };
 
-export default jPlayerConnect(MixedPlayer);
+export default connect(MixedPlayer);

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import getParameterNames from './getParameterNames';
-import * as jPlayerActions from '../../../src/jPlayer/_actions/actions';
+import * as jPlayerActions from '../../../src/actions/actions';
 
 const EditableParameters = ({ parameterNames, setNewParameters }) => (
   <span>

@@ -1,27 +1,29 @@
-import JPlayerProvider from './jPlayerProvider';
-import Gui from './jPlayer/gui/guiContainer';
-import Video from './jPlayer/video/videoContainer';
-import Audio from './jPlayer/audio/audioContainer';
-import JPlayer from './jPlayer/jPlayer/jPlayerContainer';
-import SeekBar from './jPlayer/seekBar/seekBarContainer';
-import PlayBar from './jPlayer/playBar/playBarContainer';
-import BufferBar from './jPlayer/bufferBar/bufferBarContainer';
-import Poster from './jPlayer/poster/posterContainer';
-import Title from './jPlayer/title/titleContainer';
-import FullScreen from './jPlayer/fullScreen/fullScreenContainer';
-import Mute from './jPlayer/mute/muteContainer';
-import Play from './jPlayer/play/playContainer';
-import Repeat from './jPlayer/repeat/repeatContainer';
-import PlaybackRateBar from './jPlayer/playbackRateBar/playbackRateBarContainer';
-import PlaybackRateBarValue from './jPlayer/playbackRateBarValue/playbackRateBarValueContainer';
-import VolumeBar from './jPlayer/volumeBar/volumeBarContainer';
-import VolumeBarValue from './jPlayer/volumeBarValue/volumeBarValueContainer';
-import Download from './jPlayer/download/downloadContainer';
-import Duration from './jPlayer/duration/durationContainer';
-import CurrentTime from './jPlayer/currentTime/currentTimeContainer';
-import BrowserUnsupported from './jPlayer/browserUnsupported/browserUnsupportedContainer';
+import getInitialStates from './initialState/getInitialStates';
+import reducer from './reducer/reducer';
+import connect from './connect/connect';
+import Gui from './components/gui/guiContainer';
+import Video from './components/video/videoContainer';
+import Audio from './components/audio/audioContainer';
+import JPlayer from './components/jPlayer/jPlayerContainer';
+import SeekBar from './components/seekBar/seekBarContainer';
+import PlayBar from './components/playBar/playBarContainer';
+import BufferBar from './components/bufferBar/bufferBarContainer';
+import Poster from './components/poster/posterContainer';
+import Title from './components/title/titleContainer';
+import FullScreen from './components/fullScreen/fullScreenContainer';
+import Mute from './components/mute/muteContainer';
+import Play from './components/play/playContainer';
+import Repeat from './components/repeat/repeatContainer';
+import PlaybackRateBar from './components/playbackRateBar/playbackRateBarContainer';
+import PlaybackRateBarValue from './components/playbackRateBarValue/playbackRateBarValueContainer';
+import VolumeBar from './components/volumeBar/volumeBarContainer';
+import VolumeBarValue from './components/volumeBarValue/volumeBarValueContainer';
+import Download from './components/download/downloadContainer';
+import Duration from './components/duration/durationContainer';
+import CurrentTime from './components/currentTime/currentTimeContainer';
+import BrowserUnsupported from './components/browserUnsupported/browserUnsupportedContainer';
 
-export { JPlayerProvider, JPlayer, Gui, SeekBar, PlayBar,
+export { getInitialStates, reducer, connect, JPlayer, Gui, SeekBar, PlayBar,
    BufferBar, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };

@@ -1,12 +1,11 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, SeekBar, BufferBar,
+import { connect, JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat,
   VolumeBar, Duration, CurrentTime, Download, BrowserUnsupported,
  } from '../../../src/index';
 import poster from '../../assets/Miaow - Bubble.jpg';
-import jPlayerConnect from '../../../src/jPlayerConnect';
 import { onTouchStart, onClick } from './hoverControl';
 
 const AudioPlayer = props => (
@@ -66,4 +65,4 @@ AudioPlayer.options = {
   },
 };
 
-export default jPlayerConnect(AudioPlayer);
+export default connect(AudioPlayer);

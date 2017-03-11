@@ -1,6 +1,8 @@
 /* eslint jsx-a11y/href-no-hash: 0 */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 
@@ -14,13 +16,17 @@ import NavBar from './helpers/navBar';
 import NavLink from './helpers/navLink';
 import NavContent from './helpers/navContent';
 import StatusWrapper from './helpers/statusWrapper';
-import { JPlayerProvider } from '../../src/index';
+import { getInitialStates, reducer } from '../../src/index';
 
 const jPlayers = [
   AudioPlayer,
   VideoPlayer,
   MixedPlayer,
 ];
+
+const store = createStore(combineReducers({ jPlayers: reducer }), {
+  jPlayers: getInitialStates(jPlayers),
+});
 
 const App = () => (
   <NavContainer>
@@ -40,7 +46,7 @@ const App = () => (
 );
 
 ReactDOM.render((
-  <JPlayerProvider jPlayers={jPlayers}>
+  <Provider store={store}>
     <App />
-  </JPlayerProvider>
+  </Provider>
 ), document.getElementById('app'));

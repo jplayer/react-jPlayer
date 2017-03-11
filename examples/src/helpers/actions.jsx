@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as jPlayerActions from '../../../src/jPlayer/_actions/actions';
+import * as jPlayerActions from '../../../src/actions/actions';
 import Action from './action';
 
 const Actions = () => (

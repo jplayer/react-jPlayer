@@ -1,11 +1,10 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-import { JPlayer, Gui, SeekBar, BufferBar,
+import { connect, JPlayer, Gui, SeekBar, BufferBar,
   Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat,
   VolumeBar, Duration, CurrentTime, BrowserUnsupported } from '../../../src/index';
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
-import jPlayerConnect from '../../../src/jPlayerConnect';
 
 const VideoPlayer = props => (
   <JPlayer className="jp-sleek">
@@ -57,4 +56,4 @@ VideoPlayer.options = {
   },
 };
 
-export default jPlayerConnect(VideoPlayer);
+export default connect(VideoPlayer);
