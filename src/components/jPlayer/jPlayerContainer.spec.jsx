@@ -51,7 +51,7 @@ const mergeProps = __get__('mergeProps');
 const JPlayerContainer = __get__('JPlayerContainer');
 const fullscreenchange = 'fullscreenchange';
 const guiFadeHoldTimeout = 10;
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div className="@@jPlayer-test" />,
@@ -76,7 +76,7 @@ describe('<JPlayerContainer />', () => {
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers({
       guiFadeHoldTimeout: 0,
-    }), { uid, ...attributes });
+    }), { id, ...attributes });
 
     delete expected.attributes.className;
 
@@ -98,7 +98,7 @@ describe('<JPlayerContainer />', () => {
   it('maps stateClasses', () => {
     stateClassTests.forEach((stateClassTest) => {
       const expected = mapStateToProps(getJPlayers(stateClassTest.state),
-        { uid, className: customClassName });
+        { id, className: customClassName });
       const classStatesString = stateClassTest.expected.join(' ');
 
       expect(classStatesString).toBe(expected.attributes.className);
@@ -107,7 +107,7 @@ describe('<JPlayerContainer />', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps(stateProps, { dispatch }, { uid });
+    const expected = mergeProps(stateProps, { dispatch }, { id });
 
     delete expected.setOption;
     delete expected.setMedia;
@@ -118,22 +118,22 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('mergeProps setMedia sets the media', () => {
-    const expected = mergeProps(getJPlayers(), { dispatch }, { uid });
+    const expected = mergeProps(getJPlayers(), { dispatch }, { id });
 
     expected.setMedia(defaultOptions.media);
     expected.setOption('muted', true);
 
-    expect(dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, uid));
-    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
+    expect(dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, id));
+    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, id));
     expect(expected.jPlayers).toExist();
   });
 
   it('mergeProps setOption sets the option', () => {
-    const expected = mergeProps(getJPlayers(), { dispatch }, { uid });
+    const expected = mergeProps(getJPlayers(), { dispatch }, { id });
 
     expected.setOption('muted', true);
 
-    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, uid));
+    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, id));
   });
 
   it('listens for closing full screen if screenFull is enabled', () => {

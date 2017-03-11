@@ -5,9 +5,9 @@ export const onTouchStart = (e) => {
     .querySelector('.jp-bar-container').clientHeight > 0;
 };
 
-export const onClick = (setMute, muted, uid) => () => {
+export const onClick = (setMute, muted, id) => () => {
   if (isBarVisible !== false) {
-    setMute(!muted, uid);
+    setMute(!muted, id);
   }
   isBarVisible = undefined;
 };

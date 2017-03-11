@@ -12,7 +12,7 @@ const attributes = {
   'data-test': 'test',
   children: <div />,
 };
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 
 describe('RepeatContainer', () => {
   let dispatch;
@@ -22,7 +22,7 @@ describe('RepeatContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
       loop: loopOptions.OFF,
@@ -35,7 +35,7 @@ describe('RepeatContainer', () => {
   ];
 
   it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { uid, ...attributes });
+    const expected = mergeProps({}, { dispatch }, { id, ...attributes });
 
     delete expected.onClick;
 
@@ -48,12 +48,12 @@ describe('RepeatContainer', () => {
     onClickData.forEach((onClickDatum) => {
       const expected = onClickDatum.loop === loopOptions.LOOP ? loopOptions.OFF
         : loopOptions.LOOP;
-      const mergedProps = mergeProps(getJPlayers(onClickDatum).jPlayers[uid],
-        { dispatch }, { uid });
+      const mergedProps = mergeProps(getJPlayers(onClickDatum).jPlayers[id],
+        { dispatch }, { id });
 
       mergedProps.onClick();
 
-      expect(dispatch).toHaveBeenCalledWith(setLoop(expected, uid));
+      expect(dispatch).toHaveBeenCalledWith(setLoop(expected, id));
     });
   });
 });

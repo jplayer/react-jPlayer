@@ -34,7 +34,7 @@ const MixedPlayer = (props) => {
   const changeMedia = () => {
     mediaId = mediaId === 'video' ? 'audio' : 'video';
 
-    props.setMedia(medias[mediaId], props.uid);
+    props.setMedia(medias[mediaId], props.id);
   };
   const posterStyle = (
     !props.mediaSettings.video &&

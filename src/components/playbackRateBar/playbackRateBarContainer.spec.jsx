@@ -12,7 +12,7 @@ import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueCo
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const PlaybackRateBarContainer = __get__('PlaybackRateBarContainer');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const getBoundingClientRect = () => ({
   top: 10,
   left: 30,
@@ -37,7 +37,7 @@ describe('PlaybackRateBarContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     delete expected.movePlaybackRate;
 
@@ -47,7 +47,7 @@ describe('PlaybackRateBarContainer', () => {
   });
 
   it('merges props', () => {
-    const expected = mergeProps({ attributes }, { dispatch }, { uid });
+    const expected = mergeProps({ attributes }, { dispatch }, { id });
 
     delete expected.onClick;
     delete expected.onTouch;
@@ -61,13 +61,13 @@ describe('PlaybackRateBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const mappedProps = mapStateToProps(getJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, id));
   });
 
   it('onClick moves playback rate when verticalPlaybackRate', () => {
@@ -76,20 +76,20 @@ describe('PlaybackRateBarContainer', () => {
     });
     const mappedProps = mapStateToProps(getJPlayers({
       verticalPlaybackRate: true,
-    }), { uid });
+    }), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageY: 7 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, id));
   });
 
   it('onTouch moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const mappedProps = mapStateToProps(getJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {
@@ -101,7 +101,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, id));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
@@ -111,7 +111,7 @@ describe('PlaybackRateBarContainer', () => {
     });
     const mappedProps = mapStateToProps(getJPlayers({
       verticalPlaybackRate: true,
-    }), { uid });
+    }), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {
@@ -123,7 +123,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, id));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

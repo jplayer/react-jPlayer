@@ -9,24 +9,24 @@ import * as actions from '../actions/actions';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const mockPlayerName = 'MockPlayer';
 const mockPlayerOptions = {
   muted: true,
 };
-const getMappedActionsData = (newId, jPlayer = getDefaultJPlayers(1, true).jPlayers[uid]) => {
+const getMappedActionsData = (newId, jPlayer = getDefaultJPlayers(1, true).jPlayers[id]) => {
   const time = 33;
   const remaningDuration = 230;
   return [
     { action: 'setOption', args: ['muted', jPlayer.muted, newId] },
     { action: 'setMedia', args: [jPlayer.media, newId] },
     { action: 'clearMedia', args: [newId] },
-    { action: 'play', args: [{ time, uid: newId }] },
-    { action: 'pause', args: [{ time, uid: newId }] },
+    { action: 'play', args: [{ time, id: newId }] },
+    { action: 'pause', args: [{ time, id: newId }] },
     { action: 'setPlayHead', args: [jPlayer.playHeadPercent, newId] },
     { action: 'setVolume', args: [jPlayer.volume, newId] },
     { action: 'setMute', args: [jPlayer.muted, newId] },
-    { action: 'setDuration', args: [{ remaningDuration, uid: newId }] },
+    { action: 'setDuration', args: [{ remaningDuration, id: newId }] },
     { action: 'setPlaybackRate', args: [jPlayer.playbackRate, newId] },
     { action: 'setLoop', args: [jPlayer.loop, newId] },
     { action: 'setFullScreen', args: [jPlayer.fullScreen, newId] },
@@ -44,7 +44,7 @@ describe('JPlayerConnect', () => {
     dispatch = createSpy();
   });
   it('maps state with custom props', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, test: 'test' });
+    const expected = mapStateToProps(getJPlayers(), { id, test: 'test' });
 
     expect(expected).toEqual({
       ...defaultOptions,
@@ -54,7 +54,7 @@ describe('JPlayerConnect', () => {
   });
 
   it('custom props with same name as state get overwritten', () => {
-    const expected = mapStateToProps(getJPlayers({ muted: true }), { uid, muted: false });
+    const expected = mapStateToProps(getJPlayers({ muted: true }), { id, muted: false });
 
     expect(expected).toEqual({
       ...defaultOptions,
@@ -64,7 +64,7 @@ describe('JPlayerConnect', () => {
   });
 
   it('maps other players if they exist', () => {
-    const expected = mapStateToProps(getDefaultJPlayers(3, true), { uid: 'jPlayer-2' });
+    const expected = mapStateToProps(getDefaultJPlayers(3, true), { id: 'jPlayer-2' });
 
     expect(expected).toEqual({
       ...defaultOptions,
@@ -83,7 +83,7 @@ describe('JPlayerConnect', () => {
   });
 
   it('all actions are mapped', () => {
-    const mappedActions = mapDispatchToProps(Function.prototype, { uid });
+    const mappedActions = mapDispatchToProps(Function.prototype, { id });
     const jPlayerActions = actions;
 
     delete jPlayerActions.default;
@@ -94,8 +94,8 @@ describe('JPlayerConnect', () => {
     expect(expectedLength).toBe(actionsLength);
   });
 
-  getMappedActionsData(uid).forEach(({ action, args }) => {
-    it(`dispatches mapped ${action} when called with custom uid`, () => {
+  getMappedActionsData(id).forEach(({ action, args }) => {
+    it(`dispatches mapped ${action} when called with custom id`, () => {
       const mappedActions = mapDispatchToProps(dispatch, { currentId: 'TestPlayer' });
 
       mappedActions[action](...args);
@@ -104,7 +104,7 @@ describe('JPlayerConnect', () => {
   });
 
   getMappedActionsData().forEach(({ action, args }, i) => {
-    it(`dispatches mapped ${action} when called with default uid`, () => {
+    it(`dispatches mapped ${action} when called with default id`, () => {
       const currentId = 'AudioPlayer';
       const mappedActions = mapDispatchToProps(dispatch, { currentId });
 
@@ -119,22 +119,22 @@ describe('JPlayerConnect', () => {
     const Component = connect(MockPlayer);
     const wrapper = shallow(<Component test="test" />);
 
-    expect(wrapper.prop('uid')).toBe(mockPlayerName);
+    expect(wrapper.prop('id')).toBe(mockPlayerName);
     expect(wrapper.prop('test')).toBe('test');
   });
 
-  it('sets uid if function name is undefined', () => {
+  it('sets id if function name is undefined', () => {
     Object.defineProperty(MockPlayer, 'name', { value: undefined });
     const Component = connect(MockPlayer);
     const wrapper = shallow(<Component />);
 
-    expect(wrapper.prop('uid')).toBe(mockPlayerName);
+    expect(wrapper.prop('id')).toBe(mockPlayerName);
   });
 
-  it('component returns uid', () => {
+  it('component returns id', () => {
     const Component = connect(MockPlayer);
 
-    expect(Component.uid).toBe(mockPlayerName);
+    expect(Component.id).toBe(mockPlayerName);
   });
 
   it('component returns options', () => {

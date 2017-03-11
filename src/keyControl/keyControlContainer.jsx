@@ -5,50 +5,50 @@ import { keyIgnoreElementNames, loopOptions } from '../util/constants';
 import { play, pause, setMute, setVolume, setLoop, setFullScreen } from '../actions/actions';
 import { connectWithId } from '../util/index';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
-  paused: jPlayers[uid].paused,
-  fullScreen: jPlayers[uid].fullScreen,
-  muted: jPlayers[uid].muted,
-  volume: jPlayers[uid].volume,
-  loop: jPlayers[uid].loop,
-  keyBindings: jPlayers[uid].keyBindings,
-  focus: jPlayers[uid].focus,
+const mapStateToProps = ({ jPlayers }, { id }) => ({
+  paused: jPlayers[id].paused,
+  fullScreen: jPlayers[id].fullScreen,
+  muted: jPlayers[id].muted,
+  volume: jPlayers[id].volume,
+  loop: jPlayers[id].loop,
+  keyBindings: jPlayers[id].keyBindings,
+  focus: jPlayers[id].focus,
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid }) => ({
+const mergeProps = (stateProps, { dispatch }, { id }) => ({
   focus: stateProps.focus,
   keyBindings: merge({}, {
     play: {
       key: 80, // p
-      fn: () => (stateProps.paused ? dispatch(play({ uid })) :
-                                      dispatch(pause({ uid }))),
+      fn: () => (stateProps.paused ? dispatch(play({ id })) :
+                                      dispatch(pause({ id }))),
     },
     fullScreen: {
       key: 70, // f
-      fn: () => dispatch(setFullScreen(!stateProps.fullScreen, uid)),
+      fn: () => dispatch(setFullScreen(!stateProps.fullScreen, id)),
     },
     mute: {
       key: 77, // m
-      fn: () => dispatch(setMute(!stateProps.muted, uid)),
+      fn: () => dispatch(setMute(!stateProps.muted, id)),
     },
     volumeUp: {
       key: 190, // .
       fn: () => {
-        dispatch(setVolume(stateProps.volume + 0.1, uid));
+        dispatch(setVolume(stateProps.volume + 0.1, id));
       },
     },
     volumeDown: {
       key: 188, // ,
-      fn: () => dispatch(setVolume(stateProps.volume - 0.1, uid)),
+      fn: () => dispatch(setVolume(stateProps.volume - 0.1, id)),
     },
     loop: {
       key: 76, // l
       fn: () => (stateProps.loop === loopOptions.LOOP ?
-                  dispatch(setLoop(loopOptions.OFF, uid)) :
-                  dispatch(setLoop(loopOptions.LOOP, uid))),
+                  dispatch(setLoop(loopOptions.OFF, id)) :
+                  dispatch(setLoop(loopOptions.LOOP, id))),
     },
   }, stateProps.keyBindings),
-  uid,
+  id,
 });
 
 class KeyControlContainer extends React.Component {

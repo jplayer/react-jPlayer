@@ -5,9 +5,9 @@ import BarEvents from '../../barEvents/barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   moveVolumeBar: (bar, dispatch, e) => {
-    const { verticalVolume } = jPlayers[uid];
+    const { verticalVolume } = jPlayers[id];
     const offset = getOffset(bar);
     const x = e.pageX - offset.left;
     const w = getWidth(bar);
@@ -15,9 +15,9 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
     const h = getHeight(bar);
 
     if (verticalVolume) {
-      dispatch(setVolume(y / h, uid));
+      dispatch(setVolume(y / h, id));
     } else {
-      dispatch(setVolume(x / w, uid));
+      dispatch(setVolume(x / w, id));
     }
   },
   attributes,

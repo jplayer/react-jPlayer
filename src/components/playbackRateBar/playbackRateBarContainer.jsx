@@ -5,10 +5,10 @@ import BarEvents from '../../barEvents/barEvents';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   movePlaybackRate: (bar, dispatch, e) => {
     const { verticalPlaybackRate, minPlaybackRate,
-      maxPlaybackRate } = jPlayers[uid];
+      maxPlaybackRate } = jPlayers[id];
     const offset = getOffset(bar);
     const x = e.pageX - offset.left;
     const w = getWidth(bar);
@@ -25,7 +25,7 @@ const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
     const playbackRateValue = (ratio * (maxPlaybackRate - minPlaybackRate))
                               + minPlaybackRate;
 
-    dispatch(setPlaybackRate(playbackRateValue, uid));
+    dispatch(setPlaybackRate(playbackRateValue, id));
   },
   attributes,
 });

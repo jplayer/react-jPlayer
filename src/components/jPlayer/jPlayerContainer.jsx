@@ -14,39 +14,39 @@ Object.keys(formats).forEach((key) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
-  media: jPlayers[uid].media,
-  error: jPlayers[uid].error,
-  fullScreen: jPlayers[uid].fullScreen,
-  keyEnabled: jPlayers[uid].keyEnabled,
-  paused: jPlayers[uid].paused,
-  guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
-  guiFadeHoldTime: jPlayers[uid].guiFadeHoldTime,
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+  media: jPlayers[id].media,
+  error: jPlayers[id].error,
+  fullScreen: jPlayers[id].fullScreen,
+  keyEnabled: jPlayers[id].keyEnabled,
+  paused: jPlayers[id].paused,
+  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+  guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
   children,
   attributes: {
     ...attributes,
     className: classNames(attributes.className, classes.JPLAYER, {
-      [classes.states.AUDIO]: !jPlayers[uid].mediaSettings.video,
-      [classes.states.VIDEO]: jPlayers[uid].mediaSettings.video,
-      [classes.states.PLAYING]: !jPlayers[uid].paused,
-      [classes.states.IDLE]: jPlayers[uid].currentTime === 0,
-      [classes.states.FULL_SCREEN]: jPlayers[uid].fullScreen,
-      [classes.states.MUTED]: jPlayers[uid].muted,
-      [classes.states.VOLUME_LOW]: !jPlayers[uid].muted && jPlayers[uid].volume < 0.5,
-      [classes.states.VOLUME_HIGH]: !jPlayers[uid].muted && jPlayers[uid].volume >= 0.5,
-      [classes.states.SEEKING]: jPlayers[uid].seeking,
-      [classes.states.LOOPED]: jPlayers[uid].loop === loopOptions.LOOP,
-      [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[uid].mediaSettings.foundSupported,
-      [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[uid].volumeSupported,
+      [classes.states.AUDIO]: !jPlayers[id].mediaSettings.video,
+      [classes.states.VIDEO]: jPlayers[id].mediaSettings.video,
+      [classes.states.PLAYING]: !jPlayers[id].paused,
+      [classes.states.IDLE]: jPlayers[id].currentTime === 0,
+      [classes.states.FULL_SCREEN]: jPlayers[id].fullScreen,
+      [classes.states.MUTED]: jPlayers[id].muted,
+      [classes.states.VOLUME_LOW]: !jPlayers[id].muted && jPlayers[id].volume < 0.5,
+      [classes.states.VOLUME_HIGH]: !jPlayers[id].muted && jPlayers[id].volume >= 0.5,
+      [classes.states.SEEKING]: jPlayers[id].seeking,
+      [classes.states.LOOPED]: jPlayers[id].loop === loopOptions.LOOP,
+      [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
+      [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
       // 'jp-state-video-270p': sizeCssClass !== undefined,
       // 'jp-state-video-full': sizeFullCssClass !== undefined,
     }),
   },
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid }) => ({
-  setMedia: media => dispatch(setMedia(media, uid)),
-  setOption: (key, value) => dispatch(setOption(key, value, uid)),
+const mergeProps = (stateProps, { dispatch }, { id }) => ({
+  setMedia: media => dispatch(setMedia(media, id)),
+  setOption: (key, value) => dispatch(setOption(key, value, id)),
   ...stateProps,
 });
 

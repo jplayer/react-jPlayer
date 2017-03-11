@@ -5,7 +5,7 @@ import { __get__ } from './playbackRateBarValueContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -19,7 +19,7 @@ describe('PlaybackRateBarValueContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     expect(expected).toEqual({
       verticalPlaybackRate: false,
@@ -32,7 +32,7 @@ describe('PlaybackRateBarValueContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,

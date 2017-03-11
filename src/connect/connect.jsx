@@ -5,56 +5,61 @@ import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
   setVolume, setMute, setDuration, setPlaybackRate, setLoop,
   setFullScreen, setFocus } from '../actions/actions';
 
-const mapStateToProps = (state, { uid, ...props }) => {
-  const otherPlayers = {};
-
-  Object.keys(state.jPlayers).forEach((key) => {
-    if (key !== uid) {
-      otherPlayers[key] = state.jPlayers[key];
-    }
-  });
-
-  if (Object.keys(otherPlayers).length) {
-    return {
-      ...props,
-      ...state.jPlayers[uid],
-      jPlayers: otherPlayers,
-    };
-  }
-
-  return {
-    ...props,
-    ...state.jPlayers[uid],
-  };
-};
-
-const mapDispatchToProps = (dispatch, { currentId }) => ({
-  setOption: (key, value, uid = currentId) => dispatch(setOption(key, value, uid)),
-  setMedia: (media, uid = currentId) => dispatch(setMedia(media, uid)),
-  clearMedia: (uid = currentId) => dispatch(clearMedia(uid)),
-  play: ({ time, uid = currentId }) => dispatch(play({ time, uid })),
-  pause: ({ time, uid = currentId }) => dispatch(pause({ time, uid })),
-  setPlayHead: (percent, uid = currentId) => dispatch(setPlayHead(percent, uid)),
-  setVolume: (volume, uid = currentId) => dispatch(setVolume(volume, uid)),
-  setMute: (mute, uid = currentId) => dispatch(setMute(mute, uid)),
-  setDuration: ({ remainingDuration, uid = currentId }) =>
-    dispatch(setDuration({ remainingDuration, uid })),
-  setPlaybackRate: (playbackRate, uid = currentId) =>
-    dispatch(setPlaybackRate(playbackRate, uid)),
-  setLoop: (loop, uid = currentId) => dispatch(setLoop(loop, uid)),
-  setFullScreen: (fullScreen, uid = currentId) => dispatch(setFullScreen(fullScreen, uid)),
-  setFocus: (uid = currentId) => dispatch(setFocus(uid)),
+const mapStateToProps = state => ({
+  ...state.jPlayers,
 });
 
+const getActions = (dispatch, id) => ({
+  setOption: (key, value) => dispatch(setOption(key, value, id)),
+  setMedia: media => dispatch(setMedia(media, id)),
+  clearMedia: () => dispatch(clearMedia(id)),
+  play: time => dispatch(play({ time, id })),
+  pause: time => dispatch(pause({ time, id })),
+  setPlayHead: percent => dispatch(setPlayHead(percent, id)),
+  setVolume: volume => dispatch(setVolume(volume, id)),
+  setMute: mute => dispatch(setMute(mute, id)),
+  setDuration: remainingDuration => dispatch(setDuration({ remainingDuration, id })),
+  setPlaybackRate: playbackRate => dispatch(setPlaybackRate(playbackRate, id)),
+  setLoop: loop => dispatch(setLoop(loop, id)),
+  setFullScreen: fullScreen => dispatch(setFullScreen(fullScreen, id)),
+  setFocus: () => dispatch(setFocus(id)),
+});
+
+const mergeProps = (jPlayers, { dispatch }, { id, ...props }) => {
+  const newJPlayers = {};
+
+  Object.keys(jPlayers).forEach((key) => {
+    const jPlayer = jPlayers[key];
+
+    newJPlayers[key] = {
+      ...jPlayer,
+      ...getActions(dispatch, jPlayer.id),
+    };
+  });
+
+  const { [id]: jPlayer, ...otherPlayers } = newJPlayers;
+
+  const returnedJPlayers = {
+    ...jPlayer,
+    ...props,
+  };
+
+  if (Object.keys(otherPlayers).length) {
+    returnedJPlayers.jPlayers = otherPlayers;
+  }
+
+  return returnedJPlayers;
+};
+
 const Connect = (jPlayer) => {
-  const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
+  const ConnectedPlayer = connect(mapStateToProps, null, mergeProps)(jPlayer);
 
   // IE9 doesn't support fn.name
   const playerName = jPlayer.name === undefined ?
     jPlayer.toString().match(/^function\s*([^\s(]+)/)[1] : jPlayer.name;
 
   return class extends React.Component {
-    static get uid() {
+    static get id() {
       return playerName;
     }
     static get options() {
@@ -62,14 +67,14 @@ const Connect = (jPlayer) => {
     }
     static get childContextTypes() {
       return {
-        uid: React.PropTypes.string,
+        id: React.PropTypes.string,
       };
     }
     getChildContext = () => ({
-      uid: playerName,
+      id: playerName,
     });
     render() {
-      return <ConnectedPlayer uid={playerName} {...this.props} />;
+      return <ConnectedPlayer id={playerName} {...this.props} />;
     }
   };
 };

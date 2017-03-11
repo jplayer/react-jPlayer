@@ -11,12 +11,12 @@ const MockPlayerTwo = () => <div />;
 MockPlayer.options = {
   muted: true,
 };
-MockPlayer.uid = MockPlayer.name;
+MockPlayer.id = MockPlayer.name;
 
 MockPlayerTwo.options = {
   autoplay: true,
 };
-MockPlayerTwo.uid = MockPlayerTwo.name;
+MockPlayerTwo.id = MockPlayerTwo.name;
 
 describe('getInitialStates', () => {
   it('sets initial state correctly with one player', () => {
@@ -26,7 +26,7 @@ describe('getInitialStates', () => {
       MockPlayer: merge({}, {
         ...statusDefaultValues,
         ...defaultOptions,
-        id: MockPlayer.uid,
+        id: MockPlayer.id,
       }, MockPlayer.options),
     });
   });
@@ -38,12 +38,12 @@ describe('getInitialStates', () => {
       MockPlayer: merge({}, {
         ...statusDefaultValues,
         ...defaultOptions,
-        id: MockPlayer.uid,
+        id: MockPlayer.id,
       }, MockPlayer.options),
       MockPlayerTwo: merge({}, {
         ...statusDefaultValues,
         ...defaultOptions,
-        id: MockPlayerTwo.uid,
+        id: MockPlayerTwo.id,
       }, MockPlayerTwo.options),
     });
   });

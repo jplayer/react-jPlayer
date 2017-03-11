@@ -10,7 +10,7 @@ const attributes = {
   'data-test': 'test',
   children: <div />,
 };
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 
 describe('PosterContainer', () => {
   let dispatch;
@@ -20,7 +20,7 @@ describe('PosterContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     expect(expected).toEqual({
       src: '',
@@ -30,7 +30,7 @@ describe('PosterContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,

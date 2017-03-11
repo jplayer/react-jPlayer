@@ -7,7 +7,7 @@ import { __get__ } from './guiContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -24,7 +24,7 @@ describe('GuiContainer', () => {
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers({
       guiFadeHoldTimeout: 0,
-    }), { uid });
+    }), { id });
 
     expect(expected).toEqual({
       fullScreen: false,
@@ -38,7 +38,7 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: true,
       guiFadeOut: false,
-    }, { dispatch }, { uid, ...attributes });
+    }, { dispatch }, { id, ...attributes });
 
     delete expected.onMouseMove;
 
@@ -56,14 +56,14 @@ describe('GuiContainer', () => {
       paused: false,
       guiFadeHoldTimeout,
     },
-    { dispatch }, { uid });
+    { dispatch }, { id });
 
     expected.onMouseMove();
 
     expect(dispatch).toHaveBeenCalledWith(setOption(
       'guiFadeOut',
       false,
-      uid,
+      id,
     ));
     expect(clearTimeout).toHaveBeenCalledWith(guiFadeHoldTimeout);
   });
@@ -72,7 +72,7 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: false,
       paused: false,
-    }, { dispatch }, { uid });
+    }, { dispatch }, { id });
 
     expected.onMouseMove();
 
@@ -84,7 +84,7 @@ describe('GuiContainer', () => {
     const expected = mergeProps({
       fullScreen: true,
       paused: true,
-    }, { dispatch }, { uid });
+    }, { dispatch }, { id });
 
     expected.onMouseMove();
 

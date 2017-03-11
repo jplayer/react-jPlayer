@@ -126,13 +126,13 @@ const setFullScreen = (state, { fullScreen }) => updateObject(state, {
   fullScreen,
 });
 
-const setFocus = (state, { uid }) => {
+const setFocus = (state, { id }) => {
   const newState = { ...state };
   const firstKeyEnabledPlayer = Object.keys(state).filter(key => newState[key].keyEnabled).shift();
 
-  if (newState[uid].keyEnabled) {
+  if (newState[id].keyEnabled) {
     Object.keys(state).forEach((key) => {
-      if (key === uid) {
+      if (key === id) {
         newState[key] = updateObject(newState[key], { focus: true });
       } else {
         newState[key] = updateObject(newState[key], { focus: false });
@@ -191,7 +191,7 @@ const setGlobalOptions = (state, action) => {
       }
     });
 
-    if (key !== action.uid && includes(global, action.type)) {
+    if (key !== action.id && includes(global, action.type)) {
       newState = updateObject(newState, {
         [key]: updatePlayer(newState[key], action, action.type),
       });
@@ -202,17 +202,17 @@ const setGlobalOptions = (state, action) => {
 
 const jPlayerReducer = (state, action) => {
   let newState = { ...state };
-  const jPlayer = updatePlayer(newState[action.uid], action);
+  const jPlayer = updatePlayer(newState[action.id], action);
 
   if (jPlayer !== null) {
     newState = setGlobalOptions(newState, action);
     newState = updateObject(newState, {
-      [action.uid]: jPlayer,
+      [action.id]: jPlayer,
     });
 
     return jPlayerReducer(newState, {
       type: actionTypes.jPlayer.FOCUS,
-      uid: action.uid,
+      id: action.id,
     });
   }
 

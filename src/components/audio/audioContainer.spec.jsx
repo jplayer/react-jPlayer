@@ -14,7 +14,7 @@ const attributes = {
   'data-test': 'test',
   children: <div />,
 };
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 
 describe('AudioContainer', () => {
   let dispatch;
@@ -24,7 +24,7 @@ describe('AudioContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
     expect(expected).toEqual({
       require: true,
       ...attributes,
@@ -33,7 +33,7 @@ describe('AudioContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,
@@ -43,7 +43,7 @@ describe('AudioContainer', () => {
 
   videoStates.forEach((videoState) => {
     it(`require if no video (value: ${videoState.mediaSettings.video})`, () => {
-      const expected = mapStateToProps(getJPlayers(videoState), { uid });
+      const expected = mapStateToProps(getJPlayers(videoState), { id });
       expect(expected.require).toBe(!videoState.mediaSettings.video);
     });
   });

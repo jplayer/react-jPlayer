@@ -4,15 +4,15 @@ import { setPlayHead } from '../../actions/actions';
 import BarEvents from '../../barEvents/barEvents';
 import SeekBar from './seekBar';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
-  seekPercent: jPlayers[uid].seekPercent,
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+  seekPercent: jPlayers[id].seekPercent,
   movePlayHead: (bar, dispatch, e) => {
     const offset = getOffset(bar);
     const x = e.pageX - offset.left;
     const w = getWidth(bar);
     const percentage = 100 * (x / w);
 
-    dispatch(setPlayHead(percentage, uid));
+    dispatch(setPlayHead(percentage, id));
   },
   attributes,
 });

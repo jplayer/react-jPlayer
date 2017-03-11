@@ -7,11 +7,11 @@ import { __get__ } from './browserUnsupportedContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const children = <div />;
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 
 describe('BrowserUnsupportedContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, children });
+    const expected = mapStateToProps(getJPlayers(), { id, children });
 
     expect(expected).toEqual({
       foundSupported: defaultOptions.mediaSettings.foundSupported,

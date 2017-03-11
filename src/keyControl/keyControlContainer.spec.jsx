@@ -8,17 +8,17 @@ import { play, pause, setFullScreen, setMute, setVolume,
   setLoop } from '../actions/actions';
 import { __get__ } from './keyControlContainer';
 
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const dispatch = createSpy();
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const mergePropsWithDefaultState = state => mergeProps(getJPlayers(state).jPlayers[uid],
-  { dispatch }, { uid });
+const mergePropsWithDefaultState = state => mergeProps(getJPlayers(state).jPlayers[id],
+  { dispatch }, { id });
 const KeyControlContainer = __get__('KeyControlContainer');
 
 describe('KeyControlContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
       paused: true,
@@ -33,11 +33,11 @@ describe('KeyControlContainer', () => {
 
   it('merges props', () => {
     const focus = true;
-    const { keyBindings, ...rest } = mergeProps({ focus }, { dispatch }, { uid });
+    const { keyBindings, ...rest } = mergeProps({ focus }, { dispatch }, { id });
 
     expect(rest).toEqual({
       focus,
-      uid,
+      id,
     });
     expect(Object.keys(keyBindings)).toEqual(['play', 'fullScreen',
       'mute', 'volumeUp', 'volumeDown', 'loop']);
@@ -62,7 +62,7 @@ describe('KeyControlContainer', () => {
 
     keyBindings.play.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(play({ uid }));
+    expect(dispatch).toHaveBeenCalledWith(play({ id }));
   });
 
   it('pauses when play key is pressed and media is playing', () => {
@@ -70,7 +70,7 @@ describe('KeyControlContainer', () => {
 
     keyBindings.play.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(pause({ uid }));
+    expect(dispatch).toHaveBeenCalledWith(pause({ id }));
   });
 
   const fullScreenData = [
@@ -85,7 +85,7 @@ describe('KeyControlContainer', () => {
       keyBindings.fullScreen.fn();
 
       expect(dispatch).toHaveBeenCalledWith(
-        setFullScreen(!fullScreenDatum.fullScreen, uid),
+        setFullScreen(!fullScreenDatum.fullScreen, id),
       );
     });
   });
@@ -102,7 +102,7 @@ describe('KeyControlContainer', () => {
       keyBindings.mute.fn();
 
       expect(dispatch).toHaveBeenCalledWith(
-        setMute(!muteDatum.muted, uid),
+        setMute(!muteDatum.muted, id),
       );
     });
   });
@@ -113,7 +113,7 @@ describe('KeyControlContainer', () => {
     keyBindings.volumeUp.fn();
 
     expect(dispatch).toHaveBeenCalledWith(
-      setVolume(defaultOptions.volume + 0.1, uid),
+      setVolume(defaultOptions.volume + 0.1, id),
     );
   });
 
@@ -123,7 +123,7 @@ describe('KeyControlContainer', () => {
     keyBindings.volumeDown.fn();
 
     expect(dispatch).toHaveBeenCalledWith(
-      setVolume(defaultOptions.volume - 0.1, uid),
+      setVolume(defaultOptions.volume - 0.1, id),
     );
   });
 
@@ -133,7 +133,7 @@ describe('KeyControlContainer', () => {
     keyBindings.loop.fn();
 
     expect(dispatch).toHaveBeenCalledWith(
-      setLoop(loopOptions.LOOP, uid),
+      setLoop(loopOptions.LOOP, id),
     );
   });
 
@@ -142,7 +142,7 @@ describe('KeyControlContainer', () => {
     keyBindings.loop.fn();
 
     expect(dispatch).toHaveBeenCalledWith(
-      setLoop(loopOptions.OFF, uid),
+      setLoop(loopOptions.OFF, id),
     );
   });
 

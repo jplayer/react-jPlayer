@@ -37,8 +37,8 @@ const App = () => (
     </NavBar>
     <NavContentContainer>
       {jPlayers.map(JPlayer =>
-        <NavContent key={JPlayer.uid}>
-          <StatusWrapper uid={JPlayer.uid}><JPlayer /></StatusWrapper>
+        <NavContent key={JPlayer.id}>
+          <StatusWrapper id={JPlayer.id}><JPlayer /></StatusWrapper>
         </NavContent>,
       )}
     </NavContentContainer>

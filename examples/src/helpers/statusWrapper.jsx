@@ -3,12 +3,11 @@ import React from 'react';
 
 import PropsInRealTime from './propsInRealTime';
 import EventsInRealTime from './eventsInRealTime';
-import Actions from './actions';
 
 class StatusWrapper extends React.Component {
   static get propTypes() {
     return {
-      uid: React.PropTypes.string.isRequired,
+      id: React.PropTypes.string.isRequired,
       children: React.PropTypes.oneOfType([
         React.PropTypes.element,
         React.PropTypes.arrayOf(React.PropTypes.element),
@@ -84,9 +83,8 @@ class StatusWrapper extends React.Component {
         })}
         <div className="container-fluid">
           <div className="row">
-            <PropsInRealTime uid={this.props.uid} />
-            <Actions />
-            <EventsInRealTime uid={this.props.uid} eventCalls={this.state.eventCalls} />
+            <PropsInRealTime id={this.props.id} />
+            <EventsInRealTime id={this.props.id} eventCalls={this.state.eventCalls} />
           </div>
         </div>
       </div>

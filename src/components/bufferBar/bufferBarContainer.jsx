@@ -3,10 +3,10 @@ import React from 'react';
 import { connectWithId } from '../../util/index';
 import BufferBar from './bufferBar';
 
-const mapStateToProps = ({ jPlayers }, { uid, ...attributes }) => ({
-  bufferedTimeRanges: jPlayers[uid].bufferedTimeRanges,
-  duration: jPlayers[uid].duration,
-  bufferColour: jPlayers[uid].bufferColour,
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+  bufferedTimeRanges: jPlayers[id].bufferedTimeRanges,
+  duration: jPlayers[id].duration,
+  bufferColour: jPlayers[id].bufferColour,
   attributes,
 });
 

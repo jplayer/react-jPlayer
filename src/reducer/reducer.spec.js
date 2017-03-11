@@ -36,7 +36,7 @@ describe('jPlayer reducer', () => {
   it('should handle SET_OPTION', () => {
     const jPlayer = reducer(state, {
       type: jPlayerActionTypes.SET_OPTION,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
       key: 'preload',
       value: 'test',
     })[jPlayerOneId];
@@ -70,7 +70,7 @@ describe('jPlayer reducer', () => {
 
       const jPlayer = reducer(state, {
         type: jPlayerActionTypes.SET_MEDIA,
-        uid: jPlayerOneId,
+        id: jPlayerOneId,
         media: {
           sources: {
             [key]: `test.${key}`,
@@ -231,12 +231,12 @@ describe('jPlayer reducer', () => {
     state = getDefaultJPlayers(3).jPlayers;
 
     reducerData.focusData.forEach((test) => {
-      state[test.uid] = test.state;
+      state[test.id] = test.state;
 
       const jPlayers = reducer(state, test.action);
 
       Object.keys(jPlayers).forEach((key) => {
-        if (test.uid !== key) {
+        if (test.id !== key) {
           expect(jPlayers[key].focus).toBeFalsy();
         } else {
           expect(jPlayers[key].focus).toBeTruthy();
@@ -252,7 +252,7 @@ describe('jPlayer reducer', () => {
       if (type !== jPlayerActionTypes.FOCUS) {
         const jPlayers = reducer(state, {
           type,
-          uid: jPlayerOneId,
+          id: jPlayerOneId,
         });
 
         Object.keys(jPlayers).forEach((key) => {
@@ -274,7 +274,7 @@ describe('jPlayer reducer', () => {
 
     expect(() => {
       reducer(state, {
-        uid: jPlayerTwoId,
+        id: jPlayerTwoId,
         type: jPlayerActionTypes.MUTE,
         muted: true,
       });

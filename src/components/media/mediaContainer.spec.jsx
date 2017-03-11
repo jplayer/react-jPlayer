@@ -8,14 +8,14 @@ import { urlNotSupportedError } from '../../util/index';
 import { setOption, pause } from '../../actions/actions';
 import { __get__ } from './mediaContainer';
 
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
 const MediaContainer = __get__('MediaContainer');
 const mockAudio = <audio className="@@test-media" />;
 const mockVideo = <video className="@@test-media" />;
 const getProps = state => ({
-  ...getJPlayers(state).jPlayers[uid],
+  ...getJPlayers(state).jPlayers[id],
   setOption: createSpy(),
   pause: createSpy(),
 });
@@ -69,7 +69,7 @@ describe('MediaContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, children: mockAudio });
+    const expected = mapStateToProps(getJPlayers(), { id, children: mockAudio });
 
     expect(expected).toEqual({
       loop: loopOptions.OFF,
@@ -94,16 +94,16 @@ describe('MediaContainer', () => {
   it('dispatches setOption in mapDispatchToProps when called', () => {
     const key = 'test';
     const value = true;
-    mapDispatchToProps(dispatch, { uid }).setOption(key, value);
+    mapDispatchToProps(dispatch, { id }).setOption(key, value);
 
-    expect(dispatch).toHaveBeenCalledWith(setOption(key, value, uid));
+    expect(dispatch).toHaveBeenCalledWith(setOption(key, value, id));
   });
 
   it('dispatches pause in mapDispatchToProps when called', () => {
     const time = 30;
-    mapDispatchToProps(dispatch, { uid }).pause(time);
+    mapDispatchToProps(dispatch, { id }).pause(time);
 
-    expect(dispatch).toHaveBeenCalledWith(pause({ time, uid }));
+    expect(dispatch).toHaveBeenCalledWith(pause({ time, id }));
   });
 
   it('updates media on startup', () => {

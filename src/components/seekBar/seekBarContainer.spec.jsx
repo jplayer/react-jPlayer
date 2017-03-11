@@ -24,7 +24,7 @@ const getProps = props => ({
 const attributes = {
   'data-test': 'test',
 };
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 
 describe('SeekBarContainer', () => {
   let dispatch;
@@ -34,7 +34,7 @@ describe('SeekBarContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     delete expected.movePlayHead;
 
@@ -46,7 +46,7 @@ describe('SeekBarContainer', () => {
 
   it('merges props', () => {
     const seekPercent = 10;
-    const expected = mergeProps({ seekPercent, attributes }, dispatch, { uid });
+    const expected = mergeProps({ seekPercent, attributes }, dispatch, { id });
 
     delete expected.onClick;
     delete expected.onTouch;
@@ -61,20 +61,20 @@ describe('SeekBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const mappedProps = mapStateToProps(getJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlayHead(3, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlayHead(3, id));
   });
 
   it('onTouch moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const mappedProps = mapStateToProps(getJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {
@@ -86,7 +86,7 @@ describe('SeekBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlayHead(3, uid));
+    expect(dispatch).toHaveBeenCalledWith(setPlayHead(3, id));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

@@ -1,66 +1,66 @@
 import { actionTypes } from '../util/constants';
 
-export const setOption = (key, value, uid) => ({
+export const setOption = (key, value, id) => ({
   type: actionTypes.jPlayer.SET_OPTION,
   key,
   value,
-  uid,
+  id,
 });
-export const setMedia = (media, uid) => ({
+export const setMedia = (media, id) => ({
   type: actionTypes.jPlayer.SET_MEDIA,
   media,
-  uid,
+  id,
 });
-export const clearMedia = uid => ({
+export const clearMedia = id => ({
   type: actionTypes.jPlayer.CLEAR_MEDIA,
-  uid,
+  id,
 });
-export const play = ({ time, uid }) => ({
+export const play = ({ time, id } = {}) => ({
   type: actionTypes.jPlayer.PLAY,
   time,
-  uid,
+  id,
 });
-export const pause = ({ time, uid }) => ({
+export const pause = ({ time, id } = {}) => ({
   type: actionTypes.jPlayer.PAUSE,
   time,
-  uid,
+  id,
 });
-export const setPlayHead = (percent, uid) => ({
+export const setPlayHead = (percent, id) => ({
   type: actionTypes.jPlayer.PLAY_HEAD,
   percent,
-  uid,
+  id,
 });
-export const setVolume = (volume, uid) => ({
+export const setVolume = (volume, id) => ({
   type: actionTypes.jPlayer.VOLUME,
   volume,
-  uid,
+  id,
 });
-export const setMute = (mute, uid) => ({
+export const setMute = (mute, id) => ({
   type: actionTypes.jPlayer.MUTE,
   mute,
-  uid,
+  id,
 });
-export const setDuration = ({ remainingDuration, uid }) => ({
+export const setDuration = ({ remainingDuration, id } = {}) => ({
   type: actionTypes.jPlayer.DURATION,
   remainingDuration,
-  uid,
+  id,
 });
-export const setPlaybackRate = (playbackRate, uid) => ({
+export const setPlaybackRate = (playbackRate, id) => ({
   type: actionTypes.jPlayer.PLAYBACK_RATE,
   playbackRate,
-  uid,
+  id,
 });
-export const setLoop = (loop, uid) => ({
+export const setLoop = (loop, id) => ({
   type: actionTypes.jPlayer.LOOP,
   loop,
-  uid,
+  id,
 });
-export const setFullScreen = (fullScreen, uid) => ({
+export const setFullScreen = (fullScreen, id) => ({
   type: actionTypes.jPlayer.FULL_SCREEN,
   fullScreen,
-  uid,
+  id,
 });
-export const setFocus = uid => ({
+export const setFocus = id => ({
   type: actionTypes.jPlayer.FOCUS,
-  uid,
+  id,
 });

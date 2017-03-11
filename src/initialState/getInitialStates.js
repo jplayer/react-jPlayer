@@ -11,10 +11,10 @@ const getInitialStates = (jPlayers) => {
   }
 
   newJPlayers.forEach((jPlayer) => {
-    jPlayerStates[jPlayer.uid] = merge({}, {
+    jPlayerStates[jPlayer.id] = merge({}, {
       ...statusDefaultValues,
       ...defaultOptions,
-      id: jPlayer.uid,
+      id: jPlayer.id,
     }, jPlayer.options);
   });
 

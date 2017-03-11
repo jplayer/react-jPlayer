@@ -18,7 +18,7 @@ const state = {
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const BufferBarContainer = __get__('BufferBarContainer');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -38,7 +38,7 @@ describe('<BufferBarContainer />', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(state), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(state), { id, ...attributes });
     expect(expected).toEqual({
       ...state,
       attributes,
@@ -47,7 +47,7 @@ describe('<BufferBarContainer />', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,

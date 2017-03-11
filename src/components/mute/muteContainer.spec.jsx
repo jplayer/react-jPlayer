@@ -6,7 +6,7 @@ import { __get__ } from './muteContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -20,7 +20,7 @@ describe('MuteContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
       muted: false,
@@ -28,7 +28,7 @@ describe('MuteContainer', () => {
   });
 
   it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { uid, ...attributes });
+    const expected = mergeProps({}, { dispatch }, { id, ...attributes });
 
     delete expected.onClick;
 
@@ -44,12 +44,12 @@ describe('MuteContainer', () => {
 
   it('mergeProps onClick toggle mute', () => {
     muteData.forEach((muteDatum) => {
-      const mergedProps = mergeProps(getJPlayers(muteDatum).jPlayers[uid],
-        { dispatch }, { uid });
+      const mergedProps = mergeProps(getJPlayers(muteDatum).jPlayers[id],
+        { dispatch }, { id });
 
       mergedProps.onClick();
 
-      expect(dispatch).toHaveBeenCalledWith(setMute(!muteDatum.muted, uid));
+      expect(dispatch).toHaveBeenCalledWith(setMute(!muteDatum.muted, id));
     });
   });
 });

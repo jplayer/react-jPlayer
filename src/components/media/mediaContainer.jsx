@@ -5,28 +5,28 @@ import { connectWithId, urlNotSupportedError, convertTime, canSetVolume,
   toPercentage, toRelativePercentage } from '../../util/index';
 import { setOption, pause } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlayers }, { uid, children }) => ({
-  loop: jPlayers[uid].loop,
-  showRemainingDuration: jPlayers[uid].showRemainingDuration,
-  src: jPlayers[uid].src,
-  currentTime: jPlayers[uid].currentTime,
-  playHeadPercent: jPlayers[uid].playHeadPercent,
-  paused: jPlayers[uid].paused,
-  defaultPlaybackRate: jPlayers[uid].defaultPlaybackRate,
-  playbackRate: jPlayers[uid].playbackRate,
-  preload: jPlayers[uid].preload,
-  volume: jPlayers[uid].volume,
-  muted: jPlayers[uid].muted,
-  autoplay: jPlayers[uid].autoplay,
-  newTime: jPlayers[uid].newTime,
-  require: jPlayers[uid].mediaSettings.require,
-  timeFormats: jPlayers[uid].timeFormats,
+const mapStateToProps = ({ jPlayers }, { id, children }) => ({
+  loop: jPlayers[id].loop,
+  showRemainingDuration: jPlayers[id].showRemainingDuration,
+  src: jPlayers[id].src,
+  currentTime: jPlayers[id].currentTime,
+  playHeadPercent: jPlayers[id].playHeadPercent,
+  paused: jPlayers[id].paused,
+  defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
+  playbackRate: jPlayers[id].playbackRate,
+  preload: jPlayers[id].preload,
+  volume: jPlayers[id].volume,
+  muted: jPlayers[id].muted,
+  autoplay: jPlayers[id].autoplay,
+  newTime: jPlayers[id].newTime,
+  require: jPlayers[id].mediaSettings.require,
+  timeFormats: jPlayers[id].timeFormats,
   children,
 });
 
-const mapDispatchToProps = (dispatch, { uid }) => ({
-  setOption: (key, value) => dispatch(setOption(key, value, uid)),
-  pause: time => dispatch(pause({ time, uid })),
+const mapDispatchToProps = (dispatch, { id }) => ({
+  setOption: (key, value) => dispatch(setOption(key, value, id)),
+  pause: time => dispatch(pause({ time, id })),
 });
 
 class MediaContainer extends React.Component {

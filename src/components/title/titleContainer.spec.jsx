@@ -6,7 +6,7 @@ import { __get__ } from './titleContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -25,7 +25,7 @@ describe('TitleContainer', () => {
       media: {
         title,
       },
-    }), { uid, ...attributes });
+    }), { id, ...attributes });
 
     expect(expected).toEqual({
       children: title,
@@ -39,7 +39,7 @@ describe('TitleContainer', () => {
       media: {
         title,
       },
-    }), { children, uid });
+    }), { children, id });
 
     expect(expected).toEqual({
       children,
@@ -48,7 +48,7 @@ describe('TitleContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,

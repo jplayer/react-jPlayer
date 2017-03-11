@@ -18,7 +18,7 @@ export const clearMediaData = [
     },
     action: {
       type: jPlayerActionTypes.CLEAR_MEDIA,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       ...statusDefaultValues,
@@ -31,7 +31,7 @@ export const setMediaData = [
   {
     action: {
       type: jPlayerActionTypes.SET_MEDIA,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
       media: {
         sources: {
           mp3: 'test.mp3',
@@ -64,7 +64,7 @@ export const setMediaData = [
   {
     action: {
       type: jPlayerActionTypes.SET_MEDIA,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
       media: {
         sources: {
           test: 'test.mp3',
@@ -89,7 +89,7 @@ export const playData = [
     action: {
       type: jPlayerActionTypes.PLAY,
       time: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       newTime: 30,
@@ -103,7 +103,7 @@ export const playData = [
     action: {
       type: jPlayerActionTypes.PLAY,
       time: NaN,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       newTime: null,
@@ -114,7 +114,7 @@ export const playData = [
     action: {
       type: jPlayerActionTypes.PLAY,
       time: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       error: {
@@ -134,7 +134,7 @@ export const playHeadData = [
     action: {
       type: jPlayerActionTypes.PLAY_HEAD,
       percent: 300,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       playHeadPercent: 100,
@@ -147,7 +147,7 @@ export const playHeadData = [
     action: {
       type: jPlayerActionTypes.PLAY_HEAD,
       percent: -100,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       playHeadPercent: 0,
@@ -160,7 +160,7 @@ export const playHeadData = [
     action: {
       type: jPlayerActionTypes.PLAY_HEAD,
       percent: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       playHeadPercent: 30,
@@ -170,7 +170,7 @@ export const playHeadData = [
     action: {
       type: jPlayerActionTypes.PLAY_HEAD,
       percent: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       error: {
@@ -190,7 +190,7 @@ export const pauseData = [
     action: {
       type: jPlayerActionTypes.PAUSE,
       time: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       newTime: 30,
@@ -204,7 +204,7 @@ export const pauseData = [
     action: {
       type: jPlayerActionTypes.PAUSE,
       time: NaN,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       newTime: null,
@@ -215,7 +215,7 @@ export const pauseData = [
     action: {
       type: jPlayerActionTypes.PAUSE,
       time: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       error: {
@@ -232,7 +232,7 @@ export const volumeData = [
     action: {
       type: jPlayerActionTypes.VOLUME,
       volume: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       volume: 1,
@@ -243,7 +243,7 @@ export const volumeData = [
     action: {
       type: jPlayerActionTypes.VOLUME,
       volume: -30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       volume: 0,
@@ -254,7 +254,7 @@ export const volumeData = [
     action: {
       type: jPlayerActionTypes.VOLUME,
       volume: 0.3,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       volume: 0.3,
@@ -268,7 +268,7 @@ export const muteData = [
     action: {
       type: jPlayerActionTypes.MUTE,
       mute: true,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       muted: true,
@@ -278,7 +278,7 @@ export const muteData = [
     action: {
       type: jPlayerActionTypes.MUTE,
       mute: false,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       muted: false,
@@ -291,7 +291,7 @@ export const durationData = [
     action: {
       type: jPlayerActionTypes.DURATION,
       remainingDuration: true,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       remainingDuration: false,
@@ -301,7 +301,7 @@ export const durationData = [
     action: {
       type: jPlayerActionTypes.DURATION,
       remainingDuration: false,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       remainingDuration: true,
@@ -317,7 +317,7 @@ export const playbackRateData = [
     action: {
       type: jPlayerActionTypes.PLAYBACK_RATE,
       playbackRate: 30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       playbackRate: defaultOptions.maxPlaybackRate,
@@ -330,7 +330,7 @@ export const playbackRateData = [
     action: {
       type: jPlayerActionTypes.PLAYBACK_RATE,
       playbackRate: -30,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       playbackRate: defaultOptions.minPlaybackRate,
@@ -344,7 +344,7 @@ export const playbackRateData = [
     action: {
       type: jPlayerActionTypes.PLAYBACK_RATE,
       playbackRate: 1.3,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       playbackRate: 1.3,
@@ -357,7 +357,7 @@ export const loopData = [
     action: {
       type: jPlayerActionTypes.LOOP,
       loop: loopOptions.OFF,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       loop: loopOptions.OFF,
@@ -367,7 +367,7 @@ export const loopData = [
     action: {
       type: jPlayerActionTypes.LOOP,
       loop: loopOptions.LOOP,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       loop: loopOptions.LOOP,
@@ -380,7 +380,7 @@ export const fullScreenData = [
     action: {
       type: jPlayerActionTypes.FULL_SCREEN,
       fullScreen: false,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       fullScreen: false,
@@ -390,7 +390,7 @@ export const fullScreenData = [
     action: {
       type: jPlayerActionTypes.FULL_SCREEN,
       fullScreen: true,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
     expected: {
       fullScreen: true,
@@ -400,24 +400,24 @@ export const fullScreenData = [
 
 export const focusData = [
   {
-    uid: jPlayerTwoId,
+    id: jPlayerTwoId,
     state: {
       keyEnabled: true,
     },
     action: {
       type: jPlayerActionTypes.MUTE,
       mute: true,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
   },
   {
-    uid: jPlayerOneId,
+    id: jPlayerOneId,
     state: {
       keyEnabled: true,
     },
     action: {
       type: jPlayerActionTypes.FOCUS,
-      uid: jPlayerOneId,
+      id: jPlayerOneId,
     },
   },
 ];

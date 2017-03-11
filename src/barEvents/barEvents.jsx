@@ -2,8 +2,8 @@ import React from 'react';
 
 import { connectWithId } from '../util/index';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
-  barDrag: jPlayers[uid].barDrag,
+const mapStateToProps = ({ jPlayers }, { id }) => ({
+  barDrag: jPlayers[id].barDrag,
 });
 
 class BarEvents extends React.Component {

@@ -6,7 +6,7 @@ import { __get__ } from './playContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -20,7 +20,7 @@ describe('MuteContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
       paused: true,
@@ -28,7 +28,7 @@ describe('MuteContainer', () => {
   });
 
   it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { uid, ...attributes });
+    const expected = mergeProps({}, { dispatch }, { id, ...attributes });
 
     delete expected.onClick;
 
@@ -38,20 +38,20 @@ describe('MuteContainer', () => {
   });
 
   it('mergeProps onClick when paused will play', () => {
-    const mergedProps = mergeProps(getJPlayers().jPlayers[uid], { dispatch }, { uid });
+    const mergedProps = mergeProps(getJPlayers().jPlayers[id], { dispatch }, { id });
 
     mergedProps.onClick();
 
-    expect(dispatch).toHaveBeenCalledWith(play({ uid }));
+    expect(dispatch).toHaveBeenCalledWith(play({ id }));
   });
 
   it('mergeProps onClick when playing will pause', () => {
-    const mergedProps = mergeProps(getJPlayers({ paused: false }).jPlayers[uid],
-      { dispatch }, { uid });
+    const mergedProps = mergeProps(getJPlayers({ paused: false }).jPlayers[id],
+      { dispatch }, { id });
 
     mergedProps.onClick();
 
-    expect(dispatch).toHaveBeenCalledWith(pause({ uid }));
+    expect(dispatch).toHaveBeenCalledWith(pause({ id }));
   });
 });
 

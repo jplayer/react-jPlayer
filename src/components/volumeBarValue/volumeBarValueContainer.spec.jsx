@@ -11,7 +11,7 @@ const attributes = {
   'data-test': 'test',
   children: <div />,
 };
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 
 describe('VolumeBarValueContainer', () => {
   let dispatch;
@@ -21,7 +21,7 @@ describe('VolumeBarValueContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     expect(expected).toEqual({
       verticalVolume: false,
@@ -33,7 +33,7 @@ describe('VolumeBarValueContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,

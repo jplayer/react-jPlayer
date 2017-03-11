@@ -7,7 +7,7 @@ import { __get__ } from './barEvents';
 
 const mapStateToProps = __get__('mapStateToProps');
 const BarEvents = __get__('BarEvents');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const getProps = props => ({
   clickMoveBar: createSpy(),
   touchMoveBar: createSpy(),
@@ -23,7 +23,7 @@ MockChildren.propTypes = {
 
 describe('BarEvents', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid });
+    const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
       barDrag: true,

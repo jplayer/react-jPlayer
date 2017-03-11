@@ -1,8 +1,8 @@
 import { connectWithId } from '../../util/index';
 import Duration from './duration';
 
-const mapStateToProps = ({ jPlayers }, { uid, children, ...attributes }) => ({
-  children: children || jPlayers[uid].durationText,
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+  children: children || jPlayers[id].durationText,
   ...attributes,
 });
 

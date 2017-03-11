@@ -12,7 +12,7 @@ import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
 const VolumeBarContainer = __get__('VolumeBarContainer');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const getBoundingClientRect = () => ({
   top: 10,
   left: 30,
@@ -37,7 +37,7 @@ describe('VolumeBarContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     delete expected.moveVolumeBar;
 
@@ -48,7 +48,7 @@ describe('VolumeBarContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { id });
 
     delete expected.onClick;
     delete expected.onTouch;
@@ -62,13 +62,13 @@ describe('VolumeBarContainer', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const mappedProps = mapStateToProps(getJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, uid));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, id));
   });
 
   it('onClick moves volume bar when verticalVolume', () => {
@@ -77,20 +77,20 @@ describe('VolumeBarContainer', () => {
     });
     const mappedProps = mapStateToProps(getJPlayers({
       verticalVolume: true,
-    }), { uid });
+    }), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
 
     mergedProps.onClick(mockBar, { pageY: 7 });
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, uid));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, id));
   });
 
   it('onTouch moves volume bar', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
-    const mappedProps = mapStateToProps(getJPlayers(), { uid });
+    const mappedProps = mapStateToProps(getJPlayers(), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {
@@ -102,7 +102,7 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, uid));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, id));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
@@ -112,7 +112,7 @@ describe('VolumeBarContainer', () => {
     });
     const mappedProps = mapStateToProps(getJPlayers({
       verticalVolume: true,
-    }), { uid });
+    }), { id });
     const mergedProps = mergeProps(mappedProps, { dispatch });
     const mockBar = document.createElement('div');
     const event = {
@@ -124,7 +124,7 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, uid));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, id));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

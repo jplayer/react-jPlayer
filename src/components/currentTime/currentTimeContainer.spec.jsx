@@ -7,7 +7,7 @@ import { __get__ } from './currentTimeContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mergeProps = __get__('mergeProps');
-const uid = 'jPlayer-1';
+const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
   children: <div />,
@@ -21,7 +21,7 @@ describe('CurrentTimeContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { uid, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     expect(expected).toEqual({
       children: statusDefaultValues.currentTimeText,
@@ -31,7 +31,7 @@ describe('CurrentTimeContainer', () => {
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { uid });
+    const expected = mergeProps({ ...stateProps, ...attributes }, dispatch, { id });
 
     expect(expected).toEqual({
       ...stateProps,
@@ -41,7 +41,7 @@ describe('CurrentTimeContainer', () => {
 
   it('maps custom children if specified', () => {
     const children = '0:20';
-    const expected = mapStateToProps(getJPlayers(), { uid: 'jPlayer-1', children });
+    const expected = mapStateToProps(getJPlayers(), { id: 'jPlayer-1', children });
 
     expect(expected.children).toBe(children);
   });

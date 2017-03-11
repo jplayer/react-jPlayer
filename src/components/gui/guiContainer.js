@@ -2,17 +2,17 @@ import { connectWithId } from '../../util/index';
 import { setOption } from '../../actions/actions';
 import Gui from './gui';
 
-const mapStateToProps = ({ jPlayers }, { uid }) => ({
-  fullScreen: jPlayers[uid].fullScreen,
-  paused: jPlayers[uid].paused,
-  guiFadeOut: jPlayers[uid].guiFadeOut,
-  guiFadeHoldTimeout: jPlayers[uid].guiFadeHoldTimeout,
+const mapStateToProps = ({ jPlayers }, { id }) => ({
+  fullScreen: jPlayers[id].fullScreen,
+  paused: jPlayers[id].paused,
+  guiFadeOut: jPlayers[id].guiFadeOut,
+  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
 });
 
-const mergeProps = (stateProps, { dispatch }, { uid, ...attributes }) => ({
+const mergeProps = (stateProps, { dispatch }, { id, ...attributes }) => ({
   onMouseMove: () => {
     if (stateProps.fullScreen && !stateProps.paused) {
-      dispatch(setOption('guiFadeOut', false, uid));
+      dispatch(setOption('guiFadeOut', false, id));
       clearTimeout(stateProps.guiFadeHoldTimeout);
     }
   },
