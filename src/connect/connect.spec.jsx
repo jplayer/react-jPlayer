@@ -191,10 +191,10 @@ describe('JPlayerConnect', () => {
     expect(Component.id).toBe(mockPlayerName);
   });
 
-  it('component returns options', () => {
+  it('component returns original jPlayer', () => {
     const Component = connect(MockPlayer);
 
-    expect(Component.options).toBe(mockPlayerOptions);
+    expect(Component.jPlayer).toBe(MockPlayer);
   });
 
   afterEach(() => {

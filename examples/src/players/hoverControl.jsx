@@ -1,3 +1,6 @@
+/* This file makes sure that mute is only called when the
+    volume bar is shown on mobile*/
+
 let isBarVisible;
 
 export const onTouchStart = (e) => {

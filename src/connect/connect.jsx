@@ -74,12 +74,12 @@ const Connect = (jPlayer) => {
   const playerName = jPlayer.name === undefined ?
     jPlayer.toString().match(/^function\s*([^\s(]+)/)[1] : jPlayer.name;
 
-  return class extends React.Component {
+  return class ConnectedJPlayer extends React.Component {
     static get id() {
       return playerName;
     }
-    static get options() {
-      return jPlayer.options;
+    static get jPlayer() {
+      return jPlayer;
     }
     static get childContextTypes() {
       return {

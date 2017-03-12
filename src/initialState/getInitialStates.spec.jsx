@@ -23,28 +23,32 @@ describe('getInitialStates', () => {
     const jPlayerInitialStates = getInitialStates(MockPlayer);
 
     expect(jPlayerInitialStates).toEqual({
-      MockPlayer: merge({}, {
-        ...internalStatus,
-        ...defaultStatus,
-        ...defaultOptions,
-      }, MockPlayer.options),
+      jPlayers: {
+        MockPlayer: merge({}, {
+          ...internalStatus,
+          ...defaultStatus,
+          ...defaultOptions,
+        }, MockPlayer.options),
+      },
     });
   });
 
   it('sets initial state correctly with multiple players', () => {
-    const jPlayerInitialStates = getInitialStates({ MockPlayer, MockPlayerTwo });
+    const jPlayerInitialStates = getInitialStates([MockPlayer, MockPlayerTwo]);
 
     expect(jPlayerInitialStates).toEqual({
-      MockPlayer: merge({}, {
-        ...internalStatus,
-        ...defaultStatus,
-        ...defaultOptions,
-      }, MockPlayer.options),
-      MockPlayerTwo: merge({}, {
-        ...internalStatus,
-        ...defaultStatus,
-        ...defaultOptions,
-      }, MockPlayerTwo.options),
+      jPlayers: {
+        MockPlayer: merge({}, {
+          ...internalStatus,
+          ...defaultStatus,
+          ...defaultOptions,
+        }, MockPlayer.options),
+        MockPlayerTwo: merge({}, {
+          ...internalStatus,
+          ...defaultStatus,
+          ...defaultOptions,
+        }, MockPlayerTwo.options),
+      },
     });
   });
 });

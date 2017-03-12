@@ -6,13 +6,11 @@ const getInitialStates = (jPlayers) => {
   const jPlayerStates = {};
   let newJPlayers = jPlayers;
 
-  if (typeof (jPlayers) !== 'object') {
-    newJPlayers = { jPlayers };
+  if (!Array.isArray(jPlayers)) {
+    newJPlayers = [jPlayers];
   }
 
-  Object.keys(newJPlayers).forEach((key) => {
-    const jPlayer = newJPlayers[key];
-
+  newJPlayers.forEach((jPlayer) => {
     jPlayerStates[jPlayer.id] = merge({}, {
       ...internalStatus,
       ...defaultStatus,
@@ -20,7 +18,9 @@ const getInitialStates = (jPlayers) => {
     }, jPlayer.options);
   });
 
-  return jPlayerStates;
+  return {
+    jPlayers: jPlayerStates,
+  };
 };
 
 export default getInitialStates;
