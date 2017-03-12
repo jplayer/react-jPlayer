@@ -82,7 +82,7 @@ Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 ### Static Properties
 1. `id`: The id of the jPlayer, this is whatever name you called your jPlayer function. This is passed down as a context so that react-jPlayer can internally know which jPlayer is the current one.
-2. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified again.
+2. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
 
 ### Renders
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
