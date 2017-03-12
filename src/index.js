@@ -22,8 +22,9 @@ import Download from './components/download/downloadContainer';
 import Duration from './components/duration/durationContainer';
 import CurrentTime from './components/currentTime/currentTimeContainer';
 import BrowserUnsupported from './components/browserUnsupported/browserUnsupportedContainer';
+import { classes } from './util/constants';
 
-export { getInitialStates, reducer, connect, JPlayer, Gui, SeekBar, PlayBar,
+export { classes, getInitialStates, reducer, connect, JPlayer, Gui, SeekBar, PlayBar,
    BufferBar, Poster, Video, Audio, Title, FullScreen,
     Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
     VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };

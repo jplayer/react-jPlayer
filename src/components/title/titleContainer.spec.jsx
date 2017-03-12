@@ -13,7 +13,6 @@ const attributes = {
 };
 
 describe('TitleContainer', () => {
-  const title = 'Test Title';
   let dispatch;
 
   beforeEach(() => {
@@ -21,28 +20,21 @@ describe('TitleContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers({
-      media: {
-        title,
-      },
-    }), { id, ...attributes });
-
-    expect(expected).toEqual({
-      children: title,
-      ...attributes,
-    });
-  });
-
-  it('mapState maps custom children if specified over title', () => {
+    const title = 'Test Title';
+    const artist = 'Test Artist';
     const children = <div className="@@jPlayer-test" />;
     const expected = mapStateToProps(getJPlayers({
       media: {
         title,
+        artist,
       },
-    }), { children, id });
+    }), { children, id, ...attributes });
 
     expect(expected).toEqual({
       children,
+      title,
+      artist,
+      ...attributes,
     });
   });
 
