@@ -50,7 +50,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.play({ time, id })).toEqual(expectedAction);
+    expect(actions.play(time, id)).toEqual(expectedAction);
   });
 
   it('should create an action to pause the media', () => {
@@ -61,7 +61,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.pause({ time, id })).toEqual(expectedAction);
+    expect(actions.pause(time, id)).toEqual(expectedAction);
   });
 
   it('should create an action to set the play head', () => {
@@ -105,7 +105,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setDuration({ remainingDuration, id })).toEqual(expectedAction);
+    expect(actions.setDuration(remainingDuration, id)).toEqual(expectedAction);
   });
 
   it('should create an action to set the playbackRate', () => {

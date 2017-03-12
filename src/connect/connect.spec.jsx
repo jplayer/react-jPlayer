@@ -2,116 +2,129 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { getJPlayers, getDefaultJPlayers } from '../util/common.spec';
-import { defaultOptions, statusDefaultValues } from '../util/constants';
+import { getDefaultJPlayers } from '../util/common.spec';
 import connect, { __get__ } from './connect';
 import * as actions from '../actions/actions';
 
 const mapStateToProps = __get__('mapStateToProps');
-const mapDispatchToProps = __get__('mapDispatchToProps');
+const mergeProps = __get__('mergeProps');
+const getActions = __get__('getActions');
 const id = 'jPlayer-1';
+const jPlayerTwoId = 'jPlayer-2';
+const jPlayerThreeId = 'jPlayer-3';
 const mockPlayerName = 'MockPlayer';
 const mockPlayerOptions = {
   muted: true,
 };
-const getMappedActionsData = (newId, jPlayer = getDefaultJPlayers(1, true).jPlayers[id]) => {
-  const time = 33;
-  const remaningDuration = 230;
-  return [
-    { action: 'setOption', args: ['muted', jPlayer.muted, newId] },
-    { action: 'setMedia', args: [jPlayer.media, newId] },
-    { action: 'clearMedia', args: [newId] },
-    { action: 'play', args: [{ time, id: newId }] },
-    { action: 'pause', args: [{ time, id: newId }] },
-    { action: 'setPlayHead', args: [jPlayer.playHeadPercent, newId] },
-    { action: 'setVolume', args: [jPlayer.volume, newId] },
-    { action: 'setMute', args: [jPlayer.muted, newId] },
-    { action: 'setDuration', args: [{ remaningDuration, id: newId }] },
-    { action: 'setPlaybackRate', args: [jPlayer.playbackRate, newId] },
-    { action: 'setLoop', args: [jPlayer.loop, newId] },
-    { action: 'setFullScreen', args: [jPlayer.fullScreen, newId] },
-    { action: 'setFocus', args: [newId] },
-  ];
-};
+const dispatch = createSpy();
+const jPlayerActions = actions;
+delete jPlayerActions.default;
+const getMappedActionsData = (jPlayer = getDefaultJPlayers(1, true).jPlayers[id]) => [
+  { action: 'setOption', args: ['muted', jPlayer.muted] },
+  { action: 'setMedia', args: [jPlayer.media] },
+  { action: 'clearMedia', args: [] },
+  { action: 'play', args: [33] },
+  { action: 'pause', args: [77] },
+  { action: 'setPlayHead', args: [jPlayer.playHeadPercent] },
+  { action: 'setVolume', args: [jPlayer.volume] },
+  { action: 'setMute', args: [jPlayer.muted] },
+  { action: 'setDuration', args: [230] },
+  { action: 'setPlaybackRate', args: [jPlayer.playbackRate] },
+  { action: 'setLoop', args: [jPlayer.loop] },
+  { action: 'setFullScreen', args: [jPlayer.fullScreen] },
+  { action: 'setFocus', args: [] },
+];
 
 describe('JPlayerConnect', () => {
   let MockPlayer;
-  let dispatch;
 
   beforeEach(() => {
     MockPlayer = () => <div />;
     MockPlayer.options = mockPlayerOptions;
-    dispatch = createSpy();
   });
-  it('maps state with custom props', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, test: 'test' });
+
+  it('maps state', () => {
+    const state = getDefaultJPlayers(2, true);
+    const expected = mapStateToProps(state);
+
+    expect(expected).toEqual(state.jPlayers);
+  });
+
+  it('merges props with custom props', () => {
+    const customProp = 'test';
+    const jPlayers = getDefaultJPlayers(1, true).jPlayers;
+    const expected = mergeProps(jPlayers, { dispatch }, { id, customProp });
 
     expect(expected).toEqual({
-      ...defaultOptions,
-      ...statusDefaultValues,
-      test: 'test',
+      ...jPlayers[id],
+      ...getActions(),
+      customProp,
     });
   });
 
   it('custom props with same name as state get overwritten', () => {
-    const expected = mapStateToProps(getJPlayers({ muted: true }), { id, muted: false });
+    const jPlayers = getDefaultJPlayers(1, true).jPlayers;
+    const expected = mergeProps(jPlayers, { dispatch }, { id, muted: true });
 
     expect(expected).toEqual({
-      ...defaultOptions,
-      ...statusDefaultValues,
-      muted: true,
+      ...jPlayers[id],
+      ...getActions(),
+      muted: false,
     });
   });
 
   it('maps other players if they exist', () => {
-    const expected = mapStateToProps(getDefaultJPlayers(3, true), { id: 'jPlayer-2' });
+    const jPlayers = getDefaultJPlayers(3, true).jPlayers;
+    const expected = mergeProps(jPlayers, { dispatch }, { id: jPlayerTwoId });
+    const mergedActions = getActions();
 
     expect(expected).toEqual({
-      ...defaultOptions,
-      ...statusDefaultValues,
+      ...jPlayers[jPlayerTwoId],
+      ...mergedActions,
       jPlayers: {
-        'jPlayer-1': {
-          ...defaultOptions,
-          ...statusDefaultValues,
+        [id]: {
+          ...jPlayers[id],
+          ...mergedActions,
         },
-        'jPlayer-3': {
-          ...defaultOptions,
-          ...statusDefaultValues,
+        [jPlayerThreeId]: {
+          ...jPlayers[jPlayerThreeId],
+          ...mergedActions,
         },
       },
     });
   });
 
   it('all actions are mapped', () => {
-    const mappedActions = mapDispatchToProps(Function.prototype, { id });
-    const jPlayerActions = actions;
+    const jPlayers = getDefaultJPlayers().jPlayers;
+    const mergedProps = mergeProps(jPlayers, { dispatch }, { id });
 
-    delete jPlayerActions.default;
-
-    const actionsLength = Object.keys(jPlayerActions).length;
-    const expectedLength = Object.keys(mappedActions).length;
-
-    expect(expectedLength).toBe(actionsLength);
+    expect(mergedProps).toIncludeKeys(Object.keys(jPlayerActions));
   });
 
-  getMappedActionsData(id).forEach(({ action, args }) => {
-    it(`dispatches mapped ${action} when called with custom id`, () => {
-      const mappedActions = mapDispatchToProps(dispatch, { currentId: 'TestPlayer' });
+  getMappedActionsData().forEach(({ action, args }) => {
+    const mergedProps = mergeProps(getDefaultJPlayers(3, true).jPlayers, { dispatch }, { id });
+    let expectedArgs;
 
-      mappedActions[action](...args);
-      expect(dispatch).toHaveBeenCalledWith(actions[action](...args));
+    it(`dispatches current jPlayer mapped ${action} action when called`, () => {
+      expectedArgs = [...args];
+
+      mergedProps[action](...args);
+
+      expectedArgs.push(id);
+      expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedArgs));
     });
-  });
 
-  getMappedActionsData().forEach(({ action, args }, i) => {
-    it(`dispatches mapped ${action} when called with default id`, () => {
-      const currentId = 'AudioPlayer';
-      const mappedActions = mapDispatchToProps(dispatch, { currentId });
+    it(`dispatches other jPlayers mapped ${action} action when called`, () => {
+      Object.keys(mergedProps.jPlayers).forEach((key) => {
+        const jPlayer = mergedProps.jPlayers[key];
+        expectedArgs = [...args];
 
-      mappedActions[action](...args);
+        jPlayer[action](...args);
 
-      const expectedActionsArgs = getMappedActionsData(currentId)[i].args;
-      expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedActionsArgs));
+        expectedArgs.push(key);
+
+        expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedArgs));
+      });
     });
   });
 
@@ -141,5 +154,9 @@ describe('JPlayerConnect', () => {
     const Component = connect(MockPlayer);
 
     expect(Component.options).toBe(mockPlayerOptions);
+  });
+
+  afterEach(() => {
+    dispatch.reset();
   });
 });

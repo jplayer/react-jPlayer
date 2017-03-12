@@ -5,20 +5,20 @@ import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
   setVolume, setMute, setDuration, setPlaybackRate, setLoop,
   setFullScreen, setFocus } from '../actions/actions';
 
-const mapStateToProps = state => ({
-  ...state.jPlayers,
+const mapStateToProps = ({ jPlayers }) => ({
+  ...jPlayers,
 });
 
 const getActions = (dispatch, id) => ({
   setOption: (key, value) => dispatch(setOption(key, value, id)),
   setMedia: media => dispatch(setMedia(media, id)),
   clearMedia: () => dispatch(clearMedia(id)),
-  play: time => dispatch(play({ time, id })),
-  pause: time => dispatch(pause({ time, id })),
+  play: time => dispatch(play(time, id)),
+  pause: time => dispatch(pause(time, id)),
   setPlayHead: percent => dispatch(setPlayHead(percent, id)),
   setVolume: volume => dispatch(setVolume(volume, id)),
   setMute: mute => dispatch(setMute(mute, id)),
-  setDuration: remainingDuration => dispatch(setDuration({ remainingDuration, id })),
+  setDuration: remainingDuration => dispatch(setDuration(remainingDuration, id)),
   setPlaybackRate: playbackRate => dispatch(setPlaybackRate(playbackRate, id)),
   setLoop: loop => dispatch(setLoop(loop, id)),
   setFullScreen: fullScreen => dispatch(setFullScreen(fullScreen, id)),
@@ -33,15 +33,15 @@ const mergeProps = (jPlayers, { dispatch }, { id, ...props }) => {
 
     newJPlayers[key] = {
       ...jPlayer,
-      ...getActions(dispatch, jPlayer.id),
+      ...getActions(dispatch, key),
     };
   });
 
   const { [id]: jPlayer, ...otherPlayers } = newJPlayers;
 
   const returnedJPlayers = {
-    ...jPlayer,
     ...props,
+    ...jPlayer,
   };
 
   if (Object.keys(otherPlayers).length) {

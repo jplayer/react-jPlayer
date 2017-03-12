@@ -15,12 +15,12 @@ export const clearMedia = id => ({
   type: actionTypes.jPlayer.CLEAR_MEDIA,
   id,
 });
-export const play = ({ time, id } = {}) => ({
+export const play = (time, id) => ({
   type: actionTypes.jPlayer.PLAY,
   time,
   id,
 });
-export const pause = ({ time, id } = {}) => ({
+export const pause = (time, id) => ({
   type: actionTypes.jPlayer.PAUSE,
   time,
   id,
@@ -40,7 +40,7 @@ export const setMute = (mute, id) => ({
   mute,
   id,
 });
-export const setDuration = ({ remainingDuration, id } = {}) => ({
+export const setDuration = (remainingDuration, id) => ({
   type: actionTypes.jPlayer.DURATION,
   remainingDuration,
   id,

@@ -18,11 +18,11 @@ import NavContent from './helpers/navContent';
 import StatusWrapper from './helpers/statusWrapper';
 import { getInitialStates, reducer } from '../../src/index';
 
-const jPlayers = [
+const jPlayers = {
   AudioPlayer,
   VideoPlayer,
   MixedPlayer,
-];
+};
 
 const store = createStore(combineReducers({ jPlayers: reducer }), {
   jPlayers: getInitialStates(jPlayers),

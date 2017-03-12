@@ -26,24 +26,21 @@ describe('getInitialStates', () => {
       MockPlayer: merge({}, {
         ...statusDefaultValues,
         ...defaultOptions,
-        id: MockPlayer.id,
       }, MockPlayer.options),
     });
   });
 
   it('sets initial state correctly with multiple players', () => {
-    const jPlayerInitialStates = getInitialStates([MockPlayer, MockPlayerTwo]);
+    const jPlayerInitialStates = getInitialStates({ MockPlayer, MockPlayerTwo });
 
     expect(jPlayerInitialStates).toEqual({
       MockPlayer: merge({}, {
         ...statusDefaultValues,
         ...defaultOptions,
-        id: MockPlayer.id,
       }, MockPlayer.options),
       MockPlayerTwo: merge({}, {
         ...statusDefaultValues,
         ...defaultOptions,
-        id: MockPlayerTwo.id,
       }, MockPlayerTwo.options),
     });
   });
