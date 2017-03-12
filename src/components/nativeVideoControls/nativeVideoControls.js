@@ -12,7 +12,7 @@
 
 //         // The native controls are only for video and are disabled when audio is also used.
 //     this.restrictNativeVideoControls();
-//         // Initialize the interface components with the options.
+//         // Initialize the interface components with the defaultOptions.
 //     this.updateNativeVideoControls();
 //   }
 //   static get propTypes() {
@@ -63,7 +63,7 @@
 //     if (this.html.video.available && this.html.used) {
 //             // Turn the HTML Video controls on/off
 //       this.setState({ videoControls: this.props.nativeVideoControls });
-//             // For when option changed. The poster image is not updated, as it is dealt with in setMedia(). Acceptable degradation since seriously doubt these options will change on the fly. Can again review later.
+//             // For when option changed. The poster image is not updated, as it is dealt with in setMedia(). Acceptable degradation since seriously doubt these defaultOptions will change on the fly. Can again review later.
 //       if (this.props.nativeVideoControls && this.props.require.video) {
 //         this.props.addClass(keys.POSTER_CLASS, this.props[keys.POSTER_CLASS], classes.HIDDEN);
 //         this.assignStyle({ width: this.props.width, height: this.props.height }, 'videoStyle');

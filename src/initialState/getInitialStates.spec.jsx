@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import merge from 'lodash.merge';
 
-import { defaultOptions, statusDefaultValues } from '../util/constants';
+import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
 import getInitialStates from './getInitialStates';
 
 const MockPlayer = () => <div />;
@@ -24,7 +24,8 @@ describe('getInitialStates', () => {
 
     expect(jPlayerInitialStates).toEqual({
       MockPlayer: merge({}, {
-        ...statusDefaultValues,
+        ...internalStatus,
+        ...defaultStatus,
         ...defaultOptions,
       }, MockPlayer.options),
     });
@@ -35,11 +36,13 @@ describe('getInitialStates', () => {
 
     expect(jPlayerInitialStates).toEqual({
       MockPlayer: merge({}, {
-        ...statusDefaultValues,
+        ...internalStatus,
+        ...defaultStatus,
         ...defaultOptions,
       }, MockPlayer.options),
       MockPlayerTwo: merge({}, {
-        ...statusDefaultValues,
+        ...internalStatus,
+        ...defaultStatus,
         ...defaultOptions,
       }, MockPlayerTwo.options),
     });

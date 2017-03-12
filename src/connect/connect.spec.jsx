@@ -3,6 +3,7 @@ import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { getDefaultJPlayers } from '../util/common.spec';
+import { defaultOptions, defaultStatus } from '../util/constants';
 import connect, { __get__ } from './connect';
 import * as actions from '../actions/actions';
 
@@ -11,7 +12,6 @@ const mergeProps = __get__('mergeProps');
 const getActions = __get__('getActions');
 const id = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
-const jPlayerThreeId = 'jPlayer-3';
 const mockPlayerName = 'MockPlayer';
 const mockPlayerOptions = {
   muted: true,
@@ -52,46 +52,87 @@ describe('JPlayerConnect', () => {
 
   it('merges props with custom props', () => {
     const customProp = 'test';
-    const jPlayers = getDefaultJPlayers(1, true).jPlayers;
+    const jPlayers = getDefaultJPlayers().jPlayers;
     const expected = mergeProps(jPlayers, { dispatch }, { id, customProp });
 
-    expect(expected).toEqual({
-      ...jPlayers[id],
-      ...getActions(),
+    expect(expected).toContain({
       customProp,
     });
   });
 
   it('custom props with same name as state get overwritten', () => {
-    const jPlayers = getDefaultJPlayers(1, true).jPlayers;
-    const expected = mergeProps(jPlayers, { dispatch }, { id, muted: true });
+    const options = 'test';
+    const jPlayers = getDefaultJPlayers().jPlayers;
+    const expected = mergeProps(jPlayers, { dispatch }, { id, options });
 
-    expect(expected).toEqual({
-      ...jPlayers[id],
-      ...getActions(),
-      muted: false,
+    expect(expected).toNotContain({
+      options,
     });
   });
 
-  it('maps other players if they exist', () => {
+  it('merges current player', () => {
+    const jPlayers = getDefaultJPlayers(1, true).jPlayers;
+    const expected = mergeProps(jPlayers, { dispatch }, { id });
+    const mergedActions = getActions();
+    const status = {};
+    const options = {};
+
+    Object.keys(defaultOptions).forEach((key) => {
+      const property = jPlayers[id][key];
+
+      if (property !== undefined) {
+        options[key] = property;
+      }
+    });
+
+    Object.keys(defaultStatus).forEach((key) => {
+      const property = jPlayers[id][key];
+
+      if (property !== undefined) {
+        status[key] = property;
+      }
+    });
+
+    expect(expected).toEqual({
+      ...mergedActions,
+      options,
+      status,
+    });
+  });
+
+  it('merges other players', () => {
     const jPlayers = getDefaultJPlayers(3, true).jPlayers;
     const expected = mergeProps(jPlayers, { dispatch }, { id: jPlayerTwoId });
     const mergedActions = getActions();
+    const otherJPlayers = {};
 
-    expect(expected).toEqual({
-      ...jPlayers[jPlayerTwoId],
-      ...mergedActions,
-      jPlayers: {
-        [id]: {
-          ...jPlayers[id],
-          ...mergedActions,
-        },
-        [jPlayerThreeId]: {
-          ...jPlayers[jPlayerThreeId],
-          ...mergedActions,
-        },
-      },
+    delete jPlayers[jPlayerTwoId];
+
+    Object.keys(jPlayers).forEach((jPlayerKey) => {
+      const jPlayer = jPlayers[jPlayerKey];
+      const status = {};
+      const options = {};
+
+      Object.keys(defaultOptions).forEach((key) => {
+        if (jPlayer[key] !== undefined) {
+          options[key] = jPlayer[key];
+        }
+      });
+
+      Object.keys(defaultStatus).forEach((key) => {
+        if (jPlayer[key] !== undefined) {
+          status[key] = jPlayer[key];
+        }
+      });
+
+      otherJPlayers[jPlayerKey] = {
+        ...mergedActions,
+        options,
+        status,
+      };
     });
+
+    expect(otherJPlayers).toEqual(expected.jPlayers);
   });
 
   it('all actions are mapped', () => {

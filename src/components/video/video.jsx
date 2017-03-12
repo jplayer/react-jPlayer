@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Media from '../media/mediaContainer';
-import { defaultOptions } from '../../util/constants';
+import { defaultStatus } from '../../util/constants';
 
 const Video = ({ require, events, ...attributes }) => (
   require ?
@@ -14,7 +14,7 @@ const Video = ({ require, events, ...attributes }) => (
 Video.defaultProps = {
   events: null,
   children: null,
-  require: defaultOptions.mediaSettings.video,
+  require: defaultStatus.mediaSettings.video,
 };
 
 Video.propTypes = {

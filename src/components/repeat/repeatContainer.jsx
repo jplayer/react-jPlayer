@@ -1,6 +1,5 @@
 import { connectWithId } from '../../util/index';
 import { setLoop } from '../../actions/actions';
-import { loopOptions } from '../../util/constants';
 import Repeat from './repeat';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
@@ -8,10 +7,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 });
 
 const mergeProps = ({ loop }, { dispatch }, { id, ...attributes }) => ({
-  onClick: () => {
-    const loopOption = loop === loopOptions.LOOP ? loopOptions.OFF : loopOptions.LOOP;
-    dispatch(setLoop(loopOption, id));
-  },
+  onClick: () => dispatch(setLoop(!loop, id)),
   ...attributes,
 });
 

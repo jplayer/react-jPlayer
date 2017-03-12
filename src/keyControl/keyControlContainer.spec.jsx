@@ -3,7 +3,7 @@ import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
 
 import { getJPlayers } from '../util/common.spec';
-import { defaultOptions, loopOptions, keyIgnoreElementNames } from '../util/constants';
+import { defaultOptions, keyIgnoreElementNames } from '../util/constants';
 import { play, pause, setFullScreen, setMute, setVolume,
   setLoop } from '../actions/actions';
 import { __get__ } from './keyControlContainer';
@@ -25,7 +25,7 @@ describe('KeyControlContainer', () => {
       fullScreen: false,
       muted: false,
       volume: defaultOptions.volume,
-      loop: defaultOptions.loop,
+      loop: false,
       keyBindings: defaultOptions.keyBindings,
       focus: false,
     });
@@ -132,18 +132,14 @@ describe('KeyControlContainer', () => {
 
     keyBindings.loop.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(
-      setLoop(loopOptions.LOOP, id),
-    );
+    expect(dispatch).toHaveBeenCalledWith(setLoop(true, id));
   });
 
   it('turns loop off on loop key press when looping', () => {
-    const { keyBindings } = mergePropsWithDefaultState({ loop: loopOptions.LOOP });
+    const { keyBindings } = mergePropsWithDefaultState({ loop: true });
     keyBindings.loop.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(
-      setLoop(loopOptions.OFF, id),
-    );
+    expect(dispatch).toHaveBeenCalledWith(setLoop(false, id));
   });
 
   it('Adds listener to onKeyDown event on startup', () => {

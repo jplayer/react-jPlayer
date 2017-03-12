@@ -1,7 +1,7 @@
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { statusDefaultValues } from '../../util/constants';
+import { defaultStatus } from '../../util/constants';
 import { __get__ } from './durationContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -22,7 +22,7 @@ describe('DurationContainer', () => {
     const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     expect(expected).toEqual({
-      children: statusDefaultValues.durationText,
+      children: defaultStatus.durationText,
       ...attributes,
     });
   });

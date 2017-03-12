@@ -1,7 +1,6 @@
-import { defaultOptions, statusDefaultValues, actionTypes, loopOptions,
+import { defaultOptions, defaultStatus, actionNames,
   errors, hints } from '../util/constants';
 
-const jPlayerActionTypes = actionTypes.jPlayer;
 const jPlayerOneId = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
 
@@ -17,11 +16,11 @@ export const clearMediaData = [
       },
     },
     action: {
-      type: jPlayerActionTypes.CLEAR_MEDIA,
+      type: actionNames.CLEAR_MEDIA,
       id: jPlayerOneId,
     },
     expected: {
-      ...statusDefaultValues,
+      ...defaultStatus,
       media: defaultOptions.media,
     },
   },
@@ -30,7 +29,7 @@ export const clearMediaData = [
 export const setMediaData = [
   {
     action: {
-      type: jPlayerActionTypes.SET_MEDIA,
+      type: actionNames.SET_MEDIA,
       id: jPlayerOneId,
       media: {
         sources: {
@@ -63,7 +62,7 @@ export const setMediaData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.SET_MEDIA,
+      type: actionNames.SET_MEDIA,
       id: jPlayerOneId,
       media: {
         sources: {
@@ -87,7 +86,7 @@ export const playData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PLAY,
+      type: actionNames.PLAY,
       time: 30,
       id: jPlayerOneId,
     },
@@ -101,7 +100,7 @@ export const playData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PLAY,
+      type: actionNames.PLAY,
       time: NaN,
       id: jPlayerOneId,
     },
@@ -112,7 +111,7 @@ export const playData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.PLAY,
+      type: actionNames.PLAY,
       time: 30,
       id: jPlayerOneId,
     },
@@ -132,7 +131,7 @@ export const playHeadData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PLAY_HEAD,
+      type: actionNames.PLAY_HEAD,
       percent: 300,
       id: jPlayerOneId,
     },
@@ -145,7 +144,7 @@ export const playHeadData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PLAY_HEAD,
+      type: actionNames.PLAY_HEAD,
       percent: -100,
       id: jPlayerOneId,
     },
@@ -158,7 +157,7 @@ export const playHeadData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PLAY_HEAD,
+      type: actionNames.PLAY_HEAD,
       percent: 30,
       id: jPlayerOneId,
     },
@@ -168,7 +167,7 @@ export const playHeadData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.PLAY_HEAD,
+      type: actionNames.PLAY_HEAD,
       percent: 30,
       id: jPlayerOneId,
     },
@@ -188,7 +187,7 @@ export const pauseData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PAUSE,
+      type: actionNames.PAUSE,
       time: 30,
       id: jPlayerOneId,
     },
@@ -202,7 +201,7 @@ export const pauseData = [
       src: 'test.mp3',
     },
     action: {
-      type: jPlayerActionTypes.PAUSE,
+      type: actionNames.PAUSE,
       time: NaN,
       id: jPlayerOneId,
     },
@@ -213,7 +212,7 @@ export const pauseData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.PAUSE,
+      type: actionNames.PAUSE,
       time: 30,
       id: jPlayerOneId,
     },
@@ -230,7 +229,7 @@ export const pauseData = [
 export const volumeData = [
   {
     action: {
-      type: jPlayerActionTypes.VOLUME,
+      type: actionNames.VOLUME,
       volume: 30,
       id: jPlayerOneId,
     },
@@ -241,7 +240,7 @@ export const volumeData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.VOLUME,
+      type: actionNames.VOLUME,
       volume: -30,
       id: jPlayerOneId,
     },
@@ -252,7 +251,7 @@ export const volumeData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.VOLUME,
+      type: actionNames.VOLUME,
       volume: 0.3,
       id: jPlayerOneId,
     },
@@ -266,7 +265,7 @@ export const volumeData = [
 export const muteData = [
   {
     action: {
-      type: jPlayerActionTypes.MUTE,
+      type: actionNames.MUTE,
       mute: true,
       id: jPlayerOneId,
     },
@@ -276,7 +275,7 @@ export const muteData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.MUTE,
+      type: actionNames.MUTE,
       mute: false,
       id: jPlayerOneId,
     },
@@ -289,7 +288,7 @@ export const muteData = [
 export const durationData = [
   {
     action: {
-      type: jPlayerActionTypes.DURATION,
+      type: actionNames.DURATION,
       remainingDuration: true,
       id: jPlayerOneId,
     },
@@ -299,7 +298,7 @@ export const durationData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.DURATION,
+      type: actionNames.DURATION,
       remainingDuration: false,
       id: jPlayerOneId,
     },
@@ -315,7 +314,7 @@ export const playbackRateData = [
       maxPlaybackRate: defaultOptions.maxPlaybackRate,
     },
     action: {
-      type: jPlayerActionTypes.PLAYBACK_RATE,
+      type: actionNames.PLAYBACK_RATE,
       playbackRate: 30,
       id: jPlayerOneId,
     },
@@ -328,7 +327,7 @@ export const playbackRateData = [
       minPlaybackRate: defaultOptions.minPlaybackRate,
     },
     action: {
-      type: jPlayerActionTypes.PLAYBACK_RATE,
+      type: actionNames.PLAYBACK_RATE,
       playbackRate: -30,
       id: jPlayerOneId,
     },
@@ -342,7 +341,7 @@ export const playbackRateData = [
       maxPlaybackRate: defaultOptions.maxPlaybackRate,
     },
     action: {
-      type: jPlayerActionTypes.PLAYBACK_RATE,
+      type: actionNames.PLAYBACK_RATE,
       playbackRate: 1.3,
       id: jPlayerOneId,
     },
@@ -355,22 +354,22 @@ export const playbackRateData = [
 export const loopData = [
   {
     action: {
-      type: jPlayerActionTypes.LOOP,
-      loop: loopOptions.OFF,
+      type: actionNames.LOOP,
+      loop: false,
       id: jPlayerOneId,
     },
     expected: {
-      loop: loopOptions.OFF,
+      loop: false,
     },
   },
   {
     action: {
-      type: jPlayerActionTypes.LOOP,
-      loop: loopOptions.LOOP,
+      type: actionNames.LOOP,
+      loop: true,
       id: jPlayerOneId,
     },
     expected: {
-      loop: loopOptions.LOOP,
+      loop: true,
     },
   },
 ];
@@ -378,7 +377,7 @@ export const loopData = [
 export const fullScreenData = [
   {
     action: {
-      type: jPlayerActionTypes.FULL_SCREEN,
+      type: actionNames.FULL_SCREEN,
       fullScreen: false,
       id: jPlayerOneId,
     },
@@ -388,7 +387,7 @@ export const fullScreenData = [
   },
   {
     action: {
-      type: jPlayerActionTypes.FULL_SCREEN,
+      type: actionNames.FULL_SCREEN,
       fullScreen: true,
       id: jPlayerOneId,
     },
@@ -405,7 +404,7 @@ export const focusData = [
       keyEnabled: true,
     },
     action: {
-      type: jPlayerActionTypes.MUTE,
+      type: actionNames.MUTE,
       mute: true,
       id: jPlayerOneId,
     },
@@ -416,7 +415,7 @@ export const focusData = [
       keyEnabled: true,
     },
     action: {
-      type: jPlayerActionTypes.FOCUS,
+      type: actionNames.FOCUS,
       id: jPlayerOneId,
     },
   },

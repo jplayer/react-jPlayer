@@ -3,8 +3,7 @@ import screenfull from 'screenfull';
 import classNames from 'classnames';
 
 import { connectWithId, traverseParentsUntilClassName } from '../../util/index';
-import { formats,
-   classes, loopOptions } from '../../util/constants';
+import { formats, classes } from '../../util/constants';
 import JPlayer from './jPlayer';
 import { setOption, setMedia } from '../../actions/actions';
 
@@ -35,7 +34,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
       [classes.states.VOLUME_LOW]: !jPlayers[id].muted && jPlayers[id].volume < 0.5,
       [classes.states.VOLUME_HIGH]: !jPlayers[id].muted && jPlayers[id].volume >= 0.5,
       [classes.states.SEEKING]: jPlayers[id].seeking,
-      [classes.states.LOOPED]: jPlayers[id].loop === loopOptions.LOOP,
+      [classes.states.LOOPED]: jPlayers[id].loop,
       [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
       [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
       // 'jp-state-video-270p': sizeCssClass !== undefined,

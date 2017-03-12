@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { loopOptions } from '../../util/constants';
 import { connectWithId, urlNotSupportedError, convertTime, canSetVolume,
   toPercentage, toRelativePercentage } from '../../util/index';
 import { setOption, pause } from '../../actions/actions';
@@ -55,7 +54,7 @@ class MediaContainer extends React.Component {
       onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      loop: React.PropTypes.string.isRequired,
+      loop: React.PropTypes.bool.isRequired,
       showRemainingDuration: React.PropTypes.bool.isRequired,
       src: React.PropTypes.string.isRequired,
       playHeadPercent: React.PropTypes.number.isRequired,
@@ -160,7 +159,7 @@ class MediaContainer extends React.Component {
         this.props.pause(0);
         this.updateMediaStatus();
 
-        if (this.props.loop === 'loop') {
+        if (this.props.loop) {
           this.props.onRepeat();
         }
         this.props.onEnded();
@@ -272,7 +271,7 @@ class MediaContainer extends React.Component {
     this.currentMedia.volume = volume;
     this.currentMedia.muted = muted;
     this.currentMedia.autoplay = autoplay;
-    this.currentMedia.loop = loop === loopOptions.LOOP;
+    this.currentMedia.loop = loop;
   }
   render() {
     return (

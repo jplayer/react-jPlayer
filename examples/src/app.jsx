@@ -36,11 +36,15 @@ const App = () => (
       <NavLink>Mixed</NavLink>
     </NavBar>
     <NavContentContainer>
-      {jPlayers.map(JPlayer =>
-        <NavContent key={JPlayer.id}>
-          <StatusWrapper id={JPlayer.id}><JPlayer /></StatusWrapper>
-        </NavContent>,
-      )}
+      {Object.keys(jPlayers).map((key) => {
+        const JPlayer = jPlayers[key];
+
+        return (
+          <NavContent key={JPlayer.id}>
+            <StatusWrapper id={JPlayer.id}><JPlayer /></StatusWrapper>
+          </NavContent>
+        );
+      })}
     </NavContentContainer>
   </NavContainer>
 );

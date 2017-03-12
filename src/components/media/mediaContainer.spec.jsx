@@ -3,7 +3,7 @@ import expect, { createSpy, spyOn } from 'expect';
 import { mount } from 'enzyme';
 
 import { getJPlayers } from '../../util/common.spec';
-import { defaultOptions, loopOptions } from '../../util/constants';
+import { defaultOptions } from '../../util/constants';
 import { urlNotSupportedError } from '../../util/index';
 import { setOption, pause } from '../../actions/actions';
 import { __get__ } from './mediaContainer';
@@ -72,7 +72,7 @@ describe('MediaContainer', () => {
     const expected = mapStateToProps(getJPlayers(), { id, children: mockAudio });
 
     expect(expected).toEqual({
-      loop: loopOptions.OFF,
+      loop: false,
       showRemainingDuration: false,
       src: '',
       currentTime: 0,
@@ -116,7 +116,7 @@ describe('MediaContainer', () => {
       muted: true,
       autoplay: true,
     };
-    const { props, instance } = setup({ ...media, loop: loopOptions.LOOP });
+    const { props, instance } = setup({ ...media, loop: true });
 
     Object.keys(media).forEach((key) => {
       expect(media[key]).toBe(instance.currentMedia[key],
@@ -139,7 +139,7 @@ describe('MediaContainer', () => {
     };
     const { wrapper, props, instance } = setup({
       ...sharedMedia,
-      loop: loopOptions.LOOP,
+      loop: true,
       newTime: 33,
     });
 
@@ -338,7 +338,7 @@ describe('MediaContainer', () => {
 
   it('onEnded calls loop callback if looping', () => {
     const onRepeat = createSpy();
-    const { instance } = setup({ loop: loopOptions.LOOP }, { onRepeat });
+    const { instance } = setup({ loop: true }, { onRepeat });
 
     instance.events.onEnded();
 

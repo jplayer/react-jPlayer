@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
 import { noFormatSupportedError } from '../../util/index';
 import { setMedia, setOption } from '../../actions/actions';
-import { classes, loopOptions, defaultOptions, statusDefaultValues } from '../../util/constants';
+import { classes, defaultStatus, defaultOptions } from '../../util/constants';
 import { __get__, __Rewire__, __ResetDependency__ } from './jPlayerContainer';
 import JPlayer from './jPlayer';
 
@@ -28,7 +28,7 @@ const stateClassTests = [
     fullScreen: true,
     muted: true,
     seeking: true,
-    loop: loopOptions.LOOP,
+    loop: true,
     currentTime: 30,
   },
     expected: [customClassName, classes.JPLAYER, classes.states.VIDEO, classes.states.PLAYING,
@@ -84,7 +84,7 @@ describe('<JPlayerContainer />', () => {
 
     expect(expected).toEqual({
       media: defaultOptions.media,
-      error: statusDefaultValues.error,
+      error: defaultStatus.error,
       fullScreen: false,
       keyEnabled: defaultOptions.keyEnabled,
       paused: true,

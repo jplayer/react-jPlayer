@@ -1,10 +1,10 @@
 import includes from 'lodash.includes';
 
-import { actionTypes, formats, defaultOptions, statusDefaultValues } from '../util/constants';
+import { actionNames, formats, defaultStatus, defaultOptions } from '../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
   InvalidGlobalMethodException } from '../util/index';
 
-const resetStatus = state => updateObject(state, { ...statusDefaultValues });
+const resetStatus = state => updateObject(state, { ...defaultStatus });
 
 const clearMedia = state => updateObject(state, {
   ...resetStatus(state),
@@ -147,29 +147,29 @@ const setFocus = (state, { id }) => {
 
 const updatePlayer = (jPlayer, action) => {
   switch (action.type) {
-    case actionTypes.jPlayer.SET_OPTION:
+    case actionNames.SET_OPTION:
       return updateObject(jPlayer, { [action.key]: action.value });
-    case actionTypes.jPlayer.CLEAR_MEDIA:
+    case actionNames.CLEAR_MEDIA:
       return clearMedia(jPlayer);
-    case actionTypes.jPlayer.SET_MEDIA:
+    case actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);
-    case actionTypes.jPlayer.PLAY:
+    case actionNames.PLAY:
       return play(jPlayer, action);
-    case actionTypes.jPlayer.PAUSE:
+    case actionNames.PAUSE:
       return pause(jPlayer, action);
-    case actionTypes.jPlayer.PLAY_HEAD:
+    case actionNames.PLAY_HEAD:
       return setPlayHead(jPlayer, action);
-    case actionTypes.jPlayer.VOLUME:
+    case actionNames.VOLUME:
       return setVolume(setMute(jPlayer, { mute: action.volume <= 0 }), action);
-    case actionTypes.jPlayer.MUTE:
+    case actionNames.MUTE:
       return setMute(jPlayer, action);
-    case actionTypes.jPlayer.DURATION:
+    case actionNames.DURATION:
       return setDuration(jPlayer, action);
-    case actionTypes.jPlayer.PLAYBACK_RATE:
+    case actionNames.PLAYBACK_RATE:
       return setPlaybackRate(jPlayer, action);
-    case actionTypes.jPlayer.LOOP:
+    case actionNames.LOOP:
       return setLoop(jPlayer, action);
-    case actionTypes.jPlayer.FULL_SCREEN:
+    case actionNames.FULL_SCREEN:
       return setFullScreen(jPlayer, action);
     default:
       return null;
@@ -177,7 +177,7 @@ const updatePlayer = (jPlayer, action) => {
 };
 
 const actionTypeValid = actionType =>
-  Object.keys(actionTypes.jPlayer).some(currentActionType => currentActionType === actionType);
+  Object.keys(actionNames).some(currentActionType => currentActionType === actionType);
 
 const setGlobalOptions = (state, action) => {
   let newState = { ...state };
@@ -211,12 +211,12 @@ const jPlayerReducer = (state, action) => {
     });
 
     return jPlayerReducer(newState, {
-      type: actionTypes.jPlayer.FOCUS,
+      type: actionNames.FOCUS,
       id: action.id,
     });
   }
 
-  if (action.type === actionTypes.jPlayer.FOCUS) {
+  if (action.type === actionNames.FOCUS) {
     return updateObject(newState, setFocus(newState, action));
   }
   return newState;

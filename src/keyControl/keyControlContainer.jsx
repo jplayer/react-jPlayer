@@ -1,7 +1,7 @@
 import React from 'react';
 import merge from 'lodash.merge';
 
-import { keyIgnoreElementNames, loopOptions } from '../util/constants';
+import { keyIgnoreElementNames } from '../util/constants';
 import { play, pause, setMute, setVolume, setLoop, setFullScreen } from '../actions/actions';
 import { connectWithId } from '../util/index';
 
@@ -43,9 +43,7 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
     },
     loop: {
       key: 76, // l
-      fn: () => (stateProps.loop === loopOptions.LOOP ?
-                  dispatch(setLoop(loopOptions.OFF, id)) :
-                  dispatch(setLoop(loopOptions.LOOP, id))),
+      fn: () => dispatch(setLoop(!stateProps.loop, id)),
     },
   }, stateProps.keyBindings),
   id,

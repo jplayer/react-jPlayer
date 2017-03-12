@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { defaultOptions, defaultStatus } from '../util/constants';
 import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
   setVolume, setMute, setDuration, setPlaybackRate, setLoop,
   setFullScreen, setFocus } from '../actions/actions';
@@ -28,12 +29,27 @@ const getActions = (dispatch, id) => ({
 const mergeProps = (jPlayers, { dispatch }, { id, ...props }) => {
   const newJPlayers = {};
 
-  Object.keys(jPlayers).forEach((key) => {
-    const jPlayer = jPlayers[key];
+  Object.keys(jPlayers).forEach((jPlayerKey) => {
+    const jPlayer = jPlayers[jPlayerKey];
+    const options = {};
+    const status = {};
 
-    newJPlayers[key] = {
-      ...jPlayer,
-      ...getActions(dispatch, key),
+    Object.keys(defaultOptions).forEach((key) => {
+      if (jPlayer[key] !== undefined) {
+        options[key] = jPlayer[key];
+      }
+    });
+
+    Object.keys(defaultStatus).forEach((key) => {
+      if (jPlayer[key] !== undefined) {
+        status[key] = jPlayer[key];
+      }
+    });
+
+    newJPlayers[jPlayerKey] = {
+      ...getActions(dispatch, jPlayerKey),
+      options,
+      status,
     };
   });
 

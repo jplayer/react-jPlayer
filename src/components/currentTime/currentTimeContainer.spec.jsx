@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { statusDefaultValues } from '../../util/constants';
+import { defaultStatus } from '../../util/constants';
 import { __get__ } from './currentTimeContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -24,7 +24,7 @@ describe('CurrentTimeContainer', () => {
     const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
 
     expect(expected).toEqual({
-      children: statusDefaultValues.currentTimeText,
+      children: defaultStatus.currentTimeText,
       ...attributes,
     });
   });

@@ -3,7 +3,6 @@ import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
 import { setLoop } from '../../actions/actions';
-import { loopOptions } from '../../util/constants';
 import { __get__ } from './repeatContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -25,13 +24,13 @@ describe('RepeatContainer', () => {
     const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
-      loop: loopOptions.OFF,
+      loop: false,
     });
   });
 
   const onClickData = [
-    { loop: loopOptions.OFF },
-    { loop: loopOptions.LOOP },
+    { loop: false },
+    { loop: true },
   ];
 
   it('merges props', () => {
@@ -46,14 +45,12 @@ describe('RepeatContainer', () => {
 
   it('mergeProps onClick toggles loop', () => {
     onClickData.forEach((onClickDatum) => {
-      const expected = onClickDatum.loop === loopOptions.LOOP ? loopOptions.OFF
-        : loopOptions.LOOP;
       const mergedProps = mergeProps(getJPlayers(onClickDatum).jPlayers[id],
         { dispatch }, { id });
 
       mergedProps.onClick();
 
-      expect(dispatch).toHaveBeenCalledWith(setLoop(expected, id));
+      expect(dispatch).toHaveBeenCalledWith(setLoop(!onClickDatum.loop, id));
     });
   });
 });

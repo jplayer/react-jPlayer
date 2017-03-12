@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { defaultOptions, statusDefaultValues } from '../../util/constants';
+import { defaultOptions, defaultStatus } from '../../util/constants';
 import { __get__ } from './downloadContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -25,7 +25,7 @@ describe('DownloadContainer', () => {
 
     expect(expected).toEqual({
       free: defaultOptions.media.free,
-      url: statusDefaultValues.src,
+      url: defaultStatus.src,
       ...attributes,
     });
   });

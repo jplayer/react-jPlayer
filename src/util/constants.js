@@ -1,51 +1,22 @@
-export const actionTypes = {
-  jPlayer: {
-    SET_OPTION: 'SET_OPTION',
-    SET_MEDIA: 'SET_MEDIA',
-    CLEAR_MEDIA: 'CLEAR_MEDIA',
-    PLAY: 'PLAY',
-    PAUSE: 'PAUSE',
-    PLAY_HEAD: 'PLAY_HEAD',
-    VOLUME: 'VOLUME',
-    MUTE: 'MUTE',
-    DURATION: 'DURATION',
-    PLAYBACK_RATE: 'PLAYBACK_RATE',
-    LOOP: 'LOOP',
-    FULL_SCREEN: 'FULL_SCREEN',
-    FOCUS: 'FOCUS',
-  },
-  jPlaylist: {
-    SET_OPTION: 'SET_OPTION',
-    ARRAY_ADD_UNIQUE: 'ARRAY_ADD_UNIQUE',
-    ARRAY_REMOVE_BY_VALUE: 'ARRAY_REMOVE_BY_VALUE',
-    ARRAY_REMOVE_BY_INDEX: 'ARRAY_REMOVE_BY_INDEX',
-  },
-
-};
-
-export const keys = {
-  VOLUME_BAR_CLASS: 'volumeBarClass',
-  VOLUME_BAR_VALUE_CLASS: 'volumeBarValueClass',
-  PLAYBACK_RATE_BAR_CLASS: 'playbackRateBarClass',
-  PLAYBACK_RATE_BAR_VALUE_CLASS: 'playbackRateBarValueClass',
-  SEEK_BAR_CLASS: 'seekBarClass',
-  NO_BROWSER_SUPPORT: 'noBrowserSupportClass',
-  POSTER_CLASS: 'posterClass',
-  VIDEO_CLASS: 'videoClass',
-  VIDEO_PLAY_CLASS: 'videoPlayClass',
-  PLAY_CLASS: 'playClass',
-  PAUSE_CLASS: 'pauseClass',
-  REPEAT_CLASS: 'repeatClass',
-  FULL_SCREEN_CLASS: 'fullScreenClass',
-  PLAYER_CLASS: 'playerClass',
-  DETAILS_CLASS: 'detailsClass',
-  SHUFFLE_OFF_CLASS: 'shuffleOffClass',
-  PLAYLIST: 'playlist',
+export const actionNames = {
+  SET_OPTION: 'SET_OPTION',
+  SET_MEDIA: 'SET_MEDIA',
+  CLEAR_MEDIA: 'CLEAR_MEDIA',
+  PLAY: 'PLAY',
+  PAUSE: 'PAUSE',
+  PLAY_HEAD: 'PLAY_HEAD',
+  VOLUME: 'VOLUME',
+  MUTE: 'MUTE',
+  DURATION: 'DURATION',
+  PLAYBACK_RATE: 'PLAYBACK_RATE',
+  LOOP: 'LOOP',
+  FULL_SCREEN: 'FULL_SCREEN',
+  FOCUS: 'FOCUS',
 };
 
 export const errors = {
   FORMAT_NO_SUPPORT: 'It is not possible to play any media format ' +
-  'provided on this browser using your current options.',
+  'provided on this browser using your current defaultOptions.',
   URL_NO_SUPPORT: 'The media URL could not be loaded.',
   URL_NOT_SET: 'Attempted to issue media playback commands while no media url is set.',
   INVALID_GLOBAL_METHOD: 'You passed an invalid jPlayer method to the global array',
@@ -54,7 +25,7 @@ export const errors = {
 export const hints = {
   FORMAT_NO_SUPPORT: 'The browser may not support these file types.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
-  URL_NOT_SET: 'Pass the media through the options or use the setMedia()' +
+  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia()' +
   'action that is passed into the component props.',
   INVALID_GLOBAL_METHOD: 'Remove the invalid method from the "global" option',
 };
@@ -98,44 +69,11 @@ export const classes = {
     VOLUME_LOW: 'jp-state-volume-low',
     VOLUME_HIGH: 'jp-state-volume-high',
     LOOPED: 'jp-state-looped',
-    LOOPED_PLAYLIST: 'jp-state-looped-playlist',
     FULL_SCREEN: 'jp-state-full-screen',
     SHUFFLED: 'jp-state-shuffled',
     NO_BROWSER_SUPPORT: 'jp-state-no-browser-support',
     NO_VOLUME_SUPPORT: 'jp-state-no-volume-support',
   },
-};
-
-export const loopOptions = {
-  OFF: 'off',
-  LOOP: 'loop',
-  LOOP_PLAYLIST: 'loop-playlist',
-};
-
-export const noFullWindows = {
-  MSIE: /msie [0-6]\./,
-  IPAD: /ipad.*?os [0-4]\./,
-  IPHONE: /iphone/,
-  IPOD: /ipod/,
-  ANDROID_PAD: /android [0-3]\.(?!.*?mobile)/,
-  ANDROID_PHONE: /(?=.*android)(?!.*chrome)(?=.*mobile)/,
-  BLACKBERRY: /blackberry/,
-  WINDOWS_CE: /windows ce/,
-  IEMOBILE: /iemobile/,
-  WEBOS: /webos/,
-};
-
-export const noVolumes = {
-  IPAD: /ipad/,
-  IPHONE: /iphone/,
-  IPOD: /ipod/,
-  ANDROID_PAD: /android(?!.*?mobile)/,
-  ANDROID_PHONE: /android.*?mobile/,
-  BLACKBERRY: /blackberry/,
-  WINDOWS_CE: /windows ce/,
-  IEMOBILE: /iemobile/,
-  WEBOS: /webos/,
-  PLAYBOOK: /playbook/,
 };
 
 export const formats = {
@@ -209,11 +147,21 @@ export const formats = {
   },
 };
 
-export const statusDefaultValues = {
+export const internalStatus = {
+  newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
+  guiFadeOut: false,
+};
+
+export const defaultStatus = {
+  mediaSettings: {
+    require: false,
+    video: false,
+    foundSupported: false,
+    formats: [],
+  },
   paused: true,
   seeking: false,
   src: '',
-  guiFadeOut: false,
   currentTimeText: '0:00',
   durationText: '',
   seekPercent: 0,
@@ -221,13 +169,13 @@ export const statusDefaultValues = {
   playHeadPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
-  newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
   currentTime: 0,
   duration: 0,
   remaining: 0,
   ended: 0,
   error: {},
   bufferedTimeRanges: [],
+  focus: false,
 };
 
 export const defaultOptions = {
@@ -235,7 +183,6 @@ export const defaultOptions = {
   minPlaybackRate: 0.5,
   maxPlaybackRate: 4,
   supplied: ['mp3'], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
-  loopOptions: ['loop-playlist'],
   playbackRate: 1.0,
   defaultPlaybackRate: 1.0,
   bufferColour: '#dddddd', // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
@@ -248,22 +195,15 @@ export const defaultOptions = {
     free: false,
   },
   keyBindings: {},
-  focus: false,
   showRemainingDuration: false,
   muted: false,
-  loop: loopOptions.OFF,
+  loop: false,
   autoplay: false,
   smoothPlayBar: false,
   fullScreen: false,
   verticalPlaybackRate: false,
   verticalVolume: false,
   keyEnabled: true,
-  mediaSettings: {
-    require: false,
-    video: false,
-    foundSupported: false,
-    formats: [],
-  },
   timeFormats: {
     showHour: false,
     showMin: true,

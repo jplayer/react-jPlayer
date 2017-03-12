@@ -1,12 +1,13 @@
 import merge from 'lodash.merge';
 import { createSpy, isSpy } from 'expect';
-import { defaultOptions, statusDefaultValues } from './constants';
+import { defaultOptions, defaultStatus, internalStatus } from './constants';
 
 export const getJPlayers = (...options) => {
   const jPlayers = {};
 
   const setJPlayer = (jPlayerNumber = 1, option) => {
-    jPlayers[`jPlayer-${jPlayerNumber}`] = merge({}, statusDefaultValues, defaultOptions, option);
+    jPlayers[`jPlayer-${jPlayerNumber}`] = merge({}, internalStatus, defaultStatus,
+     defaultOptions, option);
   };
 
   options.forEach((option, i) => {
@@ -27,7 +28,7 @@ export const getDefaultJPlayers = (numberOfJPlayers = 1, mergeDefaultValues = fa
 
   for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
     jPlayers[`jPlayer-${i}`] = mergeDefaultValues ?
-      merge({}, statusDefaultValues, defaultOptions, options) : { ...options };
+      merge({}, internalStatus, defaultStatus, defaultOptions, options) : { ...options };
   }
 
   return {

@@ -2,11 +2,10 @@ import expect, { spyOn } from 'expect';
 
 import reducer from './reducer';
 import * as reducerData from './reducerData.spec';
-import { actionTypes, defaultOptions, formats } from '../util/constants';
+import { actionNames, defaultOptions, formats } from '../util/constants';
 import { InvalidGlobalMethodException } from '../util/index';
 import { getDefaultJPlayers } from '../util/common.spec';
 
-const jPlayerActionTypes = actionTypes.jPlayer;
 const jPlayerOneId = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
 const jPlayerThreeId = 'jPlayer-3';
@@ -35,7 +34,7 @@ describe('jPlayer reducer', () => {
 
   it('should handle SET_OPTION', () => {
     const jPlayer = reducer(state, {
-      type: jPlayerActionTypes.SET_OPTION,
+      type: actionNames.SET_OPTION,
       id: jPlayerOneId,
       key: 'preload',
       value: 'test',
@@ -69,7 +68,7 @@ describe('jPlayer reducer', () => {
       mockMedia(formats[key].MEDIA);
 
       const jPlayer = reducer(state, {
-        type: jPlayerActionTypes.SET_MEDIA,
+        type: actionNames.SET_MEDIA,
         id: jPlayerOneId,
         media: {
           sources: {
@@ -248,8 +247,8 @@ describe('jPlayer reducer', () => {
   it('should focus on the jPlayer for every action apart from focus', () => {
     state = getDefaultJPlayers(2, true).jPlayers;
 
-    Object.keys(jPlayerActionTypes).forEach((type) => {
-      if (type !== jPlayerActionTypes.FOCUS) {
+    Object.keys(actionNames).forEach((type) => {
+      if (type !== actionNames.FOCUS) {
         const jPlayers = reducer(state, {
           type,
           id: jPlayerOneId,
@@ -275,7 +274,7 @@ describe('jPlayer reducer', () => {
     expect(() => {
       reducer(state, {
         id: jPlayerTwoId,
-        type: jPlayerActionTypes.MUTE,
+        type: actionNames.MUTE,
         muted: true,
       });
     }).toThrow(InvalidGlobalMethodException);
@@ -285,9 +284,9 @@ describe('jPlayer reducer', () => {
     mockMedia('audio');
 
     state = getDefaultJPlayers(3).jPlayers;
-    state[jPlayerOneId].global = Object.keys(jPlayerActionTypes);
-    state[jPlayerTwoId].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
-    state[jPlayerThreeId].global = Object.keys(jPlayerActionTypes);
+    state[jPlayerOneId].global = Object.keys(actionNames);
+    state[jPlayerTwoId].global = [actionNames.MUTE, actionNames.VOLUME];
+    state[jPlayerThreeId].global = Object.keys(actionNames);
 
     Object.values(reducerData.globalData).forEach((globalDatum) => {
       globalDatum.forEach((datum) => {
@@ -321,9 +320,9 @@ describe('jPlayer reducer', () => {
     mockMedia('audio');
 
     state = getDefaultJPlayers(3).jPlayers;
-    state[jPlayerOneId].global = Object.keys(jPlayerActionTypes);
-    state[jPlayerTwoId].global = [jPlayerActionTypes.MUTE, jPlayerActionTypes.VOLUME];
-    state[jPlayerThreeId].global = Object.keys(jPlayerActionTypes);
+    state[jPlayerOneId].global = Object.keys(actionNames);
+    state[jPlayerTwoId].global = [actionNames.MUTE, actionNames.VOLUME];
+    state[jPlayerThreeId].global = Object.keys(actionNames);
 
     Object.values(reducerData.globalData).forEach((globalDatum) => {
       globalDatum.forEach((datum) => {
