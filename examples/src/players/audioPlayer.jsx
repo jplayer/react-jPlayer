@@ -54,7 +54,7 @@ AudioPlayer.options = {
   keyEnabled: false,
   verticalVolume: true,
   media: {
-    title: 'Bubble',
+    title: 'Bubble@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',
     artist: 'Miaow',
     sources: {
       m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
