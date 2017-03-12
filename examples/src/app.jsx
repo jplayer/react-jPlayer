@@ -9,7 +9,6 @@ import 'font-awesome/css/font-awesome.css';
 import '../assets/examples.less';
 import AudioPlayer from './players/audioPlayer';
 import VideoPlayer from './players/videoPlayer';
-import MixedPlayer from './players/mixedPlayer';
 import NavContainer from './helpers/navContainer';
 import NavContentContainer from './helpers/navContentContainer';
 import NavBar from './helpers/navBar';
@@ -21,7 +20,6 @@ import { getInitialStates, reducer } from '../../src/index';
 const jPlayers = {
   AudioPlayer,
   VideoPlayer,
-  MixedPlayer,
 };
 
 const store = createStore(combineReducers({ jPlayers: reducer }), {
@@ -33,7 +31,6 @@ const App = () => (
     <NavBar>
       <NavLink>Audio</NavLink>
       <NavLink>Video</NavLink>
-      <NavLink>Mixed</NavLink>
     </NavBar>
     <NavContentContainer>
       {Object.keys(jPlayers).map((key) => {

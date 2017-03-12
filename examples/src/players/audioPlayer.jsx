@@ -50,8 +50,8 @@ const AudioPlayer = props => (
 );
 
 AudioPlayer.options = {
-  muted: true,
-  keyEnabled: false,
+  muted: false,
+  keyEnabled: true,
   verticalVolume: true,
   media: {
     title: 'Bubble',

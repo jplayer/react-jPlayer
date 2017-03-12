@@ -43,10 +43,11 @@ const VideoPlayer = props => (
 );
 
 VideoPlayer.options = {
-  muted: true,
+  muted: false,
   keyEnabled: true,
   verticalVolume: true,
   media: {
+    artist: 'peach.blender',
     title: 'Big Buck Bunny Trailer',
     sources: {
       ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
