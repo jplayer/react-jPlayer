@@ -78,7 +78,7 @@ Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 1. `jPlayer`: (Function)
 
 ### Returns
-(function): A function that wraps your jPlayer.
+(function): A function that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
 
 ### Static Properties
 1. `id`: The id of the jPlayer, this is whatever name you called your jPlayer function. This is passed down as a context so that react-jPlayer can internally know which jPlayer is the current one.
