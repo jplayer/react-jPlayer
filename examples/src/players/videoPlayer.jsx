@@ -1,10 +1,11 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
-
 import { connect, JPlayer, Gui, SeekBar, BufferBar,
   Poster, Video, Title, FullScreen, Mute, Play, PlayBar, Repeat,
-  VolumeBar, Duration, CurrentTime, BrowserUnsupported } from '../../../src/index';
+  VolumeBar, Duration, CurrentTime, BrowserUnsupported } from 'react-jplayer';
+
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
+import { onTouchStart, onClick } from './hoverControl';
 
 const VideoPlayer = props => (
   <JPlayer className="jp-sleek">
@@ -25,9 +26,15 @@ const VideoPlayer = props => (
           </SeekBar>
         </div>
         <div className="jp-volume-container">
-          <Mute><i className="fa">{/* Icon set in css*/}</i></Mute>
+           <Mute
+            aria-haspopup
+            onTouchStart={onTouchStart}
+            onClick={onClick(props.setMute, props.options.muted)}
+          >
+            <i className="fa">{/* Icon set in css*/}</i>
+          </Mute>
           <div className="jp-volume-slider">
-            <div className="jp-volume-bar-container">
+            <div className="jp-bar-container jp-volume-bar-container">
               <VolumeBar />
             </div>
           </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
+import { getInitialStates, reducer } from 'react-jplayer';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 
@@ -15,7 +16,6 @@ import NavBar from './helpers/navBar';
 import NavLink from './helpers/navLink';
 import NavContent from './helpers/navContent';
 import StatusWrapper from './helpers/statusWrapper';
-import { getInitialStates, reducer } from '../../src/index';
 
 const connectedJPlayers = [
   AudioPlayer,
