@@ -17,12 +17,12 @@ import NavContent from './helpers/navContent';
 import StatusWrapper from './helpers/statusWrapper';
 import { getInitialStates, reducer } from '../../src/index';
 
-const connectedjPlayers = [
+const connectedJPlayers = [
   AudioPlayer,
   VideoPlayer,
 ];
 
-const store = createStore(combineReducers(reducer), getInitialStates(connectedjPlayers));
+const store = createStore(combineReducers(reducer), getInitialStates(connectedJPlayers));
 
 const App = () => (
   <NavContainer>
@@ -31,7 +31,7 @@ const App = () => (
       <NavLink>Video</NavLink>
     </NavBar>
     <NavContentContainer>
-      {connectedjPlayers.map(JPlayer =>
+      {connectedJPlayers.map(JPlayer =>
         <NavContent key={JPlayer.id}>
           <StatusWrapper id={JPlayer.id}><JPlayer /></StatusWrapper>
         </NavContent>,

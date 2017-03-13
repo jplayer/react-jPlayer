@@ -37,8 +37,6 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
       [classes.states.LOOPED]: jPlayers[id].loop,
       [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
       [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
-      // 'jp-state-video-270p': sizeCssClass !== undefined,
-      // 'jp-state-video-full': sizeFullCssClass !== undefined,
     }),
   },
 });
