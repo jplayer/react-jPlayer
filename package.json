@@ -27,7 +27,7 @@
     "test:watch": "npm run test -- -w",
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts",
     "packages": "david",
-    "packages:update": "david update"
+    "packages:update": "david update && cd examples && david update"
   },
   "pre-commit": [
     "lint",
@@ -88,7 +88,7 @@
     "babili-webpack-plugin": "0.0.11",
     "coveralls": "^2.11.16",
     "cross-env": "^3.1.4",
-    "css-loader": "^0.26.1",
+    "css-loader": "^0.27.2",
     "david": "^11.0.0",
     "editorconfig": "^0.13.2",
     "enzyme": "^2.2.0",
@@ -102,9 +102,9 @@
     "eslint-plugin-react": "^6.7.0",
     "expect": "^1.20.2",
     "extract-text-webpack-plugin": "^2.1.0",
-    "jsdom": "9.11.0",
+    "jsdom": "^9.12.0",
     "less": "^2.7.1",
-    "less-loader": "^2.2.3",
+    "less-loader": "^3.0.0",
     "mocha": "^3.2.0",
     "node-gyp": "^3.5.0",
     "nyc": "^10.1.2",

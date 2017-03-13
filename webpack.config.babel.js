@@ -17,14 +17,14 @@ export default {
     'css/skins/sleek.min.css': './src/less/skins/sleek.less',
   },
   output: {
-    path: './dist/',
+    path: '/dist/',
     filename: '[name]',
   },
   devServer: {
     historyApiFallback: true,
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         include: /src/,
@@ -32,10 +32,20 @@ export default {
       },
       {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style-loader',
-          'css-loader?importLoaders=1' +
-          '!postcss-loader' +
-          '!less-loader'),
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [{
+            loader: 'css-loader',
+            options: { importLoaders: 1 },
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer],
+            },
+          }, {
+            loader: 'less-loader',
+          }],
+        }),
       },
       {
         test: /\.(woff2?|eot|ttf|svg)(\?[\s\S]+)?$/,
@@ -56,8 +66,7 @@ export default {
       test: /\.min\.js$/,
     }),
   ],
-  postcss: () => [autoprefixer],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
   },
 };

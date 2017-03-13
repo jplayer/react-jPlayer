@@ -10,7 +10,7 @@ export default {
   },
   devtool: debug ? 'inline-sourcemap' : null,
   output: {
-    path: './dist/',
+    path: '/dist/',
     publicPath: '/dist/',
     filename: '[name].bundle.js',
   },
@@ -26,10 +26,20 @@ export default {
       },
       {
         test: /\.(css|less)$/,
-        loader: ExtractTextPlugin.extract('style-loader',
-          'css-loader?importLoaders=1' +
-          '!postcss-loader' +
-          '!less-loader'),
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [{
+            loader: 'css-loader',
+            options: { importLoaders: 1 },
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer],
+            },
+          }, {
+            loader: 'less-loader',
+          }],
+        }),
       },
       {
         test: /\.(woff2?|eot|ttf|svg)(\?[\s\S]+)?$/,
@@ -48,8 +58,7 @@ export default {
   plugins: [
     new ExtractTextPlugin('[name].css'),
   ],
-  postcss: () => [autoprefixer],
   resolve: {
-    extensions: ['', '.js', '.jsx', '.styl'],
+    extensions: ['.js', '.jsx', '.styl'],
   },
 };
