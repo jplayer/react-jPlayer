@@ -1,6 +1,6 @@
 {
   "name": "react-jplayer",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Audio & Video jPlayer library for React",
   "author": "Martin Dawson <u1356770@unimail.hud.ac.uk>",
   "repository": {
@@ -27,9 +27,9 @@
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts",
     "packages": "david",
     "packages:update": "david update && cd examples && david update",
-    "clean": "trash ./dist && trash ./lib",
-    "dist": "trash ./dist && webpack",
-    "build": "trash ./lib && babel src --out-dir lib --ignore spec.js,spec.jsx --copy-files",
+    "clean": "rimraf lib dist",
+    "dist": "rimraf dist ./dist && webpack",
+    "build": "rimraf lib ./lib && babel src --out-dir lib --ignore spec.js,spec.jsx --copy-files",
     "prepublish": "npm run dist && npm run build"
   },
   "pre-commit": [
@@ -117,9 +117,9 @@
     "react-dom": "^15.0.0",
     "react-motion": "^0.4.4",
     "redux": "^3.6.0",
+    "rimraf": "^2.6.1",
     "selenium-webdriver": "^3.1.0",
     "style-loader": "^0.13.1",
-    "trash-cli": "^1.4.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
     "webpack-node-externals": "^1.5.4"
