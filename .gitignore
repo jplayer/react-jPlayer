@@ -9,3 +9,5 @@ node_modules
 .vscode
 coverage
 .nyc_output
+lib
+dist

@@ -26,7 +26,7 @@ const VideoPlayer = props => (
           </SeekBar>
         </div>
         <div className="jp-volume-container">
-           <Mute
+          <Mute
             aria-haspopup
             onTouchStart={onTouchStart}
             onClick={onClick(props.setMute, props.options.muted)}

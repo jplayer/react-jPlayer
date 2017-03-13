@@ -17,7 +17,7 @@ export default {
     'css/skins/sleek.min.css': './src/less/skins/sleek.less',
   },
   output: {
-    path: '/dist/',
+    path: './dist/',
     filename: '[name]',
   },
   devServer: {

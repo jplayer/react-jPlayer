@@ -22,11 +22,15 @@
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
-    "test": "cross-env BABEL_ENV=test mocha src/**/*.spec*{js,jsx} --opts ./mocha.opts",
+    "test": "cross-env BABEL_ENV=test mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm run test -- -w",
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts",
     "packages": "david",
-    "packages:update": "david update && cd examples && david update"
+    "packages:update": "david update && cd examples && david update",
+    "clean": "trash ./dist && trash ./lib",
+    "dist": "trash ./dist && webpack",
+    "build": "trash ./lib && babel src --out-dir lib --ignore spec.js,spec.jsx --copy-files",
+    "prepublish": "npm run dist && npm run build"
   },
   "pre-commit": [
     "lint",
@@ -115,6 +119,7 @@
     "redux": "^3.6.0",
     "selenium-webdriver": "^3.1.0",
     "style-loader": "^0.13.1",
+    "trash-cli": "^1.4.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
     "webpack-node-externals": "^1.5.4"

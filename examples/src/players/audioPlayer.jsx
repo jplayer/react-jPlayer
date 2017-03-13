@@ -4,7 +4,7 @@ import { connect, JPlayer, Gui, SeekBar, BufferBar,
   Poster, Audio, Title, FullScreen, Mute, Play, PlayBar, Repeat,
   VolumeBar, Duration, CurrentTime, Download, BrowserUnsupported,
  } from 'react-jplayer';
- 
+
 import poster from '../../assets/Miaow - Bubble.jpg';
 import { onTouchStart, onClick } from './hoverControl';
 
