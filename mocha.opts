@@ -1,5 +1,5 @@
 --require babel-register
---require jsdom.js
+--require src/jsdom.js
 --require expect
 --compilers jsx:babel-register
 --colors
