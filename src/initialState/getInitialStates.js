@@ -2,20 +2,20 @@ import merge from 'lodash.merge';
 
 import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
 
-const getInitialStates = (jPlayers) => {
+const getInitialStates = (connectedJPlayers) => {
   const jPlayerStates = {};
-  let newJPlayers = jPlayers;
+  let newConnectedJPlayers = connectedJPlayers;
 
-  if (!Array.isArray(jPlayers)) {
-    newJPlayers = [jPlayers];
+  if (!Array.isArray(connectedJPlayers)) {
+    newConnectedJPlayers = [connectedJPlayers];
   }
 
-  newJPlayers.forEach((jPlayer) => {
-    jPlayerStates[jPlayer.id] = merge({}, {
+  newConnectedJPlayers.forEach((connectedJPlayer) => {
+    jPlayerStates[connectedJPlayer.id] = merge({}, {
       ...internalStatus,
       ...defaultStatus,
       ...defaultOptions,
-    }, jPlayer.options);
+    }, connectedJPlayer.jPlayer.options);
   });
 
   return {
