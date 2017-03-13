@@ -5,49 +5,66 @@ import merge from 'lodash.merge';
 import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
 import getInitialStates from './getInitialStates';
 
-const MockPlayer = () => <div />;
-const MockPlayerTwo = () => <div />;
+const MockJPlayer = () => <div />;
+const MockJPlayerTwo = () => <div />;
 
-MockPlayer.options = {
+const connectMock = JPlayer => (
+  class ConnectedMockJPlayer extends React.Component {
+    static get jPlayer() {
+      return JPlayer;
+    }
+    static get id() {
+      return JPlayer.name;
+    }
+    render() {
+      return <JPlayer />;
+    }
+  }
+);
+
+MockJPlayer.options = {
   muted: true,
 };
-MockPlayer.id = MockPlayer.name;
 
-MockPlayerTwo.options = {
+MockJPlayerTwo.options = {
   autoplay: true,
 };
-MockPlayerTwo.id = MockPlayerTwo.name;
 
 describe('getInitialStates', () => {
   it('sets initial state correctly with one player', () => {
-    const jPlayerInitialStates = getInitialStates(MockPlayer);
+    const connectedMockJPlayer = connectMock(MockJPlayer);
+    const jPlayerInitialStates = getInitialStates(connectedMockJPlayer);
 
     expect(jPlayerInitialStates).toEqual({
       jPlayers: {
-        MockPlayer: merge({}, {
+        MockJPlayer: merge({}, {
           ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
-        }, MockPlayer.options),
+        }, connectedMockJPlayer.jPlayer.options),
       },
     });
   });
 
   it('sets initial state correctly with multiple players', () => {
-    const jPlayerInitialStates = getInitialStates([MockPlayer, MockPlayerTwo]);
+    const connectedMockJPlayers = [
+      connectMock(MockJPlayer),
+      connectMock(MockJPlayerTwo),
+    ];
+    const jPlayerInitialStates = getInitialStates(connectedMockJPlayers);
 
     expect(jPlayerInitialStates).toEqual({
       jPlayers: {
-        MockPlayer: merge({}, {
+        MockJPlayer: merge({}, {
           ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
-        }, MockPlayer.options),
-        MockPlayerTwo: merge({}, {
+        }, connectedMockJPlayers[0].jPlayer.options),
+        MockJPlayerTwo: merge({}, {
           ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
-        }, MockPlayerTwo.options),
+        }, connectedMockJPlayers[1].jPlayer.options),
       },
     });
   });
