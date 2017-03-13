@@ -111,7 +111,7 @@ If the first media source that you have supplied to `media.sources` is an [video
 If the first media source that you have supplied to `media.sources` is an [audio format](https://en.wikipedia.org/wiki/Audio_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 ### `<Title />`
-By default this component will set the title to `media.artist` - `media.title`.
+Renders the media title as `media.artist` - `media.title`.
 
 ### `<FullScreen />`
 Handles clicks on this component toggling the full screen of the jPlayer.
@@ -148,7 +148,7 @@ Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn'
 Renders the `currentTimeText` of the jPlayer.
 
 ### `<BrowserUnsupported />`
-Renders default html that tells the user to update their browser if jPlayer doesn't support the specified media file.
+Renders html that tells the user to update their browser if jPlayer doesn't support the specified media file.
 
 ## Misc
 ### classes
