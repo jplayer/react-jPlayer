@@ -57,39 +57,100 @@ open http://localhost:8080/
 ¹partially tested without audio/video because browserstack emulators don't support it.
 
 # Documentation
-## Required Exports
-
 ### `getInitialStates(jPlayers)`
 A required function that deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
 
 #### Arguments
 1. `jPlayer(s)` (Array or Function): Accepts either an array of jPlayers or a single jPlayer. 
 
-### Returns
+#### Returns
 (Object): The initial state for the jPlayer(s) that needs to be passed to the Redux store.
 
 ### `reducer`
 A required object. The jPlayer reducer that will be called whenever a jPlayer function is called or dispatched. Must be passed to your store.
 
 ### `connect(jPlayer)`
-Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
+Required to connect your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 #### Arguments
 1. `jPlayer`: (Function)
 
-### Returns
+#### Returns
 (function): A function that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
 
-### Static Properties
+#### Static Properties
 1. `id`: The id of the jPlayer, this is whatever name you called your jPlayer function. This is passed down as a context so that react-jPlayer can internally know which jPlayer is the current one.
 2. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
 
-### Renders
+#### Renders
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
 
-## Optional Exports
+## Components
+### `<JPlayer />`
+A required component that needs to be the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
 
-## Misc Exports
+### `<GUI />`
+Should wrap all of the components that the user interacts with. Handles the fading in and out when in full screen mode.
+
+### `<SeekBar />`
+Should wrap the `<PlayBar />` and `<BufferBar />`. Handles the user being able to seek to a new time when the user clicks, drags or touches on the progress bar. 
+
+### `<PlayBar />`
+Shows how much of the media has been played so far.
+
+### `<BufferBar />`
+Shows how much of the media has been downloaded so far. This also takes in to consideration the user seeking to multiple points on the media and skipping parts of the media.
+
+### `<Poster />`
+The poster to be displayed for the media. Uses `media.poster` as the src for the image.
+
+### `<Video />`
+If the first media source that you have supplied to `media.sources` is an [video format](https://en.wikipedia.org/wiki/Video_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
+
+### `<Audio />`
+If the first media source that you have supplied to `media.sources` is an [audio format](https://en.wikipedia.org/wiki/Audio_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
+
+### `<Title />`
+By default this component will set the title to `media.artist` - `media.title`.
+
+### `<FullScreen />`
+Handles clicks on this component toggling the full screen of the jPlayer.
+
+### `<Mute />`
+Handles clicks on this component toggling the mute of the jPlayer.
+
+### `<Play />`
+Handles clicks on this component setting the jPlayer to be paused or playing.
+
+### `<Repeat />`
+Handles clicks on this component toggling the looping of the jPlayer.
+
+###  `<PlaybackRateBar />`
+Handles clicks, dragging or touches on this component setting the playback rate of the media.
+
+### `<PlaybackRateBarValue />`
+This is used by the `<PlaybackRateBar />` by default so the majority of applications won't need to use this. Represents the playback rate as the width or height of the component depending on the property `verticalPlaybackRate`.
+
+### `<VolumeBar />`
+Handles clicks, dragging or touches on this component setting the volume of the media.
+
+### `<VolumeBarValue />`
+This is used by the `<VolumeBar />` by default so the majority of applications won't need to use this. Represents the volume as the width or height of the component depending on the property `verticalVolume`.
+
+### `<Download />`
+Handles clicks on this component downloading the media if the `media.free` option is true. Warning: This will not make the media secure, i.e. users can still download the song from the network tab. You will need to secure the media this from the server instead.
+If the browser doesn't support the `download` attribute then clicks on this component will open a new tab or window with the source media instead.
+
+### `<Duration />`
+Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn't been set yet (i.e IOS until the user manually plays the media).
+
+### `<CurrentTime />`
+Renders the `currentTimeText` of the jPlayer.
+
+### `<BrowserUnsupported />`
+Renders default html that tells the user to update their browser if jPlayer doesn't support the specified media file.
+
+## Misc
 ### classes
 classes that react-jPlayer uses internally for each component are exported for you to use for conveniance.
 
