@@ -10,7 +10,7 @@ A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.
 react-jPlayer depends on [Redux](https://github.com/reactjs/redux). Redux is a tiny 2KB and is well worth it to keep the react-jPlayer components componentized.
 
 ### Installation
-```npm install --save react-jPlayer```
+```npm install --save react-jplayer```
 
 ### Examples
 Run the jPlayer examples:
