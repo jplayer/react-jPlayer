@@ -25,9 +25,8 @@
     "test": "cross-env BABEL_ENV=test mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm run test -- -w",
     "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts",
-    "packages": "david",
+    "packages": "david && cd examples && david",
     "packages:update": "david update && cd examples && david update",
-    "clean": "rimraf lib dist",
     "dist": "rimraf dist ./dist && webpack",
     "build": "rimraf lib ./lib && babel src --out-dir lib --ignore spec.js,spec.jsx --copy-files",
     "prepublish": "npm run dist && npm run build"
