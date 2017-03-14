@@ -10,10 +10,12 @@
 .editorconfig
 .eslintignore
 .travis.yml
-.jsdom.jsdom
+.eslintrc
+.npmignore
+jsdom.js
 npm-debug.log
 node_modules
 coverage
 examples
 mocha.opts
-webpack.config.babel.jsdom
+webpack.config.babel.js
