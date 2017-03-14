@@ -19,6 +19,7 @@
   ],
   "homepage": "https://github.com/MartinDawson/react-jPlayer",
   "license": "MIT",
+  "main": "./lib/index.js",
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
