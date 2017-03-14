@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import JSONPretty from 'react-json-pretty';
 import { actions } from 'react-jplayer';
-import { defaultOptions, defaultStatus } from 'react-jplayer/util/constants';
+import { defaultOptions, defaultStatus } from 'react-jplayer/lib/util/constants';
 import 'react-json-pretty/JSONPretty.monikai.styl';
 
 const mapStateToProps = ({ jPlayers }, { id }) => {
