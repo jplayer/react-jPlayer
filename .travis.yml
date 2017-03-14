@@ -4,4 +4,7 @@ node_js:
 script:
   - npm run lint
   - npm run coverage
+cache:
+  directories:
+  - examples/node_modules
 after_script: "cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js"
