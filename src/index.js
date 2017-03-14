@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 
 import getInitialStates from './initialState/getInitialStates';
-import jPlayerReducer from './reducer/reducer';
+import reducer from './reducer/reducer';
+import * as actions from './actions/actions';
 import connect from './connect/connect';
 import Gui from './components/gui/guiContainer';
 import Video from './components/video/videoContainer';
@@ -26,11 +27,11 @@ import CurrentTime from './components/currentTime/currentTimeContainer';
 import BrowserUnsupported from './components/browserUnsupported/browserUnsupportedContainer';
 import { classes } from './util/constants';
 
-const reducer = {
-  jPlayers: jPlayerReducer,
+const jPlayerReducer = {
+  jPlayers: reducer,
 };
 
-export { classes, getInitialStates, reducer, connect, JPlayer, Gui, SeekBar, PlayBar,
+export { classes, getInitialStates, jPlayerReducer as reducer, actions, connect, JPlayer, Gui, SeekBar, PlayBar,
   BufferBar, Poster, Video, Audio, Title, FullScreen,
   Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
   VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };

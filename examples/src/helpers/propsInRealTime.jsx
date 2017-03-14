@@ -1,17 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import JSONPretty from 'react-json-pretty';
+import { actions } from 'react-jplayer';
+import { defaultOptions, defaultStatus } from 'react-jplayer/util/constants';
 import 'react-json-pretty/JSONPretty.monikai.styl';
-import { defaultOptions, defaultStatus } from '../../../src/util/constants';
-
-import * as jPlayerActions from '../../../src/actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id }) => {
   const newJPlayers = {};
 
   Object.keys(jPlayers).forEach((jPlayerKey) => {
     const jPlayer = jPlayers[jPlayerKey];
-    const jPlayerActionsAsStrings = {};
+    const actionsAsStrings = {};
     const options = {};
     const status = {};
 
@@ -27,12 +26,12 @@ const mapStateToProps = ({ jPlayers }, { id }) => {
       }
     });
 
-    Object.keys(jPlayerActions).forEach((jPlayerActionKey) => {
-      jPlayerActionsAsStrings[jPlayerActionKey] = 'function';
+    Object.keys(actions).forEach((jPlayerActionKey) => {
+      actionsAsStrings[jPlayerActionKey] = 'function';
     });
 
     newJPlayers[jPlayerKey] = {
-      ...jPlayerActionsAsStrings,
+      ...actionsAsStrings,
       options,
       status,
     };

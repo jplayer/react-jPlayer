@@ -30,7 +30,7 @@
     "packages:update": "david update && cd examples && david update",
     "dist": "rimraf dist && webpack",
     "build": "rimraf lib && babel src --out-dir lib --ignore spec.js,spec.jsx",
-    "postinstall": "npm run build && npm run dist"
+    "preversion": "npm run dist && npm run build"
   },
   "pre-commit": [
     "lint",

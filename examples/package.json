@@ -1,6 +1,6 @@
 {
   "name": "jplayer-examples",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "webpack-dev-server --progress --inline --content-base ./public"
   },
