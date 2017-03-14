@@ -18,11 +18,9 @@ Run the jPlayer examples:
 ```
 git clone https://github.com/MartinDawson/react-jPlayer.git
 
-cd react-jPlayer
+cd react-jPlaye/examples
 
 npm install
-
-cd ./examples
 
 npm run dev
 
