@@ -48,10 +48,6 @@ export default {
         }),
       },
       {
-        test: /\.(woff2?|eot|ttf|svg)(\?[\s\S]+)?$/,
-        loader: 'url-loader?limit=100000',
-      },
-      {
         test: /\.jpg$/,
         loader: 'file-loader',
       },

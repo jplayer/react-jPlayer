@@ -1,14 +1,12 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 
-const debug = process.env.NODE_ENV !== 'production';
-
 export default {
   context: __dirname,
   entry: {
     'react-jPlayerExample': './src/app.jsx',
   },
-  devtool: debug ? 'inline-sourcemap' : null,
+  devtool: 'inline-sourcemap',
   output: {
     path: '/dist/',
     publicPath: '/dist/',
