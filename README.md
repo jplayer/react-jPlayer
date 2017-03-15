@@ -9,6 +9,8 @@ A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.
 
 react-jPlayer depends on [Redux](https://github.com/reactjs/redux). Redux is a tiny 2KB and is well worth it to keep the react-jPlayer components componentized.
 
+jPlayer does not support playlists yet. This will be comming in an upcoming npm package called react-jPlaylist.
+
 ### Installation
 ```npm install --save react-jplayer```
 
@@ -151,6 +153,15 @@ Renders html that tells the user to update their browser if jPlayer doesn't supp
 ### Misc
 #### classes
 classes that react-jPlayer uses internally for each component are exported for you to use for conveniance.
+
+### ToDo List
+Highest to lowest priority of what needs doing
+
+- [x] react-jPlayer
+- [ ] react-jPlayer documentation
+- [ ] react-jPlaylist & documentation
+- [ ] react-jCirclePlayer & documentation
+- [ ] Acceptance tests
 
 ## Thanks
 [1]: https://www.browserstack.com/
