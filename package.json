@@ -37,7 +37,6 @@
     "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test": "cross-env BABEL_ENV=test mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm test -- -w",
-    "selenium": "mocha src/**/*.acceptance.js -t 10000ms --opts ./mocha.opts",
     "packages": "david && cd examples && david",
     "packages:update": "david update && cd examples && david update",
     "dist": "rimraf dist && webpack",
