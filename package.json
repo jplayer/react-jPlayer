@@ -1,7 +1,7 @@
 {
   "name": "react-jplayer",
-  "version": "2.0.9",
-  "description": "Audio & Video jPlayer library for React",
+  "version": "2.0.10",
+  "description": "Html5 audio and video player library for React",
   "author": "Martin Dawson <u1356770@unimail.hud.ac.uk>",
   "repository": {
     "type": "git",
@@ -12,14 +12,23 @@
   },
   "keywords": [
     "react-component",
+    "redux",
     "react",
     "jPlayer",
     "audio",
-    "video"
+    "video",
+    "media",
+    "html5",
+    "player"
   ],
   "homepage": "https://github.com/MartinDawson/react-jPlayer",
   "license": "MIT",
   "main": "./lib/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
   "scripts": {
     "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
     "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
@@ -30,12 +39,10 @@
     "packages:update": "david update && cd examples && david update",
     "dist": "rimraf dist && webpack",
     "build": "rimraf lib && babel src --out-dir lib --ignore spec.js,spec.jsx",
-    "preversion": "npm run dist && npm run build"
+    "preversion": "npm test && npm run lint",
+    "version": "npm run dist && npm run build",
+    "postversion": "git push && git push --tags"
   },
-  "pre-commit": [
-    "lint",
-    "test"
-  ],
   "browserslist": [
     "chrome >= 15",
     "firefox >= 15",
@@ -112,7 +119,6 @@
     "nyc": "^10.1.2",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "postcss-loader": "^1.2.1",
-    "pre-commit": "^1.2.2",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.0.0",
@@ -137,10 +143,5 @@
     "recompose": "^0.22.0",
     "redux": "^3.6.0",
     "screenfull": "^3.0.2"
-  },
-  "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "test": "test"
   }
 }
