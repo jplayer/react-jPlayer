@@ -11,15 +11,18 @@
     "url": "https://github.com/MartinDawson/react-jPlayer/issues"
   },
   "keywords": [
-    "react-component",
-    "redux",
-    "react",
-    "jPlayer",
     "audio",
     "video",
-    "media",
+    "video-player",
+    "audio-player",
+    "react",
+    "redu×",
+    "jplayer",
+    "javascript",
     "html5",
-    "player"
+    "html5-audio",
+    "html5-video",
+    "media"
   ],
   "homepage": "https://github.com/MartinDawson/react-jPlayer",
   "license": "MIT",
@@ -40,7 +43,7 @@
     "dist": "rimraf dist && webpack",
     "build": "rimraf lib && babel src --out-dir lib --ignore spec.js,spec.jsx",
     "preversion": "npm test && npm run lint",
-    "version": "npm run dist && npm run build",
+    "version": "npm run dist && npm run build && git add -A dist",
     "postversion": "git push && git push --tags"
   },
   "pre-commit": [
