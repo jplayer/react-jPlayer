@@ -158,14 +158,14 @@ Play the media.
 
 ##### Arguments
 1. `id` (string): Id of the jPlayer to apply this to.
-2. `time` (): The time that the jPlayer should start playing from, defaults to the current time.
+2. `time` (number): The time that the jPlayer should start playing from, defaults to the current time.
 
 #### `pause(id, [time])`
 Play the media.
 
 ##### Arguments
 1. `id` (string): Id of the jPlayer to apply this to.
-2. `time` (): The time that the jPlayer should pause from, defaults to the current time.
+2. `time` (number): The time that the jPlayer should pause from, defaults to the current time.
 
 toDo:
   "setPlayHead": "function",
