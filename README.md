@@ -16,8 +16,8 @@ jPlayer does not support playlists yet. This will be comming in an upcoming npm 
 `npm install --save react-jplayer`
 
 #### UMD
-Available from the '/dist/' folder.
-For example, if you copied the '/dist/' folder to a `packages/jPlayer` folder at the root of your project then the src tags would look like this:
+Available from the `/dist/` folder.
+For example, if you copied the `/dist/` folder to a `/packages/jPlayer/` folder at the root of your project then the src tags would look like this:
 
 `<script src="./packages/jPlayer/dist/js/jPlayer.js"></script>`
 
