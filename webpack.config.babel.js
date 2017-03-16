@@ -2,12 +2,22 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import autoprefixer from 'autoprefixer';
-import nodeExternals from 'webpack-node-externals';
 
 export default {
   context: __dirname,
   target: 'node',
-  externals: [nodeExternals()],
+  externals: {
+    classames: 'classNames',
+    'lodash.includes': '_.includes',
+    'lodash.merge': '_.merge',
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    'react-motion': 'ReactMotion',
+    'react-redux': 'ReactRedux',
+    recompose: 'Recompose',
+    redux: 'Redux',
+    screenfull: 'screenfull',
+  },
   entry: {
     'js/jPlayer.js': './src/index.js',
     'js/jPlayer.min.js': './src/index.js',
@@ -19,6 +29,8 @@ export default {
   output: {
     path: './dist/',
     filename: '[name]',
+    libraryTarget: 'var',
+    library: 'ReactJPlayer',
   },
   devServer: {
     historyApiFallback: true,

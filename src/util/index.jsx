@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import getContext from 'recompose/getContext';
-import compose from 'recompose/compose';
+import { compose, getContext } from 'recompose';
 
 import { errors, hints } from './constants';
 

@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import { getInitialStates, reducer } from 'react-jplayer';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'font-awesome/css/font-awesome.css';
 
 import '../assets/examples.less';
 import AudioPlayer from './players/audioPlayer';
