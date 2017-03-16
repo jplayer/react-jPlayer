@@ -1,64 +1,64 @@
 import { actionNames } from '../util/constants';
 
-export const setOption = (key, value, id) => ({
+export const setOption = (id, key, value) => ({
   type: actionNames.SET_OPTION,
+  id,
   key,
   value,
-  id,
 });
-export const setMedia = (media, id) => ({
+export const setMedia = (id, media) => ({
   type: actionNames.SET_MEDIA,
-  media,
   id,
+  media,
 });
 export const clearMedia = id => ({
   type: actionNames.CLEAR_MEDIA,
   id,
 });
-export const play = (time, id) => ({
+export const play = (id, time) => ({
   type: actionNames.PLAY,
-  time,
   id,
+  time,
 });
-export const pause = (time, id) => ({
+export const pause = (id, time) => ({
   type: actionNames.PAUSE,
+  id,
   time,
-  id,
 });
-export const setPlayHead = (percent, id) => ({
+export const setPlayHead = (id, percent) => ({
   type: actionNames.PLAY_HEAD,
+  id,
   percent,
-  id,
 });
-export const setVolume = (volume, id) => ({
+export const setVolume = (id, volume) => ({
   type: actionNames.VOLUME,
+  id,
   volume,
-  id,
 });
-export const setMute = (mute, id) => ({
+export const setMute = (id, mute) => ({
   type: actionNames.MUTE,
+  id,
   mute,
-  id,
 });
-export const setDuration = (remainingDuration, id) => ({
+export const setDuration = (id, remainingDuration) => ({
   type: actionNames.DURATION,
+  id,
   remainingDuration,
-  id,
 });
-export const setPlaybackRate = (playbackRate, id) => ({
+export const setPlaybackRate = (id, playbackRate) => ({
   type: actionNames.PLAYBACK_RATE,
+  id,
   playbackRate,
-  id,
 });
-export const setLoop = (loop, id) => ({
+export const setLoop = (id, loop) => ({
   type: actionNames.LOOP,
+  id,
   loop,
-  id,
 });
-export const setFullScreen = (fullScreen, id) => ({
+export const setFullScreen = (id, fullScreen) => ({
   type: actionNames.FULL_SCREEN,
-  fullScreen,
   id,
+  fullScreen,
 });
 export const setFocus = id => ({
   type: actionNames.FOCUS,

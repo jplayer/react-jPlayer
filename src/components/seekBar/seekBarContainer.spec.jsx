@@ -67,7 +67,7 @@ describe('SeekBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlayHead(3, id));
+    expect(dispatch).toHaveBeenCalledWith(setPlayHead(id, 3));
   });
 
   it('onTouch moves playback rate', () => {
@@ -86,7 +86,7 @@ describe('SeekBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlayHead(3, id));
+    expect(dispatch).toHaveBeenCalledWith(setPlayHead(id, 3));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

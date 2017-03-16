@@ -15,9 +15,9 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
     const h = getHeight(bar);
 
     if (verticalVolume) {
-      dispatch(setVolume(y / h, id));
+      dispatch(setVolume(id, y / h));
     } else {
-      dispatch(setVolume(x / w, id));
+      dispatch(setVolume(id, x / w));
     }
   },
   attributes,

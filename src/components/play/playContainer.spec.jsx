@@ -42,7 +42,7 @@ describe('MuteContainer', () => {
 
     mergedProps.onClick();
 
-    expect(dispatch).toHaveBeenCalledWith(play(undefined, id));
+    expect(dispatch).toHaveBeenCalledWith(play(id));
   });
 
   it('mergeProps onClick when playing will pause', () => {
@@ -51,7 +51,7 @@ describe('MuteContainer', () => {
 
     mergedProps.onClick();
 
-    expect(dispatch).toHaveBeenCalledWith(pause(undefined, id));
+    expect(dispatch).toHaveBeenCalledWith(pause(id));
   });
 });
 

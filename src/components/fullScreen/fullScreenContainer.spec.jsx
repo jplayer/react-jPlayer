@@ -51,8 +51,8 @@ describe('FullScreenContainer', () => {
       expected.onClick();
 
       expect(dispatch).toHaveBeenCalledWith(setFullScreen(
-        !fullScreenState.fullScreen,
         id,
+        !fullScreenState.fullScreen,
       ));
     });
   });

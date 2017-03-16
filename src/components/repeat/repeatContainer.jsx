@@ -7,7 +7,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 });
 
 const mergeProps = ({ loop }, { dispatch }, { id, ...attributes }) => ({
-  onClick: () => dispatch(setLoop(!loop, id)),
+  onClick: () => dispatch(setLoop(id, !loop)),
   ...attributes,
 });
 

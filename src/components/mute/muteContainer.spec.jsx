@@ -49,7 +49,7 @@ describe('MuteContainer', () => {
 
       mergedProps.onClick();
 
-      expect(dispatch).toHaveBeenCalledWith(setMute(!muteDatum.muted, id));
+      expect(dispatch).toHaveBeenCalledWith(setMute(id, !muteDatum.muted));
     });
   });
 });

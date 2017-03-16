@@ -50,7 +50,7 @@ describe('RepeatContainer', () => {
 
       mergedProps.onClick();
 
-      expect(dispatch).toHaveBeenCalledWith(setLoop(!onClickDatum.loop, id));
+      expect(dispatch).toHaveBeenCalledWith(setLoop(id, !onClickDatum.loop));
     });
   });
 });

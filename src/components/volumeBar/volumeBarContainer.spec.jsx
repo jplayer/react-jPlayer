@@ -68,7 +68,7 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, id));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 0.03));
   });
 
   it('onClick moves volume bar when verticalVolume', () => {
@@ -83,7 +83,7 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageY: 7 });
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, id));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 1.3));
   });
 
   it('onTouch moves volume bar', () => {
@@ -102,7 +102,7 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(0.03, id));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 0.03));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
@@ -124,7 +124,7 @@ describe('VolumeBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(1.3, id));
+    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 1.3));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

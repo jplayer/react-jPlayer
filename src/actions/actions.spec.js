@@ -15,7 +15,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setOption(key, value, id)).toEqual(expectedAction);
+    expect(actions.setOption(id, key, value)).toEqual(expectedAction);
   });
 
   it('should create an action to set the media', () => {
@@ -29,7 +29,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setMedia(media, id)).toEqual(expectedAction);
+    expect(actions.setMedia(id, media)).toEqual(expectedAction);
   });
 
   it('should create an action to clear the media', () => {
@@ -49,7 +49,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.play(time, id)).toEqual(expectedAction);
+    expect(actions.play(id, time)).toEqual(expectedAction);
   });
 
   it('should create an action to pause the media', () => {
@@ -60,7 +60,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.pause(time, id)).toEqual(expectedAction);
+    expect(actions.pause(id, time)).toEqual(expectedAction);
   });
 
   it('should create an action to set the play head', () => {
@@ -71,7 +71,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setPlayHead(percent, id)).toEqual(expectedAction);
+    expect(actions.setPlayHead(id, percent)).toEqual(expectedAction);
   });
 
   it('should create an action to set the volume', () => {
@@ -82,7 +82,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setVolume(volume, id)).toEqual(expectedAction);
+    expect(actions.setVolume(id, volume)).toEqual(expectedAction);
   });
 
   it('should create an action to mute the media', () => {
@@ -93,7 +93,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setMute(mute, id)).toEqual(expectedAction);
+    expect(actions.setMute(id, mute)).toEqual(expectedAction);
   });
 
   it('should create an action to set the duration', () => {
@@ -104,7 +104,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setDuration(remainingDuration, id)).toEqual(expectedAction);
+    expect(actions.setDuration(id, remainingDuration)).toEqual(expectedAction);
   });
 
   it('should create an action to set the playbackRate', () => {
@@ -115,7 +115,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setPlaybackRate(playbackRate, id)).toEqual(expectedAction);
+    expect(actions.setPlaybackRate(id, playbackRate)).toEqual(expectedAction);
   });
 
   it('should create an action to set the loop', () => {
@@ -126,7 +126,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setLoop(loop, id)).toEqual(expectedAction);
+    expect(actions.setLoop(id, loop)).toEqual(expectedAction);
   });
 
   it('should create an action to set the fullScreen', () => {
@@ -137,7 +137,7 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setFullScreen(fullScreen, id)).toEqual(expectedAction);
+    expect(actions.setFullScreen(id, fullScreen)).toEqual(expectedAction);
   });
 
   it('should create an action to set the focus', () => {

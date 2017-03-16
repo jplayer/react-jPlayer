@@ -151,7 +151,7 @@ describe('JPlayerConnect', () => {
 
       mergedProps[action](...args);
 
-      expectedArgs.push(id);
+      expectedArgs.unshift(id);
       expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedArgs));
     });
 
@@ -162,7 +162,7 @@ describe('JPlayerConnect', () => {
 
         jPlayer[action](...args);
 
-        expectedArgs.push(key);
+        expectedArgs.unshift(key);
 
         expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedArgs));
       });

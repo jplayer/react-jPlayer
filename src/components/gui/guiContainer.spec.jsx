@@ -61,9 +61,9 @@ describe('GuiContainer', () => {
     expected.onMouseMove();
 
     expect(dispatch).toHaveBeenCalledWith(setOption(
+      id,
       'guiFadeOut',
       false,
-      id,
     ));
     expect(clearTimeout).toHaveBeenCalledWith(guiFadeHoldTimeout);
   });

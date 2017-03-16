@@ -42,8 +42,8 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
 });
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  setMedia: media => dispatch(setMedia(media, id)),
-  setOption: (key, value) => dispatch(setOption(key, value, id)),
+  setMedia: media => dispatch(setMedia(id, media)),
+  setOption: (key, value) => dispatch(setOption(id, key, value)),
   ...stateProps,
 });
 

@@ -12,7 +12,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
     const w = getWidth(bar);
     const percentage = 100 * (x / w);
 
-    dispatch(setPlayHead(percentage, id));
+    dispatch(setPlayHead(id, percentage));
   },
   attributes,
 });

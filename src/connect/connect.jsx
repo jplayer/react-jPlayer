@@ -11,18 +11,18 @@ const mapStateToProps = ({ jPlayers }) => ({
 });
 
 const getActions = (dispatch, id) => ({
-  setOption: (key, value) => dispatch(setOption(key, value, id)),
-  setMedia: media => dispatch(setMedia(media, id)),
+  setOption: (key, value) => dispatch(setOption(id, key, value)),
+  setMedia: media => dispatch(setMedia(id, media)),
   clearMedia: () => dispatch(clearMedia(id)),
-  play: time => dispatch(play(time, id)),
-  pause: time => dispatch(pause(time, id)),
-  setPlayHead: percent => dispatch(setPlayHead(percent, id)),
-  setVolume: volume => dispatch(setVolume(volume, id)),
-  setMute: mute => dispatch(setMute(mute, id)),
-  setDuration: remainingDuration => dispatch(setDuration(remainingDuration, id)),
-  setPlaybackRate: playbackRate => dispatch(setPlaybackRate(playbackRate, id)),
-  setLoop: loop => dispatch(setLoop(loop, id)),
-  setFullScreen: fullScreen => dispatch(setFullScreen(fullScreen, id)),
+  play: time => dispatch(play(id, time)),
+  pause: time => dispatch(pause(id, time)),
+  setPlayHead: percent => dispatch(setPlayHead(id, percent)),
+  setVolume: volume => dispatch(setVolume(id, volume)),
+  setMute: mute => dispatch(setMute(id, mute)),
+  setDuration: remainingDuration => dispatch(setDuration(id, remainingDuration)),
+  setPlaybackRate: playbackRate => dispatch(setPlaybackRate(id, playbackRate)),
+  setLoop: loop => dispatch(setLoop(id, loop)),
+  setFullScreen: fullScreen => dispatch(setFullScreen(id, fullScreen)),
   setFocus: () => dispatch(setFocus(id)),
 });
 

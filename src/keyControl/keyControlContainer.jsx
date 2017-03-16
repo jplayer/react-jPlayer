@@ -20,30 +20,30 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
   keyBindings: merge({}, {
     play: {
       key: 80, // p
-      fn: () => (stateProps.paused ? dispatch(play(undefined, id)) :
-                                      dispatch(pause(undefined, id))),
+      fn: () => (stateProps.paused ? dispatch(play(id)) :
+                                      dispatch(pause(id))),
     },
     fullScreen: {
       key: 70, // f
-      fn: () => dispatch(setFullScreen(!stateProps.fullScreen, id)),
+      fn: () => dispatch(setFullScreen(id, !stateProps.fullScreen)),
     },
     mute: {
       key: 77, // m
-      fn: () => dispatch(setMute(!stateProps.muted, id)),
+      fn: () => dispatch(setMute(id, !stateProps.muted)),
     },
     volumeUp: {
       key: 190, // .
       fn: () => {
-        dispatch(setVolume(stateProps.volume + 0.1, id));
+        dispatch(setVolume(id, stateProps.volume + 0.1));
       },
     },
     volumeDown: {
       key: 188, // ,
-      fn: () => dispatch(setVolume(stateProps.volume - 0.1, id)),
+      fn: () => dispatch(setVolume(id, stateProps.volume - 0.1)),
     },
     loop: {
       key: 76, // l
-      fn: () => dispatch(setLoop(!stateProps.loop, id)),
+      fn: () => dispatch(setLoop(id, !stateProps.loop)),
     },
   }, stateProps.keyBindings),
   id,

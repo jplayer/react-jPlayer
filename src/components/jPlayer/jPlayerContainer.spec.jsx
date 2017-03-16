@@ -123,8 +123,8 @@ describe('<JPlayerContainer />', () => {
     expected.setMedia(defaultOptions.media);
     expected.setOption('muted', true);
 
-    expect(dispatch).toHaveBeenCalledWith(setMedia(defaultOptions.media, id));
-    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, id));
+    expect(dispatch).toHaveBeenCalledWith(setMedia(id, defaultOptions.media));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'muted', true));
     expect(expected.jPlayers).toExist();
   });
 
@@ -133,7 +133,7 @@ describe('<JPlayerContainer />', () => {
 
     expected.setOption('muted', true);
 
-    expect(dispatch).toHaveBeenCalledWith(setOption('muted', true, id));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'muted', true));
   });
 
   it('listens for closing full screen if screenFull is enabled', () => {

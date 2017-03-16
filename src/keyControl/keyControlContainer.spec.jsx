@@ -62,7 +62,7 @@ describe('KeyControlContainer', () => {
 
     keyBindings.play.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(play(undefined, id));
+    expect(dispatch).toHaveBeenCalledWith(play(id));
   });
 
   it('pauses when play key is pressed and media is playing', () => {
@@ -70,7 +70,7 @@ describe('KeyControlContainer', () => {
 
     keyBindings.play.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(pause(undefined, id));
+    expect(dispatch).toHaveBeenCalledWith(pause(id));
   });
 
   const fullScreenData = [
@@ -85,7 +85,7 @@ describe('KeyControlContainer', () => {
       keyBindings.fullScreen.fn();
 
       expect(dispatch).toHaveBeenCalledWith(
-        setFullScreen(!fullScreenDatum.fullScreen, id),
+        setFullScreen(id, !fullScreenDatum.fullScreen),
       );
     });
   });
@@ -102,7 +102,7 @@ describe('KeyControlContainer', () => {
       keyBindings.mute.fn();
 
       expect(dispatch).toHaveBeenCalledWith(
-        setMute(!muteDatum.muted, id),
+        setMute(id, !muteDatum.muted),
       );
     });
   });
@@ -113,7 +113,7 @@ describe('KeyControlContainer', () => {
     keyBindings.volumeUp.fn();
 
     expect(dispatch).toHaveBeenCalledWith(
-      setVolume(defaultOptions.volume + 0.1, id),
+      setVolume(id, defaultOptions.volume + 0.1),
     );
   });
 
@@ -123,7 +123,7 @@ describe('KeyControlContainer', () => {
     keyBindings.volumeDown.fn();
 
     expect(dispatch).toHaveBeenCalledWith(
-      setVolume(defaultOptions.volume - 0.1, id),
+      setVolume(id, defaultOptions.volume - 0.1),
     );
   });
 
@@ -132,14 +132,14 @@ describe('KeyControlContainer', () => {
 
     keyBindings.loop.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(setLoop(true, id));
+    expect(dispatch).toHaveBeenCalledWith(setLoop(id, true));
   });
 
   it('turns loop off on loop key press when looping', () => {
     const { keyBindings } = mergePropsWithDefaultState({ loop: true });
     keyBindings.loop.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(setLoop(false, id));
+    expect(dispatch).toHaveBeenCalledWith(setLoop(id, false));
   });
 
   it('Adds listener to onKeyDown event on startup', () => {

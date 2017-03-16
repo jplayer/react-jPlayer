@@ -96,14 +96,14 @@ describe('MediaContainer', () => {
     const value = true;
     mapDispatchToProps(dispatch, { id }).setOption(key, value);
 
-    expect(dispatch).toHaveBeenCalledWith(setOption(key, value, id));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, key, value));
   });
 
   it('dispatches pause in mapDispatchToProps when called', () => {
     const time = 30;
     mapDispatchToProps(dispatch, { id }).pause(time);
 
-    expect(dispatch).toHaveBeenCalledWith(pause(time, id));
+    expect(dispatch).toHaveBeenCalledWith(pause(id, time));
   });
 
   it('updates media on startup', () => {

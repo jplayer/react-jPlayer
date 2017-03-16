@@ -25,7 +25,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
     const playbackRateValue = (ratio * (maxPlaybackRate - minPlaybackRate))
                               + minPlaybackRate;
 
-    dispatch(setPlaybackRate(playbackRateValue, id));
+    dispatch(setPlaybackRate(id, playbackRateValue));
   },
   attributes,
 });

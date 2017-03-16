@@ -67,7 +67,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, id));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 0.605));
   });
 
   it('onClick moves playback rate when verticalPlaybackRate', () => {
@@ -82,7 +82,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageY: 7 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, id));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 5.05));
   });
 
   it('onTouch moves playback rate', () => {
@@ -101,7 +101,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(0.605, id));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 0.605));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
@@ -123,7 +123,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onTouch(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(5.05, id));
+    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 5.05));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
