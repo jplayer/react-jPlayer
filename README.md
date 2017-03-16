@@ -12,10 +12,22 @@ react-jPlayer depends on [Redux](https://github.com/reactjs/redux). Redux is a t
 jPlayer does not support playlists yet. This will be comming in an upcoming npm package called react-jPlaylist.
 
 ### Installation
-```npm install --save react-jplayer```
+#### NPM
+`npm install --save react-jplayer`
+
+#### UMD
+If you copied the dist folder to a `packages/jPlayer` folder at the root of your project then the src tags would look like this:
+
+`<script src="./packages/jPlayer/dist/js/jPlayer.js"></script>`
+
+`<script src="./packages/jPlayer/dist/css/jPlayer.css"></script>`
+
+`<script src="./packages/jPlayer/dist/css/sleek.css"></script>`
+
+Module is exported to a global variable called `ReactJPlayer`.
 
 ### Examples
-Run the jPlayer examples:
+Run the jPlayer examples. 
 
 ```
 git clone https://github.com/MartinDawson/react-jPlayer.git
@@ -27,6 +39,74 @@ npm install
 npm run dev
 
 open http://localhost:8080/
+```
+
+### Most Basic Setup
+The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
+If you just want the most basic setup to get an understanding of jPlayer, you can follow the code below.
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+import { getInitialStates, reducer, connect, JPlayer, Gui, SeekBar,
+  Audio, FullScreen, Mute, Play, PlayBar,
+  VolumeBar, Duration, CurrentTime, BrowserUnsupported,
+ } from 'react-jplayer';
+
+const AudioPlayer = () => (
+  <JPlayer className="jp-sleek">
+    <Audio />
+    <Gui>
+      <div className="jp-controls jp-icon-controls">
+        <Play><i className="fa">{/* Icon set in css*/}</i></Play>
+        <div className="jp-progress">
+          <SeekBar>
+            <PlayBar />
+            <CurrentTime />
+            <Duration />
+          </SeekBar>
+        </div>
+        <div className="jp-volume-container">
+          <Mute>
+            <i className="fa">{/* Icon set in css*/}</i>
+          </Mute>
+          <div className="jp-volume-slider">
+            <div className="jp-volume-bar-container">
+              <VolumeBar />
+            </div>
+          </div>
+        </div>
+        <FullScreen><i className="fa fa-expand" /></FullScreen>
+      </div>
+      <BrowserUnsupported />
+    </Gui>
+  </JPlayer>
+);
+
+AudioPlayer.options = {
+  verticalVolume: true,
+  media: {
+    sources: {
+      m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
+    },
+  },
+};
+
+const ConnectedAudioPlayer = connect(AudioPlayer);
+const store = createStore(combineReducers(reducer), getInitialStates(ConnectedAudioPlayer));
+
+const App = () => (
+  <ConnectedAudioPlayer />
+);
+
+ReactDOM.render((
+  <Provider store={store}>
+    <App />
+  </Provider>
+), document.getElementById('app'));
+
 ```
 
 ### Features
