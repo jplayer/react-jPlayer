@@ -19,7 +19,9 @@ jPlayer does not support playlists yet. This will be comming in an upcoming npm 
 If you copied the dist folder to a `packages/jPlayer` folder at the root of your project then the src tags would look like this:
 
 `<script src="./packages/jPlayer/dist/js/jPlayer.js"></script>`
+
 `<script src="./packages/jPlayer/dist/css/jPlayer.css"></script>`
+
 `<script src="./packages/jPlayer/dist/css/sleek.css"></script>`
 
 Module is exported to a global variable called `ReactJPlayer`.
