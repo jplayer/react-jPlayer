@@ -45,6 +45,8 @@ open http://localhost:8080/
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
 If you just want the most basic setup to get an understanding of jPlayer, you can follow the code below.
 
+If you want the jPlayer to look good you will need to include the examples .css or .less files from src or dist.
+
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -54,6 +56,9 @@ import { getInitialStates, reducer, connect, JPlayer, Gui, SeekBar,
   Audio, FullScreen, Mute, Play, PlayBar,
   VolumeBar, Duration, CurrentTime, BrowserUnsupported,
  } from 'react-jplayer';
+
+/* Our [stateless](https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components) jPlayer component. This function holds everything to do with the jPlayer components. 
+If you wanted a video player instead, you could just replace `<Audio />` with `<Video />` and provide a video src instead of an audio src as the first element in the options.media.sources. */
 
 const AudioPlayer = () => (
   <JPlayer className="jp-sleek">
@@ -85,6 +90,8 @@ const AudioPlayer = () => (
   </JPlayer>
 );
 
+/* All jPlayer options must be defined statically on the jPlayer component. These options will be deep merged with the default jPlayer options so you actually don't even need to specify any apart from the media.sources if you just want the default options. */
+
 AudioPlayer.options = {
   verticalVolume: true,
   media: {
@@ -94,12 +101,19 @@ AudioPlayer.options = {
   },
 };
 
+/* react-jPlayer provides it's own connect function which will return a connected jPlayer. */
+
 const ConnectedAudioPlayer = connect(AudioPlayer);
+
+/* We now need to connect our jPlayer to the store now so each of the components inside react-jPlayer can talk to each other. This also gives you a jPlayers object with the AudioPlayer in it, in your redux state. */
+
 const store = createStore(combineReducers(reducer), getInitialStates(ConnectedAudioPlayer));
 
 const App = () => (
   <ConnectedAudioPlayer />
 );
+
+/* Pass the store to the provider. See [Redux](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store) for more information. */
 
 ReactDOM.render((
   <Provider store={store}>
