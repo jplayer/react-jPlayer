@@ -128,6 +128,57 @@ ReactDOM.render((
 ), document.getElementById('app'));
 
 ```
+### Actions
+##### Returns
+(Object): All actions return an object that is meant to be passed to redux's `dispatch()`.
+
+#### `setOption(id, key, value)`
+Sets any jPlayer option. A few of the other actions are just helpers for modifying the options and could also be modified by this function. You should still use the other actions to modify the option if you can as most do extra logic and error handling. 
+
+##### Arguments
+1. `id` (string): Id of the jPlayer to apply this to.
+2. `key` (string): The name of the option that you want to set. Specifying nested keys is not supported.
+3. `value` (any): The value to set the option to.
+
+#### `setMedia(id, media)`
+Sets the media on the jPlayer.
+
+##### Arguments
+1. `id` (string): Id of the jPlayer to apply this to.
+2. `media` (object): The new media you want to set.
+
+#### `clearMedia(id)`
+Clear the media and reset all status values. This will be rarely used, if you are setting new media you **don't** need to use this function beforehand as `setMedia` already internally clears existing values before setting a new media.
+
+##### Arguments
+1. `id` (string): Id of the jPlayer to apply this to.
+
+#### `play(id, [time])`
+Play the media.
+
+##### Arguments
+1. `id` (string): Id of the jPlayer to apply this to.
+2. `time` (number): The time that the jPlayer should start playing from, defaults to the current time.
+
+#### `pause(id, [time])`
+Play the media.
+
+##### Arguments
+1. `id` (string): Id of the jPlayer to apply this to.
+2. `time` (number): The time that the jPlayer should pause from, defaults to the current time.
+
+toDo:
+  "setPlayHead": "function",
+  "setVolume": "function",
+  "setMute": "function",
+  "setDuration": "function",
+  "setPlaybackRate": "function",
+  "setLoop": "function",
+  "setFullScreen": "function",
+  "setFocus": "function",
+
+### Options
+todo.
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers
@@ -157,7 +208,7 @@ ReactDOM.render((
 ¹partially tested without audio/video because browserstack emulators don't support it.
 
 ## Documentation
-#### `getInitialStates(jPlayers)`
+#### `getInitialStates([jPlayers])`
 A required function that deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
 
 ##### Arguments
