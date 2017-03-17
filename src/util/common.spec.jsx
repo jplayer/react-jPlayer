@@ -6,8 +6,12 @@ export const getJPlayers = (...options) => {
   const jPlayers = {};
 
   const setJPlayer = (jPlayerNumber = 1, option) => {
-    jPlayers[`jPlayer-${jPlayerNumber}`] = merge({}, internalStatus, defaultStatus,
-     defaultOptions, option);
+    const id = `jPlayer-${jPlayerNumber}`;
+
+    jPlayers[id] = {
+      ...merge({}, internalStatus, defaultStatus, defaultOptions, option),
+      id,
+    };
   };
 
   options.forEach((option, i) => {

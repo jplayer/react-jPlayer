@@ -1,0 +1,1 @@
+All notable changes are described on the [Releases](https://github.com/MartinDawson/react-jPlayer/releases) page.

@@ -4,7 +4,6 @@ import { mount, shallow } from 'enzyme';
 
 import { getJPlayers } from '../../util/common.spec';
 import { noFormatSupportedError } from '../../util/index';
-import { setMedia, setOption } from '../../actions/actions';
 import { classes, defaultStatus, defaultOptions } from '../../util/constants';
 import { __get__, __Rewire__, __ResetDependency__ } from './jPlayerContainer';
 import JPlayer from './jPlayer';
@@ -47,7 +46,7 @@ const stateClassTests = [
 ];
 
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
+const mapDispatchToProps = __get__('mapDispatchToProps');
 const JPlayerContainer = __get__('JPlayerContainer');
 const fullscreenchange = 'fullscreenchange';
 const guiFadeHoldTimeout = 10;
@@ -64,10 +63,7 @@ MockJPlayer.propTypes = {
 };
 
 describe('<JPlayerContainer />', () => {
-  let dispatch;
-
   beforeEach(() => {
-    dispatch = createSpy();
     spyOn(global, 'clearTimeout');
     spyOn(global, 'setTimeout').andReturn(guiFadeHoldTimeout);
     __Rewire__('JPlayer', MockJPlayer);
@@ -90,6 +86,7 @@ describe('<JPlayerContainer />', () => {
       paused: true,
       guiFadeHoldTimeout: 0,
       guiFadeHoldTime: defaultOptions.guiFadeHoldTime,
+      id,
       children,
       attributes: restOfAttributes,
     });
@@ -105,39 +102,21 @@ describe('<JPlayerContainer />', () => {
     });
   });
 
-  it('merges props', () => {
-    const stateProps = getJPlayers();
-    const expected = mergeProps(stateProps, { dispatch }, { id });
+  it('mapDispatchToProps returns correct actions', () => {
+    const expected = mapDispatchToProps();
 
-    delete expected.setOption;
-    delete expected.setMedia;
+    spyOn(expected, 'setMedia');
+    spyOn(expected, 'setOption');
 
-    expect(expected).toEqual({
-      ...stateProps,
-    });
-  });
+    expected.setMedia();
+    expected.setOption();
 
-  it('mergeProps setMedia sets the media', () => {
-    const expected = mergeProps(getJPlayers(), { dispatch }, { id });
-
-    expected.setMedia(defaultOptions.media);
-    expected.setOption('muted', true);
-
-    expect(dispatch).toHaveBeenCalledWith(setMedia(id, defaultOptions.media));
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'muted', true));
-    expect(expected.jPlayers).toExist();
-  });
-
-  it('mergeProps setOption sets the option', () => {
-    const expected = mergeProps(getJPlayers(), { dispatch }, { id });
-
-    expected.setOption('muted', true);
-
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'muted', true));
+    expect(expected.setMedia).toHaveBeenCalled();
+    expect(expected.setOption).toHaveBeenCalled();
   });
 
   it('listens for closing full screen if screenFull is enabled', () => {
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     spyOn(document, 'addEventListener');
 
     __Rewire__('screenfull', {
@@ -154,7 +133,7 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('stops listening for closing full screen if screenFull is enabled on unmount', () => {
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     spyOn(document, 'removeEventListener');
 
     __Rewire__('screenfull', {
@@ -174,17 +153,17 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('sets media on load', () => {
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const setMediaSpy = createSpy();
 
     mount(<JPlayerContainer {...props} setMedia={setMediaSpy} />);
 
-    expect(setMediaSpy).toHaveBeenCalledWith(props.media);
+    expect(setMediaSpy).toHaveBeenCalledWith(id, props.media);
   });
 
   it('logs errors', () => {
     const spy = spyOn(console, 'error');
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const error = noFormatSupportedError('test');
 
@@ -194,7 +173,7 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('doesn\'t request full screen when screenfull not supported', () => {
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const spy = createSpy();
 
@@ -210,7 +189,7 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('requests full screen when true and screenfull supported', () => {
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const spy = createSpy();
 
@@ -226,7 +205,7 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('doesn\'t exit full screen when false and screenfull not supported', () => {
-    const props = getJPlayers({ fullScreen: true }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ fullScreen: true }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const spy = createSpy();
 
@@ -242,7 +221,7 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('exits full screen when false and screenfull supported', () => {
-    const props = getJPlayers({ fullScreen: true }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ fullScreen: true }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const spy = createSpy();
 
@@ -259,30 +238,30 @@ describe('<JPlayerContainer />', () => {
 
   it('starts gui fade out timer when not paused and full screen', () => {
     const spy = createSpy();
-    const props = getJPlayers({ guiFadeHoldTimeout }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ guiFadeHoldTimeout }).jPlayers[id];
     const wrapper = mount(<JPlayerContainer {...props} setOption={spy} setMedia={() => null} />);
 
     wrapper.setProps({ paused: false, fullScreen: true });
 
     expect(clearTimeout).toHaveBeenCalledWith(guiFadeHoldTimeout);
-    expect(spy).toHaveBeenCalledWith('guiFadeOut', false);
-    expect(spy).toHaveBeenCalledWith('guiFadeHoldTimeout', guiFadeHoldTimeout);
+    expect(spy).toHaveBeenCalledWith(id, 'guiFadeOut', false);
+    expect(spy).toHaveBeenCalledWith(id, 'guiFadeHoldTimeout', guiFadeHoldTimeout);
     expect(setTimeout).toHaveBeenCalledWith(wrapper.instance().startGuiFadeOut,
       defaultOptions.guiFadeHoldTime);
   });
 
   it('starts gui fade out when not paused and full screen', () => {
     const spy = createSpy();
-    const props = getJPlayers({ fullScreen: true, paused: false }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ fullScreen: true, paused: false }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} setOption={spy} />);
     wrapper.instance().startGuiFadeOut();
 
-    expect(spy).toHaveBeenCalledWith('guiFadeOut', true);
+    expect(spy).toHaveBeenCalledWith(id, 'guiFadeOut', true);
   });
 
   it('doesn\'t start gui fade out when paused && full screen not true', () => {
     const spy = createSpy();
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} setOption={spy} />);
     wrapper.instance().startGuiFadeOut();
 
@@ -291,7 +270,7 @@ describe('<JPlayerContainer />', () => {
 
   it('closeFullScreen sets fullscreen prop to false if screenfull not fullscreen', () => {
     const spy = createSpy();
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} setOption={spy} />);
 
     __Rewire__('screenfull', {
@@ -300,12 +279,12 @@ describe('<JPlayerContainer />', () => {
 
     wrapper.instance().closeFullScreen();
 
-    expect(spy).toHaveBeenCalledWith('fullScreen', false);
+    expect(spy).toHaveBeenCalledWith(id, 'fullScreen', false);
   });
 
   it('closeFullScreen doesn\t set fullscreen prop if screenfull is fullscreen', () => {
     const spy = createSpy();
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} setOption={spy} />);
 
     __Rewire__('screenfull', {
@@ -319,7 +298,7 @@ describe('<JPlayerContainer />', () => {
 
   it('onMouseMove starts gui fade out if fullScreen and paused and ancestor' +
       'parent is not GUI', () => {
-    const props = getJPlayers({ fullScreen: true, paused: true }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ fullScreen: true, paused: true }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const instance = wrapper.instance();
 
@@ -334,7 +313,7 @@ describe('<JPlayerContainer />', () => {
 
   it('onMouseMove doesn\'t start gui fade out if fullScreen and paused and ancestor' +
       'parent is GUI', () => {
-    const props = getJPlayers({ fullScreen: true, paused: true }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ fullScreen: true, paused: true }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const instance = wrapper.instance();
 
@@ -356,7 +335,7 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('onMouseMove doesn\'t start gui fade out if not fullScreen', () => {
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const instance = wrapper.instance();
 
@@ -369,7 +348,7 @@ describe('<JPlayerContainer />', () => {
 
   it('onMouseMove starts gui fade out if fullScreen and not paused', () => {
     __ResetDependency__('JPlayer');
-    const props = getJPlayers({ fullScreen: true, paused: false }).jPlayers['jPlayer-1'];
+    const props = getJPlayers({ fullScreen: true, paused: false }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
     const instance = wrapper.instance();
 
@@ -383,7 +362,7 @@ describe('<JPlayerContainer />', () => {
   it('renders JPlayer', () => {
     __ResetDependency__('JPlayer');
 
-    const props = getJPlayers().jPlayers['jPlayer-1'];
+    const props = getJPlayers().jPlayers[id];
     const wrapper = shallow(
       <JPlayerContainer {...props} attributes={attributes}>
         {attributes.children}
