@@ -3,9 +3,7 @@ import CurrentTime from './currentTime';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   children: children || jPlayers[id].currentTimeText,
-  ...attributes,
+  attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(CurrentTime);
+export default connectWithId(mapStateToProps)(CurrentTime);

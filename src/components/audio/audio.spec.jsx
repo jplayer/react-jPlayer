@@ -35,8 +35,10 @@ const setup = () => {
   const props = {
     events,
     require: true,
-    children: (<track className="@@jPlayer-test" />),
-    'data-test': 'test',
+    attributes: {
+      children: (<track className="@@jPlayer-test" />),
+      'data-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Audio {...props} />);
@@ -64,7 +66,7 @@ describe('<Audio />', () => {
 
     expect(audio.parent().type()).toBe(Media);
     expect(audio.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(audio.prop('data-test')).toBe(props['data-test']);
+    expect(audio.prop('data-test')).toBe(props.attributes['data-test']);
   });
 
   it('renders null when not required', () => {

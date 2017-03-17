@@ -8,7 +8,9 @@ import BufferBar from './bufferBar';
 const setup = () => {
   const props = {
     setCanvas: Function.prototype,
-    'data-test': 'test',
+    attributes: {
+      'data-test': 'test',
+    },
   };
 
   const wrapper = shallow(<BufferBar {...props} />);
@@ -29,6 +31,6 @@ describe('<BufferBar />', () => {
 
   it('renders self and subcomponents', () => {
     expect(wrapper.hasClass(classes.BUFFER_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 });

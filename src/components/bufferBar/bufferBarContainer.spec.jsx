@@ -1,5 +1,5 @@
 import React from 'react';
-import expect, { createSpy, spyOn } from 'expect';
+import expect, { spyOn } from 'expect';
 import { mount, shallow } from 'enzyme';
 
 import { getJPlayers, mockCanvasContext } from '../../util/common.spec';
@@ -16,7 +16,6 @@ const state = {
 };
 
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
 const BufferBarContainer = __get__('BufferBarContainer');
 const id = 'jPlayer-1';
 const attributes = {
@@ -31,26 +30,10 @@ MockBufferBar.propTypes = {
 };
 
 describe('<BufferBarContainer />', () => {
-  let dispatch;
-
-  beforeEach(() => {
-    dispatch = createSpy();
-  });
-
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(state), { id, ...attributes });
     expect(expected).toEqual({
       ...state,
-      attributes,
-    });
-  });
-
-  it('merges props', () => {
-    const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { id });
-
-    expect(expected).toEqual({
-      ...stateProps,
       attributes,
     });
   });
@@ -100,7 +83,7 @@ describe('<BufferBarContainer />', () => {
     const wrapper = shallow(<BufferBarContainer {...state} attributes={attributes} />);
 
     expect(wrapper.type()).toBe(BufferBar);
-    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
+    expect(wrapper.prop('attributes')).toBe(attributes);
   });
 
   afterEach(() => {
