@@ -5,7 +5,7 @@ import BarEvents from '../../barEvents/barEvents';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   moveVolumeBar: (bar, dispatch, e) => {
     const { verticalVolume } = jPlayers[id];
     const offset = getOffset(bar);
@@ -20,22 +20,24 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
       dispatch(setVolume(id, x / w));
     }
   },
+  children,
   attributes,
 });
 
-const mergeProps = ({ moveVolumeBar, attributes }, { dispatch }) => ({
+const mergeProps = ({ moveVolumeBar, children, attributes }, { dispatch }) => ({
   onClick: (bar, e) => moveVolumeBar(bar, dispatch, e),
-  onTouch: (bar, e) => {
+  onTouchMove: (bar, e) => {
     // Stop page scrolling
     e.preventDefault();
 
     moveVolumeBar(bar, dispatch, e.touches[0]);
   },
+  children,
   attributes,
 });
 
-const VolumeBarContainer = ({ onClick, onTouch, children, attributes }) => (
-  <BarEvents clickMoveBar={onClick} touchMoveBar={onTouch}>
+const VolumeBarContainer = ({ onClick, onTouchMove, children, attributes }) => (
+  <BarEvents clickMoveBar={onClick} touchMoveBar={onTouchMove}>
     <VolumeBar {...attributes}>
       {children}
     </VolumeBar>
@@ -43,15 +45,14 @@ const VolumeBarContainer = ({ onClick, onTouch, children, attributes }) => (
 );
 
 VolumeBarContainer.defaultProps = {
-  attributes: null,
   children: (<VolumeBarValue />),
 };
 
 VolumeBarContainer.propTypes = {
-  attributes: React.PropTypes.object,
+  attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.node,
   onClick: React.PropTypes.func.isRequired,
-  onTouch: React.PropTypes.func.isRequired,
+  onTouchMove: React.PropTypes.func.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(VolumeBarContainer);

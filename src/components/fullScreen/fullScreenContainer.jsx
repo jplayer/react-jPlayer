@@ -2,13 +2,14 @@ import { connectWithId } from '../../util/index';
 import { setFullScreen } from '../../actions/actions';
 import FullScreen from './fullScreen';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   fullScreen: jPlayers[id].fullScreen,
+  children,
+  attributes,
 });
 
-const mergeProps = ({ fullScreen }, { dispatch }, { id, ...attributes }) => ({
-  onClick: () => dispatch(setFullScreen(id, !fullScreen)),
-  ...attributes,
+const mapDispatchToProps = (dispatch, { id }) => ({
+  onClick: fullScreen => dispatch(setFullScreen(id, !fullScreen)),
 });
 
-export default connectWithId(mapStateToProps, null, mergeProps)(FullScreen);
+export default connectWithId(mapStateToProps, mapDispatchToProps)(FullScreen);

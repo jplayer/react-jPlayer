@@ -9,6 +9,7 @@ const setup = () => {
   const props = {
     onClick: createSpy(),
     onMouseDown: createSpy(),
+    onTouchStart: createSpy(),
     setPlaybackRate: Function.prototype,
     children: (<div className="@@jPlayer-test" />),
     'data-test': 'test',
@@ -33,9 +34,11 @@ describe('<PlaybackRateBar />', () => {
   it('renders self and subcomponents', () => {
     wrapper.simulate('click');
     wrapper.simulate('mousedown');
+    wrapper.simulate('touchstart');
 
     expect(props.onClick).toHaveBeenCalled();
     expect(props.onMouseDown).toHaveBeenCalled();
+    expect(props.onTouchStart).toHaveBeenCalled();
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props['data-test']);

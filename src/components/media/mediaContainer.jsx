@@ -23,10 +23,10 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   children,
 });
 
-const mapDispatchToProps = (dispatch, { id }) => ({
-  setOption: (key, value) => dispatch(setOption(id, key, value)),
-  pause: time => dispatch(pause(id, time)),
-});
+const mapDispatchToProps = {
+  setOption,
+  pause,
+};
 
 class MediaContainer extends React.Component {
   static get propTypes() {
@@ -61,6 +61,7 @@ class MediaContainer extends React.Component {
       paused: React.PropTypes.bool.isRequired,
       setOption: React.PropTypes.func.isRequired,
       pause: React.PropTypes.func.isRequired,
+      id: React.PropTypes.string.isRequired,
       timeFormats: React.PropTypes.shape({
         showHour: React.PropTypes.bool.isRequired,
         showMin: React.PropTypes.bool.isRequired,
@@ -131,7 +132,7 @@ class MediaContainer extends React.Component {
           });
         }
         this.updateMediaStatus();
-        this.props.setOption('bufferedTimeRanges', bufferedTimeRanges);
+        this.props.setOption(this.props.id, 'bufferedTimeRanges', bufferedTimeRanges);
         this.props.onProgress();
       },
       onTimeUpdate: () => {
@@ -143,20 +144,20 @@ class MediaContainer extends React.Component {
         this.props.onDurationChange();
       },
       onSeeking: () => {
-        this.props.setOption('seeking', true);
+        this.props.setOption(this.props.id, 'seeking', true);
         this.props.onSeeking();
       },
       onSeeked: () => {
-        this.props.setOption('seeking', false);
+        this.props.setOption(this.props.id, 'seeking', false);
         this.props.onSeeked();
       },
       onPlay: () => {
-        this.props.setOption('paused', false);
+        this.props.setOption(this.props.id, 'paused', false);
         this.props.onPlay();
       },
       onEnded: () => {
         // Pause so that the play/pause button resets and the poster is shown again
-        this.props.pause(0);
+        this.props.pause(this.props.id, 0);
         this.updateMediaStatus();
 
         if (this.props.loop) {
@@ -165,7 +166,7 @@ class MediaContainer extends React.Component {
         this.props.onEnded();
       },
       onError: () => {
-        this.props.setOption('error', urlNotSupportedError(this.props.src));
+        this.props.setOption(this.props.id, 'error', urlNotSupportedError(this.props.src));
         this.props.onError();
       },
       onRateChange: this.props.onRateChange,
@@ -186,7 +187,7 @@ class MediaContainer extends React.Component {
   }
   componentDidMount() {
     this.currentMedia.src = this.props.src;
-    this.props.setOption('volumeSupported', canSetVolume());
+    this.props.setOption(this.props.id, 'volumeSupported', canSetVolume());
 
     this.updateCurrentMedia(this.props);
   }
@@ -199,7 +200,7 @@ class MediaContainer extends React.Component {
 
     if (nextProps.newTime !== null) {
       this.currentMedia.currentTime = nextProps.newTime;
-      this.props.setOption('newTime', null);
+      this.props.setOption(this.props.id, 'newTime', null);
     }
 
     if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
@@ -209,7 +210,11 @@ class MediaContainer extends React.Component {
         this.currentMedia.currentTime = toRelativePercentage(nextProps.playHeadPercent,
           this.getSeekableEnd());
         // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-        this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
+        this.props.setOption(
+          this.props.id,
+          'currentPercentRelative',
+          this.getCurrentPercentRelative(),
+        );
       }
     }
 
@@ -253,15 +258,15 @@ class MediaContainer extends React.Component {
       durationText = convertTime(this.currentMedia.duration, this.props.timeFormats);
     }
 
-    this.props.setOption('durationText', durationText);
-    this.props.setOption('currentTimeText', currentTimeText);
-    this.props.setOption('seekPercent', seekPercent);
-    this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
-    this.props.setOption('currentPercentAbsolute', currentPercentAbsolute);
-    this.props.setOption('currentTime', this.currentMedia.currentTime);
-    this.props.setOption('remaining', remaining);
-    this.props.setOption('duration', this.currentMedia.duration);
-    this.props.setOption('playbackRate', this.currentMedia.playbackRate);
+    this.props.setOption(this.props.id, 'durationText', durationText);
+    this.props.setOption(this.props.id, 'currentTimeText', currentTimeText);
+    this.props.setOption(this.props.id, 'seekPercent', seekPercent);
+    this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
+    this.props.setOption(this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
+    this.props.setOption(this.props.id, 'currentTime', this.currentMedia.currentTime);
+    this.props.setOption(this.props.id, 'remaining', remaining);
+    this.props.setOption(this.props.id, 'duration', this.currentMedia.duration);
+    this.props.setOption(this.props.id, 'playbackRate', this.currentMedia.playbackRate);
   }
   updateCurrentMedia = ({ defaultPlaybackRate, playbackRate, preload, volume,
     muted, autoplay, loop }) => {

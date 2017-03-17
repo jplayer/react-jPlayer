@@ -9,7 +9,9 @@ const setup = () => {
   const props = {
     onClick: createSpy(),
     children: (<i className="@@jPlayer-test" />),
-    'data-test': 'test',
+    attributes: {
+      'data-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Repeat {...props} />);
@@ -34,6 +36,6 @@ describe('<Repeat />', () => {
     expect(props.onClick).toHaveBeenCalled();
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 });

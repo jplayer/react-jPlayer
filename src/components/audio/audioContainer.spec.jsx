@@ -11,8 +11,8 @@ const videoStates = [
 ];
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
+const children = <div />;
 const id = 'jPlayer-1';
 const events = {
   onProgress: null,
@@ -20,10 +20,11 @@ const events = {
 
 describe('AudioContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, events, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, events, children, ...attributes });
     expect(expected).toEqual({
       require: true,
       events,
+      children,
       attributes,
     });
   });

@@ -4,7 +4,7 @@ import { setPlayHead } from '../../actions/actions';
 import BarEvents from '../../barEvents/barEvents';
 import SeekBar from './seekBar';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   seekPercent: jPlayers[id].seekPercent,
   movePlayHead: (bar, dispatch, e) => {
     const offset = getOffset(bar);
@@ -14,36 +14,41 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
 
     dispatch(setPlayHead(id, percentage));
   },
+  children,
   attributes,
 });
 
 // eslint-disable-next-line no-unused-vars
-const mergeProps = ({ movePlayHead, seekPercent, attributes }, { dispatch }) => ({
+const mergeProps = ({ movePlayHead, seekPercent, children, attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlayHead(bar, dispatch, e),
-  onTouch: (bar, e) => {
+  onTouchMove: (bar, e) => {
     // Stop page scrolling
     e.preventDefault();
 
     movePlayHead(bar, dispatch, e.touches[0]);
   },
   seekPercent,
+  children,
   attributes,
 });
 
-const SeekBarContainer = ({ onClick, onTouch, seekPercent, attributes }) => (
-  <BarEvents clickMoveBar={onClick} touchMoveBar={onTouch}>
-    <SeekBar seekPercent={seekPercent} {...attributes} />
+const SeekBarContainer = ({ onClick, onTouchMove, seekPercent, children, attributes }) => (
+  <BarEvents clickMoveBar={onClick} touchMoveBar={onTouchMove}>
+    <SeekBar seekPercent={seekPercent} {...attributes}>
+      {children}
+    </SeekBar>
   </BarEvents>
 );
 
 SeekBarContainer.defaultProps = {
-  attributes: null,
+  children: null,
 };
 
 SeekBarContainer.propTypes = {
-  attributes: React.PropTypes.object,
+  children: React.PropTypes.node,
+  attributes: React.PropTypes.object.isRequired,
   onClick: React.PropTypes.func.isRequired,
-  onTouch: React.PropTypes.func.isRequired,
+  onTouchMove: React.PropTypes.func.isRequired,
   seekPercent: React.PropTypes.number.isRequired,
 };
 

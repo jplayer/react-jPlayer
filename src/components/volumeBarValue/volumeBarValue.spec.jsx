@@ -19,7 +19,9 @@ const setup = () => {
   const props = {
     muted: false,
     volume: 0.8,
-    'data-test': 'test',
+    attributes: {
+      'data-test': 'test',
+    },
   };
 
   const wrapper = shallow(<VolumeBarValue {...props} />);
@@ -40,7 +42,7 @@ describe('<VolumeBarValue />', () => {
 
   it('renders self and subcomponents', () => {
     expect(wrapper.hasClass(classes.VOLUME_BAR_VALUE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 
   styleTests.forEach((test) => {

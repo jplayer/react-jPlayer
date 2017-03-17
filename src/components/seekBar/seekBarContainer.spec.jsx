@@ -18,12 +18,13 @@ const getBoundingClientRect = () => ({
 });
 const getProps = props => ({
   onClick: Function.prototype,
-  onTouch: Function.prototype,
+  onTouchMove: Function.prototype,
   ...props,
 });
 const attributes = {
   'data-test': 'test',
 };
+const children = <div />;
 const id = 'jPlayer-1';
 
 describe('SeekBarContainer', () => {
@@ -34,26 +35,28 @@ describe('SeekBarContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
 
     delete expected.movePlayHead;
 
     expect(expected).toEqual({
       seekPercent: 0,
+      children,
       attributes,
     });
   });
 
   it('merges props', () => {
     const seekPercent = 10;
-    const expected = mergeProps({ seekPercent, attributes }, dispatch, { id });
+    const expected = mergeProps({ seekPercent, children, attributes }, dispatch);
 
     delete expected.onClick;
-    delete expected.onTouch;
+    delete expected.onTouchMove;
 
     expect(expected).toEqual({
       seekPercent,
       attributes,
+      children,
     });
   });
 
@@ -70,7 +73,7 @@ describe('SeekBarContainer', () => {
     expect(dispatch).toHaveBeenCalledWith(setPlayHead(id, 3));
   });
 
-  it('onTouch moves playback rate', () => {
+  it('onTouchMove moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
@@ -84,7 +87,7 @@ describe('SeekBarContainer', () => {
       ],
     };
 
-    mergedProps.onTouch(mockBar, event);
+    mergedProps.onTouchMove(mockBar, event);
 
     expect(dispatch).toHaveBeenCalledWith(setPlayHead(id, 3));
     expect(event.preventDefault).toHaveBeenCalled();
@@ -96,7 +99,7 @@ describe('SeekBarContainer', () => {
 
     expect(wrapper.type()).toBe(BarEvents);
     expect(wrapper.prop('clickMoveBar')).toBe(props.onClick);
-    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouch);
+    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouchMove);
   });
 
   it('renders SeekBar', () => {

@@ -2,13 +2,14 @@ import { connectWithId } from '../../util/index';
 import { setLoop } from '../../actions/actions';
 import Repeat from './repeat';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   loop: jPlayers[id].loop,
+  children,
+  attributes,
 });
 
-const mergeProps = ({ loop }, { dispatch }, { id, ...attributes }) => ({
-  onClick: () => dispatch(setLoop(id, !loop)),
-  ...attributes,
+const mapDispatchToProps = (dispatch, { id }) => ({
+  onClick: loop => dispatch(setLoop(id, !loop)),
 });
 
-export default connectWithId(mapStateToProps, null, mergeProps)(Repeat);
+export default connectWithId(mapStateToProps, mapDispatchToProps)(Repeat);

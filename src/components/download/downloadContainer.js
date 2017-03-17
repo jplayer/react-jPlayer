@@ -1,12 +1,11 @@
 import { connectWithId } from '../../util/index';
 import Download from './download';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   free: jPlayers[id].media.free,
   url: jPlayers[id].src,
-  ...attributes,
+  children,
+  attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(Download);
+export default connectWithId(mapStateToProps)(Download);

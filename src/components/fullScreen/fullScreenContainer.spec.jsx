@@ -6,15 +6,15 @@ import { setFullScreen } from '../../actions/actions';
 import { __get__ } from './fullScreenContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
+const mapDispatchToProps = __get__('mapDispatchToProps');
 const fullScreenStates = [
    { fullScreen: false },
    { fullScreen: true },
 ];
 const id = 'jPlayer-1';
+const children = <div />;
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
 
 describe('FullScreenContainer', () => {
@@ -25,30 +25,21 @@ describe('FullScreenContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id });
+    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
 
     expect(expected).toEqual({
       fullScreen: false,
-    });
-  });
-
-  it('merges props', () => {
-    const expected = mergeProps({
-      fullScreen: true,
-    }, { dispatch }, { id, ...attributes });
-
-    delete expected.onClick;
-
-    expect(expected).toEqual({
-      ...attributes,
+      attributes,
+      children,
     });
   });
 
   fullScreenStates.forEach((fullScreenState) => {
-    it(`onClick toggles fullScreen (value: ${fullScreenState.fullScreen})`, () => {
-      const expected = mergeProps(fullScreenState, { dispatch }, { id });
+    it(`mapDispatchToProps onClick toggles fullScreen 
+    (value: ${fullScreenState.fullScreen})`, () => {
+      const mappedDispatched = mapDispatchToProps(dispatch, { id });
 
-      expected.onClick();
+      mappedDispatched.onClick(fullScreenState.fullScreen);
 
       expect(dispatch).toHaveBeenCalledWith(setFullScreen(
         id,

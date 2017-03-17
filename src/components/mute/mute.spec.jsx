@@ -8,8 +8,11 @@ import Mute from './mute';
 const setup = () => {
   const props = {
     onClick: createSpy(),
+    muted: false,
     children: (<i className="@@jPlayer-test" />),
-    'data-test': 'test',
+    attributes: {
+      'data-test': 'test',
+    },
   };
 
   const wrapper = shallow(<Mute {...props} />);
@@ -31,9 +34,9 @@ describe('<Mute />', () => {
   it('renders self and subcomponents', () => {
     wrapper.simulate('click');
 
-    expect(props.onClick).toHaveBeenCalled();
+    expect(props.onClick).toHaveBeenCalledWith(props.muted);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 });

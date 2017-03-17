@@ -6,11 +6,11 @@ import { setLoop } from '../../actions/actions';
 import { __get__ } from './repeatContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
+const mapDispatchToProps = __get__('mapDispatchToProps');
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
+const children = <div />;
 const id = 'jPlayer-1';
 
 describe('RepeatContainer', () => {
@@ -21,10 +21,12 @@ describe('RepeatContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id });
+    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
 
     expect(expected).toEqual({
       loop: false,
+      children,
+      attributes,
     });
   });
 
@@ -33,22 +35,11 @@ describe('RepeatContainer', () => {
     { loop: true },
   ];
 
-  it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { id, ...attributes });
-
-    delete expected.onClick;
-
-    expect(expected).toEqual({
-      ...attributes,
-    });
-  });
-
-  it('mergeProps onClick toggles loop', () => {
+  it('mappedDispatch onClick toggles loop', () => {
     onClickData.forEach((onClickDatum) => {
-      const mergedProps = mergeProps(getJPlayers(onClickDatum).jPlayers[id],
-        { dispatch }, { id });
+      const mappedDispatch = mapDispatchToProps(dispatch, { id });
 
-      mergedProps.onClick();
+      mappedDispatch.onClick(onClickDatum.loop);
 
       expect(dispatch).toHaveBeenCalledWith(setLoop(id, !onClickDatum.loop));
     });

@@ -62,12 +62,6 @@ const setup = (state, newProps, isAudio = true) => {
 };
 
 describe('MediaContainer', () => {
-  let dispatch;
-
-  beforeEach(() => {
-    dispatch = createSpy();
-  });
-
   it('maps state', () => {
     const expected = mapStateToProps(getJPlayers(), { id, children: mockAudio });
 
@@ -91,19 +85,11 @@ describe('MediaContainer', () => {
     });
   });
 
-  it('dispatches setOption in mapDispatchToProps when called', () => {
-    const key = 'test';
-    const value = true;
-    mapDispatchToProps(dispatch, { id }).setOption(key, value);
-
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, key, value));
-  });
-
-  it('dispatches pause in mapDispatchToProps when called', () => {
-    const time = 30;
-    mapDispatchToProps(dispatch, { id }).pause(time);
-
-    expect(dispatch).toHaveBeenCalledWith(pause(id, time));
+  it('maps correct actiont to props', () => {
+    expect(mapDispatchToProps).toEqual({
+      setOption,
+      pause,
+    });
   });
 
   it('updates media on startup', () => {
@@ -124,7 +110,7 @@ describe('MediaContainer', () => {
     });
     expect(instance.currentMedia.loop).toBe(true,
       `Expected ${props.loop} to be ${instance.currentMedia.loop} for loop`);
-    expect(props.setOption).toHaveBeenCalledWith('volumeSupported', true);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'volumeSupported', true);
   });
 
   it('updates media when props change', () => {
@@ -153,7 +139,7 @@ describe('MediaContainer', () => {
       `Expected ${props.loop} to be ${instance.currentMedia.loop} for loop`);
     expect(instance.currentMedia.currentTime).toBe(33,
       `Expected ${props.newtime} to be ${instance.currentMedia.currentTime} for newtime`);
-    expect(props.setOption).toHaveBeenCalledWith('newTime', null);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'newTime', null);
   });
 
   it('updates playHeadPercent when props change and seekable media', () => {
@@ -165,7 +151,7 @@ describe('MediaContainer', () => {
     }));
 
     expect(instance.currentMedia.currentTime).toBe(9.24);
-    expect(props.setOption).toHaveBeenCalledWith('currentPercentRelative', 44);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'currentPercentRelative', 44);
   });
 
   const pauseData = [
@@ -192,16 +178,17 @@ describe('MediaContainer', () => {
 
     instance.updateMediaStatus();
 
-    expect(props.setOption).toHaveBeenCalledWith('durationText', '04:10');
-    expect(props.setOption).toHaveBeenCalledWith('currentTimeText', '01:30');
-    expect(props.setOption).toHaveBeenCalledWith('seekPercent', 8.4);
-    expect(props.setOption).toHaveBeenCalledWith('currentPercentRelative', 428.57142857142856);
-    expect(props.setOption).toHaveBeenCalledWith('currentPercentAbsolute', 36);
-    expect(props.setOption).toHaveBeenCalledWith('currentTime', instance.currentMedia.currentTime);
-    expect(props.setOption).toHaveBeenCalledWith('remaining', 160);
-    expect(props.setOption).toHaveBeenCalledWith('duration', instance.currentMedia.duration);
-    expect(props.setOption)
-      .toHaveBeenCalledWith('playbackRate', instance.currentMedia.playbackRate);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '04:10');
+    expect(props.setOption).toHaveBeenCalledWith(id, 'currentTimeText', '01:30');
+    expect(props.setOption).toHaveBeenCalledWith(id, 'seekPercent', 8.4);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'currentPercentRelative', 428.57142857142856);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'currentPercentAbsolute', 36);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'currentTime',
+      instance.currentMedia.currentTime);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'remaining', 160);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'duration', instance.currentMedia.duration);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'playbackRate',
+      instance.currentMedia.playbackRate);
   });
 
   it('updateMediaStatus sets seekPercent to 0 when media not seekable', () => {
@@ -210,7 +197,7 @@ describe('MediaContainer', () => {
 
     instance.updateMediaStatus();
 
-    expect(props.setOption).toHaveBeenCalledWith('seekPercent', 0);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'seekPercent', 0);
   });
 
   it('updateMediaStatus sets durationText correctly when showRemainingDuration', () => {
@@ -218,7 +205,7 @@ describe('MediaContainer', () => {
 
     instance.updateMediaStatus();
 
-    expect(props.setOption).toHaveBeenCalledWith('durationText', '-02:40');
+    expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '-02:40');
   });
 
   it('updateMediaStatus sets durationText to 00:00 if time remaining is 0', () => {
@@ -229,7 +216,7 @@ describe('MediaContainer', () => {
 
     instance.updateMediaStatus();
 
-    expect(props.setOption).toHaveBeenCalledWith('durationText', '00:00');
+    expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '00:00');
   });
 
   it('getSeekableEnd gets the end of the seekable time', () => {
@@ -262,7 +249,7 @@ describe('MediaContainer', () => {
       { start: 1, end: 1 },
     ];
 
-    expect(props.setOption).toHaveBeenCalledWith('bufferedTimeRanges', expected);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'bufferedTimeRanges', expected);
     expect(onProgress).toHaveBeenCalled();
     expect(instance.updateMediaStatus).toHaveBeenCalled();
   });
@@ -298,7 +285,7 @@ describe('MediaContainer', () => {
     instance.events.onSeeking();
 
     expect(onSeeking).toHaveBeenCalled();
-    expect(props.setOption).toHaveBeenCalledWith('seeking', true);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'seeking', true);
   });
 
   it('onSeeked event sets seeking to false', () => {
@@ -308,7 +295,7 @@ describe('MediaContainer', () => {
     instance.events.onSeeked();
 
     expect(onSeeked).toHaveBeenCalled();
-    expect(props.setOption).toHaveBeenCalledWith('seeking', false);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'seeking', false);
   });
 
   it('onPlay event sets paused to false', () => {
@@ -318,7 +305,7 @@ describe('MediaContainer', () => {
     instance.events.onPlay();
 
     expect(onPlay).toHaveBeenCalled();
-    expect(props.setOption).toHaveBeenCalledWith('paused', false);
+    expect(props.setOption).toHaveBeenCalledWith(id, 'paused', false);
   });
 
   it('onEnded event updates media status', () => {
@@ -331,7 +318,7 @@ describe('MediaContainer', () => {
     instance.events.onEnded();
 
     expect(instance.updateMediaStatus).toHaveBeenCalled();
-    expect(props.pause).toHaveBeenCalledWith(0);
+    expect(props.pause).toHaveBeenCalledWith(id, 0);
     expect(onEnded).toHaveBeenCalled();
     expect(onRepeat).toNotHaveBeenCalled();
   });
@@ -352,7 +339,7 @@ describe('MediaContainer', () => {
     instance.events.onError();
 
     expect(props.setOption)
-      .toHaveBeenCalledWith('error', urlNotSupportedError(props.src));
+      .toHaveBeenCalledWith(id, 'error', urlNotSupportedError(props.src));
     expect(onError).toHaveBeenCalled();
   });
 

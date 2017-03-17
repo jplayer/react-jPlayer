@@ -7,7 +7,7 @@ import Gui, { __get__ } from './gui';
 
 const setup = (newProps) => {
   const props = {
-    onMouseEnter: createSpy(),
+    onMouseMove: createSpy(),
     children: (<div className="@@jPlayer-test" />),
     fullScreen: false,
     guiFadeOut: false,
@@ -32,9 +32,9 @@ describe('<Gui />', () => {
     ({ wrapper, props } = setup());
     const gui = wrapper.dive();
 
-    gui.simulate('mouseenter');
+    gui.simulate('mousemove');
 
-    expect(props.onMouseEnter).toHaveBeenCalled();
+    expect(props.onMouseMove).toHaveBeenCalled();
     expect(gui.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(gui.hasClass(classes.GUI)).toBeTruthy();
     expect(gui.prop('data-test')).toBe(props['data-test']);
@@ -81,6 +81,6 @@ describe('<Gui />', () => {
   });
 
   afterEach(() => {
-    props.onMouseEnter.reset();
+    props.onMouseMove.reset();
   });
 });

@@ -1,13 +1,12 @@
 import { connectWithId } from '../../util/index';
 import VolumeBarValue from './volumeBarValue';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   verticalVolume: jPlayers[id].verticalVolume,
   muted: jPlayers[id].muted,
   volume: jPlayers[id].volume,
-  ...attributes,
+  children,
+  attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(VolumeBarValue);
+export default connectWithId(mapStateToProps)(VolumeBarValue);

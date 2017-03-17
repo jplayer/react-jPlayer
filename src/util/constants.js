@@ -191,6 +191,7 @@ export const defaultOptions = {
   guiFadeHoldTime: 3000,
   media: {
     title: '',
+    artist: '',
     poster: '',
     free: false,
   },

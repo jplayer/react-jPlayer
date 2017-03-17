@@ -7,7 +7,9 @@ import Title from './title';
 
 const setup = (newProps) => {
   const props = {
-    'data-test': 'test',
+    attributes: {
+      'data-test': 'test',
+    },
     artist: 'Alan Walker',
     title: 'Fade',
     ...newProps,
@@ -32,7 +34,7 @@ describe('<Title />', () => {
 
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 
   it('renders artist and title if children are not specified', () => {
@@ -40,6 +42,5 @@ describe('<Title />', () => {
 
     expect(wrapper.prop('children')).toBe(`${props.artist} - ${props.title}`);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

@@ -2,13 +2,14 @@ import { play, pause } from '../../actions/actions';
 import { connectWithId } from '../../util/index';
 import Play from './play';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   paused: jPlayers[id].paused,
+  children,
+  attributes,
 });
 
-const mergeProps = ({ paused }, { dispatch }, { id, ...attributes }) => ({
-  onClick: () => (paused ? dispatch(play(id)) : dispatch(pause(id))),
-  ...attributes,
+const mapDispatchToProps = (dispatch, { id }) => ({
+  onClick: paused => (paused ? dispatch(play(id)) : dispatch(pause(id))),
 });
 
-export default connectWithId(mapStateToProps, null, mergeProps)(Play);
+export default connectWithId(mapStateToProps, mapDispatchToProps)(Play);

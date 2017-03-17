@@ -2,7 +2,7 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Download = ({ free, url, children, ...attributes }) => (
+const Download = ({ free, url, children, attributes }) => (
   free ?
     <a
       {...attributes} className={classes.DOWNLOAD} href={url}
@@ -14,6 +14,7 @@ const Download = ({ free, url, children, ...attributes }) => (
 );
 
 Download.propTypes = {
+  attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.node.isRequired,
   url: React.PropTypes.string.isRequired,
   free: React.PropTypes.bool.isRequired,

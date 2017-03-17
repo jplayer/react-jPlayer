@@ -6,9 +6,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   minPlaybackRate: jPlayers[id].minPlaybackRate,
   maxPlaybackRate: jPlayers[id].maxPlaybackRate,
   playbackRate: jPlayers[id].playbackRate,
-  ...attributes,
+  attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(PlaybackRateBarValue);
+export default connectWithId(mapStateToProps)(PlaybackRateBarValue);

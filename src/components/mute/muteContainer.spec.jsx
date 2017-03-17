@@ -5,12 +5,12 @@ import { setMute } from '../../actions/actions';
 import { __get__ } from './muteContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
+const mapDispatchToProps = __get__('mapDispatchToProps');
 const id = 'jPlayer-1';
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
+const children = <div />;
 
 describe('MuteContainer', () => {
   let dispatch;
@@ -20,20 +20,12 @@ describe('MuteContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id });
+    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
 
     expect(expected).toEqual({
       muted: false,
-    });
-  });
-
-  it('merges props', () => {
-    const expected = mergeProps({}, { dispatch }, { id, ...attributes });
-
-    delete expected.onClick;
-
-    expect(expected).toEqual({
-      ...attributes,
+      children,
+      attributes,
     });
   });
 
@@ -42,12 +34,11 @@ describe('MuteContainer', () => {
     { muted: true },
   ];
 
-  it('mergeProps onClick toggle mute', () => {
+  it('mapDispatchToProps onClick toggles mute', () => {
     muteData.forEach((muteDatum) => {
-      const mergedProps = mergeProps(getJPlayers(muteDatum).jPlayers[id],
-        { dispatch }, { id });
+      const mappedDispatched = mapDispatchToProps(dispatch, { id });
 
-      mergedProps.onClick();
+      mappedDispatched.onClick(muteDatum.muted);
 
       expect(dispatch).toHaveBeenCalledWith(setMute(id, !muteDatum.muted));
     });

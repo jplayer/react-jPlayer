@@ -9,7 +9,10 @@ const setup = () => {
   const props = {
     onClick: createSpy(),
     children: (<i className="@@jPlayer-test" />),
-    'data-test': 'test',
+    fullScreen: false,
+    attributes: {
+      'data-test': 'test',
+    },
   };
 
   const wrapper = shallow(<FullScreen {...props} />);
@@ -29,11 +32,11 @@ describe('<FullScreen />', () => {
   });
 
   it('renders self and subcomponents', () => {
-    wrapper.simulate('click');
+    wrapper.simulate('click', props.fullScreen);
 
-    expect(props.onClick).toHaveBeenCalled();
+    expect(props.onClick).toHaveBeenCalledWith(props.fullScreen);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.FULL_SCREEN)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 });

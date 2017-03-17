@@ -2,7 +2,7 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Poster = ({ src, alt, ...attributes }) =>
+const Poster = ({ src, alt, attributes }) =>
   <img {...attributes} className={classes.POSTER} alt={alt} src={src} />;
 
 Poster.defaultProps = {
@@ -10,6 +10,7 @@ Poster.defaultProps = {
 };
 
 Poster.propTypes = {
+  attributes: React.PropTypes.object.isRequired,
   src: React.PropTypes.string.isRequired,
   alt: React.PropTypes.string,
 };

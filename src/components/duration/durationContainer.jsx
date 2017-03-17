@@ -3,9 +3,7 @@ import Duration from './duration';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   children: children || jPlayers[id].durationText,
-  ...attributes,
+  attributes,
 });
 
-const mergeProps = stateProps => ({ ...stateProps });
-
-export default connectWithId(mapStateToProps, null, mergeProps)(Duration);
+export default connectWithId(mapStateToProps)(Duration);

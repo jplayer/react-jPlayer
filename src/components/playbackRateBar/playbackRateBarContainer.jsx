@@ -5,7 +5,7 @@ import BarEvents from '../../barEvents/barEvents';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   movePlaybackRate: (bar, dispatch, e) => {
     const { verticalPlaybackRate, minPlaybackRate,
       maxPlaybackRate } = jPlayers[id];
@@ -27,24 +27,27 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
 
     dispatch(setPlaybackRate(id, playbackRateValue));
   },
+  children,
   attributes,
 });
 
-const mergeProps = ({ movePlaybackRate, attributes }, { dispatch }) => ({
+const mergeProps = ({ movePlaybackRate, children, attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlaybackRate(bar, dispatch, e),
-  onTouch: (bar, e) => {
+  onTouchMove: (bar, e) => {
     // Stop page scrolling
     e.preventDefault();
 
     movePlaybackRate(bar, dispatch, e.touches[0]);
   },
+  children,
   attributes,
 });
 
-const PlaybackRateBarContainer = ({ onClick, onTouch, children, attributes }) => (
+const PlaybackRateBarContainer = ({ onClick, onTouchMove, children,
+attributes }) => (
   <BarEvents
     clickMoveBar={onClick}
-    touchMoveBar={onTouch}
+    touchMoveBar={onTouchMove}
   >
     <PlaybackRateBar {...attributes}>
       {children}
@@ -53,15 +56,14 @@ const PlaybackRateBarContainer = ({ onClick, onTouch, children, attributes }) =>
 );
 
 PlaybackRateBarContainer.defaultProps = {
-  attributes: null,
   children: (<PlaybackRateBarValue />),
 };
 
 PlaybackRateBarContainer.propTypes = {
-  attributes: React.PropTypes.object,
+  attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.node,
   onClick: React.PropTypes.func.isRequired,
-  onTouch: React.PropTypes.func.isRequired,
+  onTouchMove: React.PropTypes.func.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);

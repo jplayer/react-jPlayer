@@ -21,13 +21,13 @@ const getBoundingClientRect = () => ({
 });
 const getProps = props => ({
   onClick: Function.prototype,
-  onTouch: Function.prototype,
+  onTouchMove: Function.prototype,
   ...props,
 });
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
+const children = <div />;
 
 describe('VolumeBarContainer', () => {
   let dispatch;
@@ -37,23 +37,25 @@ describe('VolumeBarContainer', () => {
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
 
     delete expected.moveVolumeBar;
 
     expect(expected).toEqual({
+      children,
       attributes,
     });
   });
 
   it('merges props', () => {
     const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, attributes }, dispatch, { id });
+    const expected = mergeProps({ ...stateProps, children, attributes }, dispatch, { id });
 
     delete expected.onClick;
-    delete expected.onTouch;
+    delete expected.onTouchMove;
 
     expect(expected).toEqual({
+      children,
       attributes,
     });
   });
@@ -86,7 +88,7 @@ describe('VolumeBarContainer', () => {
     expect(dispatch).toHaveBeenCalledWith(setVolume(id, 1.3));
   });
 
-  it('onTouch moves volume bar', () => {
+  it('onTouchMove moves volume bar', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
@@ -100,13 +102,13 @@ describe('VolumeBarContainer', () => {
       ],
     };
 
-    mergedProps.onTouch(mockBar, event);
+    mergedProps.onTouchMove(mockBar, event);
 
     expect(dispatch).toHaveBeenCalledWith(setVolume(id, 0.03));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('onTouch moves volume bar when verticalVolume', () => {
+  it('onTouchMove moves volume bar when verticalVolume', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
@@ -122,7 +124,7 @@ describe('VolumeBarContainer', () => {
       ],
     };
 
-    mergedProps.onTouch(mockBar, event);
+    mergedProps.onTouchMove(mockBar, event);
 
     expect(dispatch).toHaveBeenCalledWith(setVolume(id, 1.3));
     expect(event.preventDefault).toHaveBeenCalled();
@@ -134,7 +136,7 @@ describe('VolumeBarContainer', () => {
 
     expect(wrapper.type()).toBe(BarEvents);
     expect(wrapper.prop('clickMoveBar')).toBe(props.onClick);
-    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouch);
+    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouchMove);
   });
 
   it('renders VolumeBar', () => {

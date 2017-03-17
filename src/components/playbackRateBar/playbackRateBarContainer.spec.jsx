@@ -21,13 +21,13 @@ const getBoundingClientRect = () => ({
 });
 const getProps = props => ({
   onClick: Function.prototype,
-  onTouch: Function.prototype,
+  onTouchMove: Function.prototype,
   ...props,
 });
 const attributes = {
   'data-test': 'test',
-  children: <div />,
 };
+const children = <div />;
 
 describe('PlaybackRateBarContainer', () => {
   let dispatch;
@@ -36,23 +36,14 @@ describe('PlaybackRateBarContainer', () => {
     dispatch = createSpy();
   });
 
-  it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
-
-    delete expected.movePlaybackRate;
-
-    expect(expected).toEqual({
-      attributes,
-    });
-  });
-
   it('merges props', () => {
-    const expected = mergeProps({ attributes }, { dispatch }, { id });
+    const expected = mergeProps({ children, attributes }, { dispatch });
 
     delete expected.onClick;
-    delete expected.onTouch;
+    delete expected.onTouchMove;
 
     expect(expected).toEqual({
+      children,
       attributes,
     });
   });
@@ -85,7 +76,7 @@ describe('PlaybackRateBarContainer', () => {
     expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 5.05));
   });
 
-  it('onTouch moves playback rate', () => {
+  it('onTouchMove moves playback rate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
@@ -99,13 +90,13 @@ describe('PlaybackRateBarContainer', () => {
       ],
     };
 
-    mergedProps.onTouch(mockBar, event);
+    mergedProps.onTouchMove(mockBar, event);
 
     expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 0.605));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('onTouch moves playback rate when verticalPlaybackRate', () => {
+  it('onTouchMove moves playback rate when verticalPlaybackRate', () => {
     spyOn(document, 'createElement').andReturn({
       getBoundingClientRect,
     });
@@ -121,7 +112,7 @@ describe('PlaybackRateBarContainer', () => {
       ],
     };
 
-    mergedProps.onTouch(mockBar, event);
+    mergedProps.onTouchMove(mockBar, event);
 
     expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 5.05));
     expect(event.preventDefault).toHaveBeenCalled();
@@ -133,7 +124,7 @@ describe('PlaybackRateBarContainer', () => {
 
     expect(wrapper.type()).toBe(BarEvents);
     expect(wrapper.prop('clickMoveBar')).toBe(props.onClick);
-    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouch);
+    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouchMove);
   });
 
   it('renders PlaybackRateBar', () => {

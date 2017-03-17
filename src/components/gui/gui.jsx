@@ -14,6 +14,7 @@ const motion = (values, onMouseMove, attributes) => (
   />
 );
 
+// TODO: onMouseEnter instead of mouseMove?
 const Gui = ({ fullScreen, guiFadeOut, onMouseMove, ...attributes }) => (
   <Motion
     defaultStyle={{ opacity: 1 }}

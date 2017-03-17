@@ -15,9 +15,9 @@ const PlaybackRateBar = ({ onClick, onMouseDown, onTouchStart,
 
 PlaybackRateBar.defaultProps = {
   onClick: null,
-  setBar: null,
   onMouseDown: null,
   onTouchStart: null,
+  setBar: null,
 };
 
 PlaybackRateBar.propTypes = {
