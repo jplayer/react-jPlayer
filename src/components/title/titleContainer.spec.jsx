@@ -1,5 +1,5 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
 import { __get__ } from './titleContainer';
