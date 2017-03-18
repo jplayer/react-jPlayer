@@ -92,10 +92,6 @@ var actionNames = exports.actionNames = {
   PLAY_HEAD: 'PLAY_HEAD',
   VOLUME: 'VOLUME',
   MUTE: 'MUTE',
-  DURATION: 'DURATION',
-  PLAYBACK_RATE: 'PLAYBACK_RATE',
-  LOOP: 'LOOP',
-  FULL_SCREEN: 'FULL_SCREEN',
   FOCUS: 'FOCUS'
 };
 
@@ -258,7 +254,7 @@ var defaultStatus = exports.defaultStatus = {
   ended: 0,
   error: {},
   bufferedTimeRanges: [],
-  focus: false
+  focused: false
 };
 
 var defaultOptions = exports.defaultOptions = {
@@ -274,6 +270,7 @@ var defaultOptions = exports.defaultOptions = {
   guiFadeHoldTime: 3000,
   media: {
     title: '',
+    artist: '',
     poster: '',
     free: false
   },
@@ -455,7 +452,7 @@ var convertTime = exports.convertTime = function convertTime(seconds, timeFormat
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.focus = exports.setFullScreen = exports.setLoop = exports.setPlaybackRate = exports.setDuration = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = exports.setOption = undefined;
+exports.focus = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = exports.setOption = undefined;
 
 var _constants = __webpack_require__(1);
 
@@ -513,34 +510,6 @@ var setMute = exports.setMute = function setMute(id, mute) {
     type: _constants.actionNames.MUTE,
     id: id,
     mute: mute
-  };
-};
-var setDuration = exports.setDuration = function setDuration(id, remainingDuration) {
-  return {
-    type: _constants.actionNames.DURATION,
-    id: id,
-    remainingDuration: remainingDuration
-  };
-};
-var setPlaybackRate = exports.setPlaybackRate = function setPlaybackRate(id, playbackRate) {
-  return {
-    type: _constants.actionNames.PLAYBACK_RATE,
-    id: id,
-    playbackRate: playbackRate
-  };
-};
-var setLoop = exports.setLoop = function setLoop(id, loop) {
-  return {
-    type: _constants.actionNames.LOOP,
-    id: id,
-    loop: loop
-  };
-};
-var setFullScreen = exports.setFullScreen = function setFullScreen(id, fullScreen) {
-  return {
-    type: _constants.actionNames.FULL_SCREEN,
-    id: id,
-    fullScreen: fullScreen
   };
 };
 var focus = exports.focus = function focus(id) {
@@ -672,8 +641,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _index = __webpack_require__(2);
 
 var _playbackRateBarValue = __webpack_require__(45);
@@ -690,19 +657,16 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var id = _ref.id,
       attributes = _objectWithoutProperties(_ref, ['id']);
 
-  return _extends({
+  return {
     verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
     minPlaybackRate: jPlayers[id].minPlaybackRate,
     maxPlaybackRate: jPlayers[id].maxPlaybackRate,
-    playbackRate: jPlayers[id].playbackRate
-  }, attributes);
+    playbackRate: jPlayers[id].playbackRate,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_playbackRateBarValue2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_playbackRateBarValue2.default);
 
 /***/ }),
 /* 6 */
@@ -714,8 +678,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -731,20 +693,19 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
-  return _extends({
+  return {
     verticalVolume: jPlayers[id].verticalVolume,
     muted: jPlayers[id].muted,
-    volume: jPlayers[id].volume
-  }, attributes);
+    volume: jPlayers[id].volume,
+    children: children,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_volumeBarValue2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_volumeBarValue2.default);
 
 /***/ }),
 /* 7 */
@@ -801,16 +762,9 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch, _ref3) {
-  var id = _ref3.id;
-  return {
-    setOption: function setOption(key, value) {
-      return dispatch((0, _actions.setOption)(id, key, value));
-    },
-    pause: function pause(time) {
-      return dispatch((0, _actions.pause)(id, time));
-    }
-  };
+var mapDispatchToProps = {
+  setOption: _actions.setOption,
+  pause: _actions.pause
 };
 
 var MediaContainer = function (_React$Component) {
@@ -850,6 +804,7 @@ var MediaContainer = function (_React$Component) {
         paused: _react2.default.PropTypes.bool.isRequired,
         setOption: _react2.default.PropTypes.func.isRequired,
         pause: _react2.default.PropTypes.func.isRequired,
+        id: _react2.default.PropTypes.string.isRequired,
         timeFormats: _react2.default.PropTypes.shape({
           showHour: _react2.default.PropTypes.bool.isRequired,
           showMin: _react2.default.PropTypes.bool.isRequired,
@@ -945,25 +900,25 @@ var MediaContainer = function (_React$Component) {
         durationText = (0, _index.convertTime)(_this.currentMedia.duration, _this.props.timeFormats);
       }
 
-      _this.props.setOption('durationText', durationText);
-      _this.props.setOption('currentTimeText', currentTimeText);
-      _this.props.setOption('seekPercent', seekPercent);
-      _this.props.setOption('currentPercentRelative', _this.getCurrentPercentRelative());
-      _this.props.setOption('currentPercentAbsolute', currentPercentAbsolute);
-      _this.props.setOption('currentTime', _this.currentMedia.currentTime);
-      _this.props.setOption('remaining', remaining);
-      _this.props.setOption('duration', _this.currentMedia.duration);
-      _this.props.setOption('playbackRate', _this.currentMedia.playbackRate);
+      _this.props.setOption(_this.props.id, 'durationText', durationText);
+      _this.props.setOption(_this.props.id, 'currentTimeText', currentTimeText);
+      _this.props.setOption(_this.props.id, 'seekPercent', seekPercent);
+      _this.props.setOption(_this.props.id, 'currentPercentRelative', _this.getCurrentPercentRelative());
+      _this.props.setOption(_this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
+      _this.props.setOption(_this.props.id, 'currentTime', _this.currentMedia.currentTime);
+      _this.props.setOption(_this.props.id, 'remaining', remaining);
+      _this.props.setOption(_this.props.id, 'duration', _this.currentMedia.duration);
+      _this.props.setOption(_this.props.id, 'playbackRate', _this.currentMedia.playbackRate);
     };
 
-    _this.updateCurrentMedia = function (_ref4) {
-      var defaultPlaybackRate = _ref4.defaultPlaybackRate,
-          playbackRate = _ref4.playbackRate,
-          preload = _ref4.preload,
-          volume = _ref4.volume,
-          muted = _ref4.muted,
-          autoplay = _ref4.autoplay,
-          loop = _ref4.loop;
+    _this.updateCurrentMedia = function (_ref3) {
+      var defaultPlaybackRate = _ref3.defaultPlaybackRate,
+          playbackRate = _ref3.playbackRate,
+          preload = _ref3.preload,
+          volume = _ref3.volume,
+          muted = _ref3.muted,
+          autoplay = _ref3.autoplay,
+          loop = _ref3.loop;
 
       _this.currentMedia.defaultPlaybackRate = defaultPlaybackRate;
       _this.currentMedia.playbackRate = playbackRate;
@@ -987,7 +942,7 @@ var MediaContainer = function (_React$Component) {
           });
         }
         _this.updateMediaStatus();
-        _this.props.setOption('bufferedTimeRanges', bufferedTimeRanges);
+        _this.props.setOption(_this.props.id, 'bufferedTimeRanges', bufferedTimeRanges);
         _this.props.onProgress();
       },
       onTimeUpdate: function onTimeUpdate() {
@@ -999,20 +954,20 @@ var MediaContainer = function (_React$Component) {
         _this.props.onDurationChange();
       },
       onSeeking: function onSeeking() {
-        _this.props.setOption('seeking', true);
+        _this.props.setOption(_this.props.id, 'seeking', true);
         _this.props.onSeeking();
       },
       onSeeked: function onSeeked() {
-        _this.props.setOption('seeking', false);
+        _this.props.setOption(_this.props.id, 'seeking', false);
         _this.props.onSeeked();
       },
       onPlay: function onPlay() {
-        _this.props.setOption('paused', false);
+        _this.props.setOption(_this.props.id, 'paused', false);
         _this.props.onPlay();
       },
       onEnded: function onEnded() {
         // Pause so that the play/pause button resets and the poster is shown again
-        _this.props.pause(0);
+        _this.props.pause(_this.props.id, 0);
         _this.updateMediaStatus();
 
         if (_this.props.loop) {
@@ -1021,7 +976,7 @@ var MediaContainer = function (_React$Component) {
         _this.props.onEnded();
       },
       onError: function onError() {
-        _this.props.setOption('error', (0, _index.urlNotSupportedError)(_this.props.src));
+        _this.props.setOption(_this.props.id, 'error', (0, _index.urlNotSupportedError)(_this.props.src));
         _this.props.onError();
       },
       onRateChange: _this.props.onRateChange,
@@ -1046,7 +1001,7 @@ var MediaContainer = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.currentMedia.src = this.props.src;
-      this.props.setOption('volumeSupported', (0, _index.canSetVolume)());
+      this.props.setOption(this.props.id, 'volumeSupported', (0, _index.canSetVolume)());
 
       this.updateCurrentMedia(this.props);
     }
@@ -1061,7 +1016,7 @@ var MediaContainer = function (_React$Component) {
 
       if (nextProps.newTime !== null) {
         this.currentMedia.currentTime = nextProps.newTime;
-        this.props.setOption('newTime', null);
+        this.props.setOption(this.props.id, 'newTime', null);
       }
 
       if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
@@ -1070,7 +1025,7 @@ var MediaContainer = function (_React$Component) {
         if (this.currentMedia.seekable.length > 0) {
           this.currentMedia.currentTime = (0, _index.toRelativePercentage)(nextProps.playHeadPercent, this.getSeekableEnd());
           // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
-          this.props.setOption('currentPercentRelative', this.getCurrentPercentRelative());
+          this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
         }
       }
 
@@ -1125,8 +1080,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _index = __webpack_require__(2);
 
 var _audio = __webpack_require__(33);
@@ -1141,18 +1094,19 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      events = _ref.events,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'events', 'children']);
 
-  return _extends({
-    require: !jPlayers[id].mediaSettings.video
-  }, attributes);
+  return {
+    require: !jPlayers[id].mediaSettings.video,
+    events: events,
+    children: children,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_audio2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_audio2.default);
 
 /***/ }),
 /* 12 */
@@ -1198,8 +1152,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -1232,10 +1184,6 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
     bufferColour: jPlayers[id].bufferColour,
     attributes: attributes
   };
-};
-
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
 };
 
 var BufferBarContainer = function (_React$Component) {
@@ -1288,13 +1236,13 @@ var BufferBarContainer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_bufferBar2.default, _extends({ setCanvas: this.setCanvas }, this.props.attributes));
+      return _react2.default.createElement(_bufferBar2.default, { setCanvas: this.setCanvas, attributes: this.props.attributes });
     }
   }], [{
     key: 'propTypes',
     get: function get() {
       return {
-        attributes: _react2.default.PropTypes.object,
+        attributes: _react2.default.PropTypes.object.isRequired,
         bufferedTimeRanges: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
           start: _react2.default.PropTypes.number.isRequired,
           end: _react2.default.PropTypes.number.isRequired
@@ -1304,19 +1252,12 @@ var BufferBarContainer = function (_React$Component) {
         duration: _react2.default.PropTypes.number.isRequired
       };
     }
-  }, {
-    key: 'defaultProps',
-    get: function get() {
-      return {
-        attributes: null
-      };
-    }
   }]);
 
   return BufferBarContainer;
 }(_react2.default.Component);
 
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(BufferBarContainer);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(BufferBarContainer);
 
 /***/ }),
 /* 14 */
@@ -1328,8 +1269,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(B
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -1348,16 +1287,13 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
       children = _ref.children,
       attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
-  return _extends({
-    children: children || jPlayers[id].currentTimeText
-  }, attributes);
+  return {
+    children: children || jPlayers[id].currentTimeText,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_currentTime2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_currentTime2.default);
 
 /***/ }),
 /* 15 */
@@ -1369,8 +1305,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -1386,19 +1320,18 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
-  return _extends({
+  return {
     free: jPlayers[id].media.free,
-    url: jPlayers[id].src
-  }, attributes);
+    url: jPlayers[id].src,
+    children: children,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_download2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_download2.default);
 
 /***/ }),
 /* 16 */
@@ -1410,8 +1343,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -1430,16 +1361,13 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
       children = _ref.children,
       attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
-  return _extends({
-    children: children || jPlayers[id].durationText
-  }, attributes);
+  return {
+    children: children || jPlayers[id].durationText,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_duration2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_duration2.default);
 
 /***/ }),
 /* 17 */
@@ -1451,8 +1379,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -1466,29 +1392,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
   return {
-    fullScreen: jPlayers[id].fullScreen
+    fullScreen: jPlayers[id].fullScreen,
+    id: id,
+    children: children,
+    attributes: attributes
   };
 };
 
-var mergeProps = function mergeProps(_ref4, _ref5, _ref3) {
-  var fullScreen = _ref4.fullScreen;
-  var dispatch = _ref5.dispatch;
-
-  var id = _ref3.id,
-      attributes = _objectWithoutProperties(_ref3, ['id']);
-
-  return _extends({
-    onClick: function onClick() {
-      return dispatch((0, _actions.setFullScreen)(id, !fullScreen));
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onClick: function onClick(id, fullScreen) {
+      return dispatch((0, _actions.setOption)(id, 'fullScreen', !fullScreen));
     }
-  }, attributes);
+  };
 };
 
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_fullScreen2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_fullScreen2.default);
 
 /***/ }),
 /* 18 */
@@ -1618,6 +1545,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
     paused: jPlayers[id].paused,
     guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
     guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
+    id: id,
     children: children,
     attributes: _extends({}, attributes, {
       className: (0, _classnames2.default)(attributes.className, _constants.classes.JPLAYER, (_classNames = {}, _defineProperty(_classNames, _constants.classes.states.AUDIO, !jPlayers[id].mediaSettings.video), _defineProperty(_classNames, _constants.classes.states.VIDEO, jPlayers[id].mediaSettings.video), _defineProperty(_classNames, _constants.classes.states.PLAYING, !jPlayers[id].paused), _defineProperty(_classNames, _constants.classes.states.IDLE, jPlayers[id].currentTime === 0), _defineProperty(_classNames, _constants.classes.states.FULL_SCREEN, jPlayers[id].fullScreen), _defineProperty(_classNames, _constants.classes.states.MUTED, jPlayers[id].muted), _defineProperty(_classNames, _constants.classes.states.VOLUME_LOW, !jPlayers[id].muted && jPlayers[id].volume < 0.5), _defineProperty(_classNames, _constants.classes.states.VOLUME_HIGH, !jPlayers[id].muted && jPlayers[id].volume >= 0.5), _defineProperty(_classNames, _constants.classes.states.SEEKING, jPlayers[id].seeking), _defineProperty(_classNames, _constants.classes.states.LOOPED, jPlayers[id].loop), _defineProperty(_classNames, _constants.classes.states.NO_BROWSER_SUPPORT, !jPlayers[id].mediaSettings.foundSupported), _defineProperty(_classNames, _constants.classes.states.NO_VOLUME_SUPPORT, !jPlayers[id].volumeSupported), _classNames))
@@ -1625,24 +1553,18 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   };
 };
 
-var mergeProps = function mergeProps(stateProps, _ref3, _ref4) {
-  var dispatch = _ref3.dispatch;
-  var id = _ref4.id;
-  return _extends({
-    setMedia: function setMedia(media) {
-      return dispatch((0, _actions.setMedia)(id, media));
-    },
-    setOption: function setOption(key, value) {
-      return dispatch((0, _actions.setOption)(id, key, value));
-    }
-  }, stateProps);
+var mapDispatchToProps = function mapDispatchToProps() {
+  return {
+    setMedia: _actions.setMedia,
+    setOption: _actions.setOption
+  };
 };
 
 var JPlayerContainer = function (_React$Component) {
   _inherits(JPlayerContainer, _React$Component);
 
   function JPlayerContainer() {
-    var _ref5;
+    var _ref3;
 
     var _temp, _this, _ret;
 
@@ -1652,7 +1574,7 @@ var JPlayerContainer = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref5 = JPlayerContainer.__proto__ || Object.getPrototypeOf(JPlayerContainer)).call.apply(_ref5, [this].concat(args))), _this), _this.onMouseMove = function (e) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = JPlayerContainer.__proto__ || Object.getPrototypeOf(JPlayerContainer)).call.apply(_ref3, [this].concat(args))), _this), _this.onMouseMove = function (e) {
       if (_this.props.fullScreen) {
         if (_this.props.paused) {
           if ((0, _index.traverseParentsUntilClassName)(e.target, _constants.classes.GUI)) {
@@ -1663,8 +1585,8 @@ var JPlayerContainer = function (_React$Component) {
       }
     }, _this.setJPlayer = function (ref) {
       return _this.jPlayer = ref;
-    }, _this.setFullScreen = function (_ref6) {
-      var fullScreen = _ref6.fullScreen;
+    }, _this.setFullScreen = function (_ref4) {
+      var fullScreen = _ref4.fullScreen;
 
       if (fullScreen) {
         if (_screenfull2.default.enabled) {
@@ -1682,19 +1604,19 @@ var JPlayerContainer = function (_React$Component) {
     }, _this.startGuiFadeOutTimer = function () {
       if (_this.props.fullScreen && !_this.props.paused) {
         clearTimeout(_this.props.guiFadeHoldTimeout);
-        _this.props.setOption('guiFadeOut', false);
-        _this.props.setOption('guiFadeHoldTimeout', setTimeout(_this.startGuiFadeOut, _this.props.guiFadeHoldTime));
+        _this.props.setOption(_this.props.id, 'guiFadeOut', false);
+        _this.props.setOption(_this.props.id, 'guiFadeHoldTimeout', setTimeout(_this.startGuiFadeOut, _this.props.guiFadeHoldTime));
       }
     }, _this.startGuiFadeOut = function () {
       if (_this.props.fullScreen && !_this.props.paused) {
-        _this.props.setOption('guiFadeOut', true);
+        _this.props.setOption(_this.props.id, 'guiFadeOut', true);
       }
     }, _this.closeFullScreen = function () {
       if (!_screenfull2.default.isFullscreen) {
-        _this.props.setOption('fullScreen', false);
+        _this.props.setOption(_this.props.id, 'fullScreen', false);
       }
-    }, _this.logError = function (_ref7) {
-      var error = _ref7.error;
+    }, _this.logError = function (_ref5) {
+      var error = _ref5.error;
       return console.error(error);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -1709,7 +1631,7 @@ var JPlayerContainer = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.props.setMedia(this.props.media);
+      this.props.setMedia(this.props.id, this.props.media);
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -1762,6 +1684,7 @@ var JPlayerContainer = function (_React$Component) {
         }).isRequired,
         setOption: _react2.default.PropTypes.func.isRequired,
         setMedia: _react2.default.PropTypes.func.isRequired,
+        id: _react2.default.PropTypes.string.isRequired,
         error: _react2.default.PropTypes.shape({
           context: _react2.default.PropTypes.string,
           message: _react2.default.PropTypes.string,
@@ -1788,7 +1711,7 @@ var JPlayerContainer = function (_React$Component) {
   return JPlayerContainer;
 }(_react2.default.Component);
 
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(JPlayerContainer);
+exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps())(JPlayerContainer);
 
 /***/ }),
 /* 20 */
@@ -1800,8 +1723,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(J
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -1815,29 +1736,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
   return {
-    muted: jPlayers[id].muted
+    muted: jPlayers[id].muted,
+    id: id,
+    children: children,
+    attributes: attributes
   };
 };
 
-var mergeProps = function mergeProps(_ref4, _ref5, _ref3) {
-  var muted = _ref4.muted;
-  var dispatch = _ref5.dispatch;
-
-  var id = _ref3.id,
-      attributes = _objectWithoutProperties(_ref3, ['id']);
-
-  return _extends({
-    onClick: function onClick() {
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onClick: function onClick(id, muted) {
       return dispatch((0, _actions.setMute)(id, !muted));
     }
-  }, attributes);
+  };
 };
 
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_mute2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_mute2.default);
 
 /***/ }),
 /* 21 */
@@ -1849,8 +1771,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -1868,18 +1788,15 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var id = _ref.id,
       attributes = _objectWithoutProperties(_ref, ['id']);
 
-  return _extends({
+  return {
     smoothPlayBar: jPlayers[id].smoothPlayBar,
     currentPercentAbsolute: jPlayers[id].currentPercentAbsolute,
-    currentPercentRelative: jPlayers[id].currentPercentRelative
-  }, attributes);
+    currentPercentRelative: jPlayers[id].currentPercentRelative,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_playBar2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_playBar2.default);
 
 /***/ }),
 /* 22 */
@@ -1891,8 +1808,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _actions = __webpack_require__(3);
 
@@ -1906,29 +1821,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
   return {
-    paused: jPlayers[id].paused
+    paused: jPlayers[id].paused,
+    id: id,
+    children: children,
+    attributes: attributes
   };
 };
 
-var mergeProps = function mergeProps(_ref4, _ref5, _ref3) {
-  var paused = _ref4.paused;
-  var dispatch = _ref5.dispatch;
-
-  var id = _ref3.id,
-      attributes = _objectWithoutProperties(_ref3, ['id']);
-
-  return _extends({
-    onClick: function onClick() {
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onClick: function onClick(id, paused) {
       return paused ? dispatch((0, _actions.play)(id)) : dispatch((0, _actions.pause)(id));
     }
-  }, attributes);
+  };
 };
 
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_play2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_play2.default);
 
 /***/ }),
 /* 23 */
@@ -1969,7 +1885,8 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
   return {
     movePlaybackRate: function movePlaybackRate(bar, dispatch, e) {
@@ -1993,40 +1910,43 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 
       var playbackRateValue = ratio * (maxPlaybackRate - minPlaybackRate) + minPlaybackRate;
 
-      dispatch((0, _actions.setPlaybackRate)(id, playbackRateValue));
+      dispatch((0, _actions.setOption)(id, 'playbackRate', playbackRateValue));
     },
+    children: children,
     attributes: attributes
   };
 };
 
 var mergeProps = function mergeProps(_ref3, _ref4) {
   var movePlaybackRate = _ref3.movePlaybackRate,
+      children = _ref3.children,
       attributes = _ref3.attributes;
   var dispatch = _ref4.dispatch;
   return {
     onClick: function onClick(bar, e) {
       return movePlaybackRate(bar, dispatch, e);
     },
-    onTouch: function onTouch(bar, e) {
+    onTouchMove: function onTouchMove(bar, e) {
       // Stop page scrolling
       e.preventDefault();
 
       movePlaybackRate(bar, dispatch, e.touches[0]);
     },
+    children: children,
     attributes: attributes
   };
 };
 
 var PlaybackRateBarContainer = function PlaybackRateBarContainer(_ref5) {
   var onClick = _ref5.onClick,
-      onTouch = _ref5.onTouch,
+      onTouchMove = _ref5.onTouchMove,
       children = _ref5.children,
       attributes = _ref5.attributes;
   return _react2.default.createElement(
     _barEvents2.default,
     {
       clickMoveBar: onClick,
-      touchMoveBar: onTouch
+      touchMoveBar: onTouchMove
     },
     _react2.default.createElement(
       _playbackRateBar2.default,
@@ -2037,15 +1957,14 @@ var PlaybackRateBarContainer = function PlaybackRateBarContainer(_ref5) {
 };
 
 PlaybackRateBarContainer.defaultProps = {
-  attributes: null,
   children: _react2.default.createElement(_playbackRateBarValueContainer2.default, null)
 };
 
 PlaybackRateBarContainer.propTypes = {
-  attributes: _react2.default.PropTypes.object,
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node,
   onClick: _react2.default.PropTypes.func.isRequired,
-  onTouch: _react2.default.PropTypes.func.isRequired
+  onTouchMove: _react2.default.PropTypes.func.isRequired
 };
 
 exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);
@@ -2060,8 +1979,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(P
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -2079,16 +1996,13 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var id = _ref.id,
       attributes = _objectWithoutProperties(_ref, ['id']);
 
-  return _extends({
-    src: jPlayers[id].media.poster
-  }, attributes);
+  return {
+    src: jPlayers[id].media.poster,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_poster2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_poster2.default);
 
 /***/ }),
 /* 25 */
@@ -2100,8 +2014,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -2115,29 +2027,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
   return {
-    loop: jPlayers[id].loop
+    loop: jPlayers[id].loop,
+    id: id,
+    children: children,
+    attributes: attributes
   };
 };
 
-var mergeProps = function mergeProps(_ref4, _ref5, _ref3) {
-  var loop = _ref4.loop;
-  var dispatch = _ref5.dispatch;
-
-  var id = _ref3.id,
-      attributes = _objectWithoutProperties(_ref3, ['id']);
-
-  return _extends({
-    onClick: function onClick() {
-      return dispatch((0, _actions.setLoop)(id, !loop));
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onClick: function onClick(id, loop) {
+      return dispatch((0, _actions.setOption)(id, 'loop', !loop));
     }
-  }, attributes);
+  };
 };
 
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_repeat2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_repeat2.default);
 
 /***/ }),
 /* 26 */
@@ -2176,7 +2089,8 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
   return {
     seekPercent: jPlayers[id].seekPercent,
@@ -2188,6 +2102,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 
       dispatch((0, _actions.setPlayHead)(id, percentage));
     },
+    children: children,
     attributes: attributes
   };
 };
@@ -2196,43 +2111,51 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 var mergeProps = function mergeProps(_ref3, _ref4) {
   var movePlayHead = _ref3.movePlayHead,
       seekPercent = _ref3.seekPercent,
+      children = _ref3.children,
       attributes = _ref3.attributes;
   var dispatch = _ref4.dispatch;
   return {
     onClick: function onClick(bar, e) {
       return movePlayHead(bar, dispatch, e);
     },
-    onTouch: function onTouch(bar, e) {
+    onTouchMove: function onTouchMove(bar, e) {
       // Stop page scrolling
       e.preventDefault();
 
       movePlayHead(bar, dispatch, e.touches[0]);
     },
     seekPercent: seekPercent,
+    children: children,
     attributes: attributes
   };
 };
 
 var SeekBarContainer = function SeekBarContainer(_ref5) {
   var onClick = _ref5.onClick,
-      onTouch = _ref5.onTouch,
+      onTouchMove = _ref5.onTouchMove,
       seekPercent = _ref5.seekPercent,
+      children = _ref5.children,
       attributes = _ref5.attributes;
   return _react2.default.createElement(
     _barEvents2.default,
-    { clickMoveBar: onClick, touchMoveBar: onTouch },
-    _react2.default.createElement(_seekBar2.default, _extends({ seekPercent: seekPercent }, attributes))
+    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
+    _react2.default.createElement(
+      _seekBar2.default,
+      _extends({ seekPercent: seekPercent }, attributes),
+      children
+    )
   );
 };
 
 SeekBarContainer.defaultProps = {
-  attributes: null
+  children: null
 };
 
 SeekBarContainer.propTypes = {
-  attributes: _react2.default.PropTypes.object,
+  children: _react2.default.PropTypes.node,
+  attributes: _react2.default.PropTypes.object.isRequired,
   onClick: _react2.default.PropTypes.func.isRequired,
-  onTouch: _react2.default.PropTypes.func.isRequired,
+  onTouchMove: _react2.default.PropTypes.func.isRequired,
   seekPercent: _react2.default.PropTypes.number.isRequired
 };
 
@@ -2249,8 +2172,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _index = __webpack_require__(2);
 
 var _title = __webpack_require__(50);
@@ -2264,22 +2185,19 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
-  var children = _ref.children,
-      id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['children', 'id']);
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
-  return _extends({
+  return {
     title: jPlayers[id].media.title,
     artist: jPlayers[id].media.artist,
-    children: children
-  }, attributes);
+    children: children,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_title2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_title2.default);
 
 /***/ }),
 /* 28 */
@@ -2291,8 +2209,6 @@ exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _index = __webpack_require__(2);
 
@@ -2308,18 +2224,19 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      events = _ref.events,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'events', 'children']);
 
-  return _extends({
-    require: jPlayers[id].mediaSettings.video
-  }, attributes);
+  return {
+    require: jPlayers[id].mediaSettings.video,
+    events: events,
+    children: children,
+    attributes: attributes
+  };
 };
 
-var mergeProps = function mergeProps(stateProps) {
-  return _extends({}, stateProps);
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_video2.default);
+exports.default = (0, _index.connectWithId)(mapStateToProps)(_video2.default);
 
 /***/ }),
 /* 29 */
@@ -2360,7 +2277,8 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
   var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
   return {
     moveVolumeBar: function moveVolumeBar(bar, dispatch, e) {
@@ -2378,36 +2296,39 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
         dispatch((0, _actions.setVolume)(id, x / w));
       }
     },
+    children: children,
     attributes: attributes
   };
 };
 
 var mergeProps = function mergeProps(_ref3, _ref4) {
   var moveVolumeBar = _ref3.moveVolumeBar,
+      children = _ref3.children,
       attributes = _ref3.attributes;
   var dispatch = _ref4.dispatch;
   return {
     onClick: function onClick(bar, e) {
       return moveVolumeBar(bar, dispatch, e);
     },
-    onTouch: function onTouch(bar, e) {
+    onTouchMove: function onTouchMove(bar, e) {
       // Stop page scrolling
       e.preventDefault();
 
       moveVolumeBar(bar, dispatch, e.touches[0]);
     },
+    children: children,
     attributes: attributes
   };
 };
 
 var VolumeBarContainer = function VolumeBarContainer(_ref5) {
   var onClick = _ref5.onClick,
-      onTouch = _ref5.onTouch,
+      onTouchMove = _ref5.onTouchMove,
       children = _ref5.children,
       attributes = _ref5.attributes;
   return _react2.default.createElement(
     _barEvents2.default,
-    { clickMoveBar: onClick, touchMoveBar: onTouch },
+    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
     _react2.default.createElement(
       _volumeBar2.default,
       attributes,
@@ -2417,15 +2338,14 @@ var VolumeBarContainer = function VolumeBarContainer(_ref5) {
 };
 
 VolumeBarContainer.defaultProps = {
-  attributes: null,
   children: _react2.default.createElement(_volumeBarValueContainer2.default, null)
 };
 
 VolumeBarContainer.propTypes = {
-  attributes: _react2.default.PropTypes.object,
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node,
   onClick: _react2.default.PropTypes.func.isRequired,
-  onTouch: _react2.default.PropTypes.func.isRequired
+  onTouchMove: _react2.default.PropTypes.func.isRequired
 };
 
 exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(VolumeBarContainer);
@@ -2495,18 +2415,6 @@ var getActions = function getActions(dispatch, id) {
     },
     setMute: function setMute(mute) {
       return dispatch((0, _actions.setMute)(id, mute));
-    },
-    setDuration: function setDuration(remainingDuration) {
-      return dispatch((0, _actions.setDuration)(id, remainingDuration));
-    },
-    setPlaybackRate: function setPlaybackRate(playbackRate) {
-      return dispatch((0, _actions.setPlaybackRate)(id, playbackRate));
-    },
-    setLoop: function setLoop(loop) {
-      return dispatch((0, _actions.setLoop)(id, loop));
-    },
-    setFullScreen: function setFullScreen(fullScreen) {
-      return dispatch((0, _actions.setFullScreen)(id, fullScreen));
     },
     focus: function focus() {
       return dispatch((0, _actions.focus)(id));
@@ -2683,12 +2591,6 @@ var resetStatus = function resetStatus(state) {
   return (0, _index.updateObject)(state, _extends({}, _constants.defaultStatus));
 };
 
-var clearMedia = function clearMedia(state) {
-  return (0, _index.updateObject)(state, _extends({}, resetStatus(state), {
-    media: _constants.defaultOptions.media
-  }));
-};
-
 var updateFormats = function updateFormats(state, media) {
   var newMediaSettings = _extends({}, state.mediaSettings);
   var newFormats = [];
@@ -2739,6 +2641,12 @@ var setMedia = function setMedia(state, _ref) {
   return newState;
 };
 
+var clearMedia = function clearMedia(state) {
+  return (0, _index.updateObject)(state, _extends({}, resetStatus(state), {
+    media: _constants.defaultOptions.media
+  }));
+};
+
 var play = function play(state, _ref2) {
   var time = _ref2.time;
 
@@ -2785,7 +2693,8 @@ var setPlayHead = function setPlayHead(state, _ref4) {
 var setVolume = function setVolume(state, _ref5) {
   var volume = _ref5.volume;
   return (0, _index.updateObject)(state, {
-    volume: (0, _index.limitValue)(volume, 0, 1)
+    volume: (0, _index.limitValue)(volume, 0, 1),
+    muted: volume <= 0
   });
 };
 
@@ -2796,36 +2705,8 @@ var setMute = function setMute(state, _ref6) {
   });
 };
 
-var setDuration = function setDuration(state, _ref7) {
-  var remainingDuration = _ref7.remainingDuration;
-  return (0, _index.updateObject)(state, {
-    remainingDuration: !remainingDuration
-  });
-};
-
-var setPlaybackRate = function setPlaybackRate(state, _ref8) {
-  var playbackRate = _ref8.playbackRate;
-  return (0, _index.updateObject)(state, {
-    playbackRate: (0, _index.limitValue)(playbackRate, state.minPlaybackRate, state.maxPlaybackRate)
-  });
-};
-
-var setLoop = function setLoop(state, _ref9) {
-  var loop = _ref9.loop;
-  return (0, _index.updateObject)(state, {
-    loop: loop
-  });
-};
-
-var setFullScreen = function setFullScreen(state, _ref10) {
-  var fullScreen = _ref10.fullScreen;
-  return (0, _index.updateObject)(state, {
-    fullScreen: fullScreen
-  });
-};
-
-var focus = function focus(state, _ref11) {
-  var id = _ref11.id;
+var focus = function focus(state, _ref7) {
+  var id = _ref7.id;
 
   var newState = _extends({}, state);
   var firstKeyEnabledPlayer = Object.keys(state).filter(function (key) {
@@ -2835,13 +2716,13 @@ var focus = function focus(state, _ref11) {
   if (newState[id].keyEnabled) {
     Object.keys(state).forEach(function (key) {
       if (key === id) {
-        newState[key] = (0, _index.updateObject)(newState[key], { focus: true });
+        newState[key] = (0, _index.updateObject)(newState[key], { focused: true });
       } else {
-        newState[key] = (0, _index.updateObject)(newState[key], { focus: false });
+        newState[key] = (0, _index.updateObject)(newState[key], { focused: false });
       }
     });
   } else if (newState[firstKeyEnabledPlayer] !== undefined) {
-    var focusedPlayer = (0, _index.updateObject)(newState[firstKeyEnabledPlayer], { focus: true });
+    var focusedPlayer = (0, _index.updateObject)(newState[firstKeyEnabledPlayer], { focused: true });
     return (0, _index.updateObject)(newState, _defineProperty({}, firstKeyEnabledPlayer, focusedPlayer));
   }
   return newState;
@@ -2851,10 +2732,10 @@ var updatePlayer = function updatePlayer(jPlayer, action) {
   switch (action.type) {
     case _constants.actionNames.SET_OPTION:
       return (0, _index.updateObject)(jPlayer, _defineProperty({}, action.key, action.value));
-    case _constants.actionNames.CLEAR_MEDIA:
-      return clearMedia(jPlayer);
     case _constants.actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);
+    case _constants.actionNames.CLEAR_MEDIA:
+      return clearMedia(jPlayer);
     case _constants.actionNames.PLAY:
       return play(jPlayer, action);
     case _constants.actionNames.PAUSE:
@@ -2862,17 +2743,9 @@ var updatePlayer = function updatePlayer(jPlayer, action) {
     case _constants.actionNames.PLAY_HEAD:
       return setPlayHead(jPlayer, action);
     case _constants.actionNames.VOLUME:
-      return setVolume(setMute(jPlayer, { mute: action.volume <= 0 }), action);
+      return setVolume(jPlayer, action);
     case _constants.actionNames.MUTE:
       return setMute(jPlayer, action);
-    case _constants.actionNames.DURATION:
-      return setDuration(jPlayer, action);
-    case _constants.actionNames.PLAYBACK_RATE:
-      return setPlaybackRate(jPlayer, action);
-    case _constants.actionNames.LOOP:
-      return setLoop(jPlayer, action);
-    case _constants.actionNames.FULL_SCREEN:
-      return setFullScreen(jPlayer, action);
     default:
       return null;
   }
@@ -2948,13 +2821,10 @@ var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Audio = function Audio(_ref) {
   var require = _ref.require,
       events = _ref.events,
-      attributes = _objectWithoutProperties(_ref, ['require', 'events']);
-
+      attributes = _ref.attributes;
   return require ? _react2.default.createElement(
     _mediaContainer2.default,
     events,
@@ -2967,6 +2837,7 @@ Audio.defaultProps = {
 };
 
 Audio.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   require: _react2.default.PropTypes.bool.isRequired,
   events: _react2.default.PropTypes.shape({
     onProgress: _react2.default.PropTypes.func,
@@ -3067,18 +2938,16 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var BufferBar = function BufferBar(_ref) {
   var setCanvas = _ref.setCanvas,
-      attributes = _objectWithoutProperties(_ref, ['setCanvas']);
-
-  return _react2.default.createElement('canvas', _extends({}, attributes, { ref: setCanvas,
-    className: _constants.classes.BUFFER_BAR
-  }));
+      attributes = _ref.attributes;
+  return _react2.default.createElement('canvas', _extends({
+    ref: setCanvas, className: _constants.classes.BUFFER_BAR
+  }, attributes));
 };
 
 BufferBar.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   setCanvas: _react2.default.PropTypes.func.isRequired
 };
 
@@ -3105,15 +2974,18 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var CurrentTime = function CurrentTime(_ref) {
-  var attributes = _objectWithoutProperties(_ref, []);
-
-  return _react2.default.createElement('div', _extends({}, attributes, { className: _constants.classes.CURRENT_TIME }));
+  var children = _ref.children,
+      attributes = _ref.attributes;
+  return _react2.default.createElement(
+    'div',
+    _extends({ className: _constants.classes.CURRENT_TIME }, attributes),
+    children
+  );
 };
 
 CurrentTime.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.string.isRequired
 };
 
@@ -3140,24 +3012,23 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Download = function Download(_ref) {
   var free = _ref.free,
       url = _ref.url,
       children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['free', 'url', 'children']);
-
+      attributes = _ref.attributes;
   return free ? _react2.default.createElement(
     'a',
-    _extends({}, attributes, { className: _constants.classes.DOWNLOAD, href: url,
+    _extends({
+      className: _constants.classes.DOWNLOAD, href: url,
       download: true, target: '_blank', rel: 'noopener noreferrer'
-    }),
+    }, attributes),
     children
   ) : null;
 };
 
 Download.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node.isRequired,
   url: _react2.default.PropTypes.string.isRequired,
   free: _react2.default.PropTypes.bool.isRequired
@@ -3186,20 +3057,18 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Duration = function Duration(_ref) {
   var children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['children']);
-
+      attributes = _ref.attributes;
   return children !== '' ? _react2.default.createElement(
     'div',
-    _extends({}, attributes, { className: _constants.classes.DURATION }),
+    _extends({ className: _constants.classes.DURATION }, attributes),
     children
   ) : null;
 };
 
 Duration.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.string.isRequired
 };
 
@@ -3226,18 +3095,30 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var FullScreen = function FullScreen(_ref) {
-  var onClick = _ref.onClick,
-      attributes = _objectWithoutProperties(_ref, ['onClick']);
-
-  return _react2.default.createElement('button', _extends({}, attributes, { className: _constants.classes.FULL_SCREEN, onClick: onClick }));
+  var _onClick = _ref.onClick,
+      id = _ref.id,
+      fullScreen = _ref.fullScreen,
+      children = _ref.children,
+      attributes = _ref.attributes;
+  return _react2.default.createElement(
+    'button',
+    _extends({
+      className: _constants.classes.FULL_SCREEN,
+      onClick: function onClick() {
+        return _onClick(id, fullScreen);
+      }
+    }, attributes),
+    children
+  );
 };
 
 FullScreen.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node.isRequired,
-  onClick: _react2.default.PropTypes.func.isRequired
+  onClick: _react2.default.PropTypes.func.isRequired,
+  id: _react2.default.PropTypes.string.isRequired,
+  fullScreen: _react2.default.PropTypes.bool.isRequired
 };
 
 exports.default = FullScreen;
@@ -3268,15 +3149,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 var motion = function motion(values, onMouseMove, attributes) {
-  return _react2.default.createElement('div', _extends({}, attributes, { className: _constants.classes.GUI,
-    onMouseMove: onMouseMove,
+  return _react2.default.createElement('div', _extends({
+    className: _constants.classes.GUI, onMouseMove: onMouseMove,
     style: {
       opacity: values.opacity,
       display: values.opacity === 0 ? 'none' : ''
     }
-  }));
+  }, attributes));
 };
 
+// TODO: onMouseEnter instead of mouseMove?
 var Gui = function Gui(_ref) {
   var fullScreen = _ref.fullScreen,
       guiFadeOut = _ref.guiFadeOut,
@@ -3321,8 +3203,6 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _constants = __webpack_require__(1);
-
 var _keyControlContainer = __webpack_require__(54);
 
 var _keyControlContainer2 = _interopRequireDefault(_keyControlContainer);
@@ -3339,21 +3219,20 @@ var JPlayer = function JPlayer(_ref) {
 
   return _react2.default.createElement(
     'div',
-    _extends({}, attributes, { ref: setJPlayer, draggable: false }),
+    _extends({ ref: setJPlayer, draggable: false }, attributes),
     children,
     keyEnabled && _react2.default.createElement(_keyControlContainer2.default, null)
   );
 };
 
+JPlayer.defaultProps = {
+  setJPlayer: null
+};
+
 JPlayer.propTypes = {
   setJPlayer: _react2.default.PropTypes.func,
   children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.arrayOf(_react2.default.PropTypes.element), _react2.default.PropTypes.element]).isRequired,
-  keyEnabled: _react2.default.PropTypes.bool
-};
-
-JPlayer.defaultProps = {
-  keyEnabled: _constants.defaultOptions.keyEnabled,
-  setJPlayer: null
+  keyEnabled: _react2.default.PropTypes.bool.isRequired
 };
 
 exports.default = JPlayer;
@@ -3379,18 +3258,27 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Mute = function Mute(_ref) {
-  var onClick = _ref.onClick,
-      attributes = _objectWithoutProperties(_ref, ['onClick']);
-
-  return _react2.default.createElement('button', _extends({}, attributes, { className: _constants.classes.MUTE, onClick: onClick }));
+  var _onClick = _ref.onClick,
+      id = _ref.id,
+      muted = _ref.muted,
+      children = _ref.children,
+      attributes = _ref.attributes;
+  return _react2.default.createElement(
+    'button',
+    _extends({ className: _constants.classes.MUTE, onClick: function onClick() {
+        return _onClick(id, muted);
+      } }, attributes),
+    children
+  );
 };
 
 Mute.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
+  id: _react2.default.PropTypes.string.isRequired,
   children: _react2.default.PropTypes.node.isRequired,
-  onClick: _react2.default.PropTypes.func.isRequired
+  onClick: _react2.default.PropTypes.func.isRequired,
+  muted: _react2.default.PropTypes.bool.isRequired
 };
 
 exports.default = Mute;
@@ -3418,31 +3306,25 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var PlayBar = function PlayBar(_ref) {
   var currentPercentAbsolute = _ref.currentPercentAbsolute,
       currentPercentRelative = _ref.currentPercentRelative,
       smoothPlayBar = _ref.smoothPlayBar,
-      attributes = _objectWithoutProperties(_ref, ['currentPercentAbsolute', 'currentPercentRelative', 'smoothPlayBar']);
-
+      attributes = _ref.attributes;
   return _react2.default.createElement(
     _reactMotion.Motion,
     { style: { smoothWidth: (0, _reactMotion.spring)(currentPercentAbsolute, [250]) } },
     function (values) {
-      return _react2.default.createElement('div', _extends({}, attributes, { className: _constants.classes.PLAY_BAR,
+      return _react2.default.createElement('div', _extends({
+        className: _constants.classes.PLAY_BAR,
         style: { width: smoothPlayBar ? values.smoothWidth + '%' : currentPercentRelative + '%' }
-      }));
+      }, attributes));
     }
   );
 };
 
-PlayBar.defaultProps = {
-  children: null
-};
-
 PlayBar.propTypes = {
-  children: _react2.default.PropTypes.node,
+  attributes: _react2.default.PropTypes.object.isRequired,
   currentPercentRelative: _react2.default.PropTypes.number.isRequired,
   currentPercentAbsolute: _react2.default.PropTypes.number.isRequired,
   smoothPlayBar: _react2.default.PropTypes.bool.isRequired
@@ -3471,18 +3353,27 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Play = function Play(_ref) {
-  var onClick = _ref.onClick,
-      attributes = _objectWithoutProperties(_ref, ['onClick']);
-
-  return _react2.default.createElement('button', _extends({}, attributes, { className: _constants.classes.PLAY, onClick: onClick }));
+  var _onClick = _ref.onClick,
+      id = _ref.id,
+      paused = _ref.paused,
+      children = _ref.children,
+      attributes = _ref.attributes;
+  return _react2.default.createElement(
+    'button',
+    _extends({ className: _constants.classes.PLAY, onClick: function onClick() {
+        return _onClick(id, paused);
+      } }, attributes),
+    children
+  );
 };
 
 Play.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node.isRequired,
-  onClick: _react2.default.PropTypes.func.isRequired
+  onClick: _react2.default.PropTypes.func.isRequired,
+  id: _react2.default.PropTypes.string.isRequired,
+  paused: _react2.default.PropTypes.bool.isRequired
 };
 
 exports.default = Play;
@@ -3508,14 +3399,12 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var PlaybackRateBarValue = function PlaybackRateBarValue(_ref) {
   var playbackRate = _ref.playbackRate,
       minPlaybackRate = _ref.minPlaybackRate,
       maxPlaybackRate = _ref.maxPlaybackRate,
       verticalPlaybackRate = _ref.verticalPlaybackRate,
-      attributes = _objectWithoutProperties(_ref, ['playbackRate', 'minPlaybackRate', 'maxPlaybackRate', 'verticalPlaybackRate']);
+      attributes = _ref.attributes;
 
   var style = function style() {
     var ratio = (playbackRate - minPlaybackRate) / (maxPlaybackRate - minPlaybackRate);
@@ -3526,11 +3415,13 @@ var PlaybackRateBarValue = function PlaybackRateBarValue(_ref) {
       height: verticalPlaybackRate ? playbackRateBarPercentage : null
     };
   };
-  return _react2.default.createElement('div', _extends({}, attributes, { className: _constants.classes.PLAYBACK_RATE_BAR_VALUE, style: style()
-  }));
+  return _react2.default.createElement('div', _extends({
+    className: _constants.classes.PLAYBACK_RATE_BAR_VALUE, style: style()
+  }, attributes));
 };
 
 PlaybackRateBarValue.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   verticalPlaybackRate: _react2.default.PropTypes.bool.isRequired,
   minPlaybackRate: _react2.default.PropTypes.number.isRequired,
   maxPlaybackRate: _react2.default.PropTypes.number.isRequired,
@@ -3572,19 +3463,19 @@ var PlaybackRateBar = function PlaybackRateBar(_ref) {
 
   return _react2.default.createElement(
     'div',
-    _extends({}, attributes, { ref: setBar,
-      className: _constants.classes.PLAYBACK_RATE_BAR, onClick: onClick,
-      onMouseDown: onMouseDown, onTouchStart: onTouchStart
-    }),
+    _extends({
+      ref: setBar, className: _constants.classes.PLAYBACK_RATE_BAR,
+      onClick: onClick, onMouseDown: onMouseDown,
+      onTouchStart: onTouchStart }, attributes),
     children
   );
 };
 
 PlaybackRateBar.defaultProps = {
   onClick: null,
-  setBar: null,
   onMouseDown: null,
-  onTouchStart: null
+  onTouchStart: null,
+  setBar: null
 };
 
 PlaybackRateBar.propTypes = {
@@ -3618,14 +3509,11 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Poster = function Poster(_ref) {
   var src = _ref.src,
       alt = _ref.alt,
-      attributes = _objectWithoutProperties(_ref, ['src', 'alt']);
-
-  return _react2.default.createElement('img', _extends({}, attributes, { className: _constants.classes.POSTER, alt: alt, src: src }));
+      attributes = _ref.attributes;
+  return _react2.default.createElement('img', _extends({ className: _constants.classes.POSTER, alt: alt, src: src }, attributes));
 };
 
 Poster.defaultProps = {
@@ -3633,6 +3521,7 @@ Poster.defaultProps = {
 };
 
 Poster.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   src: _react2.default.PropTypes.string.isRequired,
   alt: _react2.default.PropTypes.string
 };
@@ -3660,17 +3549,26 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Repeat = function Repeat(_ref) {
-  var onClick = _ref.onClick,
-      attributes = _objectWithoutProperties(_ref, ['onClick']);
-
-  return _react2.default.createElement('button', _extends({}, attributes, { className: _constants.classes.REPEAT, onClick: onClick }));
+  var _onClick = _ref.onClick,
+      id = _ref.id,
+      loop = _ref.loop,
+      children = _ref.children,
+      attributes = _ref.attributes;
+  return _react2.default.createElement(
+    'button',
+    _extends({ className: _constants.classes.REPEAT, onClick: function onClick() {
+        return _onClick(id, loop);
+      } }, attributes),
+    children
+  );
 };
 
 Repeat.propTypes = {
+  loop: _react2.default.PropTypes.bool.isRequired,
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node.isRequired,
+  id: _react2.default.PropTypes.string.isRequired,
   onClick: _react2.default.PropTypes.func.isRequired
 };
 
@@ -3707,10 +3605,11 @@ var SeekBar = function SeekBar(_ref) {
       seekPercent = _ref.seekPercent,
       attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart', 'seekPercent']);
 
-  return _react2.default.createElement('div', _extends({}, attributes, { ref: setBar, className: _constants.classes.SEEK_BAR,
+  return _react2.default.createElement('div', _extends({
+    ref: setBar, className: _constants.classes.SEEK_BAR,
     style: { width: seekPercent + '%' }, onClick: onClick,
     onTouchStart: onTouchStart, onMouseDown: onMouseDown
-  }));
+  }, attributes));
 };
 
 SeekBar.defaultProps = {
@@ -3752,31 +3651,27 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Title = function Title(_ref) {
-  var children = _ref.children,
-      artist = _ref.artist,
+  var artist = _ref.artist,
       title = _ref.title,
-      attributes = _objectWithoutProperties(_ref, ['children', 'artist', 'title']);
-
+      children = _ref.children,
+      attributes = _ref.attributes;
   return _react2.default.createElement(
     'div',
-    _extends({}, attributes, { className: _constants.classes.TITLE }),
+    _extends({ className: _constants.classes.TITLE }, attributes),
     children === null ? artist + ' - ' + title : children
   );
 };
 
 Title.defaultProps = {
-  children: null,
-  artist: null,
-  title: null
+  children: null
 };
 
 Title.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]),
-  artist: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]),
-  title: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number])
+  artist: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired,
+  title: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
 };
 
 exports.default = Title;
@@ -3804,17 +3699,19 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var Video = function Video(_ref) {
   var require = _ref.require,
       events = _ref.events,
-      attributes = _objectWithoutProperties(_ref, ['require', 'events']);
-
+      children = _ref.children,
+      attributes = _ref.attributes;
   return require ? _react2.default.createElement(
     _mediaContainer2.default,
     events,
-    _react2.default.createElement('video', attributes)
+    _react2.default.createElement(
+      'video',
+      attributes,
+      children
+    )
   ) : null;
 };
 
@@ -3825,6 +3722,7 @@ Video.defaultProps = {
 };
 
 Video.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node,
   require: _react2.default.PropTypes.bool,
   events: _react2.default.PropTypes.shape({
@@ -3877,13 +3775,11 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var VolumeBarValue = function VolumeBarValue(_ref) {
   var muted = _ref.muted,
       volume = _ref.volume,
       verticalVolume = _ref.verticalVolume,
-      attributes = _objectWithoutProperties(_ref, ['muted', 'volume', 'verticalVolume']);
+      attributes = _ref.attributes;
 
   var style = function style() {
     var volumeBarValuePercentage = (muted ? 0 : volume * 100) + '%';
@@ -3893,7 +3789,7 @@ var VolumeBarValue = function VolumeBarValue(_ref) {
       height: verticalVolume ? volumeBarValuePercentage : null
     };
   };
-  return _react2.default.createElement('div', _extends({}, attributes, { className: _constants.classes.VOLUME_BAR_VALUE, style: style() }));
+  return _react2.default.createElement('div', _extends({ className: _constants.classes.VOLUME_BAR_VALUE, style: style() }, attributes));
 };
 
 VolumeBarValue.defaultProps = {
@@ -3901,6 +3797,7 @@ VolumeBarValue.defaultProps = {
 };
 
 VolumeBarValue.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   muted: _react2.default.PropTypes.bool.isRequired,
   volume: _react2.default.PropTypes.number.isRequired,
   verticalVolume: _react2.default.PropTypes.bool
@@ -3938,9 +3835,10 @@ var VolumeBar = function VolumeBar(_ref) {
       onTouchStart = _ref.onTouchStart,
       attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart']);
 
-  return _react2.default.createElement('div', _extends({}, attributes, { ref: setBar, className: _constants.classes.VOLUME_BAR,
+  return _react2.default.createElement('div', _extends({
+    ref: setBar, className: _constants.classes.VOLUME_BAR,
     onClick: onClick, onMouseDown: onMouseDown, onTouchStart: onTouchStart
-  }));
+  }, attributes));
 };
 
 VolumeBar.defaultProps = {
@@ -4005,7 +3903,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
     volume: jPlayers[id].volume,
     loop: jPlayers[id].loop,
     keyBindings: jPlayers[id].keyBindings,
-    focus: jPlayers[id].focus
+    focused: jPlayers[id].focused
   };
 };
 
@@ -4013,7 +3911,7 @@ var mergeProps = function mergeProps(stateProps, _ref3, _ref4) {
   var dispatch = _ref3.dispatch;
   var id = _ref4.id;
   return {
-    focus: stateProps.focus,
+    focused: stateProps.focused,
     keyBindings: (0, _lodash2.default)({}, {
       play: {
         key: 80, // p
@@ -4024,7 +3922,7 @@ var mergeProps = function mergeProps(stateProps, _ref3, _ref4) {
       fullScreen: {
         key: 70, // f
         fn: function fn() {
-          return dispatch((0, _actions.setFullScreen)(id, !stateProps.fullScreen));
+          return dispatch((0, _actions.setOption)(id, 'fullScreen', !stateProps.fullScreen));
         }
       },
       mute: {
@@ -4048,7 +3946,7 @@ var mergeProps = function mergeProps(stateProps, _ref3, _ref4) {
       loop: {
         key: 76, // l
         fn: function fn() {
-          return dispatch((0, _actions.setLoop)(id, !stateProps.loop));
+          return dispatch((0, _actions.setOption)(id, 'loop', !stateProps.loop));
         }
       }
     }, stateProps.keyBindings),
@@ -4073,7 +3971,7 @@ var KeyControlContainer = function (_React$Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref5 = KeyControlContainer.__proto__ || Object.getPrototypeOf(KeyControlContainer)).call.apply(_ref5, [this].concat(args))), _this), _this.onKeyDown = function (event) {
       if (_constants.keyIgnoreElementNames.some(function (name) {
         return name.toUpperCase() === event.target.nodeName.toUpperCase();
-      }) || !_this.props.focus) {
+      }) || !_this.props.focused) {
         return;
       }
       Object.keys(_this.props.keyBindings).forEach(function (key) {
@@ -4106,7 +4004,7 @@ var KeyControlContainer = function (_React$Component) {
     key: 'propTypes',
     get: function get() {
       return {
-        focus: _react2.default.PropTypes.bool.isRequired,
+        focused: _react2.default.PropTypes.bool.isRequired,
         keyBindings: _react2.default.PropTypes.objectOf(_react2.default.PropTypes.object).isRequired
       };
     }
