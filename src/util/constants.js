@@ -175,17 +175,17 @@ export const defaultStatus = {
 };
 
 export const defaultOptions = {
-  preload: 'metadata', // HTML5 Spec values: none, metadata, auto.
+  preload: 'metadata',
   minPlaybackRate: 0.5,
   maxPlaybackRate: 4,
-  supplied: ['mp3'], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
   playbackRate: 1.0,
   defaultPlaybackRate: 1.0,
-  bufferColour: '#dddddd', // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
-  volume: 0.8, // The volume. Number 0 to 1
+  bufferColour: '#ddd',
+  volume: 0.8,
   barDrag: true,
   guiFadeHoldTime: 3000,
   media: {
+    sources: {},
     title: '',
     artist: '',
     poster: '',
