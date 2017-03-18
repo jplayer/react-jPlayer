@@ -97,14 +97,14 @@ describe('jPlayer actions', () => {
   });
 
   it('should create an action to set the duration', () => {
-    const remainingDuration = true;
+    const showRemainingDuration = true;
     const expectedAction = {
       type: actionNames.DURATION,
-      remainingDuration,
+      showRemainingDuration,
       id,
     };
 
-    expect(actions.setDuration(id, remainingDuration)).toEqual(expectedAction);
+    expect(actions.setDuration(id, showRemainingDuration)).toEqual(expectedAction);
   });
 
   it('should create an action to set the playbackRate', () => {

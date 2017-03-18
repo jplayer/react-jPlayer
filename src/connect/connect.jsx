@@ -19,7 +19,7 @@ const getActions = (dispatch, id) => ({
   setPlayHead: percent => dispatch(setPlayHead(id, percent)),
   setVolume: volume => dispatch(setVolume(id, volume)),
   setMute: mute => dispatch(setMute(id, mute)),
-  setDuration: remainingDuration => dispatch(setDuration(id, remainingDuration)),
+  setDuration: showRemainingDuration => dispatch(setDuration(id, showRemainingDuration)),
   setPlaybackRate: playbackRate => dispatch(setPlaybackRate(id, playbackRate)),
   setLoop: loop => dispatch(setLoop(id, loop)),
   setFullScreen: fullScreen => dispatch(setFullScreen(id, fullScreen)),

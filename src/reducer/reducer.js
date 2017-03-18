@@ -110,8 +110,8 @@ const setMute = (state, { mute }) => updateObject(state, {
   muted: mute,
 });
 
-const setDuration = (state, { remainingDuration }) => updateObject(state, {
-  remainingDuration: !remainingDuration,
+const setDuration = (state, { showRemainingDuration }) => updateObject(state, {
+  showRemainingDuration: !showRemainingDuration,
 });
 
 const setPlaybackRate = (state, { playbackRate }) => updateObject(state, {

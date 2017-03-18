@@ -40,10 +40,10 @@ export const setMute = (id, mute) => ({
   id,
   mute,
 });
-export const setDuration = (id, remainingDuration) => ({
+export const setDuration = (id, showRemainingDuration) => ({
   type: actionNames.DURATION,
   id,
-  remainingDuration,
+  showRemainingDuration,
 });
 export const setPlaybackRate = (id, playbackRate) => ({
   type: actionNames.PLAYBACK_RATE,

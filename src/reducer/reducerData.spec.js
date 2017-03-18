@@ -289,21 +289,21 @@ export const durationData = [
   {
     action: {
       type: actionNames.DURATION,
-      remainingDuration: true,
+      showRemainingDuration: true,
       id: jPlayerOneId,
     },
     expected: {
-      remainingDuration: false,
+      showRemainingDuration: false,
     },
   },
   {
     action: {
       type: actionNames.DURATION,
-      remainingDuration: false,
+      showRemainingDuration: false,
       id: jPlayerOneId,
     },
     expected: {
-      remainingDuration: true,
+      showRemainingDuration: true,
     },
   },
 ];
