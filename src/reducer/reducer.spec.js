@@ -178,54 +178,6 @@ describe('jPlayer reducer', () => {
     });
   });
 
-  it('should handle DURATION', () => {
-    reducerData.durationData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle PLAYBACK_RATE', () => {
-    reducerData.playbackRateData.forEach((test) => {
-      const newState = {
-        ...state,
-        [jPlayerOneId]: {
-          ...state[jPlayerOneId],
-          ...test.state,
-        },
-      };
-
-      const jPlayer = reducer(newState, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle LOOP', () => {
-    reducerData.loopData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle FULL_SCREEN', () => {
-    reducerData.fullScreenData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
   it('should handle FOCUS', () => {
     state = getDefaultJPlayers(3).jPlayers;
 

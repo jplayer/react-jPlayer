@@ -6,11 +6,6 @@ import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
 
 const resetStatus = state => updateObject(state, { ...defaultStatus });
 
-const clearMedia = state => updateObject(state, {
-  ...resetStatus(state),
-  media: defaultOptions.media,
-});
-
 const updateFormats = (state, media) => {
   const newMediaSettings = { ...state.mediaSettings };
   const newFormats = [];
@@ -65,6 +60,11 @@ const setMedia = (state, { media = { sources: [] } }) => {
   return newState;
 };
 
+const clearMedia = state => updateObject(state, {
+  ...resetStatus(state),
+  media: defaultOptions.media,
+});
+
 const play = (state, { time }) => {
   if (state.src) {
     return updateObject(state, {
@@ -104,26 +104,11 @@ const setPlayHead = (state, { percent }) => {
 
 const setVolume = (state, { volume }) => updateObject(state, {
   volume: limitValue(volume, 0, 1),
+  muted: volume <= 0,
 });
 
 const setMute = (state, { mute }) => updateObject(state, {
   muted: mute,
-});
-
-const setDuration = (state, { showRemainingDuration }) => updateObject(state, {
-  showRemainingDuration: !showRemainingDuration,
-});
-
-const setPlaybackRate = (state, { playbackRate }) => updateObject(state, {
-  playbackRate: limitValue(playbackRate, state.minPlaybackRate, state.maxPlaybackRate),
-});
-
-const setLoop = (state, { loop }) => updateObject(state, {
-  loop,
-});
-
-const setFullScreen = (state, { fullScreen }) => updateObject(state, {
-  fullScreen,
 });
 
 const focus = (state, { id }) => {
@@ -149,10 +134,10 @@ const updatePlayer = (jPlayer, action) => {
   switch (action.type) {
     case actionNames.SET_OPTION:
       return updateObject(jPlayer, { [action.key]: action.value });
-    case actionNames.CLEAR_MEDIA:
-      return clearMedia(jPlayer);
     case actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);
+    case actionNames.CLEAR_MEDIA:
+      return clearMedia(jPlayer);
     case actionNames.PLAY:
       return play(jPlayer, action);
     case actionNames.PAUSE:
@@ -160,17 +145,9 @@ const updatePlayer = (jPlayer, action) => {
     case actionNames.PLAY_HEAD:
       return setPlayHead(jPlayer, action);
     case actionNames.VOLUME:
-      return setVolume(setMute(jPlayer, { mute: action.volume <= 0 }), action);
+      return setVolume(jPlayer, action);
     case actionNames.MUTE:
       return setMute(jPlayer, action);
-    case actionNames.DURATION:
-      return setDuration(jPlayer, action);
-    case actionNames.PLAYBACK_RATE:
-      return setPlaybackRate(jPlayer, action);
-    case actionNames.LOOP:
-      return setLoop(jPlayer, action);
-    case actionNames.FULL_SCREEN:
-      return setFullScreen(jPlayer, action);
     default:
       return null;
   }

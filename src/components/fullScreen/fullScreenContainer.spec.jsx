@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { setFullScreen } from '../../actions/actions';
+import { setOption } from '../../actions/actions';
 import { __get__ } from './fullScreenContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -41,8 +41,9 @@ describe('FullScreenContainer', () => {
 
       mappedDispatched.onClick(fullScreenState.fullScreen);
 
-      expect(dispatch).toHaveBeenCalledWith(setFullScreen(
+      expect(dispatch).toHaveBeenCalledWith(setOption(
         id,
+        'fullScreen',
         !fullScreenState.fullScreen,
       ));
     });

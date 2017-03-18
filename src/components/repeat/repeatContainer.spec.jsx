@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { setLoop } from '../../actions/actions';
+import { setOption } from '../../actions/actions';
 import { __get__ } from './repeatContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -41,7 +41,7 @@ describe('RepeatContainer', () => {
 
       mappedDispatch.onClick(onClickDatum.loop);
 
-      expect(dispatch).toHaveBeenCalledWith(setLoop(id, !onClickDatum.loop));
+      expect(dispatch).toHaveBeenCalledWith(setOption(id, 'loop', !onClickDatum.loop));
     });
   });
 });

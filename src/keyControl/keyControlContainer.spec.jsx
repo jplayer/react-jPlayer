@@ -4,8 +4,7 @@ import { shallow } from 'enzyme';
 
 import { getJPlayers } from '../util/common.spec';
 import { defaultOptions, keyIgnoreElementNames } from '../util/constants';
-import { play, pause, setFullScreen, setMute, setVolume,
-  setLoop } from '../actions/actions';
+import { play, pause, setMute, setVolume, setOption } from '../actions/actions';
 import { __get__ } from './keyControlContainer';
 
 const id = 'jPlayer-1';
@@ -85,7 +84,7 @@ describe('KeyControlContainer', () => {
       keyBindings.fullScreen.fn();
 
       expect(dispatch).toHaveBeenCalledWith(
-        setFullScreen(id, !fullScreenDatum.fullScreen),
+        setOption(id, 'fullScreen', !fullScreenDatum.fullScreen),
       );
     });
   });
@@ -132,14 +131,14 @@ describe('KeyControlContainer', () => {
 
     keyBindings.loop.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(setLoop(id, true));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'loop', true));
   });
 
   it('turns loop off on loop key press when looping', () => {
     const { keyBindings } = mergePropsWithDefaultState({ loop: true });
     keyBindings.loop.fn();
 
-    expect(dispatch).toHaveBeenCalledWith(setLoop(id, false));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'loop', false));
   });
 
   it('Adds listener to onKeyDown event on startup', () => {

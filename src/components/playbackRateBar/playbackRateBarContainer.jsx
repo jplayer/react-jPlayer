@@ -1,6 +1,6 @@
 import React from 'react';
 import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
-import { setPlaybackRate } from '../../actions/actions';
+import { setOption } from '../../actions/actions';
 import BarEvents from '../../barEvents/barEvents';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
@@ -25,7 +25,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
     const playbackRateValue = (ratio * (maxPlaybackRate - minPlaybackRate))
                               + minPlaybackRate;
 
-    dispatch(setPlaybackRate(id, playbackRateValue));
+    dispatch(setOption(id, 'playbackRate', playbackRateValue));
   },
   children,
   attributes,

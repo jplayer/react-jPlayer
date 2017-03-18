@@ -10,7 +10,6 @@ const setup = () => {
     onClick: createSpy(),
     onMouseDown: createSpy(),
     onTouchStart: createSpy(),
-    setPlaybackRate: Function.prototype,
     children: (<div className="@@jPlayer-test" />),
     'data-test': 'test',
   };

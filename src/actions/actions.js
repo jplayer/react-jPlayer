@@ -40,26 +40,6 @@ export const setMute = (id, mute) => ({
   id,
   mute,
 });
-export const setDuration = (id, showRemainingDuration) => ({
-  type: actionNames.DURATION,
-  id,
-  showRemainingDuration,
-});
-export const setPlaybackRate = (id, playbackRate) => ({
-  type: actionNames.PLAYBACK_RATE,
-  id,
-  playbackRate,
-});
-export const setLoop = (id, loop) => ({
-  type: actionNames.LOOP,
-  id,
-  loop,
-});
-export const setFullScreen = (id, fullScreen) => ({
-  type: actionNames.FULL_SCREEN,
-  id,
-  fullScreen,
-});
 export const focus = id => ({
   type: actionNames.FOCUS,
   id,

@@ -7,10 +7,6 @@ export const actionNames = {
   PLAY_HEAD: 'PLAY_HEAD',
   VOLUME: 'VOLUME',
   MUTE: 'MUTE',
-  DURATION: 'DURATION',
-  PLAYBACK_RATE: 'PLAYBACK_RATE',
-  LOOP: 'LOOP',
-  FULL_SCREEN: 'FULL_SCREEN',
   FOCUS: 'FOCUS',
 };
 

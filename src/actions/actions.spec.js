@@ -96,50 +96,6 @@ describe('jPlayer actions', () => {
     expect(actions.setMute(id, mute)).toEqual(expectedAction);
   });
 
-  it('should create an action to set the duration', () => {
-    const showRemainingDuration = true;
-    const expectedAction = {
-      type: actionNames.DURATION,
-      showRemainingDuration,
-      id,
-    };
-
-    expect(actions.setDuration(id, showRemainingDuration)).toEqual(expectedAction);
-  });
-
-  it('should create an action to set the playbackRate', () => {
-    const playbackRate = 3.2;
-    const expectedAction = {
-      type: actionNames.PLAYBACK_RATE,
-      playbackRate,
-      id,
-    };
-
-    expect(actions.setPlaybackRate(id, playbackRate)).toEqual(expectedAction);
-  });
-
-  it('should create an action to set the loop', () => {
-    const loop = true;
-    const expectedAction = {
-      type: actionNames.LOOP,
-      loop,
-      id,
-    };
-
-    expect(actions.setLoop(id, loop)).toEqual(expectedAction);
-  });
-
-  it('should create an action to set the fullScreen', () => {
-    const fullScreen = true;
-    const expectedAction = {
-      type: actionNames.FULL_SCREEN,
-      fullScreen,
-      id,
-    };
-
-    expect(actions.setFullScreen(id, fullScreen)).toEqual(expectedAction);
-  });
-
   it('should create an action to set the focus', () => {
     const expectedAction = {
       type: actionNames.FOCUS,

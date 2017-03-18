@@ -28,10 +28,6 @@ const getMappedActionsData = (jPlayer = getDefaultJPlayers(1, true).jPlayers[id]
   { action: 'setPlayHead', args: [jPlayer.playHeadPercent] },
   { action: 'setVolume', args: [jPlayer.volume] },
   { action: 'setMute', args: [jPlayer.muted] },
-  { action: 'setDuration', args: [230] },
-  { action: 'setPlaybackRate', args: [jPlayer.playbackRate] },
-  { action: 'setLoop', args: [jPlayer.loop] },
-  { action: 'setFullScreen', args: [jPlayer.fullScreen] },
   { action: 'focus', args: [] },
 ];
 

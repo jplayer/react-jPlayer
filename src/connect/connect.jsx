@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 
 import { defaultOptions, defaultStatus } from '../util/constants';
 import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
-  setVolume, setMute, setDuration, setPlaybackRate, setLoop,
-  setFullScreen, focus } from '../actions/actions';
+  setVolume, setMute, focus } from '../actions/actions';
 
 const mapStateToProps = ({ jPlayers }) => ({
   ...jPlayers,
@@ -19,10 +18,6 @@ const getActions = (dispatch, id) => ({
   setPlayHead: percent => dispatch(setPlayHead(id, percent)),
   setVolume: volume => dispatch(setVolume(id, volume)),
   setMute: mute => dispatch(setMute(id, mute)),
-  setDuration: showRemainingDuration => dispatch(setDuration(id, showRemainingDuration)),
-  setPlaybackRate: playbackRate => dispatch(setPlaybackRate(id, playbackRate)),
-  setLoop: loop => dispatch(setLoop(id, loop)),
-  setFullScreen: fullScreen => dispatch(setFullScreen(id, fullScreen)),
   focus: () => dispatch(focus(id)),
 });
 

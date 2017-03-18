@@ -1,5 +1,5 @@
 import { connectWithId } from '../../util/index';
-import { setLoop } from '../../actions/actions';
+import { setOption } from '../../actions/actions';
 import Repeat from './repeat';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
@@ -9,7 +9,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { id }) => ({
-  onClick: loop => dispatch(setLoop(id, !loop)),
+  onClick: loop => dispatch(setOption(id, 'loop', !loop)),
 });
 
 export default connectWithId(mapStateToProps, mapDispatchToProps)(Repeat);

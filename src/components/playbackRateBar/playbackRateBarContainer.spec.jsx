@@ -3,7 +3,7 @@ import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
 
 import { getJPlayers } from '../../util/common.spec';
-import { setPlaybackRate } from '../../actions/actions';
+import { setOption } from '../../actions/actions';
 import { __get__ } from './playbackRateBarContainer';
 import BarEvents from '../../barEvents/barEvents';
 import PlaybackRateBar from './playbackRateBar';
@@ -58,7 +58,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageX: 33 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 0.605));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 0.605));
   });
 
   it('onClick moves playback rate when verticalPlaybackRate', () => {
@@ -73,7 +73,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onClick(mockBar, { pageY: 7 });
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 5.05));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 5.05));
   });
 
   it('onTouchMove moves playback rate', () => {
@@ -92,7 +92,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onTouchMove(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 0.605));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 0.605));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
@@ -114,7 +114,7 @@ describe('PlaybackRateBarContainer', () => {
 
     mergedProps.onTouchMove(mockBar, event);
 
-    expect(dispatch).toHaveBeenCalledWith(setPlaybackRate(id, 5.05));
+    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 5.05));
     expect(event.preventDefault).toHaveBeenCalled();
   });
 

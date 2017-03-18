@@ -167,16 +167,6 @@ Play the media.
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `time` (number): The time that the jPlayer should pause from, defaults to the current time.
 
-toDo:
-  "setPlayHead": "function",
-  "setVolume": "function",
-  "setMute": "function",
-  "setDuration": "function",
-  "setPlaybackRate": "function",
-  "setLoop": "function",
-  "setFullScreen": "function",
-  "focus": "function",
-
 ### Options
 todo.
 

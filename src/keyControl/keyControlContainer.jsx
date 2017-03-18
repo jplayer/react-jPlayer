@@ -2,7 +2,7 @@ import React from 'react';
 import merge from 'lodash.merge';
 
 import { keyIgnoreElementNames } from '../util/constants';
-import { play, pause, setMute, setVolume, setLoop, setFullScreen } from '../actions/actions';
+import { play, pause, setMute, setVolume, setOption } from '../actions/actions';
 import { connectWithId } from '../util/index';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
@@ -25,7 +25,7 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
     },
     fullScreen: {
       key: 70, // f
-      fn: () => dispatch(setFullScreen(id, !stateProps.fullScreen)),
+      fn: () => dispatch(setOption(id, 'fullScreen', !stateProps.fullScreen)),
     },
     mute: {
       key: 77, // m
@@ -43,7 +43,7 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
     },
     loop: {
       key: 76, // l
-      fn: () => dispatch(setLoop(id, !stateProps.loop)),
+      fn: () => dispatch(setOption(id, 'loop', !stateProps.loop)),
     },
   }, stateProps.keyBindings),
   id,
