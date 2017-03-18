@@ -25,23 +25,24 @@ describe('RepeatContainer', () => {
 
     expect(expected).toEqual({
       loop: false,
+      id,
       children,
       attributes,
     });
   });
 
-  const onClickData = [
+  const loopDatum = [
     { loop: false },
     { loop: true },
   ];
 
   it('mappedDispatch onClick toggles loop', () => {
-    onClickData.forEach((onClickDatum) => {
-      const mappedDispatch = mapDispatchToProps(dispatch, { id });
+    loopDatum.forEach((datum) => {
+      const mappedDispatch = mapDispatchToProps(dispatch);
 
-      mappedDispatch.onClick(onClickDatum.loop);
+      mappedDispatch.onClick(id, datum.loop);
 
-      expect(dispatch).toHaveBeenCalledWith(setOption(id, 'loop', !onClickDatum.loop));
+      expect(dispatch).toHaveBeenCalledWith(setOption(id, 'loop', !datum.loop));
     });
   });
 });

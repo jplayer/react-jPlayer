@@ -24,6 +24,7 @@ describe('MuteContainer', () => {
 
     expect(expected).toEqual({
       muted: false,
+      id,
       children,
       attributes,
     });
@@ -35,12 +36,12 @@ describe('MuteContainer', () => {
   ];
 
   it('mapDispatchToProps onClick toggles mute', () => {
-    muteData.forEach((muteDatum) => {
-      const mappedDispatched = mapDispatchToProps(dispatch, { id });
+    muteData.forEach((datum) => {
+      const mappedDispatched = mapDispatchToProps(dispatch);
 
-      mappedDispatched.onClick(muteDatum.muted);
+      mappedDispatched.onClick(id, datum.muted);
 
-      expect(dispatch).toHaveBeenCalledWith(setMute(id, !muteDatum.muted));
+      expect(dispatch).toHaveBeenCalledWith(setMute(id, !datum.muted));
     });
   });
 });

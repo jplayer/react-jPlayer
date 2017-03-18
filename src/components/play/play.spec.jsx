@@ -10,6 +10,7 @@ const setup = () => {
     onClick: createSpy(),
     paused: true,
     children: (<i className="@@jPlayer-test" />),
+    id: 'jPlayer-1',
     attributes: {
       'data-test': 'test',
     },
@@ -34,7 +35,7 @@ describe('<Play />', () => {
   it('renders self and subcomponents', () => {
     wrapper.simulate('click');
 
-    expect(props.onClick).toHaveBeenCalledWith(props.paused);
+    expect(props.onClick).toHaveBeenCalledWith(props.id, props.paused);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.PLAY)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);

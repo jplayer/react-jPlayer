@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const Poster = ({ src, alt, attributes }) =>
-  <img {...attributes} className={classes.POSTER} alt={alt} src={src} />;
+  <img className={classes.POSTER} alt={alt} src={src} {...attributes} />;
 
 Poster.defaultProps = {
   alt: null,

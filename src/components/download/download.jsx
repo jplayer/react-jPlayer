@@ -5,8 +5,9 @@ import { classes } from '../../util/constants';
 const Download = ({ free, url, children, attributes }) => (
   free ?
     <a
-      {...attributes} className={classes.DOWNLOAD} href={url}
+      className={classes.DOWNLOAD} href={url}
       download target="_blank" rel="noopener noreferrer"
+      {...attributes}
     >
       {children}
     </a>

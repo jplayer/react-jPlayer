@@ -1,8 +1,9 @@
 import { connectWithId } from '../../util/index';
 import Video from './video';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, events, children, ...attributes }) => ({
   require: jPlayers[id].mediaSettings.video,
+  events,
   children,
   attributes,
 });

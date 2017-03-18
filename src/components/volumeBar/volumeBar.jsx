@@ -5,8 +5,9 @@ import { classes } from '../../util/constants';
 const VolumeBar = ({ setBar, onClick, onMouseDown,
 onTouchStart, ...attributes }) => (
   <div
-    {...attributes} ref={setBar} className={classes.VOLUME_BAR}
+    ref={setBar} className={classes.VOLUME_BAR}
     onClick={onClick} onMouseDown={onMouseDown} onTouchStart={onTouchStart}
+    {...attributes}
   />
 );
 

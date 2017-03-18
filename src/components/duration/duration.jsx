@@ -4,7 +4,7 @@ import { classes } from '../../util/constants';
 
 const Duration = ({ children, attributes }) => (
   children !== '' ?
-    <div {...attributes} className={classes.DURATION}>
+    <div className={classes.DURATION} {...attributes}>
       {children}
     </div>
   : null

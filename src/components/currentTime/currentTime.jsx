@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const CurrentTime = ({ children, attributes }) => (
-  <div {...attributes} className={classes.CURRENT_TIME}>
+  <div className={classes.CURRENT_TIME} {...attributes}>
     {children}
   </div>
 );

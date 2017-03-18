@@ -20,7 +20,7 @@ Video.defaultProps = {
 };
 
 Video.propTypes = {
-  attributes: React.PropTypes.node.isRequired,
+  attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.node,
   require: React.PropTypes.bool,
   events: React.PropTypes.shape({

@@ -5,12 +5,12 @@ import { classes } from '../../util/constants';
 
 const motion = (values, onMouseMove, attributes) => (
   <div
-    {...attributes} className={classes.GUI}
-    onMouseMove={onMouseMove}
+    className={classes.GUI} onMouseMove={onMouseMove}
     style={{
       opacity: values.opacity,
       display: values.opacity === 0 ? 'none' : '',
     }}
+    {...attributes}
   />
 );
 

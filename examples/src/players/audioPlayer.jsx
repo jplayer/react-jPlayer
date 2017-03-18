@@ -27,7 +27,7 @@ const AudioPlayer = props => (
           <Mute
             aria-haspopup
             onTouchStart={onTouchStart}
-            onClick={onClick(props.setMute, props.options.muted)}
+            onClick={() => onClick(props.setMute, props.options.muted)}
           >
             <i className="fa">{/* Icon set in css*/}</i>
           </Mute>

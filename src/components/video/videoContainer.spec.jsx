@@ -14,12 +14,16 @@ const videoStates = [
   { mediaSettings: { video: false } },
   { mediaSettings: { video: true } },
 ];
+const events = {
+  onProgress: null,
+};
 
 describe('VideoContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id, events, children, ...attributes });
     expect(expected).toEqual({
       require: false,
+      events,
       children,
       attributes,
     });

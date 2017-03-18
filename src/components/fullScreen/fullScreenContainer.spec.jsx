@@ -7,10 +7,6 @@ import { __get__ } from './fullScreenContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
-const fullScreenStates = [
-   { fullScreen: false },
-   { fullScreen: true },
-];
 const id = 'jPlayer-1';
 const children = <div />;
 const attributes = {
@@ -29,22 +25,28 @@ describe('FullScreenContainer', () => {
 
     expect(expected).toEqual({
       fullScreen: false,
+      id,
       attributes,
       children,
     });
   });
 
-  fullScreenStates.forEach((fullScreenState) => {
-    it(`mapDispatchToProps onClick toggles fullScreen 
-    (value: ${fullScreenState.fullScreen})`, () => {
-      const mappedDispatched = mapDispatchToProps(dispatch, { id });
+  const fullScreenData = [
+    { fullScreen: false },
+    { fullScreen: true },
+  ];
 
-      mappedDispatched.onClick(fullScreenState.fullScreen);
+  fullScreenData.forEach((datum) => {
+    it(`mapDispatchToProps onClick toggles fullScreen 
+    (value: ${datum.fullScreen})`, () => {
+      const mappedDispatched = mapDispatchToProps(dispatch);
+
+      mappedDispatched.onClick(id, datum.fullScreen);
 
       expect(dispatch).toHaveBeenCalledWith(setOption(
         id,
         'fullScreen',
-        !fullScreenState.fullScreen,
+        !datum.fullScreen,
       ));
     });
   });

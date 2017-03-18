@@ -11,7 +11,7 @@ const VolumeBarValue = ({ muted, volume, verticalVolume, attributes }) => {
       height: verticalVolume ? volumeBarValuePercentage : null,
     };
   };
-  return <div {...attributes} className={classes.VOLUME_BAR_VALUE} style={style()} />;
+  return <div className={classes.VOLUME_BAR_VALUE} style={style()} {...attributes} />;
 };
 
 VolumeBarValue.defaultProps = {

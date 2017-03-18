@@ -24,23 +24,24 @@ describe('MuteContainer', () => {
 
     expect(expected).toEqual({
       paused: true,
+      id,
       children,
       attributes,
     });
   });
 
   it('mapDispatchToProps onClick when paused will play', () => {
-    const mergedProps = mapDispatchToProps(dispatch, { id });
+    const mergedProps = mapDispatchToProps(dispatch);
 
-    mergedProps.onClick(true);
+    mergedProps.onClick(id, true);
 
     expect(dispatch).toHaveBeenCalledWith(play(id));
   });
 
   it('mapDispatchToProps onClick when playing will pause', () => {
-    const mergedProps = mapDispatchToProps(dispatch, { id });
+    const mergedProps = mapDispatchToProps(dispatch);
 
-    mergedProps.onClick(false);
+    mergedProps.onClick(id, false);
 
     expect(dispatch).toHaveBeenCalledWith(pause(id));
   });

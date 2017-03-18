@@ -5,9 +5,10 @@ import { classes } from '../../util/constants';
 const SeekBar = ({ setBar, onClick, onMouseDown, onTouchStart,
   seekPercent, ...attributes }) => (
     <div
-      {...attributes} ref={setBar} className={classes.SEEK_BAR}
+      ref={setBar} className={classes.SEEK_BAR}
       style={{ width: `${seekPercent}%` }} onClick={onClick}
       onTouchStart={onTouchStart} onMouseDown={onMouseDown}
+      {...attributes}
     />
 );
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const Title = ({ artist, title, children, attributes }) => (
-  <div {...attributes} className={classes.TITLE}>
+  <div className={classes.TITLE} {...attributes}>
     {children === null ? `${artist} - ${title}` : children}
   </div>
 );

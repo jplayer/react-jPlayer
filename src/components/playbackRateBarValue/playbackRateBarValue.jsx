@@ -16,7 +16,8 @@ const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
   };
   return (
     <div
-      {...attributes} className={classes.PLAYBACK_RATE_BAR_VALUE} style={style()}
+      className={classes.PLAYBACK_RATE_BAR_VALUE} style={style()}
+      {...attributes}
     />
   );
 };
