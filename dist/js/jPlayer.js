@@ -455,7 +455,7 @@ var convertTime = exports.convertTime = function convertTime(seconds, timeFormat
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setFocus = exports.setFullScreen = exports.setLoop = exports.setPlaybackRate = exports.setDuration = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = exports.setOption = undefined;
+exports.focus = exports.setFullScreen = exports.setLoop = exports.setPlaybackRate = exports.setDuration = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = exports.setOption = undefined;
 
 var _constants = __webpack_require__(1);
 
@@ -543,7 +543,7 @@ var setFullScreen = exports.setFullScreen = function setFullScreen(id, fullScree
     fullScreen: fullScreen
   };
 };
-var setFocus = exports.setFocus = function setFocus(id) {
+var focus = exports.focus = function focus(id) {
   return {
     type: _constants.actionNames.FOCUS,
     id: id
@@ -2508,8 +2508,8 @@ var getActions = function getActions(dispatch, id) {
     setFullScreen: function setFullScreen(fullScreen) {
       return dispatch((0, _actions.setFullScreen)(id, fullScreen));
     },
-    setFocus: function setFocus() {
-      return dispatch((0, _actions.setFocus)(id));
+    focus: function focus() {
+      return dispatch((0, _actions.focus)(id));
     }
   };
 };
@@ -2824,7 +2824,7 @@ var setFullScreen = function setFullScreen(state, _ref10) {
   });
 };
 
-var setFocus = function setFocus(state, _ref11) {
+var focus = function focus(state, _ref11) {
   var id = _ref11.id;
 
   var newState = _extends({}, state);
@@ -2920,7 +2920,7 @@ var jPlayerReducer = function jPlayerReducer(state, action) {
   }
 
   if (action.type === _constants.actionNames.FOCUS) {
-    return (0, _index.updateObject)(newState, setFocus(newState, action));
+    return (0, _index.updateObject)(newState, focus(newState, action));
   }
   return newState;
 };

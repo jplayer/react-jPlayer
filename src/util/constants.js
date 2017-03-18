@@ -175,7 +175,7 @@ export const defaultStatus = {
   ended: 0,
   error: {},
   bufferedTimeRanges: [],
-  focus: false,
+  focused: false,
 };
 
 export const defaultOptions = {

@@ -27,16 +27,16 @@ describe('KeyControlContainer', () => {
       volume: defaultOptions.volume,
       loop: false,
       keyBindings: defaultOptions.keyBindings,
-      focus: false,
+      focused: false,
     });
   });
 
   it('merges props', () => {
-    const focus = true;
-    const { keyBindings, ...rest } = mergeProps({ focus }, { dispatch }, { id });
+    const focused = true;
+    const { keyBindings, ...rest } = mergeProps({ focused }, { dispatch }, { id });
 
     expect(rest).toEqual({
-      focus,
+      focused,
       id,
     });
     expect(Object.keys(keyBindings)).toEqual(['play', 'fullScreen',
@@ -197,7 +197,7 @@ describe('KeyControlContainer', () => {
 
   it('trigger key press function if focused, not an ignorable element ' +
   'and keyCode matches', () => {
-    const props = mergePropsWithDefaultState({ focus: true });
+    const props = mergePropsWithDefaultState({ focused: true });
     spyOn(props.keyBindings.play, 'fn');
     const wrapper = shallow(<KeyControlContainer {...props} />);
     wrapper.instance().onKeyDown({
@@ -211,7 +211,7 @@ describe('KeyControlContainer', () => {
   });
 
   it('Each keyBinding function triggered with correct key onKeyDown', () => {
-    const props = mergePropsWithDefaultState({ focus: true });
+    const props = mergePropsWithDefaultState({ focused: true });
     Object.keys(props.keyBindings).forEach((key) => {
       const keyBinding = props.keyBindings[key];
 

@@ -146,6 +146,6 @@ describe('jPlayer actions', () => {
       id,
     };
 
-    expect(actions.setFocus(id)).toEqual(expectedAction);
+    expect(actions.focus(id)).toEqual(expectedAction);
   });
 });

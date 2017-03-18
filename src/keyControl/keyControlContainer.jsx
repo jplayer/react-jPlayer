@@ -12,11 +12,11 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   volume: jPlayers[id].volume,
   loop: jPlayers[id].loop,
   keyBindings: jPlayers[id].keyBindings,
-  focus: jPlayers[id].focus,
+  focused: jPlayers[id].focused,
 });
 
 const mergeProps = (stateProps, { dispatch }, { id }) => ({
-  focus: stateProps.focus,
+  focused: stateProps.focused,
   keyBindings: merge({}, {
     play: {
       key: 80, // p
@@ -52,7 +52,7 @@ const mergeProps = (stateProps, { dispatch }, { id }) => ({
 class KeyControlContainer extends React.Component {
   static get propTypes() {
     return {
-      focus: React.PropTypes.bool.isRequired,
+      focused: React.PropTypes.bool.isRequired,
       keyBindings: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
     };
   }
@@ -64,7 +64,7 @@ class KeyControlContainer extends React.Component {
   }
   onKeyDown = (event) => {
     if (keyIgnoreElementNames.some(name => name.toUpperCase()
-        === event.target.nodeName.toUpperCase()) || !this.props.focus) {
+        === event.target.nodeName.toUpperCase()) || !this.props.focused) {
       return;
     }
     Object.keys(this.props.keyBindings).forEach((key) => {

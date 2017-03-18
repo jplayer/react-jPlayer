@@ -60,7 +60,7 @@ export const setFullScreen = (id, fullScreen) => ({
   id,
   fullScreen,
 });
-export const setFocus = id => ({
+export const focus = id => ({
   type: actionNames.FOCUS,
   id,
 });

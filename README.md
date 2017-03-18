@@ -175,7 +175,7 @@ toDo:
   "setPlaybackRate": "function",
   "setLoop": "function",
   "setFullScreen": "function",
-  "setFocus": "function",
+  "focus": "function",
 
 ### Options
 todo.

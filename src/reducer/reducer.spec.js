@@ -236,9 +236,9 @@ describe('jPlayer reducer', () => {
 
       Object.keys(jPlayers).forEach((key) => {
         if (test.id !== key) {
-          expect(jPlayers[key].focus).toBeFalsy();
+          expect(jPlayers[key].focused).toBeFalsy();
         } else {
-          expect(jPlayers[key].focus).toBeTruthy();
+          expect(jPlayers[key].focused).toBeTruthy();
         }
       });
     });
@@ -256,9 +256,9 @@ describe('jPlayer reducer', () => {
 
         Object.keys(jPlayers).forEach((key) => {
           if (key !== jPlayerOneId) {
-            expect(jPlayers[key].focus).toBeFalsy();
+            expect(jPlayers[key].focused).toBeFalsy();
           } else {
-            expect(jPlayers[key].focus).toBeTruthy();
+            expect(jPlayers[key].focused).toBeTruthy();
           }
         });
       }

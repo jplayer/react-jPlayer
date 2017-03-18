@@ -126,20 +126,20 @@ const setFullScreen = (state, { fullScreen }) => updateObject(state, {
   fullScreen,
 });
 
-const setFocus = (state, { id }) => {
+const focus = (state, { id }) => {
   const newState = { ...state };
   const firstKeyEnabledPlayer = Object.keys(state).filter(key => newState[key].keyEnabled).shift();
 
   if (newState[id].keyEnabled) {
     Object.keys(state).forEach((key) => {
       if (key === id) {
-        newState[key] = updateObject(newState[key], { focus: true });
+        newState[key] = updateObject(newState[key], { focused: true });
       } else {
-        newState[key] = updateObject(newState[key], { focus: false });
+        newState[key] = updateObject(newState[key], { focused: false });
       }
     });
   } else if (newState[firstKeyEnabledPlayer] !== undefined) {
-    const focusedPlayer = updateObject(newState[firstKeyEnabledPlayer], { focus: true });
+    const focusedPlayer = updateObject(newState[firstKeyEnabledPlayer], { focused: true });
     return updateObject(newState, { [firstKeyEnabledPlayer]: focusedPlayer });
   }
   return newState;
@@ -217,7 +217,7 @@ const jPlayerReducer = (state, action) => {
   }
 
   if (action.type === actionNames.FOCUS) {
-    return updateObject(newState, setFocus(newState, action));
+    return updateObject(newState, focus(newState, action));
   }
   return newState;
 };

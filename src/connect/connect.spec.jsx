@@ -32,7 +32,7 @@ const getMappedActionsData = (jPlayer = getDefaultJPlayers(1, true).jPlayers[id]
   { action: 'setPlaybackRate', args: [jPlayer.playbackRate] },
   { action: 'setLoop', args: [jPlayer.loop] },
   { action: 'setFullScreen', args: [jPlayer.fullScreen] },
-  { action: 'setFocus', args: [] },
+  { action: 'focus', args: [] },
 ];
 
 describe('JPlayerConnect', () => {
