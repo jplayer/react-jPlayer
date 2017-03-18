@@ -255,12 +255,12 @@ This method is called internally for each of the other actions if that jPlayer h
 ##### [`preload (string)`](https://developer.mozilla.org/en/docs/Web/HTML/Element/video#attr-preload)
 Default: "metadata"
 
-##### [`minPlaybackRate (number)`]
+##### `minPlaybackRate (number)`
 Default: 0.5
 
 Useful to limit the lower boundary of the playbackRate, e.g. when using a slider for the playbackRate
 
-##### [`maxPlaybackRate (number)`]
+##### `maxPlaybackRate (number)`
 Default: 4
 
 Useful to limit the upper boundary of the playbackRate, e.g. when using a slider for the playbackRate
@@ -271,7 +271,7 @@ Default: 1.0
 ##### [`defaultPlaybackRate (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/defaultPlaybackRate)
 Default: 1.0
 
-##### [`bufferColour (string)`]
+##### `bufferColour (string)`
 Default: "#ddd"
 
 The bufferBar component is a `<canvas />` element and uses the fillStyle property to fill in the bar. Therefor the colour property must be set in JS and not css.
@@ -279,17 +279,17 @@ The bufferBar component is a `<canvas />` element and uses the fillStyle propert
 ##### [`volume (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/volume)
 Default: 0.8
 
-##### [`barDrag (bool)`]
+##### `barDrag (bool)`
 Default: true
 
 Allows dragging of all of the components which are bars, e.g. volumeBar, playbackRateBar and seekBar.
 
-##### [`guiFadeHoldTime (number)`]
+##### `guiFadeHoldTime (number)`
 Default: 3000
 
 The time with which the gui waits until fading out. This only starts when the user moves the mouse over the root jPlayer element, the audio/video is full screen and the media is playing.
 
-##### [`media (object)`]
+##### `media (object)`
 Default: 
 ```
 media: {
@@ -308,7 +308,7 @@ media: {
 `poster` needs to be a valid image element url.
 `free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
 
-##### [`keyBindings: (object)`]
+##### `keyBindings: (object)`
 Default:
 ```
 keyBindings: {
@@ -346,6 +346,8 @@ keyBindings: {
 `fn` is the function that will be executed once the key has been pressed.
 
 The keybindings you specify will be deep merged with the defaults.
+
+ToDo: Document all the props.
 
 ### Components
 #### `<JPlayer />`
