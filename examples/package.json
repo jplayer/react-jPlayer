@@ -33,7 +33,7 @@
     "font-awesome": "^4.7.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.2",
-    "react-jplayer": "^2.0.9",
+    "react-jplayer": "^3.0.0",
     "react-json-pretty": "^1.3.1",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0"
