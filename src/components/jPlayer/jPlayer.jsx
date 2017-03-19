@@ -1,6 +1,6 @@
 import React from 'react';
 
-import KeyControl from '../../keyControl/keyControlContainer';
+import KeyControl from '../keyControl/keyControlContainer';
 
 const JPlayer = ({ keyEnabled, setJPlayer, children, ...attributes }) => (
   <div ref={setJPlayer} draggable={false} {...attributes}>
