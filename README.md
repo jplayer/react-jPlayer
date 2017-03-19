@@ -470,12 +470,12 @@ This is the current media's src url that you specified in `media.sources`.
 ##### `currentTimeText: (string)`
 Default: '0:00'
 
-The current time that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeFormats-object) object that is being used for the [`currentTime`](https://github.com/MartinDawson/react-jPlayer#currenttime-) component.
+The current time that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`currentTime`](https://github.com/MartinDawson/react-jPlayer#currenttime-) component.
 
 ##### `durationText: (string)`
 Default: ''
 
-The duration that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeFormats-object) object that is being used for the [`duration`](https://github.com/MartinDawson/react-jPlayer#duration-) component.
+The duration that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`duration`](https://github.com/MartinDawson/react-jPlayer#duration-) component.
 
 ##### `seekPercent: (number)`
 Default: 0
