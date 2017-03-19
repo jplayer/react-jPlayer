@@ -321,15 +321,6 @@ describe('MediaContainer', () => {
     expect(onRepeat).toNotHaveBeenCalled();
   });
 
-  it('onEnded calls loop callback if looping', () => {
-    const onRepeat = createSpy();
-    const { instance } = setup({ loop: true }, { onRepeat });
-
-    instance.events.onEnded();
-
-    expect(onRepeat).toHaveBeenCalled();
-  });
-
   it('onError sets error to urlNotSupported', () => {
     const onError = createSpy();
     const { props, instance } = setup(undefined, { onError });

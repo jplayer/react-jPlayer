@@ -1,9 +1,10 @@
 import { connectWithId } from '../../util/index';
 import BrowserUnsupported from './browserUnsupported';
 
-const mapStateToProps = ({ jPlayers }, { id, children }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   foundSupported: jPlayers[id].mediaSettings.foundSupported,
   children,
+  attributes,
 });
 
 export default connectWithId(mapStateToProps)(BrowserUnsupported);

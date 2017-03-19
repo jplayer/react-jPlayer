@@ -1,23 +1,25 @@
 import React from 'react';
 import { classes } from '../../util/constants';
 
-const BrowserUnsupported = ({ foundSupported, children }) => (
-  foundSupported ? null : children
+const BrowserUnsupported = ({ foundSupported, children, attributes }) => (
+  foundSupported ? null :
+  <div className={classes.NO_BROWSER_SUPPORT} {...attributes}>
+    {children}
+  </div>
 );
 
 BrowserUnsupported.defaultProps = {
   children: (
-    <div className={classes.NO_BROWSER_SUPPORT}>
+    <div>
       <h4>Browser Unsupported</h4>
-      <div>
-        Your browser does not support this media file.
-        To play the media you will need to update your browser to a more recent version.
-      </div>
+      Your browser does not support this media file.
+      To play the media you will need to update your browser to a more recent version.
     </div>
   ),
 };
 
 BrowserUnsupported.propTypes = {
+  attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.node,
   foundSupported: React.PropTypes.bool.isRequired,
 };

@@ -30,30 +30,29 @@ const mapDispatchToProps = {
 class MediaContainer extends React.Component {
   static get propTypes() {
     return {
-      onProgress: React.PropTypes.func,
-      onTimeUpdate: React.PropTypes.func,
-      onDurationChange: React.PropTypes.func,
-      onRateChange: React.PropTypes.func,
-      onSeeking: React.PropTypes.func,
-      onSeeked: React.PropTypes.func,
-      onPlay: React.PropTypes.func,
-      onRepeat: React.PropTypes.func,
-      onEnded: React.PropTypes.func,
-      onError: React.PropTypes.func,
-      onPlaying: React.PropTypes.func,
-      onPause: React.PropTypes.func,
-      onWaiting: React.PropTypes.func,
-      onSuspend: React.PropTypes.func,
-      onVolumeChange: React.PropTypes.func,
-      onLoadStart: React.PropTypes.func,
-      onLoadedMetadata: React.PropTypes.func,
       onAbort: React.PropTypes.func,
-      onEmptied: React.PropTypes.func,
-      onStalled: React.PropTypes.func,
-      onLoadedData: React.PropTypes.func,
       onCanPlay: React.PropTypes.func,
       onCanPlayThrough: React.PropTypes.func,
-      loop: React.PropTypes.bool.isRequired,
+      onDurationChange: React.PropTypes.func,
+      onEmptied: React.PropTypes.func,
+      onEncrypted: React.PropTypes.func,
+      onEnded: React.PropTypes.func,
+      onError: React.PropTypes.func,
+      onLoadedData: React.PropTypes.func,
+      onLoadedMetadata: React.PropTypes.func,
+      onLoadStart: React.PropTypes.func,
+      onPause: React.PropTypes.func,
+      onPlay: React.PropTypes.func,
+      onPlaying: React.PropTypes.func,
+      onProgress: React.PropTypes.func,
+      onRateChange: React.PropTypes.func,
+      onSeeked: React.PropTypes.func,
+      onSeeking: React.PropTypes.func,
+      onStalled: React.PropTypes.func,
+      onSuspend: React.PropTypes.func,
+      onTimeUpdate: React.PropTypes.func,
+      onVolumeChange: React.PropTypes.func,
+      onWaiting: React.PropTypes.func,
       showRemainingDuration: React.PropTypes.bool.isRequired,
       src: React.PropTypes.string.isRequired,
       playHeadPercent: React.PropTypes.number.isRequired,
@@ -74,6 +73,7 @@ class MediaContainer extends React.Component {
       }).isRequired,
       /* eslint-disable react/no-unused-prop-types */
       newTime: React.PropTypes.number,
+      loop: React.PropTypes.bool.isRequired,
       autoplay: React.PropTypes.bool.isRequired,
       defaultPlaybackRate: React.PropTypes.number.isRequired,
       muted: React.PropTypes.bool.isRequired,
@@ -89,29 +89,29 @@ class MediaContainer extends React.Component {
   }
   static get defaultProps() {
     return {
-      onProgress: Function.prototype,
-      onTimeUpdate: Function.prototype,
-      onDurationChange: Function.prototype,
-      onRateChange: Function.prototype,
-      onSeeking: Function.prototype,
-      onSeeked: Function.prototype,
-      onPlay: Function.prototype,
-      onRepeat: Function.prototype,
-      onEnded: Function.prototype,
-      onError: Function.prototype,
-      onPlaying: Function.prototype,
-      onPause: Function.prototype,
-      onWaiting: Function.prototype,
-      onSuspend: Function.prototype,
-      onVolumeChange: Function.prototype,
-      onLoadStart: Function.prototype,
-      onLoadedMetadata: Function.prototype,
       onAbort: Function.prototype,
-      onEmptied: Function.prototype,
-      onStalled: Function.prototype,
-      onLoadedData: Function.prototype,
       onCanPlay: Function.prototype,
       onCanPlayThrough: Function.prototype,
+      onDurationChange: Function.prototype,
+      onEmptied: Function.prototype,
+      onEncrypted: Function.prototype,
+      onEnded: Function.prototype,
+      onError: Function.prototype,
+      onLoadedData: Function.prototype,
+      onLoadedMetadata: Function.prototype,
+      onLoadStart: Function.prototype,
+      onPause: Function.prototype,
+      onPlay: Function.prototype,
+      onPlaying: Function.prototype,
+      onProgress: Function.prototype,
+      onRateChange: Function.prototype,
+      onSeeked: Function.prototype,
+      onSeeking: Function.prototype,
+      onStalled: Function.prototype,
+      onSuspend: Function.prototype,
+      onTimeUpdate: Function.prototype,
+      onVolumeChange: Function.prototype,
+      onWaiting: Function.prototype,
       newTime: null,
     };
   }
@@ -121,6 +121,34 @@ class MediaContainer extends React.Component {
     this.state = {};
 
     this.events = {
+      onAbort: this.props.onAbort,
+      onCanPlay: this.props.onCanPlay,
+      onCanPlayThrough: this.props.onCanPlayThrough,
+      onDurationChange: () => {
+        this.updateMediaStatus();
+        this.props.onDurationChange();
+      },
+      onEmptied: this.props.onEmptied,
+      onEncrypted: this.props.onEncrypted,
+      onEnded: () => {
+        // Pause so that the play/pause button resets and the poster is shown again
+        this.props.pause(this.props.id, 0);
+        this.updateMediaStatus();
+        this.props.onEnded();
+      },
+      onError: () => {
+        this.props.setOption(this.props.id, 'error', urlNotSupportedError(this.props.src));
+        this.props.onError();
+      },
+      onLoadedData: this.props.onLoadedData,
+      onLoadedMetadata: this.props.onLoadedMetadata,
+      onLoadStart: this.props.onLoadStart,
+      onPause: this.props.onPause,
+      onPlay: () => {
+        this.props.setOption(this.props.id, 'paused', false);
+        this.props.onPlay();
+      },
+      onPlaying: this.props.onPlaying,
       onProgress: () => {
         const bufferedTimeRanges = [];
 
@@ -134,54 +162,23 @@ class MediaContainer extends React.Component {
         this.props.setOption(this.props.id, 'bufferedTimeRanges', bufferedTimeRanges);
         this.props.onProgress();
       },
-      onTimeUpdate: () => {
-        this.updateMediaStatus();
-        this.props.onTimeUpdate();
-      },
-      onDurationChange: () => {
-        this.updateMediaStatus();
-        this.props.onDurationChange();
+      onRateChange: this.props.onRateChange,
+      onSeeked: () => {
+        this.props.setOption(this.props.id, 'seeking', false);
+        this.props.onSeeked();
       },
       onSeeking: () => {
         this.props.setOption(this.props.id, 'seeking', true);
         this.props.onSeeking();
       },
-      onSeeked: () => {
-        this.props.setOption(this.props.id, 'seeking', false);
-        this.props.onSeeked();
-      },
-      onPlay: () => {
-        this.props.setOption(this.props.id, 'paused', false);
-        this.props.onPlay();
-      },
-      onEnded: () => {
-        // Pause so that the play/pause button resets and the poster is shown again
-        this.props.pause(this.props.id, 0);
-        this.updateMediaStatus();
-
-        if (this.props.loop) {
-          this.props.onRepeat();
-        }
-        this.props.onEnded();
-      },
-      onError: () => {
-        this.props.setOption(this.props.id, 'error', urlNotSupportedError(this.props.src));
-        this.props.onError();
-      },
-      onRateChange: this.props.onRateChange,
-      onPlaying: this.props.onPlaying,
-      onPause: this.props.onPause,
-      onWaiting: this.props.onWaiting,
-      onSuspend: this.props.onSuspend,
-      onVolumeChange: this.props.onVolumeChange,
-      onLoadStart: this.props.onLoadStart,
-      onLoadedMetadata: this.props.onLoadedMetadata,
-      onAbort: this.props.onAbort,
-      onEmptied: this.props.onEmptied,
       onStalled: this.props.onStalled,
-      onLoadedData: this.props.onLoadedData,
-      onCanPlay: this.props.onCanPlay,
-      onCanPlayThrough: this.props.onCanPlayThrough,
+      onSuspend: this.props.onSuspend,
+      onTimeUpdate: () => {
+        this.updateMediaStatus();
+        this.props.onTimeUpdate();
+      },
+      onVolumeChange: this.props.onVolumeChange,
+      onWaiting: this.props.onWaiting,
     };
   }
   componentDidMount() {
