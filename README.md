@@ -365,7 +365,7 @@ Default: false
 ##### [`autoplay: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/autoplay)
 Default: false
 
-##### [`smoothPlayBar: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/autoplay)
+##### [`smoothPlayBar: (bool)`](https://github.com/MartinDawson/react-jPlayer#smoothplaybar-bool)
 Default: false
 
 The play bar width changes are animated over 250ms to smooth the change, rather than a step change. This also affects clicks on the play bar, where the bar animates to the new position.
