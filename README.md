@@ -541,9 +541,15 @@ Shows how much of the media has been downloaded so far. This also takes in to co
 The poster to be displayed for the media. Uses `media.poster` as the src for the image.
 
 #### `<Video />`
+##### props
+1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
+
 If the first media source that you have supplied to `media.sources` is an [video format](https://en.wikipedia.org/wiki/Video_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `<Audio />`
+##### props
+1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
+
 If the first media source that you have supplied to `media.sources` is an [audio format](https://en.wikipedia.org/wiki/Audio_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `<Title />`
