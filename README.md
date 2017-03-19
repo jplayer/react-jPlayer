@@ -306,11 +306,15 @@ media: {
   }
 }
 ```
-`sources` is where you specify the media to play. The keys must be one of the [supported formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats). The values must be a valid media url.
-`title` is the title of the media.
-`artist` is the artist of the media.
-`poster` needs to be a valid image element url.
-`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
+&ensp;&ensp;`sources` is where you specify the media to play. The keys must be one of the [supported formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats). The values must be a valid media url.
+
+&ensp;&ensp;`title` is the title of the media.
+
+&ensp;&ensp;`artist` is the artist of the media.
+
+&ensp;&ensp;`poster` needs to be a valid image element url.
+
+&ensp;&ensp;`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
 
 ##### `keyBindings: (object)`
 Default:
@@ -345,9 +349,9 @@ keyBindings: {
   },
 }
 ```
-`key` can be a keyCode number [representing the key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) or a [key value string](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). The key value string should be preferred but it's not as supported as keyCode.
+&ensp;&ensp;`key` can be a keyCode number [representing the key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) or a [key value string](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). The key value string should be preferred but it's not as supported as keyCode.
 
-`fn` is the function that will be executed once the key has been pressed.
+&ensp;&ensp;`fn` is the function that will be executed once the key has been pressed.
 
 The keybindings you specify will be deep merged with the defaults.
 
@@ -413,23 +417,23 @@ timeFormats: {
 }
 ```
 
-`showHour` displays the hours.
+&ensp;&ensp;`showHour` displays the hours.
 
-`showMin` displays the minutes.
+&ensp;&ensp;`showMin` displays the minutes.
 
-`showSec` displays the seconds.
+&ensp;&ensp;`showSec` displays the seconds.
 
-`padHour` zero pads the hour if less than 10.
+&ensp;&ensp;`padHour` zero pads the hour if less than 10.
 
-`padMin` zero pads the minute if less than 10.
+&ensp;&ensp;`padMin` zero pads the minute if less than 10.
 
-`padSec` zero pads the second if less than 10.
+&ensp;&ensp;`padSec` zero pads the second if less than 10.
 
-`sepHour` string between hour and minute.
+&ensp;&ensp;`sepHour` string between hour and minute.
 
-`sepMin` string between minute and second.
+&ensp;&ensp;`sepMin` string between minute and second.
 
-`sepSec` string after second.
+&ensp;&ensp;`sepSec` string after second.
 
 #### Status
 Properties in this object are not meant to be modified and should be treated as read-only. These properties are automatically set and updated by jPlayer depending on the [options](https://github.com/MartinDawson/react-jPlayer#options) that you specified.
@@ -444,15 +448,15 @@ mediaSettings: {
 }
 ```
 
-`video: (bool)` renders the audio or video and is automatically determined by the media you specify.
+&ensp;&ensp;`video: (bool)` renders the audio or video and is automatically determined by the media you specify.
 
-`foundSupported: (bool)` true if any valid media can be played.
+&ensp;&ensp;`foundSupported: (bool)` true if any valid media can be played.
 
-`formats: (array: objects)`
+&ensp;&ensp;`formats: (array: objects)`
 
-&ensp;&ensp;`supplied: (string)` the type of media you supplied in the `media.sources` options, e.g. `mp3`.
+&ensp;&ensp;&ensp;&ensp;`supplied: (string)` the type of media you supplied in the `media.sources` options, e.g. `mp3`.
   
-&ensp;&ensp;`supported: (bool)` true if the media can be played, the same as `foundSupported` but for each media type.
+&ensp;&ensp;&ensp;&ensp;`supported: (bool)` true if the media can be played, the same as `foundSupported` but for each media type.
 
 ##### [`paused: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/paused)
 Default: true
@@ -501,9 +505,9 @@ Default: 0
 ##### `bufferedTimeRanges: (array)`
 Default: []
 
-`start: (string)` the start time, in seconds of where the media is buffering.
+&ensp;&ensp;`start: (string)` the start time, in seconds of where the media is buffering.
 
-`end: (string)` the end time, in seconds of where the media is buffering.
+&ensp;&ensp;`end: (string)` the end time, in seconds of where the media is buffering.
 
 The start and end of where the buffering has occured. If the user seeks to different parts of the media, then the browser will automatically start downloading from that position and skip the media in between if it hasn't already been downloaded. The properties in this array represent that and are used internally by the [`<BufferBar />`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component.
 
