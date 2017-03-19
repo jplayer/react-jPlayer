@@ -228,12 +228,13 @@ var formats = exports.formats = {
 
 var internalStatus = exports.internalStatus = {
   newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
-  guiFadeOut: false
+  guiFadeOut: false,
+  playHeadPercent: 0,
+  error: {}
 };
 
 var defaultStatus = exports.defaultStatus = {
   mediaSettings: {
-    require: false,
     video: false,
     foundSupported: false,
     formats: []
@@ -244,31 +245,26 @@ var defaultStatus = exports.defaultStatus = {
   currentTimeText: '0:00',
   durationText: '',
   seekPercent: 0,
-  remainingDuration: 0,
-  playHeadPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
   currentTime: 0,
   duration: 0,
-  remaining: 0,
-  ended: 0,
-  error: {},
   bufferedTimeRanges: [],
   focused: false
 };
 
 var defaultOptions = exports.defaultOptions = {
-  preload: 'metadata', // HTML5 Spec values: none, metadata, auto.
+  preload: 'metadata',
   minPlaybackRate: 0.5,
   maxPlaybackRate: 4,
-  supplied: ['mp3'], // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
   playbackRate: 1.0,
   defaultPlaybackRate: 1.0,
-  bufferColour: '#dddddd', // Canvas fillStyle property Colour, gradient or pattern (https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle)
-  volume: 0.8, // The volume. Number 0 to 1
+  bufferColour: '#ddd',
+  volume: 0.8,
   barDrag: true,
   guiFadeHoldTime: 3000,
   media: {
+    sources: {},
     title: '',
     artist: '',
     poster: '',
@@ -756,7 +752,6 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
     muted: jPlayers[id].muted,
     autoplay: jPlayers[id].autoplay,
     newTime: jPlayers[id].newTime,
-    require: jPlayers[id].mediaSettings.require,
     timeFormats: jPlayers[id].timeFormats,
     children: children
   };
@@ -886,7 +881,6 @@ var MediaContainer = function (_React$Component) {
       var seekPercent = 0;
       var durationText = '';
 
-      var remaining = _this.currentMedia.duration - _this.currentMedia.currentTime;
       var currentTimeText = (0, _index.convertTime)(_this.currentMedia.currentTime, _this.props.timeFormats);
       var currentPercentAbsolute = (0, _index.toPercentage)(_this.currentMedia.currentTime, _this.currentMedia.duration);
 
@@ -895,7 +889,9 @@ var MediaContainer = function (_React$Component) {
       }
 
       if (_this.props.showRemainingDuration) {
-        durationText = (remaining > 0 ? '-' : '') + (0, _index.convertTime)(remaining, _this.props.timeFormats);
+        var timeRemaining = _this.currentMedia.duration - _this.currentMedia.currentTime;
+
+        durationText = (timeRemaining > 0 ? '-' : '') + (0, _index.convertTime)(timeRemaining, _this.props.timeFormats);
       } else {
         durationText = (0, _index.convertTime)(_this.currentMedia.duration, _this.props.timeFormats);
       }
@@ -906,7 +902,6 @@ var MediaContainer = function (_React$Component) {
       _this.props.setOption(_this.props.id, 'currentPercentRelative', _this.getCurrentPercentRelative());
       _this.props.setOption(_this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
       _this.props.setOption(_this.props.id, 'currentTime', _this.currentMedia.currentTime);
-      _this.props.setOption(_this.props.id, 'remaining', remaining);
       _this.props.setOption(_this.props.id, 'duration', _this.currentMedia.duration);
       _this.props.setOption(_this.props.id, 'playbackRate', _this.currentMedia.playbackRate);
     };
@@ -3695,8 +3690,6 @@ var _mediaContainer = __webpack_require__(7);
 
 var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
-var _constants = __webpack_require__(1);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Video = function Video(_ref) {
@@ -3717,14 +3710,13 @@ var Video = function Video(_ref) {
 
 Video.defaultProps = {
   events: null,
-  children: null,
-  require: _constants.defaultStatus.mediaSettings.video
+  children: null
 };
 
 Video.propTypes = {
   attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node,
-  require: _react2.default.PropTypes.bool,
+  require: _react2.default.PropTypes.bool.isRequired,
   events: _react2.default.PropTypes.shape({
     onProgress: _react2.default.PropTypes.func,
     onTimeUpdate: _react2.default.PropTypes.func,
