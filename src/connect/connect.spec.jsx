@@ -8,8 +8,7 @@ import connect, { __get__ } from './connect';
 import * as actions from '../actions/actions';
 
 const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
-const getActions = __get__('getActions');
+const mapDispatchToProps = __get__('mapDispatchToProps');
 const id = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
 const mockPlayerName = 'MockPlayer';
@@ -19,17 +18,6 @@ const mockPlayerOptions = {
 const dispatch = createSpy();
 const jPlayerActions = actions;
 delete jPlayerActions.default;
-const getMappedActionsData = (jPlayer = getDefaultJPlayers(1, true).jPlayers[id]) => [
-  { action: 'setOption', args: ['muted', jPlayer.muted] },
-  { action: 'setMedia', args: [jPlayer.media] },
-  { action: 'clearMedia', args: [] },
-  { action: 'play', args: [33] },
-  { action: 'pause', args: [77] },
-  { action: 'setPlayHead', args: [jPlayer.playHeadPercent] },
-  { action: 'setVolume', args: [jPlayer.volume] },
-  { action: 'setMute', args: [jPlayer.muted] },
-  { action: 'focus', args: [] },
-];
 
 describe('JPlayerConnect', () => {
   let MockPlayer;
@@ -39,17 +27,10 @@ describe('JPlayerConnect', () => {
     MockPlayer.options = mockPlayerOptions;
   });
 
-  it('maps state', () => {
-    const state = getDefaultJPlayers(2, true);
-    const expected = mapStateToProps(state);
-
-    expect(expected).toEqual(state.jPlayers);
-  });
-
-  it('merges props with custom props', () => {
+  it('maps props with custom props', () => {
     const customProp = 'test';
     const jPlayers = getDefaultJPlayers().jPlayers;
-    const expected = mergeProps(jPlayers, { dispatch }, { id, customProp });
+    const expected = mapStateToProps({ jPlayers }, { id, customProp });
 
     expect(expected).toContain({
       customProp,
@@ -59,17 +40,16 @@ describe('JPlayerConnect', () => {
   it('custom props with same name as state get overwritten', () => {
     const options = 'test';
     const jPlayers = getDefaultJPlayers().jPlayers;
-    const expected = mergeProps(jPlayers, { dispatch }, { id, options });
+    const expected = mapStateToProps({ jPlayers }, { id, options });
 
     expect(expected).toNotContain({
       options,
     });
   });
 
-  it('merges current player', () => {
+  it('maps current player', () => {
     const jPlayers = getDefaultJPlayers(1, true).jPlayers;
-    const expected = mergeProps(jPlayers, { dispatch }, { id });
-    const mergedActions = getActions();
+    const expected = mapStateToProps({ jPlayers }, { id });
     const status = {};
     const options = {};
 
@@ -90,16 +70,15 @@ describe('JPlayerConnect', () => {
     });
 
     expect(expected).toEqual({
-      ...mergedActions,
       options,
       status,
+      id,
     });
   });
 
-  it('merges other players', () => {
+  it('maps other players', () => {
     const jPlayers = getDefaultJPlayers(3, true).jPlayers;
-    const expected = mergeProps(jPlayers, { dispatch }, { id: jPlayerTwoId });
-    const mergedActions = getActions();
+    const expected = mapStateToProps({ jPlayers }, { id: jPlayerTwoId });
     const otherJPlayers = {};
 
     delete jPlayers[jPlayerTwoId];
@@ -122,7 +101,6 @@ describe('JPlayerConnect', () => {
       });
 
       otherJPlayers[jPlayerKey] = {
-        ...mergedActions,
         options,
         status,
       };
@@ -131,37 +109,9 @@ describe('JPlayerConnect', () => {
     expect(otherJPlayers).toEqual(expected.jPlayers);
   });
 
-  it('all actions are mapped', () => {
-    const jPlayers = getDefaultJPlayers().jPlayers;
-    const mergedProps = mergeProps(jPlayers, { dispatch }, { id });
-
-    expect(mergedProps).toIncludeKeys(Object.keys(jPlayerActions));
-  });
-
-  getMappedActionsData().forEach(({ action, args }) => {
-    const mergedProps = mergeProps(getDefaultJPlayers(3, true).jPlayers, { dispatch }, { id });
-    let expectedArgs;
-
-    it(`dispatches current jPlayer mapped ${action} action when called`, () => {
-      expectedArgs = [...args];
-
-      mergedProps[action](...args);
-
-      expectedArgs.unshift(id);
-      expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedArgs));
-    });
-
-    it(`dispatches other jPlayers mapped ${action} action when called`, () => {
-      Object.keys(mergedProps.jPlayers).forEach((key) => {
-        const jPlayer = mergedProps.jPlayers[key];
-        expectedArgs = [...args];
-
-        jPlayer[action](...args);
-
-        expectedArgs.unshift(key);
-
-        expect(dispatch).toHaveBeenCalledWith(actions[action](...expectedArgs));
-      });
+  it('mapDispatchToProps handles all actions', () => {
+    expect(mapDispatchToProps).toEqual({
+      ...jPlayerActions,
     });
   });
 

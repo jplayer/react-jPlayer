@@ -1,4 +1,3 @@
-/* eslint jsx-a11y/href-no-hash: 0 */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

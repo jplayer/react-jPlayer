@@ -18,7 +18,6 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   attributes,
 });
 
-// eslint-disable-next-line no-unused-vars
 const mergeProps = ({ movePlayHead, seekPercent, children, attributes }, { dispatch }) => ({
   onClick: (bar, e) => movePlayHead(bar, dispatch, e),
   onTouchMove: (bar, e) => {

@@ -5,23 +5,7 @@ import { defaultOptions, defaultStatus } from '../util/constants';
 import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
   setVolume, setMute, focus } from '../actions/actions';
 
-const mapStateToProps = ({ jPlayers }) => ({
-  ...jPlayers,
-});
-
-const getActions = (dispatch, id) => ({
-  setOption: (key, value) => dispatch(setOption(id, key, value)),
-  setMedia: media => dispatch(setMedia(id, media)),
-  clearMedia: () => dispatch(clearMedia(id)),
-  play: time => dispatch(play(id, time)),
-  pause: time => dispatch(pause(id, time)),
-  setPlayHead: percent => dispatch(setPlayHead(id, percent)),
-  setVolume: volume => dispatch(setVolume(id, volume)),
-  setMute: mute => dispatch(setMute(id, mute)),
-  focus: () => dispatch(focus(id)),
-});
-
-const mergeProps = (jPlayers, { dispatch }, { id, ...props }) => {
+const mapStateToProps = ({ jPlayers }, { id, ...props }) => {
   const newJPlayers = {};
 
   Object.keys(jPlayers).forEach((jPlayerKey) => {
@@ -42,28 +26,40 @@ const mergeProps = (jPlayers, { dispatch }, { id, ...props }) => {
     });
 
     newJPlayers[jPlayerKey] = {
-      ...getActions(dispatch, jPlayerKey),
       options,
       status,
     };
   });
 
-  const { [id]: jPlayer, ...otherPlayers } = newJPlayers;
+  const { [id]: jPlayer, ...otherJPlayers } = newJPlayers;
 
   const returnedJPlayers = {
     ...props,
     ...jPlayer,
+    id,
   };
 
-  if (Object.keys(otherPlayers).length) {
-    returnedJPlayers.jPlayers = otherPlayers;
+  if (Object.keys(otherJPlayers).some(otherJPlayer => otherJPlayer)) {
+    returnedJPlayers.jPlayers = otherJPlayers;
   }
 
   return returnedJPlayers;
 };
 
+const mapDispatchToProps = {
+  setOption,
+  setMedia,
+  clearMedia,
+  play,
+  pause,
+  setPlayHead,
+  setVolume,
+  setMute,
+  focus,
+};
+
 const Connect = (jPlayer) => {
-  const ConnectedPlayer = connect(mapStateToProps, null, mergeProps)(jPlayer);
+  const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
 
   // IE9 doesn't support fn.name
   const playerName = jPlayer.name === undefined ?

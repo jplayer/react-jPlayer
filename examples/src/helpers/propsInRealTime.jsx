@@ -7,10 +7,10 @@ import 'react-json-pretty/JSONPretty.monikai.styl';
 
 const mapStateToProps = ({ jPlayers }, { id }) => {
   const newJPlayers = {};
+  const actionsAsStrings = {};
 
   Object.keys(jPlayers).forEach((jPlayerKey) => {
     const jPlayer = jPlayers[jPlayerKey];
-    const actionsAsStrings = {};
     const options = {};
     const status = {};
 
@@ -26,12 +26,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => {
       }
     });
 
-    Object.keys(actions).forEach((jPlayerActionKey) => {
-      actionsAsStrings[jPlayerActionKey] = 'function';
-    });
-
     newJPlayers[jPlayerKey] = {
-      ...actionsAsStrings,
       options,
       status,
     };
@@ -39,7 +34,13 @@ const mapStateToProps = ({ jPlayers }, { id }) => {
 
   const { [id]: jPlayer, ...otherPlayers } = newJPlayers;
 
+  Object.keys(actions).forEach((jPlayerActionKey) => {
+    actionsAsStrings[jPlayerActionKey] = 'function';
+  });
+
   const returnedJPlayers = {
+    id,
+    ...actionsAsStrings,
     ...jPlayer,
   };
 
@@ -50,8 +51,6 @@ const mapStateToProps = ({ jPlayers }, { id }) => {
   return returnedJPlayers;
 };
 
-const mergeProps = stateProps => ({ ...stateProps });
-
 const PropsInRealTime = props => (
   <div className="col-md-4">
     <h2>jPlayer Props</h2>
@@ -60,4 +59,4 @@ const PropsInRealTime = props => (
   </div>
 );
 
-export default connect(mapStateToProps, null, mergeProps)(PropsInRealTime);
+export default connect(mapStateToProps)(PropsInRealTime);
