@@ -252,6 +252,10 @@ This method is called internally for each of the other actions if that jPlayer h
 
 ### Props
 #### Options
+You specify these values on a functions static property that must be called `options` as shown in the [example](https://github.com/MartinDawson/react-jPlayer#most-basic-setup). Properties in this object are used to initialize the jPlayer. They are deep merged with the default values.
+
+Some properties in this object will be updated internally, so do not rely on these options staying the same throughout the jPlayer's lifetime.
+
 ##### [`preload (string)`](https://developer.mozilla.org/en/docs/Web/HTML/Element/video#attr-preload)
 Default: "metadata"
 
@@ -274,7 +278,7 @@ Default: 1.0
 ##### `bufferColour (string)`
 Default: "#ddd"
 
-The bufferBar component is a `<canvas />` element and uses the fillStyle property to fill in the bar. Therefor the colour property must be set in JS and not css.
+The [`<BufferBar />`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component renders a `<canvas />` element and uses the fillStyle property to fill in the bar. Therefore the colour property must be set in JS and not css.
 
 ##### [`volume (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/volume)
 Default: 0.8
@@ -282,7 +286,7 @@ Default: 0.8
 ##### `barDrag (bool)`
 Default: true
 
-Allows dragging of all of the components which are bars, e.g. volumeBar, playbackRateBar and seekBar.
+Allows dragging of all of the components which are bars, e.g. [`<VolumeBar />`](https://github.com/MartinDawson/react-jPlayer#volumebar-), [`<PlaybackRateBar />`](https://github.com/MartinDawson/react-jPlayer#playbackratebar-) and [`<SeekBar />`](https://github.com/MartinDawson/react-jPlayer#seekbar-).
 
 ##### `guiFadeHoldTime (number)`
 Default: 3000
@@ -302,11 +306,15 @@ media: {
   }
 }
 ```
-`sources` is where you specify the media to play. The keys must be one of the [supported formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats). The values must be a valid media url.
-`title` is the title of the media.
-`artist` is the artist of the media.
-`poster` needs to be a valid image element url.
-`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
+&ensp;&ensp;`sources` is where you specify the media to play. The keys must be one of the [supported formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats). The values must be a valid media url.
+
+&ensp;&ensp;`title` is the title of the media.
+
+&ensp;&ensp;`artist` is the artist of the media.
+
+&ensp;&ensp;`poster` needs to be a valid image element url.
+
+&ensp;&ensp;`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
 
 ##### `keyBindings: (object)`
 Default:
@@ -341,13 +349,177 @@ keyBindings: {
   },
 }
 ```
-`key` can be a keyCode number [representing the key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) or a [key value string](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). The key value string should be preferred but it's not as supported as keyCode.
+&ensp;&ensp;`key` can be a keyCode number [representing the key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) or a [key value string](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values). The key value string should be preferred but it's not as supported as keyCode.
 
-`fn` is the function that will be executed once the key has been pressed.
+&ensp;&ensp;`fn` is the function that will be executed once the key has been pressed.
 
 The keybindings you specify will be deep merged with the defaults.
 
-ToDo: Document all the props.
+##### `showRemainingDuration: (bool)`
+Default: false
+
+When true, the duration will count down the time remaining in the media. When false, the duration will stay at fixed at the media's time.
+
+##### [`muted: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/muted)
+Default: false
+
+##### [`loop: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/loop)
+Default: false
+
+##### [`autoplay: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/autoplay)
+Default: false
+
+##### `smoothPlayBar: (bool)`
+Default: false
+
+The play bar width changes are animated over 250ms to smooth the change, rather than a step change. This also affects clicks on the play bar, where the bar animates to the new position.
+
+Short duration media benefits the most, since their step changes are the largest.
+
+##### `fullScreen: (bool)`
+Default: false
+
+Sets the jPlayer to fullScreen mode when true. The vast majority of users will not want this to be true by default as this option is usually toggled via the GUI. 
+
+This uses the [FullScreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) internally. If the FullScreen api is not supported by the browser then everything but the jPlayer will be hidden. `jPlayer.css` will then handle making the jPlayer width and height 100% of the screen to simulate the native full screen mode as close as possible.
+
+##### `verticalPlaybackRate: (bool)`
+Default: false
+
+Set this to true if your playback rate bar is vertical. Clicks on the playback rate bar will then be calculated properly.
+
+##### `verticalVolume: (bool)`
+Default: false
+
+Set this to true if your volume bar is vertical. Clicks on the volume bar will then be calculated properly.
+
+##### `keyEnabled: (bool)`
+Default: true
+
+Allows key presses to affect the jPlayer. For the [`keyBindings`](https://github.com/MartinDawson/react-jPlayer#keybindings-object) object to have any affect this will need to be true.
+
+##### `timeFormats: (object)`
+Defines the display format of the currentTime and duration times.
+
+Default: 
+
+```
+timeFormats: {
+  showHour: false,
+  showMin: true,
+  showSec: true,
+  padHour: false,
+  padMin: true,
+  padSec: true,
+  sepHour: ':',
+  sepMin: ':',
+  sepSec: '',
+}
+```
+
+&ensp;&ensp;`showHour` displays the hours.
+
+&ensp;&ensp;`showMin` displays the minutes.
+
+&ensp;&ensp;`showSec` displays the seconds.
+
+&ensp;&ensp;`padHour` zero pads the hour if less than 10.
+
+&ensp;&ensp;`padMin` zero pads the minute if less than 10.
+
+&ensp;&ensp;`padSec` zero pads the second if less than 10.
+
+&ensp;&ensp;`sepHour` string between hour and minute.
+
+&ensp;&ensp;`sepMin` string between minute and second.
+
+&ensp;&ensp;`sepSec` string after second.
+
+#### Status
+Properties in this object are not meant to be modified and should be treated as read-only. These properties are automatically set and updated by jPlayer depending on the [options](https://github.com/MartinDawson/react-jPlayer#options) that you specified.
+
+##### `mediaSettings: (object)`
+Default:
+```
+mediaSettings: {
+  video: false,
+  foundSupported: false,
+  formats: [],
+}
+```
+
+&ensp;&ensp;`video: (bool)` renders the audio or video and is automatically determined by the media you specify.
+
+&ensp;&ensp;`foundSupported: (bool)` true if any valid media can be played.
+
+&ensp;&ensp;`formats: (array: objects)`
+
+&ensp;&ensp;&ensp;&ensp;`supplied: (string)` the type of media you supplied in the `media.sources` options, e.g. `mp3`.
+  
+&ensp;&ensp;&ensp;&ensp;`supported: (bool)` true if the media can be played, the same as `foundSupported` but for each media type.
+
+##### [`paused: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/paused)
+Default: true
+
+##### `seeking: (bool)`
+Default: false
+
+True when the user is currently seeking. This get set back to false after the user has finished seeking, i.e. in the `seeked` event.
+
+##### `src: (string)`
+Default: ''
+
+This is the current media's src url that you specified in `media.sources`.
+
+##### `currentTimeText: (string)`
+Default: '0:00'
+
+The current time that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`<CurrentTime />`](https://github.com/MartinDawson/react-jPlayer#currenttime-) component.
+
+##### `durationText: (string)`
+Default: ''
+
+The duration that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`<Duration />`](https://github.com/MartinDawson/react-jPlayer#duration-) component.
+
+##### `seekPercent: (number)`
+Default: 0
+
+This represents the percentage of the media which is seekable.
+
+##### `currentPercentRelative: (number)`
+Default: 0
+
+The current time as a percent of seekPercent.
+
+##### `currentPercentAbsolute: (number)`
+Default: 0
+
+The current time as a percent of duration.
+
+##### [`currentTime: (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/currentTime)
+Default: 0
+
+##### [`duration: (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/duration)
+Default: 0
+
+##### `bufferedTimeRanges: (array)`
+Default: []
+
+&ensp;&ensp;`start: (string)` the start time, in seconds of where the media is buffering.
+
+&ensp;&ensp;`end: (string)` the end time, in seconds of where the media is buffering.
+
+The start and end of where the buffering has occured. If the user seeks to different parts of the media, then the browser will automatically start downloading from that position and skip the media in between if it hasn't already been downloaded. The properties in this array represent that and are used internally by the [`<BufferBar />`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component.
+
+More information on this can be found in this [MDN article](https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/buffering_seeking_time_ranges).
+
+##### `focused: (bool)`
+Default: false
+
+This property determines which jPlayer should take precendance when the user is using key presses to affect the media.
+This is only ever true if the current jPlayer has [`keyEnabled`](https://github.com/MartinDawson/react-jPlayer#keyenabled-bool) set to true.
+
+This method is set internally for each action that the user takes on the jPlayer, i.e. each time a jPlayer action is called. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling [`focus`](https://github.com/MartinDawson/react-jPlayer#focusid).
 
 ### Components
 #### `<JPlayer />`
