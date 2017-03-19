@@ -92,7 +92,7 @@ const AudioPlayer = () => (
   </JPlayer>
 );
 
-/* All jPlayer options must be defined statically on the jPlayer component. 
+/* All jPlayer options must be defined statically on the jPlayer component on an object called 'options'. 
 These options will be deep merged with the default jPlayer options so you actually don't 
 even need to specify any apart from the media.sources if you just want the default options. */
 
