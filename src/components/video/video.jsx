@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Media from '../media/mediaContainer';
-import { defaultStatus } from '../../util/constants';
 
 const Video = ({ require, events, children, attributes }) => (
   require ?
@@ -16,13 +15,12 @@ const Video = ({ require, events, children, attributes }) => (
 Video.defaultProps = {
   events: null,
   children: null,
-  require: defaultStatus.mediaSettings.video,
 };
 
 Video.propTypes = {
   attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.node,
-  require: React.PropTypes.bool,
+  require: React.PropTypes.bool.isRequired,
   events: React.PropTypes.shape({
     onProgress: React.PropTypes.func,
     onTimeUpdate: React.PropTypes.func,

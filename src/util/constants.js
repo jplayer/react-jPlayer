@@ -146,11 +146,12 @@ export const formats = {
 export const internalStatus = {
   newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
   guiFadeOut: false,
+  playHeadPercent: 0,
+  error: {},
 };
 
 export const defaultStatus = {
   mediaSettings: {
-    require: false,
     video: false,
     foundSupported: false,
     formats: [],
@@ -161,15 +162,10 @@ export const defaultStatus = {
   currentTimeText: '0:00',
   durationText: '',
   seekPercent: 0,
-  remainingDuration: 0,
-  playHeadPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
   currentTime: 0,
   duration: 0,
-  remaining: 0,
-  ended: 0,
-  error: {},
   bufferedTimeRanges: [],
   focused: false,
 };

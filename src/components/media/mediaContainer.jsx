@@ -18,7 +18,6 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   muted: jPlayers[id].muted,
   autoplay: jPlayers[id].autoplay,
   newTime: jPlayers[id].newTime,
-  require: jPlayers[id].mediaSettings.require,
   timeFormats: jPlayers[id].timeFormats,
   children,
 });
@@ -243,7 +242,6 @@ class MediaContainer extends React.Component {
     let seekPercent = 0;
     let durationText = '';
 
-    const remaining = this.currentMedia.duration - this.currentMedia.currentTime;
     const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
     const currentPercentAbsolute = toPercentage(this.currentMedia.currentTime,
       this.currentMedia.duration);
@@ -253,7 +251,10 @@ class MediaContainer extends React.Component {
     }
 
     if (this.props.showRemainingDuration) {
-      durationText = (remaining > 0 ? '-' : '') + convertTime(remaining, this.props.timeFormats);
+      const timeRemaining = this.currentMedia.duration - this.currentMedia.currentTime;
+
+      durationText = (timeRemaining > 0 ? '-' : '') +
+        convertTime(timeRemaining, this.props.timeFormats);
     } else {
       durationText = convertTime(this.currentMedia.duration, this.props.timeFormats);
     }
@@ -264,7 +265,6 @@ class MediaContainer extends React.Component {
     this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
     this.props.setOption(this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
     this.props.setOption(this.props.id, 'currentTime', this.currentMedia.currentTime);
-    this.props.setOption(this.props.id, 'remaining', remaining);
     this.props.setOption(this.props.id, 'duration', this.currentMedia.duration);
     this.props.setOption(this.props.id, 'playbackRate', this.currentMedia.playbackRate);
   }

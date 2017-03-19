@@ -79,7 +79,6 @@ describe('MediaContainer', () => {
       muted: false,
       autoplay: false,
       newTime: null,
-      require: false,
       children: mockAudio,
       timeFormats: defaultOptions.timeFormats,
     });
@@ -185,7 +184,6 @@ describe('MediaContainer', () => {
     expect(props.setOption).toHaveBeenCalledWith(id, 'currentPercentAbsolute', 36);
     expect(props.setOption).toHaveBeenCalledWith(id, 'currentTime',
       instance.currentMedia.currentTime);
-    expect(props.setOption).toHaveBeenCalledWith(id, 'remaining', 160);
     expect(props.setOption).toHaveBeenCalledWith(id, 'duration', instance.currentMedia.duration);
     expect(props.setOption).toHaveBeenCalledWith(id, 'playbackRate',
       instance.currentMedia.playbackRate);

@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 
 import { getJPlayers } from '../../util/common.spec';
 import { noFormatSupportedError } from '../../util/index';
-import { classes, defaultStatus, defaultOptions } from '../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 import { __get__, __Rewire__, __ResetDependency__ } from './jPlayerContainer';
 import JPlayer from './jPlayer';
 
@@ -80,7 +80,7 @@ describe('<JPlayerContainer />', () => {
 
     expect(expected).toEqual({
       media: defaultOptions.media,
-      error: defaultStatus.error,
+      error: {},
       fullScreen: false,
       keyEnabled: defaultOptions.keyEnabled,
       paused: true,
