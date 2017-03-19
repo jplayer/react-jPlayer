@@ -769,30 +769,29 @@ var MediaContainer = function (_React$Component) {
     key: 'propTypes',
     get: function get() {
       return {
-        onProgress: _react2.default.PropTypes.func,
-        onTimeUpdate: _react2.default.PropTypes.func,
-        onDurationChange: _react2.default.PropTypes.func,
-        onRateChange: _react2.default.PropTypes.func,
-        onSeeking: _react2.default.PropTypes.func,
-        onSeeked: _react2.default.PropTypes.func,
-        onPlay: _react2.default.PropTypes.func,
-        onRepeat: _react2.default.PropTypes.func,
-        onEnded: _react2.default.PropTypes.func,
-        onError: _react2.default.PropTypes.func,
-        onPlaying: _react2.default.PropTypes.func,
-        onPause: _react2.default.PropTypes.func,
-        onWaiting: _react2.default.PropTypes.func,
-        onSuspend: _react2.default.PropTypes.func,
-        onVolumeChange: _react2.default.PropTypes.func,
-        onLoadStart: _react2.default.PropTypes.func,
-        onLoadedMetadata: _react2.default.PropTypes.func,
         onAbort: _react2.default.PropTypes.func,
-        onEmptied: _react2.default.PropTypes.func,
-        onStalled: _react2.default.PropTypes.func,
-        onLoadedData: _react2.default.PropTypes.func,
         onCanPlay: _react2.default.PropTypes.func,
         onCanPlayThrough: _react2.default.PropTypes.func,
-        loop: _react2.default.PropTypes.bool.isRequired,
+        onDurationChange: _react2.default.PropTypes.func,
+        onEmptied: _react2.default.PropTypes.func,
+        onEncrypted: _react2.default.PropTypes.func,
+        onEnded: _react2.default.PropTypes.func,
+        onError: _react2.default.PropTypes.func,
+        onLoadedData: _react2.default.PropTypes.func,
+        onLoadedMetadata: _react2.default.PropTypes.func,
+        onLoadStart: _react2.default.PropTypes.func,
+        onPause: _react2.default.PropTypes.func,
+        onPlay: _react2.default.PropTypes.func,
+        onPlaying: _react2.default.PropTypes.func,
+        onProgress: _react2.default.PropTypes.func,
+        onRateChange: _react2.default.PropTypes.func,
+        onSeeked: _react2.default.PropTypes.func,
+        onSeeking: _react2.default.PropTypes.func,
+        onStalled: _react2.default.PropTypes.func,
+        onSuspend: _react2.default.PropTypes.func,
+        onTimeUpdate: _react2.default.PropTypes.func,
+        onVolumeChange: _react2.default.PropTypes.func,
+        onWaiting: _react2.default.PropTypes.func,
         showRemainingDuration: _react2.default.PropTypes.bool.isRequired,
         src: _react2.default.PropTypes.string.isRequired,
         playHeadPercent: _react2.default.PropTypes.number.isRequired,
@@ -813,6 +812,7 @@ var MediaContainer = function (_React$Component) {
         }).isRequired,
         /* eslint-disable react/no-unused-prop-types */
         newTime: _react2.default.PropTypes.number,
+        loop: _react2.default.PropTypes.bool.isRequired,
         autoplay: _react2.default.PropTypes.bool.isRequired,
         defaultPlaybackRate: _react2.default.PropTypes.number.isRequired,
         muted: _react2.default.PropTypes.bool.isRequired,
@@ -827,29 +827,29 @@ var MediaContainer = function (_React$Component) {
     key: 'defaultProps',
     get: function get() {
       return {
-        onProgress: Function.prototype,
-        onTimeUpdate: Function.prototype,
-        onDurationChange: Function.prototype,
-        onRateChange: Function.prototype,
-        onSeeking: Function.prototype,
-        onSeeked: Function.prototype,
-        onPlay: Function.prototype,
-        onRepeat: Function.prototype,
-        onEnded: Function.prototype,
-        onError: Function.prototype,
-        onPlaying: Function.prototype,
-        onPause: Function.prototype,
-        onWaiting: Function.prototype,
-        onSuspend: Function.prototype,
-        onVolumeChange: Function.prototype,
-        onLoadStart: Function.prototype,
-        onLoadedMetadata: Function.prototype,
         onAbort: Function.prototype,
-        onEmptied: Function.prototype,
-        onStalled: Function.prototype,
-        onLoadedData: Function.prototype,
         onCanPlay: Function.prototype,
         onCanPlayThrough: Function.prototype,
+        onDurationChange: Function.prototype,
+        onEmptied: Function.prototype,
+        onEncrypted: Function.prototype,
+        onEnded: Function.prototype,
+        onError: Function.prototype,
+        onLoadedData: Function.prototype,
+        onLoadedMetadata: Function.prototype,
+        onLoadStart: Function.prototype,
+        onPause: Function.prototype,
+        onPlay: Function.prototype,
+        onPlaying: Function.prototype,
+        onProgress: Function.prototype,
+        onRateChange: Function.prototype,
+        onSeeked: Function.prototype,
+        onSeeking: Function.prototype,
+        onStalled: Function.prototype,
+        onSuspend: Function.prototype,
+        onTimeUpdate: Function.prototype,
+        onVolumeChange: Function.prototype,
+        onWaiting: Function.prototype,
         newTime: null
       };
     }
@@ -927,6 +927,34 @@ var MediaContainer = function (_React$Component) {
     _this.state = {};
 
     _this.events = {
+      onAbort: _this.props.onAbort,
+      onCanPlay: _this.props.onCanPlay,
+      onCanPlayThrough: _this.props.onCanPlayThrough,
+      onDurationChange: function onDurationChange() {
+        _this.updateMediaStatus();
+        _this.props.onDurationChange();
+      },
+      onEmptied: _this.props.onEmptied,
+      onEncrypted: _this.props.onEncrypted,
+      onEnded: function onEnded() {
+        // Pause so that the play/pause button resets and the poster is shown again
+        _this.props.pause(_this.props.id, 0);
+        _this.updateMediaStatus();
+        _this.props.onEnded();
+      },
+      onError: function onError() {
+        _this.props.setOption(_this.props.id, 'error', (0, _index.urlNotSupportedError)(_this.props.src));
+        _this.props.onError();
+      },
+      onLoadedData: _this.props.onLoadedData,
+      onLoadedMetadata: _this.props.onLoadedMetadata,
+      onLoadStart: _this.props.onLoadStart,
+      onPause: _this.props.onPause,
+      onPlay: function onPlay() {
+        _this.props.setOption(_this.props.id, 'paused', false);
+        _this.props.onPlay();
+      },
+      onPlaying: _this.props.onPlaying,
       onProgress: function onProgress() {
         var bufferedTimeRanges = [];
 
@@ -940,54 +968,23 @@ var MediaContainer = function (_React$Component) {
         _this.props.setOption(_this.props.id, 'bufferedTimeRanges', bufferedTimeRanges);
         _this.props.onProgress();
       },
-      onTimeUpdate: function onTimeUpdate() {
-        _this.updateMediaStatus();
-        _this.props.onTimeUpdate();
-      },
-      onDurationChange: function onDurationChange() {
-        _this.updateMediaStatus();
-        _this.props.onDurationChange();
+      onRateChange: _this.props.onRateChange,
+      onSeeked: function onSeeked() {
+        _this.props.setOption(_this.props.id, 'seeking', false);
+        _this.props.onSeeked();
       },
       onSeeking: function onSeeking() {
         _this.props.setOption(_this.props.id, 'seeking', true);
         _this.props.onSeeking();
       },
-      onSeeked: function onSeeked() {
-        _this.props.setOption(_this.props.id, 'seeking', false);
-        _this.props.onSeeked();
-      },
-      onPlay: function onPlay() {
-        _this.props.setOption(_this.props.id, 'paused', false);
-        _this.props.onPlay();
-      },
-      onEnded: function onEnded() {
-        // Pause so that the play/pause button resets and the poster is shown again
-        _this.props.pause(_this.props.id, 0);
-        _this.updateMediaStatus();
-
-        if (_this.props.loop) {
-          _this.props.onRepeat();
-        }
-        _this.props.onEnded();
-      },
-      onError: function onError() {
-        _this.props.setOption(_this.props.id, 'error', (0, _index.urlNotSupportedError)(_this.props.src));
-        _this.props.onError();
-      },
-      onRateChange: _this.props.onRateChange,
-      onPlaying: _this.props.onPlaying,
-      onPause: _this.props.onPause,
-      onWaiting: _this.props.onWaiting,
-      onSuspend: _this.props.onSuspend,
-      onVolumeChange: _this.props.onVolumeChange,
-      onLoadStart: _this.props.onLoadStart,
-      onLoadedMetadata: _this.props.onLoadedMetadata,
-      onAbort: _this.props.onAbort,
-      onEmptied: _this.props.onEmptied,
       onStalled: _this.props.onStalled,
-      onLoadedData: _this.props.onLoadedData,
-      onCanPlay: _this.props.onCanPlay,
-      onCanPlayThrough: _this.props.onCanPlayThrough
+      onSuspend: _this.props.onSuspend,
+      onTimeUpdate: function onTimeUpdate() {
+        _this.updateMediaStatus();
+        _this.props.onTimeUpdate();
+      },
+      onVolumeChange: _this.props.onVolumeChange,
+      onWaiting: _this.props.onWaiting
     };
     return _this;
   }
@@ -1122,13 +1119,19 @@ var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id,
-      children = _ref2.children;
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
   return {
     foundSupported: jPlayers[id].mediaSettings.foundSupported,
-    children: children
+    children: children,
+    attributes: attributes
   };
 };
 
@@ -2835,29 +2838,29 @@ Audio.propTypes = {
   attributes: _react2.default.PropTypes.object.isRequired,
   require: _react2.default.PropTypes.bool.isRequired,
   events: _react2.default.PropTypes.shape({
-    onProgress: _react2.default.PropTypes.func,
-    onTimeUpdate: _react2.default.PropTypes.func,
+    onAbort: _react2.default.PropTypes.func,
+    onCanPlay: _react2.default.PropTypes.func,
+    onCanPlayThrough: _react2.default.PropTypes.func,
     onDurationChange: _react2.default.PropTypes.func,
-    onRateChange: _react2.default.PropTypes.func,
-    onSeeking: _react2.default.PropTypes.func,
-    onSeeked: _react2.default.PropTypes.func,
-    onPlay: _react2.default.PropTypes.func,
-    onRepeat: _react2.default.PropTypes.func,
+    onEmptied: _react2.default.PropTypes.func,
+    onEncrypted: _react2.default.PropTypes.func,
     onEnded: _react2.default.PropTypes.func,
     onError: _react2.default.PropTypes.func,
-    onPlaying: _react2.default.PropTypes.func,
-    onPause: _react2.default.PropTypes.func,
-    onWaiting: _react2.default.PropTypes.func,
-    onSuspend: _react2.default.PropTypes.func,
-    onVolumeChange: _react2.default.PropTypes.func,
-    onLoadStart: _react2.default.PropTypes.func,
-    onLoadedMetadata: _react2.default.PropTypes.func,
-    onAbort: _react2.default.PropTypes.func,
-    onEmptied: _react2.default.PropTypes.func,
-    onStalled: _react2.default.PropTypes.func,
     onLoadedData: _react2.default.PropTypes.func,
-    onCanPlay: _react2.default.PropTypes.func,
-    onCanPlayThrough: _react2.default.PropTypes.func
+    onLoadedMetadata: _react2.default.PropTypes.func,
+    onLoadStart: _react2.default.PropTypes.func,
+    onPause: _react2.default.PropTypes.func,
+    onPlay: _react2.default.PropTypes.func,
+    onPlaying: _react2.default.PropTypes.func,
+    onProgress: _react2.default.PropTypes.func,
+    onRateChange: _react2.default.PropTypes.func,
+    onSeeked: _react2.default.PropTypes.func,
+    onSeeking: _react2.default.PropTypes.func,
+    onStalled: _react2.default.PropTypes.func,
+    onSuspend: _react2.default.PropTypes.func,
+    onTimeUpdate: _react2.default.PropTypes.func,
+    onVolumeChange: _react2.default.PropTypes.func,
+    onWaiting: _react2.default.PropTypes.func
   })
 };
 
@@ -2874,6 +2877,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -2884,28 +2889,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var BrowserUnsupported = function BrowserUnsupported(_ref) {
   var foundSupported = _ref.foundSupported,
-      children = _ref.children;
-  return foundSupported ? null : children;
+      children = _ref.children,
+      attributes = _ref.attributes;
+  return foundSupported ? null : _react2.default.createElement(
+    'div',
+    _extends({ className: _constants.classes.NO_BROWSER_SUPPORT }, attributes),
+    children
+  );
 };
 
 BrowserUnsupported.defaultProps = {
   children: _react2.default.createElement(
     'div',
-    { className: _constants.classes.NO_BROWSER_SUPPORT },
+    null,
     _react2.default.createElement(
       'h4',
       null,
       'Browser Unsupported'
     ),
-    _react2.default.createElement(
-      'div',
-      null,
-      'Your browser does not support this media file. To play the media you will need to update your browser to a more recent version.'
-    )
+    'Your browser does not support this media file. To play the media you will need to update your browser to a more recent version.'
   )
 };
 
 BrowserUnsupported.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
   children: _react2.default.PropTypes.node,
   foundSupported: _react2.default.PropTypes.bool.isRequired
 };
@@ -3718,29 +3725,29 @@ Video.propTypes = {
   children: _react2.default.PropTypes.node,
   require: _react2.default.PropTypes.bool.isRequired,
   events: _react2.default.PropTypes.shape({
-    onProgress: _react2.default.PropTypes.func,
-    onTimeUpdate: _react2.default.PropTypes.func,
+    onAbort: _react2.default.PropTypes.func,
+    onCanPlay: _react2.default.PropTypes.func,
+    onCanPlayThrough: _react2.default.PropTypes.func,
     onDurationChange: _react2.default.PropTypes.func,
-    onRateChange: _react2.default.PropTypes.func,
-    onSeeking: _react2.default.PropTypes.func,
-    onSeeked: _react2.default.PropTypes.func,
-    onPlay: _react2.default.PropTypes.func,
-    onRepeat: _react2.default.PropTypes.func,
+    onEmptied: _react2.default.PropTypes.func,
+    onEncrypted: _react2.default.PropTypes.func,
     onEnded: _react2.default.PropTypes.func,
     onError: _react2.default.PropTypes.func,
-    onPlaying: _react2.default.PropTypes.func,
-    onPause: _react2.default.PropTypes.func,
-    onWaiting: _react2.default.PropTypes.func,
-    onSuspend: _react2.default.PropTypes.func,
-    onVolumeChange: _react2.default.PropTypes.func,
-    onLoadStart: _react2.default.PropTypes.func,
-    onLoadedMetadata: _react2.default.PropTypes.func,
-    onAbort: _react2.default.PropTypes.func,
-    onEmptied: _react2.default.PropTypes.func,
-    onStalled: _react2.default.PropTypes.func,
     onLoadedData: _react2.default.PropTypes.func,
-    onCanPlay: _react2.default.PropTypes.func,
-    onCanPlayThrough: _react2.default.PropTypes.func
+    onLoadedMetadata: _react2.default.PropTypes.func,
+    onLoadStart: _react2.default.PropTypes.func,
+    onPause: _react2.default.PropTypes.func,
+    onPlay: _react2.default.PropTypes.func,
+    onPlaying: _react2.default.PropTypes.func,
+    onProgress: _react2.default.PropTypes.func,
+    onRateChange: _react2.default.PropTypes.func,
+    onSeeked: _react2.default.PropTypes.func,
+    onSeeking: _react2.default.PropTypes.func,
+    onStalled: _react2.default.PropTypes.func,
+    onSuspend: _react2.default.PropTypes.func,
+    onTimeUpdate: _react2.default.PropTypes.func,
+    onVolumeChange: _react2.default.PropTypes.func,
+    onWaiting: _react2.default.PropTypes.func
   })
 };
 

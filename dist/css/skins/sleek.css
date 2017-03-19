@@ -114,10 +114,10 @@
 :not(.jp-state-full-screen).jp-sleek .jp-gui {
   z-index: 100;
 }
-.jp-sleek .jp-gui.jp-state-no-browser-support {
+.jp-state-no-browser-support.jp-sleek .jp-gui {
   height: auto;
 }
-.jp-sleek .jp-gui.jp-state-no-browser-support .jp-controls {
+.jp-state-no-browser-support.jp-sleek .jp-gui .jp-controls {
   display: none;
 }
 .jp-sleek .jp-gui .jp-no-browser-support {
