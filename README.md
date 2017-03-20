@@ -652,11 +652,11 @@ All components accept custom props that will be applied as attributes to the com
 
 If the names do conflict then the custom props will overwrite any existing props that are used on that component internally, including event handlers. The exception to this is the property `className` for the `JPlayer` component.
 
-E.g. `<Mute aria-haspopup />` will render <div className="jp-mute" aria-haspopup></div>
+E.g. `<Mute aria-haspopup />` will render `<div className="jp-mute" aria-haspopup></div>`
 
 Specifying `className` for the `JPlayer` component will merge the classes instead of overwriting. The reason for this is that jPlayer internally calculates multiple classes to apply on this component based on the status of the jPlayer, so we don't want to overwrite these.
 
-E.g. `<JPlayer className="jp-sleek" />` will render <div className="jp-jplayer jp-sleek"></div>
+E.g. `<JPlayer className="jp-sleek" />` will render `<div className="jp-jplayer jp-sleek"></div>`
 
 #### `JPlayer`
 ##### props
