@@ -280,8 +280,8 @@ The connected jPlayer. Any additional props that you passed in are passed throug
 ### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
 
-If you need to call these actions from another part of your codebase that isn't a jPlayer then it will be easiest to use Redux's `connect()` and call dispatch on the imported action.
-For example, if you wanted to toggle the showRemainingDuration from somewhere else in the application on a jPlayer called 'AudioPlayer':
+If you need to call these actions from another part of your codebase that isn't a jPlayer then it will be best to use Redux's `connect()` on your component and call dispatch on the imported action.
+For example, if you wanted to toggle the `showRemainingDuration` from somewhere else in the application on a jPlayer called `'AudioPlayer'`:
 
 ```
 import React from 'react';
