@@ -9,7 +9,7 @@ A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.
 
 react-jPlayer depends on [Redux](https://github.com/reactjs/redux). Redux is a tiny 2KB and is well worth it to keep the react-jPlayer components componentized.
 
-jPlayer does not support playlists yet. This will be comming in an upcoming npm package called react-jPlaylist.
+jPlayer does not support playlists yet. This will be coming in an upcoming npm package called react-jPlaylist.
 
 <!-- toc -->
 
@@ -555,7 +555,6 @@ mediaSettings: {
   formats: [],
 }
 ```
-
 &ensp;&ensp;`video: (bool)` renders the audio or video and is automatically determined by the media you specify.
 
 &ensp;&ensp;`foundSupported: (bool)` true if any valid media can be played.
@@ -630,76 +629,161 @@ This is only ever true if the current jPlayer has [`keyEnabled`](https://github.
 This method is set internally for each action that the user takes on the jPlayer, i.e. each time a jPlayer action is called. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling [`focus`](https://github.com/MartinDawson/react-jPlayer#focusid).
 
 ### Components
+All components accept custom props that will be applied as attributes to the component if the names don't conflict with existing properties. 
+
+If the names do conflict then the custom props will overwrite any existing props that are used on that component internally, including event handlers. The exception to this is the property `className` for the `JPlayer` component.
+
+E.g. `<Mute aria-haspopup />` will render <div className="jp-mute" aria-haspopup></div>
+
+Specifying `className` for the `JPlayer` component will merge the classes instead of overwriting. The reason for this is that jPlayer internally calculates multiple classes to apply on this component based on the status of the jPlayer, so we don't want to overwrite these.
+
+E.g. `<JPlayer className="jp-sleek" />` will render <div className="jp-jplayer jp-sleek"></div>
+
 #### `JPlayer`
+##### props
+1. `children (element or array of elements): Required`
+
 A required component that needs to be the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
 
 #### `GUI`
+##### props
+1. `children (element or array of elements): Required`
+
 Should wrap all of the components that the user interacts with. Handles the fading in and out when in full screen mode.
 
 #### `SeekBar`
+##### props
+1. `children (element or array of elements): Required`
+
 Should wrap the `PlayBar` and `BufferBar`. Handles the user being able to seek to a new time when the user clicks, drags or touches on the progress bar. 
 
 #### `PlayBar`
+##### props
+1. `children (node)`
+
 Shows how much of the media has been played so far.
 
 #### `BufferBar`
+##### props
+1. `children (node)`
+
 Shows how much of the media has been downloaded so far. This also takes in to consideration the user seeking to multiple points on the media and skipping parts of the media.
 
 #### `Poster`
+##### props
+1. `children (node)`
+
 The poster to be displayed for the media. Uses `media.poster` as the src for the image.
 
 #### `Video`
 ##### props
 1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
+2. `children (node)`
 
 If the first media source that you have supplied to `media.sources` is an [video format](https://en.wikipedia.org/wiki/Video_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `Audio`
 ##### props
 1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
+2. `children (node)`
 
 If the first media source that you have supplied to `media.sources` is an [audio format](https://en.wikipedia.org/wiki/Audio_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `Title`
-Renders the media title as `media.artist` - `media.title`.
+##### props
+1. `children (string or number)`
+
+Default: `media.artist` - `media.title`
 
 #### `FullScreen`
+##### props
+1. `children (node): Required`
+
 Handles clicks on this component toggling the full screen of the jPlayer.
 
 #### `Mute`
+##### props
+1. `children (node): Required`
+
 Handles clicks on this component toggling the mute of the jPlayer.
 
 #### `Play`
+##### props
+1. `children (node): Required`
+
 Handles clicks on this component setting the jPlayer to be paused or playing.
 
 #### `Repeat`
+##### props
+1. `children (node): Required`
+
 Handles clicks on this component toggling the looping of the jPlayer.
 
 ####  `PlaybackRateBar`
+##### props
+1. `children (node)`
+
+Default: `PlaybackRateBarValue`
+
 Handles clicks, dragging or touches on this component setting the playback rate of the media.
 
 #### `PlaybackRateBarValue`
+##### props
+1. `children (node)`
+
 This is used by the `PlaybackRateBar` by default so the majority of applications won't need to use this. Represents the playback rate as the width or height of the component depending on the property `verticalPlaybackRate`.
 
 #### `VolumeBar`
+##### props
+1. `children (node)`
+
+Default: `VolumeBarValue`
+
 Handles clicks, dragging or touches on this component setting the volume of the media.
 
 #### `VolumeBarValue`
+##### props
+1. `children (node)`
+
 This is used by the `VolumeBar` by default so the majority of applications won't need to use this. Represents the volume as the width or height of the component depending on the property `verticalVolume`.
 
 #### `Download`
+##### props
+1. `children (node): Required`
+
 Handles clicks on this component downloading the media if the `media.free` option is true. 
 
 Warning: This will not make the media secure, i.e. users can still download the song from the network tab. You will need to secure the media this from the server instead.
 If the browser doesn't support the `download` attribute then clicks on this component will open a new tab or window with the source media instead.
 
 #### `Duration`
+##### props
+1. `children (node)`
+
+Default: [durationText](https://github.com/MartinDawson/react-jPlayer#durationtext-string)
+
 Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn't been set yet (i.e IOS until the user manually plays the media).
 
 #### `CurrentTime`
+##### props
+1. `children (node)`
+
+Default: [durationText](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
+
 Renders the `currentTimeText` of the jPlayer.
 
 #### `BrowserUnsupported`
+##### props
+1. `children (node)`
+
+Default:
+```
+<div>
+  <h4>Browser Unsupported</h4>
+  Your browser does not support this media file.
+  To play the media you will need to update your browser to a more recent version.
+</div>
+```
 Renders html that tells the user to update their browser if jPlayer doesn't support the specified media file.
 
 ### Misc
