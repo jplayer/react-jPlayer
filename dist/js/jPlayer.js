@@ -877,16 +877,8 @@ var MediaContainer = function (_React$Component) {
       return _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1);
     };
 
-    _this.updateMediaStatus = function () {
-      var seekPercent = 0;
+    _this.setDurationText = function () {
       var durationText = '';
-
-      var currentTimeText = (0, _index.convertTime)(_this.currentMedia.currentTime, _this.props.timeFormats);
-      var currentPercentAbsolute = (0, _index.toPercentage)(_this.currentMedia.currentTime, _this.currentMedia.duration);
-
-      if (_this.currentMedia.seekable.length > 0) {
-        seekPercent = (0, _index.toPercentage)(_this.getSeekableEnd(), _this.currentMedia.duration);
-      }
 
       if (_this.props.showRemainingDuration) {
         var timeRemaining = _this.currentMedia.duration - _this.currentMedia.currentTime;
@@ -897,7 +889,26 @@ var MediaContainer = function (_React$Component) {
       }
 
       _this.props.setOption(_this.props.id, 'durationText', durationText);
+    };
+
+    _this.setCurrentTimeText = function () {
+      var currentTimeText = (0, _index.convertTime)(_this.currentMedia.currentTime, _this.props.timeFormats);
+
       _this.props.setOption(_this.props.id, 'currentTimeText', currentTimeText);
+    };
+
+    _this.updateMediaStatus = function () {
+      var seekPercent = 0;
+
+      var currentPercentAbsolute = (0, _index.toPercentage)(_this.currentMedia.currentTime, _this.currentMedia.duration);
+
+      if (_this.currentMedia.seekable.length > 0) {
+        seekPercent = (0, _index.toPercentage)(_this.getSeekableEnd(), _this.currentMedia.duration);
+      }
+
+      _this.setDurationText();
+      _this.setCurrentTimeText();
+
       _this.props.setOption(_this.props.id, 'seekPercent', seekPercent);
       _this.props.setOption(_this.props.id, 'currentPercentRelative', _this.getCurrentPercentRelative());
       _this.props.setOption(_this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
@@ -1027,6 +1038,16 @@ var MediaContainer = function (_React$Component) {
         } else {
           this.currentMedia.play();
         }
+      }
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (prevProps.showRemainingDuration !== this.props.showRemainingDuration) {
+        this.setDurationText();
+      }
+      if (prevProps.timeFormats !== this.props.timeFormats) {
+        this.setCurrentTimeText();
       }
     }
   }, {
