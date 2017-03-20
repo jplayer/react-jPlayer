@@ -25,7 +25,10 @@ SeekBar.propTypes = {
   onClick: React.PropTypes.func,
   onMouseDown: React.PropTypes.func,
   onTouchStart: React.PropTypes.func,
-  children: React.PropTypes.node.isRequired,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.element),
+    React.PropTypes.element,
+  ]).isRequired,
 };
 
 export default SeekBar;
