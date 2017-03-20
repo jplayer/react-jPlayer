@@ -81,7 +81,7 @@
     "cache": true,
     "sourceMap": false,
     "instrument": false,
-    "check-coverage": false,
+    "check-coverage": true,
     "lines": 99,
     "statements": 99,
     "functions": 99,
