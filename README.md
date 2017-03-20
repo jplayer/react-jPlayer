@@ -274,6 +274,7 @@ Required to connect your jPlayer to the jPlayer store by wrapping Redux's origin
 2. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
 
 **Renders**
+
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
 
 ### Actions
