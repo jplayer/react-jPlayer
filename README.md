@@ -37,41 +37,41 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
     + [`focus(id)`](#focusid)
   * [Props](#props)
     + [Options](#options)
-      - [`preload (string)`](#preload-string)
-      - [`minPlaybackRate (number)`](#minplaybackrate-number)
-      - [`maxPlaybackRate (number)`](#maxplaybackrate-number)
-      - [`playbackRate (number)`](#playbackrate-number)
-      - [`defaultPlaybackRate (number)`](#defaultplaybackrate-number)
-      - [`bufferColour (string)`](#buffercolour-string)
-      - [`volume (number)`](#volume-number)
-      - [`barDrag (bool)`](#bardrag-bool)
-      - [`guiFadeHoldTime (number)`](#guifadeholdtime-number)
-      - [`media (object)`](#media-object)
-      - [`keyBindings: (object)`](#keybindings-object)
-      - [`showRemainingDuration: (bool)`](#showremainingduration-bool)
-      - [`muted: (bool)`](#muted-bool)
-      - [`loop: (bool)`](#loop-bool)
-      - [`autoplay: (bool)`](#autoplay-bool)
-      - [`smoothPlayBar: (bool)`](#smoothplaybar-bool)
-      - [`fullScreen: (bool)`](#fullscreen-bool)
-      - [`verticalPlaybackRate: (bool)`](#verticalplaybackrate-bool)
-      - [`verticalVolume: (bool)`](#verticalvolume-bool)
-      - [`keyEnabled: (bool)`](#keyenabled-bool)
-      - [`timeFormats: (object)`](#timeformats-object)
+      - [`preload` (string)](#preload-string)
+      - [`minPlaybackRate` (number)](#minplaybackrate-number)
+      - [`maxPlaybackRate` (number)](#maxplaybackrate-number)
+      - [`playbackRate` (number)](#playbackrate-number)
+      - [`defaultPlaybackRate` (number)](#defaultplaybackrate-number)
+      - [`bufferColour` (string)](#buffercolour-string)
+      - [`volume` (number)](#volume-number)
+      - [`barDrag` (bool)](#bardrag-bool)
+      - [`guiFadeHoldTime` (number)](#guifadeholdtime-number)
+      - [`media` (object)](#media-object)
+      - [`keyBindings` (object)](#keybindings-object)
+      - [`showRemainingDuration` (bool)](#showremainingduration-bool)
+      - [`muted` (bool)](#muted-bool)
+      - [`loop` (bool)](#loop-bool)
+      - [`autoplay` (bool)](#autoplay-bool)
+      - [`smoothPlayBar` (bool)](#smoothplaybar-bool)
+      - [`fullScreen` (bool)](#fullscreen-bool)
+      - [`verticalPlaybackRate` (bool)](#verticalplaybackrate-bool)
+      - [`verticalVolume` (bool)](#verticalvolume-bool)
+      - [`keyEnabled` (bool)](#keyenabled-bool)
+      - [`timeFormats` (object)](#timeformats-object)
     + [Status](#status)
-      - [`mediaSettings: (object)`](#mediasettings-object)
-      - [`paused: (bool)`](#paused-bool)
-      - [`seeking: (bool)`](#seeking-bool)
-      - [`src: (string)`](#src-string)
-      - [`currentTimeText: (string)`](#currenttimetext-string)
-      - [`durationText: (string)`](#durationtext-string)
-      - [`seekPercent: (number)`](#seekpercent-number)
-      - [`currentPercentRelative: (number)`](#currentpercentrelative-number)
-      - [`currentPercentAbsolute: (number)`](#currentpercentabsolute-number)
-      - [`currentTime: (number)`](#currenttime-number)
-      - [`duration: (number)`](#duration-number)
-      - [`bufferedTimeRanges: (array)`](#bufferedtimeranges-array)
-      - [`focused: (bool)`](#focused-bool)
+      - [`mediaSettings` (object)](#mediasettings-object)
+      - [`paused` (bool)](#paused-bool)
+      - [`seeking` (bool)](#seeking-bool)
+      - [`src` (string)](#src-string)
+      - [`currentTimeText` (string)](#currenttimetext-string)
+      - [`durationText` (string)](#durationtext-string)
+      - [`seekPercent` (number)](#seekpercent-number)
+      - [`currentPercentRelative` (number)](#currentpercentrelative-number)
+      - [`currentPercentAbsolute` (number)](#currentpercentabsolute-number)
+      - [`currentTime` (number)](#currenttime-number)
+      - [`duration` (number)](#duration-number)
+      - [`bufferedTimeRanges` (array)`](#bufferedtimeranges-array)
+      - [`focused` (bool)](#focused-bool)
   * [Components](#components)
     + [`JPlayer`](#jplayer)
     + [`GUI`](#gui)
@@ -263,7 +263,7 @@ A required object. The jPlayer reducer that will be called whenever a jPlayer fu
 Required to connect your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Arguments**
-1. `jPlayer`: (function)
+1. `jPlayer` (function): Your jPlayer with which to connect to the store.
 
 **Returns**
 
@@ -349,44 +349,44 @@ You specify these values on a functions static property that must be called `opt
 
 Some properties in this object will be updated internally, so do not rely on these options staying the same throughout the jPlayer's lifetime.
 
-##### [`preload (string)`](https://developer.mozilla.org/en/docs/Web/HTML/Element/video#attr-preload)
+##### [`preload` (string)](https://developer.mozilla.org/en/docs/Web/HTML/Element/video#attr-preload)
 Default: "metadata"
 
-##### `minPlaybackRate (number)`
+##### `minPlaybackRate` (number)
 Default: 0.5
 
 Useful to limit the lower boundary of the playbackRate, e.g. when using a slider for the playbackRate
 
-##### `maxPlaybackRate (number)`
+##### `maxPlaybackRate` (number)
 Default: 4
 
 Useful to limit the upper boundary of the playbackRate, e.g. when using a slider for the playbackRate
 
-##### [`playbackRate (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/playbackRate)
+##### [`playbackRate` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/playbackRate)
 Default: 1.0
 
-##### [`defaultPlaybackRate (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/defaultPlaybackRate)
+##### [`defaultPlaybackRate` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/defaultPlaybackRate)
 Default: 1.0
 
-##### `bufferColour (string)`
+##### `bufferColour` (string)
 Default: "#ddd"
 
 The [`BufferBar`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component renders a `<canvas />` element and uses the fillStyle property to fill in the bar. Therefore the colour property must be set in JS and not css.
 
-##### [`volume (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/volume)
+##### [`volume` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/volume)
 Default: 0.8
 
-##### `barDrag (bool)`
+##### `barDrag` (bool)
 Default: true
 
 Allows dragging of all of the components which are bars, e.g. [`VolumeBar`](https://github.com/MartinDawson/react-jPlayer#volumebar-), [`PlaybackRateBar`](https://github.com/MartinDawson/react-jPlayer#playbackratebar-) and [`SeekBar`](https://github.com/MartinDawson/react-jPlayer#seekbar-).
 
-##### `guiFadeHoldTime (number)`
+##### `guiFadeHoldTime` (number)
 Default: 3000
 
 The time with which the gui waits until fading out. This only starts when the user moves the mouse over the root jPlayer element, the audio/video is full screen and the media is playing.
 
-##### `media (object)`
+##### `media` (object)
 Default: 
 ```
 media: {
@@ -409,7 +409,7 @@ media: {
 
 &ensp;&ensp;`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
 
-##### `keyBindings: (object)`
+##### `keyBindings` (object)
 Default:
 ```
 keyBindings: {
@@ -448,50 +448,50 @@ keyBindings: {
 
 The keybindings you specify will be deep merged with the defaults.
 
-##### `showRemainingDuration: (bool)`
+##### `showRemainingDuration` (bool)
 Default: false
 
 When true, the duration will count down the time remaining in the media. When false, the duration will stay at fixed at the media's time.
 
-##### [`muted: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/muted)
+##### [`muted` (bool)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/muted)
 Default: false
 
-##### [`loop: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/loop)
+##### [`loop` (bool)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/loop)
 Default: false
 
-##### [`autoplay: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/autoplay)
+##### [`autoplay` (bool)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/autoplay)
 Default: false
 
-##### `smoothPlayBar: (bool)`
+##### `smoothPlayBar` (bool)
 Default: false
 
 The play bar width changes are animated over 250ms to smooth the change, rather than a step change. This also affects clicks on the play bar, where the bar animates to the new position.
 
 Short duration media benefits the most, since their step changes are the largest.
 
-##### `fullScreen: (bool)`
+##### `fullScreen` (bool)
 Default: false
 
 Sets the jPlayer to fullScreen mode when true. The vast majority of users will not want this to be true by default as this option is usually toggled via the GUI. 
 
 This uses the [FullScreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) internally. If the FullScreen api is not supported by the browser then everything but the jPlayer will be hidden. `jPlayer.css` will then handle making the jPlayer width and height 100% of the screen to simulate the native full screen mode as close as possible.
 
-##### `verticalPlaybackRate: (bool)`
+##### `verticalPlaybackRate` (bool)
 Default: false
 
 Set this to true if your playback rate bar is vertical. Clicks on the playback rate bar will then be calculated properly.
 
-##### `verticalVolume: (bool)`
+##### `verticalVolume` (bool)
 Default: false
 
 Set this to true if your volume bar is vertical. Clicks on the volume bar will then be calculated properly.
 
-##### `keyEnabled: (bool)`
+##### `keyEnabled` (bool)
 Default: true
 
 Allows key presses to affect the jPlayer. For the [`keyBindings`](https://github.com/MartinDawson/react-jPlayer#keybindings-object) object to have any affect this will need to be true.
 
-##### `timeFormats: (object)`
+##### `timeFormats` (object)
 Defines the display format of the currentTime and duration times.
 
 Default: 
@@ -531,7 +531,7 @@ timeFormats: {
 #### Status
 Properties in this object are not meant to be modified and should be treated as read-only. These properties are automatically set and updated by jPlayer depending on the [options](https://github.com/MartinDawson/react-jPlayer#options) that you specified.
 
-##### `mediaSettings: (object)`
+##### `mediaSettings` (object)
 Default:
 ```
 mediaSettings: {
@@ -540,72 +540,72 @@ mediaSettings: {
   formats: [],
 }
 ```
-&ensp;&ensp;`video: (bool)` renders the audio or video and is automatically determined by the media you specify.
+&ensp;&ensp;`video` (bool): renders the audio or video and is automatically determined by the media you specify.
 
-&ensp;&ensp;`foundSupported: (bool)` true if any valid media can be played.
+&ensp;&ensp;`foundSupported` (bool): true if any valid media can be played.
 
-&ensp;&ensp;`formats: (array: objects)`
+&ensp;&ensp;`formats` (array: objects)
 
-&ensp;&ensp;&ensp;&ensp;`supplied: (string)` the type of media you supplied in the `media.sources` options, e.g. `mp3`.
+&ensp;&ensp;&ensp;&ensp;`supplied` (string): the type of media you supplied in the `media.sources` options, e.g. `mp3`.
   
-&ensp;&ensp;&ensp;&ensp;`supported: (bool)` true if the media can be played, the same as `foundSupported` but for each media type.
+&ensp;&ensp;&ensp;&ensp;`supported` (bool): true if the media can be played, the same as `foundSupported` but for each media type.
 
-##### [`paused: (bool)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/paused)
+##### [`paused` (bool)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/paused)
 Default: true
 
-##### `seeking: (bool)`
+##### `seeking` (bool)
 Default: false
 
 True when the user is currently seeking. This get set back to false after the user has finished seeking, i.e. in the `seeked` event.
 
-##### `src: (string)`
+##### `src` (string)
 Default: ''
 
 This is the current media's src url that you specified in `media.sources`.
 
-##### `currentTimeText: (string)`
+##### `currentTimeText` (string)
 Default: '0:00'
 
 The current time that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`CurrentTime`](https://github.com/MartinDawson/react-jPlayer#currenttime-) component.
 
-##### `durationText: (string)`
+##### `durationText` (string)
 Default: ''
 
 The duration that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`Duration`](https://github.com/MartinDawson/react-jPlayer#duration-) component.
 
-##### `seekPercent: (number)`
+##### `seekPercent` (number)
 Default: 0
 
 This represents the percentage of the media which is seekable.
 
-##### `currentPercentRelative: (number)`
+##### `currentPercentRelative` (number)
 Default: 0
 
 The current time as a percent of seekPercent.
 
-##### `currentPercentAbsolute: (number)`
+##### `currentPercentAbsolute` (number)
 Default: 0
 
 The current time as a percent of duration.
 
-##### [`currentTime: (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/currentTime)
+##### [`currentTime` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/currentTime)
 Default: 0
 
-##### [`duration: (number)`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/duration)
+##### [`duration` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/duration)
 Default: 0
 
-##### `bufferedTimeRanges: (array)`
+##### `bufferedTimeRanges` (array)`
 Default: []
 
-&ensp;&ensp;`start: (string)` the start time, in seconds of where the media is buffering.
+&ensp;&ensp;`start` (string): the start time, in seconds of where the media is buffering.
 
-&ensp;&ensp;`end: (string)` the end time, in seconds of where the media is buffering.
+&ensp;&ensp;`end` (string): the end time, in seconds of where the media is buffering.
 
 The start and end of where the buffering has occured. If the user seeks to different parts of the media, then the browser will automatically start downloading from that position and skip the media in between if it hasn't already been downloaded. The properties in this array represent that and are used internally by the [`BufferBar`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component.
 
 More information on this can be found in this [MDN article](https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/buffering_seeking_time_ranges).
 
-##### `focused: (bool)`
+##### `focused` (bool)
 Default: false
 
 This property determines which jPlayer should take precendance when the user is using key presses to affect the media.
@@ -626,87 +626,87 @@ E.g. `<JPlayer className="jp-sleek" />` will render <div className="jp-jplayer j
 
 #### `JPlayer`
 **props**
-1. `children (element or array of elements): Required`
+1. Required: `children` (element or array: elements)`
 
 A required component that needs to be the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
 
 #### `GUI`
 **props**
-1. `children (element or array of elements): Required`
+1. Required: `children` (element or array: elements)`
 
 Should wrap all of the components that the user interacts with. Handles the fading in and out when in full screen mode.
 
 #### `SeekBar`
 **props**
-1. `children (element or array of elements): Required`
+1. Required: `children` (element or array: elements)`
 
 Should wrap the `PlayBar` and `BufferBar`. Handles the user being able to seek to a new time when the user clicks, drags or touches on the progress bar. 
 
 #### `PlayBar`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Shows how much of the media has been played so far.
 
 #### `BufferBar`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Shows how much of the media has been downloaded so far. This also takes in to consideration the user seeking to multiple points on the media and skipping parts of the media.
 
 #### `Poster`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 The poster to be displayed for the media. Uses `media.poster` as the src for the image.
 
 #### `Video`
 **props**
 1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
-2. `children (node)`
+2. `children` (node)
 
 If the first media source that you have supplied to `media.sources` is an [video format](https://en.wikipedia.org/wiki/Video_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `Audio`
 **props**
 1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
-2. `children (node)`
+2. `children` (node)
 
 If the first media source that you have supplied to `media.sources` is an [audio format](https://en.wikipedia.org/wiki/Audio_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `Title`
 **props**
-1. `children (string or number)`
+1. `children` (string or number)
 
 Default: `media.artist` - `media.title`
 
 #### `FullScreen`
 **props**
-1. `children (node): Required`
+1. Required: `children` (node)
 
 Handles clicks on this component toggling the full screen of the jPlayer.
 
 #### `Mute`
 **props**
-1. `children (node): Required`
+1. Required: `children` (node)
 
 Handles clicks on this component toggling the mute of the jPlayer.
 
 #### `Play`
 **props**
-1. `children (node): Required`
+1. Required: `children` (node)
 
 Handles clicks on this component setting the jPlayer to be paused or playing.
 
 #### `Repeat`
 **props**
-1. `children (node): Required`
+1. Required: `children` (node)
 
 Handles clicks on this component toggling the looping of the jPlayer.
 
 ####  `PlaybackRateBar`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Default: `PlaybackRateBarValue`
 
@@ -714,13 +714,13 @@ Handles clicks, dragging or touches on this component setting the playback rate 
 
 #### `PlaybackRateBarValue`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 This is used by the `PlaybackRateBar` by default so the majority of applications won't need to use this. Represents the playback rate as the width or height of the component depending on the property `verticalPlaybackRate`.
 
 #### `VolumeBar`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Default: `VolumeBarValue`
 
@@ -728,13 +728,13 @@ Handles clicks, dragging or touches on this component setting the volume of the 
 
 #### `VolumeBarValue`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 This is used by the `VolumeBar` by default so the majority of applications won't need to use this. Represents the volume as the width or height of the component depending on the property `verticalVolume`.
 
 #### `Download`
 **props**
-1. `children (node): Required`
+1. Required: `children` (node)
 
 Handles clicks on this component downloading the media if the `media.free` option is true. 
 
@@ -743,7 +743,7 @@ If the browser doesn't support the `download` attribute then clicks on this comp
 
 #### `Duration`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Default: [durationText](https://github.com/MartinDawson/react-jPlayer#durationtext-string)
 
@@ -751,7 +751,7 @@ Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn'
 
 #### `CurrentTime`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Default: [durationText](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
 
@@ -759,7 +759,7 @@ Renders the `currentTimeText` of the jPlayer.
 
 #### `BrowserUnsupported`
 **props**
-1. `children (node)`
+1. `children` (node)
 
 Default:
 ```
