@@ -1,6 +1,7 @@
 import React from 'react';
 import expect, { createSpy, spyOn } from 'expect';
 import { mount } from 'enzyme';
+import merge from 'lodash.merge';
 
 import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions } from '../../util/constants';
@@ -173,12 +174,14 @@ describe('MediaContainer', () => {
   it('updateMediaStatus updates status properties to correct values', () => {
     const { props, instance } = setup();
 
-    instance.currentMedia.playbackRate = 0.35;
+    spyOn(instance, 'setDurationText');
+    spyOn(instance, 'setCurrentTimeText');
 
+    instance.currentMedia.playbackRate = 0.35;
     instance.updateMediaStatus();
 
-    expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '04:10');
-    expect(props.setOption).toHaveBeenCalledWith(id, 'currentTimeText', '01:30');
+    expect(instance.setDurationText).toHaveBeenCalled();
+    expect(instance.setCurrentTimeText).toHaveBeenCalled();
     expect(props.setOption).toHaveBeenCalledWith(id, 'seekPercent', 8.4);
     expect(props.setOption).toHaveBeenCalledWith(id, 'currentPercentRelative', 428.57142857142856);
     expect(props.setOption).toHaveBeenCalledWith(id, 'currentPercentAbsolute', 36);
@@ -198,23 +201,40 @@ describe('MediaContainer', () => {
     expect(props.setOption).toHaveBeenCalledWith(id, 'seekPercent', 0);
   });
 
-  it('updateMediaStatus sets durationText correctly when showRemainingDuration', () => {
-    const { props, instance } = setup({ showRemainingDuration: true });
+  it('sets currentTimeText when timeFormats has changed', () => {
+    const { wrapper, props } = setup();
 
-    instance.updateMediaStatus();
+    wrapper.setProps({ timeFormats: merge({}, defaultOptions.timeFormats, { sepMin: '.' }) });
+
+    expect(props.setOption).toHaveBeenCalledWith(id, 'currentTimeText', '01.30');
+  });
+
+  it('sets durationText correctly when showRemainingDuration is true and has changed', () => {
+    const { wrapper, props } = setup();
+
+    wrapper.setProps({ showRemainingDuration: true });
 
     expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '-02:40');
   });
 
-  it('updateMediaStatus sets durationText to 00:00 if time remaining is 0', () => {
-    const { props, instance } = setup({ showRemainingDuration: true });
+  it('sets durationText correctly if time remaining is 0 and ' +
+    'showRemainingDuration has changed', () => {
+    const { wrapper, props, instance } = setup();
 
     Object.defineProperty(instance.currentMedia, 'duration', { value: 90 });
     instance.currentMedia.currentTime = 90;
 
-    instance.updateMediaStatus();
+    wrapper.setProps({ showRemainingDuration: true });
 
     expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '00:00');
+  });
+
+  it('sets durationText correctly when showRemainingDuration is false and has changed', () => {
+    const { wrapper, props } = setup({ showRemainingDuration: true });
+
+    wrapper.setProps({ showRemainingDuration: false });
+
+    expect(props.setOption).toHaveBeenCalledWith(id, 'durationText', '04:10');
   });
 
   it('getSeekableEnd gets the end of the seekable time', () => {

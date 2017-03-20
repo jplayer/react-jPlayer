@@ -222,6 +222,14 @@ class MediaContainer extends React.Component {
       }
     }
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.showRemainingDuration !== this.props.showRemainingDuration) {
+      this.setDurationText();
+    }
+    if (prevProps.timeFormats !== this.props.timeFormats) {
+      this.setCurrentTimeText();
+    }
+  }
   getCurrentPercentRelative = () => {
     let currentPercentRelative = 0;
 
@@ -235,17 +243,8 @@ class MediaContainer extends React.Component {
     this.currentMedia = ref;
   }
   getSeekableEnd = () => this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1)
-  updateMediaStatus = () => {
-    let seekPercent = 0;
+  setDurationText = () => {
     let durationText = '';
-
-    const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
-    const currentPercentAbsolute = toPercentage(this.currentMedia.currentTime,
-      this.currentMedia.duration);
-
-    if (this.currentMedia.seekable.length > 0) {
-      seekPercent = toPercentage(this.getSeekableEnd(), this.currentMedia.duration);
-    }
 
     if (this.props.showRemainingDuration) {
       const timeRemaining = this.currentMedia.duration - this.currentMedia.currentTime;
@@ -257,7 +256,25 @@ class MediaContainer extends React.Component {
     }
 
     this.props.setOption(this.props.id, 'durationText', durationText);
+  }
+  setCurrentTimeText = () => {
+    const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
+
     this.props.setOption(this.props.id, 'currentTimeText', currentTimeText);
+  }
+  updateMediaStatus = () => {
+    let seekPercent = 0;
+
+    const currentPercentAbsolute = toPercentage(this.currentMedia.currentTime,
+      this.currentMedia.duration);
+
+    if (this.currentMedia.seekable.length > 0) {
+      seekPercent = toPercentage(this.getSeekableEnd(), this.currentMedia.duration);
+    }
+
+    this.setDurationText();
+    this.setCurrentTimeText();
+
     this.props.setOption(this.props.id, 'seekPercent', seekPercent);
     this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
     this.props.setOption(this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);

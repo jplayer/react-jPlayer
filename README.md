@@ -278,6 +278,32 @@ Required to connect your jPlayer to the jPlayer store by wrapping Redux's origin
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
 
 ### Actions
+All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
+
+If you need to call these actions from another part of your codebase that isn't a jPlayer then it will be easiest to use Redux's `connect()` and call dispatch on the imported action.
+For example, if you wanted to toggle the showRemainingDuration from somewhere else in the application on a jPlayer called 'AudioPlayer':
+
+```
+import React from 'react';
+import { connect } from 'react-redux';
+import { actions } from 'react-jplayer';
+
+/* jPlayers is automatically injected into the state if you set followed the setup correctly.
+You can also access your other state properties like usual. */
+
+const mapStateToProps = state => ({
+  showRemainingDuration: state.jPlayers.AudioPlayer.showRemainingDuration,
+});
+
+const SomeRandomFunc = ({ showRemainingDuration, dispatch }) =>
+  <div onClick={() => dispatch(actions.setOption('AudioPlayer', 'showRemainingDuration', !showRemainingDuration))}>
+    Toggle Duration
+  </div>;
+
+export default connect(mapStateToProps)(SomeRandomFunc);
+
+```
+
 **Returns**
 
 (object): All actions return an object that are meant to be passed to redux's `dispatch()`.

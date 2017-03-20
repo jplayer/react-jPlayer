@@ -41,7 +41,7 @@
     "packages:update": "david update && cd examples && david update",
     "dist": "rimraf dist && webpack",
     "build": "rimraf lib && babel src --out-dir lib --ignore spec.js,spec.jsx",
-    "preversion": "npm test && npm run lint",
+    "preversion": "npm test && npm run lint && npm run coverage",
     "version": "npm run dist && npm run build && git add -A dist",
     "postversion": "git push && git push --tags",
     "toc": "markdown-toc -i README.md"
