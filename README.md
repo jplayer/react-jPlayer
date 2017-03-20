@@ -23,34 +23,18 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
 - [Supported browsers](#supported-browsers)
 - [Documentation](#documentation)
     + [`getInitialStates([jPlayers])`](#getinitialstatesjplayers)
-      - [Arguments](#arguments)
-      - [Returns](#returns)
     + [`reducer`](#reducer)
     + [`connect(jPlayer)`](#connectjplayer)
-      - [Arguments](#arguments-1)
-      - [Returns](#returns-1)
-      - [Static Properties](#static-properties)
-      - [Renders](#renders)
   * [Actions](#actions)
-      - [Returns](#returns-2)
     + [`setOption(id, key, value)`](#setoptionid-key-value)
-      - [Arguments](#arguments-2)
     + [`setMedia(id, media)`](#setmediaid-media)
-      - [Arguments](#arguments-3)
     + [`clearMedia(id)`](#clearmediaid)
-      - [Arguments](#arguments-4)
     + [`play(id, [time])`](#playid-time)
-      - [Arguments](#arguments-5)
     + [`pause(id, [time])`](#pauseid-time)
-      - [Arguments](#arguments-6)
     + [`setPlayHead(id, percent)`](#setplayheadid-percent)
-      - [Arguments](#arguments-7)
     + [`setVolume(id, volume)`](#setvolumeid-volume)
-      - [Arguments](#arguments-8)
     + [`setMute(id, mute)`](#setmuteid-mute)
-      - [Arguments](#arguments-9)
     + [`focus(id)`](#focusid)
-      - [Arguments](#arguments-10)
   * [Props](#props)
     + [Options](#options)
       - [`preload (string)`](#preload-string)
@@ -90,47 +74,26 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
       - [`focused: (bool)`](#focused-bool)
   * [Components](#components)
     + [`JPlayer`](#jplayer)
-      - [props](#props)
     + [`GUI`](#gui)
-      - [props](#props-1)
     + [`SeekBar`](#seekbar)
-      - [props](#props-2)
     + [`PlayBar`](#playbar)
-      - [props](#props-3)
     + [`BufferBar`](#bufferbar)
-      - [props](#props-4)
     + [`Poster`](#poster)
-      - [props](#props-5)
     + [`Video`](#video)
-      - [props](#props-6)
     + [`Audio`](#audio)
-      - [props](#props-7)
     + [`Title`](#title)
-      - [props](#props-8)
     + [`FullScreen`](#fullscreen)
-      - [props](#props-9)
     + [`Mute`](#mute)
-      - [props](#props-10)
     + [`Play`](#play)
-      - [props](#props-11)
     + [`Repeat`](#repeat)
-      - [props](#props-12)
     + [`PlaybackRateBar`](#playbackratebar)
-      - [props](#props-13)
     + [`PlaybackRateBarValue`](#playbackratebarvalue)
-      - [props](#props-14)
     + [`VolumeBar`](#volumebar)
-      - [props](#props-15)
     + [`VolumeBarValue`](#volumebarvalue)
-      - [props](#props-16)
     + [`Download`](#download)
-      - [props](#props-17)
     + [`Duration`](#duration)
-      - [props](#props-18)
     + [`CurrentTime`](#currenttime)
-      - [props](#props-19)
     + [`BrowserUnsupported`](#browserunsupported)
-      - [props](#props-20)
   * [Misc](#misc)
     + [classes](#classes)
   * [Supported Media Formats](#supported-media-formats)
@@ -286,10 +249,10 @@ ReactDOM.render((
 #### `getInitialStates([jPlayers])`
 A required function that deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
 
-##### Arguments
+**Arguments**
 1. `jPlayer(s)` (Array or Function): Accepts either an array of jPlayers or a single jPlayer. 
 
-##### Returns
+**Returns**
 (Object): The initial state for the jPlayer(s) that needs to be passed to the Redux store.
 
 #### `reducer`
@@ -298,27 +261,27 @@ A required object. The jPlayer reducer that will be called whenever a jPlayer fu
 #### `connect(jPlayer)`
 Required to connect your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
-##### Arguments
+**Arguments**
 1. `jPlayer`: (Function)
 
-##### Returns
+**Returns**
 (function): A function that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
 
-##### Static Properties
+**Static Properties**
 1. `id`: The id of the jPlayer, this is whatever name you called your jPlayer function. This is passed down as a context so that react-jPlayer can internally know which jPlayer is the current one.
 2. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
 
-##### Renders
+**Renders**
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
 
 ### Actions
-##### Returns
+**Returns**
 (Object): All actions return an object that are meant to be passed to redux's `dispatch()`.
 
 #### `setOption(id, key, value)`
 Sets any jPlayer option. A few of the other actions are just helpers for modifying the options and could also be modified by this function. You should still use the other actions to modify the option if you can as most do extra logic and error handling. 
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `key` (string): The name of the option that you want to set. Specifying nested keys is not supported.
 3. `value` (any): The value to set the option to.
@@ -326,55 +289,55 @@ Sets any jPlayer option. A few of the other actions are just helpers for modifyi
 #### `setMedia(id, media)`
 Sets the media.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `media` (object): The new media you want to set.
 
 #### `clearMedia(id)`
 Clear the media and reset all status values. This will be rarely used, if you are setting new media you **don't** need to use this function beforehand as `setMedia` already internally clears existing values before setting a new media.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 
 #### `play(id, [time])`
 Play the media.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `time` (number): The time that the jPlayer should start playing from, defaults to the current time.
 
 #### `pause(id, [time])`
 Pauses the media.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `time` (number): The time that the jPlayer should pause from, defaults to the current time.
 
 #### `setPlayHead(id, percent)`
 Moves the play-head to the value specified. This only moves the play-head. Whether the media plays from that point depends on its current state, i.e. If it was playing, play continues from the new play-head. If it was paused, the media is cued to the new play-head position.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `percent` (number): The percent that the play bar should be moved to.
 
 #### `setVolume(id, volume)`
 Sets the volume.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `volume` (number): Value given should be between 0 - 1. The volume will be capped at either 0 or 1 if the value given is outside this range.
 
 #### `setMute(id, mute)`
 Mutes or un-mutes.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `mute` (bool)
 
 #### `focus(id)`
 This method is called internally for each of the other actions if that jPlayer has keyEnabled set to true. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling this method.
 
-##### Arguments
+**Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 
 ### Props
@@ -652,94 +615,94 @@ All components accept custom props that will be applied as attributes to the com
 
 If the names do conflict then the custom props will overwrite any existing props that are used on that component internally, including event handlers. The exception to this is the property `className` for the `JPlayer` component.
 
-E.g. `<Mute aria-haspopup />` will render `<div className="jp-mute" aria-haspopup></div>`
+E.g. `<Mute aria-haspopup />` will render <div className="jp-mute" aria-haspopup></div>
 
 Specifying `className` for the `JPlayer` component will merge the classes instead of overwriting. The reason for this is that jPlayer internally calculates multiple classes to apply on this component based on the status of the jPlayer, so we don't want to overwrite these.
 
-E.g. `<JPlayer className="jp-sleek" />` will render `<div className="jp-jplayer jp-sleek"></div>`
+E.g. `<JPlayer className="jp-sleek" />` will render <div className="jp-jplayer jp-sleek"></div>
 
 #### `JPlayer`
-##### props
+**props**
 1. `children (element or array of elements): Required`
 
 A required component that needs to be the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
 
 #### `GUI`
-##### props
+**props**
 1. `children (element or array of elements): Required`
 
 Should wrap all of the components that the user interacts with. Handles the fading in and out when in full screen mode.
 
 #### `SeekBar`
-##### props
+**props**
 1. `children (element or array of elements): Required`
 
 Should wrap the `PlayBar` and `BufferBar`. Handles the user being able to seek to a new time when the user clicks, drags or touches on the progress bar. 
 
 #### `PlayBar`
-##### props
+**props**
 1. `children (node)`
 
 Shows how much of the media has been played so far.
 
 #### `BufferBar`
-##### props
+**props**
 1. `children (node)`
 
 Shows how much of the media has been downloaded so far. This also takes in to consideration the user seeking to multiple points on the media and skipping parts of the media.
 
 #### `Poster`
-##### props
+**props**
 1. `children (node)`
 
 The poster to be displayed for the media. Uses `media.poster` as the src for the image.
 
 #### `Video`
-##### props
+**props**
 1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
 2. `children (node)`
 
 If the first media source that you have supplied to `media.sources` is an [video format](https://en.wikipedia.org/wiki/Video_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `Audio`
-##### props
+**props**
 1. `events` (object): Any of the [React Media Events](https://facebook.github.io/react/docs/events.html#media-events) that you want to listen to.
 2. `children (node)`
 
 If the first media source that you have supplied to `media.sources` is an [audio format](https://en.wikipedia.org/wiki/Audio_file_format) and it is a valid url that can be played then react-jPlayer will use this component and set the `src` to what you supplied.
 
 #### `Title`
-##### props
+**props**
 1. `children (string or number)`
 
 Default: `media.artist` - `media.title`
 
 #### `FullScreen`
-##### props
+**props**
 1. `children (node): Required`
 
 Handles clicks on this component toggling the full screen of the jPlayer.
 
 #### `Mute`
-##### props
+**props**
 1. `children (node): Required`
 
 Handles clicks on this component toggling the mute of the jPlayer.
 
 #### `Play`
-##### props
+**props**
 1. `children (node): Required`
 
 Handles clicks on this component setting the jPlayer to be paused or playing.
 
 #### `Repeat`
-##### props
+**props**
 1. `children (node): Required`
 
 Handles clicks on this component toggling the looping of the jPlayer.
 
 ####  `PlaybackRateBar`
-##### props
+**props**
 1. `children (node)`
 
 Default: `PlaybackRateBarValue`
@@ -747,13 +710,13 @@ Default: `PlaybackRateBarValue`
 Handles clicks, dragging or touches on this component setting the playback rate of the media.
 
 #### `PlaybackRateBarValue`
-##### props
+**props**
 1. `children (node)`
 
 This is used by the `PlaybackRateBar` by default so the majority of applications won't need to use this. Represents the playback rate as the width or height of the component depending on the property `verticalPlaybackRate`.
 
 #### `VolumeBar`
-##### props
+**props**
 1. `children (node)`
 
 Default: `VolumeBarValue`
@@ -761,13 +724,13 @@ Default: `VolumeBarValue`
 Handles clicks, dragging or touches on this component setting the volume of the media.
 
 #### `VolumeBarValue`
-##### props
+**props**
 1. `children (node)`
 
 This is used by the `VolumeBar` by default so the majority of applications won't need to use this. Represents the volume as the width or height of the component depending on the property `verticalVolume`.
 
 #### `Download`
-##### props
+**props**
 1. `children (node): Required`
 
 Handles clicks on this component downloading the media if the `media.free` option is true. 
@@ -776,7 +739,7 @@ Warning: This will not make the media secure, i.e. users can still download the 
 If the browser doesn't support the `download` attribute then clicks on this component will open a new tab or window with the source media instead.
 
 #### `Duration`
-##### props
+**props**
 1. `children (node)`
 
 Default: [durationText](https://github.com/MartinDawson/react-jPlayer#durationtext-string)
@@ -784,15 +747,15 @@ Default: [durationText](https://github.com/MartinDawson/react-jPlayer#durationte
 Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn't been set yet (i.e IOS until the user manually plays the media).
 
 #### `CurrentTime`
-##### props
+**props**
 1. `children (node)`
 
-Default: [currentTimeText](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
+Default: [durationText](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
 
 Renders the `currentTimeText` of the jPlayer.
 
 #### `BrowserUnsupported`
-##### props
+**props**
 1. `children (node)`
 
 Default:
