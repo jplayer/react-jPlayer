@@ -787,7 +787,7 @@ Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn'
 ##### props
 1. `children (node)`
 
-Default: [currentTime](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
+Default: [currentTimeText](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
 
 Renders the `currentTimeText` of the jPlayer.
 
