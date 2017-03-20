@@ -250,10 +250,11 @@ ReactDOM.render((
 A required function that deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
 
 **Arguments**
-1. `jPlayer(s)` (Array or Function): Accepts either an array of jPlayers or a single jPlayer. 
+1. `jPlayer(s)` (array or function): Accepts either an array of jPlayers or a single jPlayer. 
 
 **Returns**
-(Object): The initial state for the jPlayer(s) that needs to be passed to the Redux store.
+
+(object): The initial state for the jPlayer(s) that needs to be passed to the Redux store.
 
 #### `reducer`
 A required object. The jPlayer reducer that will be called whenever a jPlayer function is called or dispatched. Must be passed to your store.
@@ -262,9 +263,10 @@ A required object. The jPlayer reducer that will be called whenever a jPlayer fu
 Required to connect your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Arguments**
-1. `jPlayer`: (Function)
+1. `jPlayer`: (function)
 
 **Returns**
+
 (function): A function that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
 
 **Static Properties**
@@ -276,7 +278,8 @@ The connected jPlayer. Any additional props that you passed in are passed throug
 
 ### Actions
 **Returns**
-(Object): All actions return an object that are meant to be passed to redux's `dispatch()`.
+
+(object): All actions return an object that are meant to be passed to redux's `dispatch()`.
 
 #### `setOption(id, key, value)`
 Sets any jPlayer option. A few of the other actions are just helpers for modifying the options and could also be modified by this function. You should still use the other actions to modify the option if you can as most do extra logic and error handling. 
