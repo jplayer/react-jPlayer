@@ -38,6 +38,7 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
       - [`setMute(id, mute)`](#setmuteid-mute)
       - [`focus(id)`](#focusid)
     + [Options](#options)
+      - [`id` (string) : Required](#id-string--required)
       - [`preload` (string)](#preload-string)
       - [`minPlaybackRate` (number)](#minplaybackrate-number)
       - [`maxPlaybackRate` (number)](#maxplaybackrate-number)
@@ -291,7 +292,7 @@ jPlayer automatically passes the following in to your jPlayer component:
 - [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlayer properties at runtime.
 - [`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): Options that the jPlayer is using.
 - [`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): Status properties of the jPlayer. Treat these as immutable.
-- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jPlayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers. The names of the jPlayers are what you specified for each one in `options.id`.
+- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jPlayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers. The names of the jPlayers are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
 
 #### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.

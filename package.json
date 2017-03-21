@@ -44,11 +44,12 @@
     "preversion": "npm test && npm run lint",
     "version": "npm run dist && npm run build && git add -A dist",
     "postversion": "git push && git push --tags",
-    "toc": "markdown-toc -i README.md"
+    "toc": "markdown-toc -i README.md && git add README.md"
   },
   "pre-commit": [
     "lint",
-    "test"
+    "test",
+    "toc"
   ],
   "browserslist": [
     "chrome >= 15",
