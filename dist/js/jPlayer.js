@@ -2465,9 +2465,6 @@ var mapDispatchToProps = {
 var Connect = function Connect(jPlayer) {
   var ConnectedPlayer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(jPlayer);
 
-  // IE9 doesn't support fn.name
-  var playerName = jPlayer.name === undefined ? jPlayer.toString().match(/^function\s*([^\s(]+)/)[1] : jPlayer.name;
-
   return function (_React$Component) {
     _inherits(ConnectedJPlayer, _React$Component);
 
@@ -2484,7 +2481,7 @@ var Connect = function Connect(jPlayer) {
 
       return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = ConnectedJPlayer.__proto__ || Object.getPrototypeOf(ConnectedJPlayer)).call.apply(_ref3, [this].concat(args))), _this), _this.getChildContext = function () {
         return {
-          id: playerName
+          id: jPlayer.options.id
         };
       }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -2492,14 +2489,9 @@ var Connect = function Connect(jPlayer) {
     _createClass(ConnectedJPlayer, [{
       key: 'render',
       value: function render() {
-        return _react2.default.createElement(ConnectedPlayer, _extends({ id: playerName }, this.props));
+        return _react2.default.createElement(ConnectedPlayer, _extends({ id: jPlayer.options.id }, this.props));
       }
     }], [{
-      key: 'id',
-      get: function get() {
-        return playerName;
-      }
-    }, {
       key: 'jPlayer',
       get: function get() {
         return jPlayer;
@@ -2549,7 +2541,7 @@ var getInitialStates = function getInitialStates(connectedJPlayers) {
   }
 
   newConnectedJPlayers.forEach(function (connectedJPlayer) {
-    jPlayerStates[connectedJPlayer.id] = (0, _lodash2.default)({}, _extends({}, _constants.internalStatus, _constants.defaultStatus, _constants.defaultOptions), connectedJPlayer.jPlayer.options);
+    jPlayerStates[connectedJPlayer.jPlayer.options.id] = (0, _lodash2.default)({}, _extends({}, _constants.internalStatus, _constants.defaultStatus, _constants.defaultOptions), connectedJPlayer.jPlayer.options);
   });
 
   return {
