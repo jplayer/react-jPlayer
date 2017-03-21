@@ -165,7 +165,7 @@ open http://localhost:8080/
 
 ### TL:DR
 - All of the jPlayer properties that you need are passed into your jPlayer component.
-- Audio/Video events can be subscribed to by passing functions to the `events` props for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component. E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
+- Audio/Video events can be subscribed to by passing functions to the `events` prop for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component, E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
 
 ### Most Basic Setup
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
