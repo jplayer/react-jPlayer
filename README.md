@@ -219,9 +219,10 @@ const AudioPlayer = () => (
 
 /* All jPlayer options must be defined statically on the jPlayer component on an object called 'options'. 
 These options will be deep merged with the default jPlayer options so you actually don't 
-even need to specify any apart from the media.sources if you just want the default options. */
+even need to specify any apart from the 'media.sources' and 'id' if you just want the default options. */
 
 AudioPlayer.options = {
+  id: 'AudioPlayer',
   verticalVolume: true,
   media: {
     sources: {
@@ -235,8 +236,7 @@ AudioPlayer.options = {
 const ConnectedAudioPlayer = connect(AudioPlayer);
 
 /* We now need to connect our jPlayer to the store now so each of the components inside
-react-jPlayer can talk to each other. This also gives you a jPlayers object with the AudioPlayer
-in it, in your redux state. */
+react-jPlayer can talk to each other. This also gives you a 'jPlayers' object with the AudioPlayer in your redux state. */
 
 const store = createStore(combineReducers(reducer), getInitialStates(ConnectedAudioPlayer));
 
