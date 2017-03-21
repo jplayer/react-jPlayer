@@ -1,7 +1,26 @@
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import path from 'path';
+
+const dev = process.env.NODE_ENV !== 'production';
+
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    },
+  }),
+  new ExtractTextPlugin('[name].bundle.css'),
+];
+
+if (!dev) {
+  plugins.push(new webpack.optimize.UglifyJsPlugin());
+  plugins.push(new OptimizeCssAssetsPlugin({
+    assetNameRegExp: /\.css$/,
+  }));
+}
 
 export default {
   context: __dirname,
@@ -11,7 +30,7 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',
-    filename: '[name].js',
+    filename: '[name].bundle.js',
   },
   devServer: {
     historyApiFallback: true,
@@ -54,14 +73,7 @@ export default {
       },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
-    }),
-    new ExtractTextPlugin('[name].css'),
-  ],
+  plugins,
   resolve: {
     extensions: ['.js', '.jsx', '.styl'],
   },
