@@ -71,7 +71,7 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
       - [`currentPercentAbsolute` (number)](#currentpercentabsolute-number)
       - [`currentTime` (number)](#currenttime-number)
       - [`duration` (number)](#duration-number)
-      - [`bufferedTimeRanges` (array)`](#bufferedtimeranges-array)
+      - [`bufferedTimeRanges` (array)](#bufferedtimeranges-array)
       - [`focused` (bool)](#focused-bool)
     + [jPlayers](#jplayers)
       - [`[nameOfYourjPlayer]` (object)](#nameofyourjplayer-object)
@@ -638,7 +638,7 @@ Default: 0
 ##### [`duration` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/duration)
 Default: 0
 
-##### `bufferedTimeRanges` (array)`
+##### `bufferedTimeRanges` (array)
 Default: []
 
 &ensp;&ensp;`start` (string): the start time, in seconds of where the media is buffering.
