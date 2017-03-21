@@ -105,6 +105,10 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
 
 <!-- tocstop -->
 
+
+### Live Demo
+http://react-jplayer.azurewebsites.net/
+
 ### Installation
 #### NPM
 `npm install --save react-jplayer`
