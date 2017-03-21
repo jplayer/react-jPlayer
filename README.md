@@ -165,7 +165,7 @@ open http://localhost:8080/
 
 ### TL:DR
 - All of the jPlayer properties that you need are passed into your jPlayer component.
-- Audio/Video events can be subscribed to by passing functions to the `events` props for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component. E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
+- Audio/Video events can be subscribed to by passing functions to the `events` prop for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component, E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
 
 ### Most Basic Setup
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
@@ -219,9 +219,10 @@ const AudioPlayer = () => (
 
 /* All jPlayer options must be defined statically on the jPlayer component on an object called 'options'. 
 These options will be deep merged with the default jPlayer options so you actually don't 
-even need to specify any apart from the media.sources if you just want the default options. */
+even need to specify any apart from the 'media.sources' and 'id' if you just want the default options. */
 
 AudioPlayer.options = {
+  id: 'AudioPlayer',
   verticalVolume: true,
   media: {
     sources: {
@@ -235,8 +236,7 @@ AudioPlayer.options = {
 const ConnectedAudioPlayer = connect(AudioPlayer);
 
 /* We now need to connect our jPlayer to the store now so each of the components inside
-react-jPlayer can talk to each other. This also gives you a jPlayers object with the AudioPlayer
-in it, in your redux state. */
+react-jPlayer can talk to each other. This also gives you a 'jPlayers' object with the AudioPlayer in your redux state. */
 
 const store = createStore(combineReducers(reducer), getInitialStates(ConnectedAudioPlayer));
 
