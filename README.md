@@ -292,7 +292,7 @@ jPlayer automatically passes the following in to your jPlayer component:
 - [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlayer properties at runtime.
 - [`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): Options that the jPlayer is using.
 - [`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): Status properties of the jPlayer. Treat these as immutable.
-- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jPlayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers. The names of the jPlayers are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
+- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jplayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers. The names of the jPlayers are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
 
 #### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
@@ -663,8 +663,9 @@ The other jPlayers get passed into each of your jPlayer components so you can mo
 [0...N]
 ##### `[nameOfYourjPlayer]` (object)
 
-&ensp;&ensp;[`options`](https://github.com/MartinDawson/react-jPlayer#options)
-&ensp;&ensp;[`status`](https://github.com/MartinDawson/react-jPlayer#status)
+&ensp;&ensp;[`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): The options that you specified for this jPlayer.
+
+&ensp;&ensp;[`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): The status values that react-jPlayer internally sets for you to use.
 
 ### Components
 All components accept custom props that will be applied as attributes to the component if the names don't conflict with existing properties. 
