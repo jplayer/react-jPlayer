@@ -1,16 +1,17 @@
+import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import autoprefixer from 'autoprefixer';
+import path from 'path';
 
 export default {
   context: __dirname,
   entry: {
     'react-jPlayerExample': './src/app.jsx',
   },
-  devtool: 'inline-sourcemap',
   output: {
-    path: '/dist/',
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',
-    filename: '[name].bundle.js',
+    filename: '[name].js',
   },
   devServer: {
     historyApiFallback: true,
@@ -54,6 +55,11 @@ export default {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    }),
     new ExtractTextPlugin('[name].css'),
   ],
   resolve: {

@@ -13,9 +13,6 @@ const connectMock = JPlayer => (
     static get jPlayer() {
       return JPlayer;
     }
-    static get id() {
-      return JPlayer.name;
-    }
     render() {
       return <JPlayer />;
     }
@@ -24,10 +21,12 @@ const connectMock = JPlayer => (
 
 MockJPlayer.options = {
   muted: true,
+  id: 'MockJPlayer',
 };
 
 MockJPlayerTwo.options = {
   autoplay: true,
+  id: 'MockJPlayerTwo',
 };
 
 describe('getInitialStates', () => {

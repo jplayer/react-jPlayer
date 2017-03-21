@@ -11,9 +11,9 @@ const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
 const id = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
-const mockPlayerName = 'MockPlayer';
 const mockPlayerOptions = {
   muted: true,
+  id,
 };
 const dispatch = createSpy();
 const jPlayerActions = actions;
@@ -119,22 +119,8 @@ describe('JPlayerConnect', () => {
     const Component = connect(MockPlayer);
     const wrapper = shallow(<Component test="test" />);
 
-    expect(wrapper.prop('id')).toBe(mockPlayerName);
+    expect(wrapper.prop('id')).toBe(MockPlayer.options.id);
     expect(wrapper.prop('test')).toBe('test');
-  });
-
-  it('sets id if function name is undefined', () => {
-    Object.defineProperty(MockPlayer, 'name', { value: undefined });
-    const Component = connect(MockPlayer);
-    const wrapper = shallow(<Component />);
-
-    expect(wrapper.prop('id')).toBe(mockPlayerName);
-  });
-
-  it('component returns id', () => {
-    const Component = connect(MockPlayer);
-
-    expect(Component.id).toBe(mockPlayerName);
   });
 
   it('component returns original jPlayer', () => {

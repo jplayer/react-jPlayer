@@ -61,14 +61,7 @@ const mapDispatchToProps = {
 const Connect = (jPlayer) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
 
-  // IE9 doesn't support fn.name
-  const playerName = jPlayer.name === undefined ?
-    jPlayer.toString().match(/^function\s*([^\s(]+)/)[1] : jPlayer.name;
-
   return class ConnectedJPlayer extends React.Component {
-    static get id() {
-      return playerName;
-    }
     static get jPlayer() {
       return jPlayer;
     }
@@ -78,10 +71,10 @@ const Connect = (jPlayer) => {
       };
     }
     getChildContext = () => ({
-      id: playerName,
+      id: jPlayer.options.id,
     });
     render() {
-      return <ConnectedPlayer id={playerName} {...this.props} />;
+      return <ConnectedPlayer id={jPlayer.options.id} {...this.props} />;
     }
   };
 };

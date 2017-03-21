@@ -11,7 +11,7 @@ const getInitialStates = (connectedJPlayers) => {
   }
 
   newConnectedJPlayers.forEach((connectedJPlayer) => {
-    jPlayerStates[connectedJPlayer.id] = merge({}, {
+    jPlayerStates[connectedJPlayer.jPlayer.options.id] = merge({}, {
       ...internalStatus,
       ...defaultStatus,
       ...defaultOptions,

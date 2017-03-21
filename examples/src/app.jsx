@@ -28,9 +28,11 @@ const App = () => (
       <NavLink>Video</NavLink>
     </NavBar>
     <NavContentContainer>
-      {connectedJPlayers.map(JPlayer =>
-        <NavContent key={JPlayer.id}>
-          <StatusWrapper id={JPlayer.id}><JPlayer /></StatusWrapper>
+      {connectedJPlayers.map(ConnectedJPlayer =>
+        <NavContent key={ConnectedJPlayer.jPlayer.options.id}>
+          <StatusWrapper id={ConnectedJPlayer.jPlayer.options.id}>
+            <ConnectedJPlayer />
+          </StatusWrapper>
         </NavContent>,
       )}
     </NavContentContainer>

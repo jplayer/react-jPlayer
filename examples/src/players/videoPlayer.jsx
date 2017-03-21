@@ -50,6 +50,7 @@ const VideoPlayer = props => (
 );
 
 VideoPlayer.options = {
+  id: 'VideoPlayer',
   muted: false,
   keyEnabled: true,
   verticalVolume: true,

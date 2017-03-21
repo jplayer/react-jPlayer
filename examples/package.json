@@ -2,7 +2,8 @@
   "name": "jplayer-examples",
   "version": "1.0.0",
   "scripts": {
-    "dev": "webpack-dev-server --progress --inline --content-base ./public"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --progress --inline --content-base public/",
+    "build": "rimraf dist && cross-env NODE_ENV=production webpack"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.3",
@@ -12,7 +13,10 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.24.0",
+    "cross-env": "^3.2.4",
     "css-loader": "^0.27.2",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
     "less": "^2.7.2",
@@ -21,6 +25,7 @@
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
     "redux": "^3.6.0",
+    "rimraf": "^2.6.1",
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
