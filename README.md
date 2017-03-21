@@ -17,25 +17,26 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
     + [NPM](#npm)
     + [UMD](#umd)
   * [Examples](#examples)
-  * [Most Basic Setup](#most-basic-setup)
   * [Features](#features)
   * [To Note](#to-note)
-- [Supported browsers](#supported-browsers)
+  * [Supported browsers](#supported-browsers)
+  * [TL:DR](#tldr)
+  * [Most Basic Setup](#most-basic-setup)
 - [Documentation](#documentation)
-    + [`getInitialStates([jPlayers])`](#getinitialstatesjplayers)
-    + [`reducer`](#reducer)
-    + [`connect(jPlayer)`](#connectjplayer)
-  * [Actions](#actions)
-    + [`setOption(id, key, value)`](#setoptionid-key-value)
-    + [`setMedia(id, media)`](#setmediaid-media)
-    + [`clearMedia(id)`](#clearmediaid)
-    + [`play(id, [time])`](#playid-time)
-    + [`pause(id, [time])`](#pauseid-time)
-    + [`setPlayHead(id, percent)`](#setplayheadid-percent)
-    + [`setVolume(id, volume)`](#setvolumeid-volume)
-    + [`setMute(id, mute)`](#setmuteid-mute)
-    + [`focus(id)`](#focusid)
+    + [`getInitialStates([jPlayers])` : Required](#getinitialstatesjplayers--required)
+    + [`reducer` : Required](#reducer--required)
+    + [`connect(jPlayer)` : Required](#connectjplayer--required)
   * [Props](#props)
+    + [Actions](#actions)
+      - [`setOption(id, key, value)`](#setoptionid-key-value)
+      - [`setMedia(id, media)`](#setmediaid-media)
+      - [`clearMedia(id)`](#clearmediaid)
+      - [`play(id, [time])`](#playid-time)
+      - [`pause(id, [time])`](#pauseid-time)
+      - [`setPlayHead(id, percent)`](#setplayheadid-percent)
+      - [`setVolume(id, volume)`](#setvolumeid-volume)
+      - [`setMute(id, mute)`](#setmuteid-mute)
+      - [`focus(id)`](#focusid)
     + [Options](#options)
       - [`preload` (string)](#preload-string)
       - [`minPlaybackRate` (number)](#minplaybackrate-number)
@@ -72,6 +73,8 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
       - [`duration` (number)](#duration-number)
       - [`bufferedTimeRanges` (array)`](#bufferedtimeranges-array)
       - [`focused` (bool)](#focused-bool)
+    + [jPlayers](#jplayers)
+      - [`[nameOfYourjPlayer]` (object)](#nameofyourjplayer-object)
   * [Components](#components)
     + [`JPlayer`](#jplayer)
     + [`GUI`](#gui)
@@ -131,6 +134,38 @@ npm run dev
 
 open http://localhost:8080/
 ```
+
+### Features
+* Cross compatible with many legacy different Html5 browsers
+* Fully customizable, modular and componentized
+* Supports a large range of [Html5 Audio/Video formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats)
+* Comes with a fully reponsive css skin for your players
+* No jQuery dependency that is in the standard [jPlayer](http://jplayer.org/)
+* Fast and performant
+
+### To Note
+* No flash player support because flash is dead. I also haven't been able to find a browser that React supports that also didn't support Html5 video/audio players either which makes flash useless.
+* Dependency on [Redux](https://github.com/reactjs/redux)
+
+### Supported browsers
+* Chrome v15+
+* FireFox v15+
+* Edge 13+
+* Internet Explorer 9+
+* Opera v16+
+* Yandex
+* Windows Safari 5.1
+* IOS Safari 5.1+
+* Chrome for Android v36+
+* Android browser 4+
+* IEMobile 11¹
+
+¹partially tested without audio/video because browserstack emulators don't support it.
+
+### TL:DR
+- All of the jPlayer properties that you need are passed into your jPlayer component.
+- Audio/Video events can be subscribed to by passing functions to the `events` props for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component. E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
+- The id of the jPlayer is the same as the name you declared the jPlayer component as.
 
 ### Most Basic Setup
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
@@ -218,36 +253,10 @@ ReactDOM.render((
 ), document.getElementById('app'));
 
 ```
-### Features
-* Cross compatible with many legacy different Html5 browsers
-* Fully customizable, modular and componentized
-* Supports a large range of [Html5 Audio/Video formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats)
-* Comes with a fully reponsive css skin for your players
-* No jQuery dependency that is in the standard [jPlayer](http://jplayer.org/)
-* Fast and performant
-
-### To Note
-* No flash player support because flash is dead. I also haven't been able to find a browser that React supports that also didn't support Html5 video/audio players either which makes flash useless.
-* Dependency on [Redux](https://github.com/reactjs/redux)
-
-## Supported browsers
-* Chrome v15+
-* FireFox v15+
-* Edge 13+
-* Internet Explorer 9+
-* Opera v16+
-* Yandex
-* Windows Safari 5.1
-* IOS Safari 5.1+
-* Chrome for Android v36+
-* Android browser 4+
-* IEMobile 11¹
-
-¹partially tested without audio/video because browserstack emulators don't support it.
 
 ## Documentation
-#### `getInitialStates([jPlayers])`
-A required function that deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
+#### `getInitialStates([jPlayers])` : Required
+Deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
 
 **Arguments**
 1. `jPlayer(s)` (array or function): Accepts either an array of jPlayers or a single jPlayer. 
@@ -256,11 +265,11 @@ A required function that deep merges the static options that you specified on yo
 
 (object): The initial state for the jPlayer(s) that needs to be passed to the Redux store.
 
-#### `reducer`
-A required object. The jPlayer reducer that will be called whenever a jPlayer function is called or dispatched. Must be passed to your store.
+#### `reducer` : Required
+The jPlayer reducer that will be called whenever a jPlayer function is called or dispatched. Must be passed to your store.
 
-#### `connect(jPlayer)`
-Required to connect your jPlayer to the jPlayer store by wrapping Redux's original connect.
+#### `connect(jPlayer)` : Required
+Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Arguments**
 1. `jPlayer` (function): Your jPlayer with which to connect to the store.
@@ -277,7 +286,16 @@ Required to connect your jPlayer to the jPlayer store by wrapping Redux's origin
 
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
 
-### Actions
+### Props
+jPlayer automatically passes the following in to your jPlayer component:
+
+- `[id]` (string): The current jPlayer's id. This is the same as the name you declared the jPlayer component as.
+- [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlayer properties at runtime.
+- [`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): Options that the jPlayer is using.
+- [`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): Status properties of the jPlayer. Treat these as immutable.
+- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jPlayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers.
+
+#### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
 
 If you need to call these actions from another part of your codebase that isn't a jPlayer then it will be best to use Redux's `connect()` on your component and call dispatch on the imported action.
@@ -306,71 +324,70 @@ export default connect(mapStateToProps)(SomeRandomFunc);
 
 **Returns**
 
-(object): All actions return an object that are meant to be passed to redux's `dispatch()`.
+(object): All actions return an action creator that is meant to be passed to redux's `dispatch()` unless you are accessing the action from the jPlayer components props in which case you can call it directly as it has already been bound to `dispatch()`.
 
-#### `setOption(id, key, value)`
-Sets any jPlayer option. A few of the other actions are just helpers for modifying the options and could also be modified by this function. You should still use the other actions to modify the option if you can as most do extra logic and error handling. 
+##### `setOption(id, key, value)`
+Sets any jPlayer option. For some properties such as `muted` you can either use this method or `setMute()`. They both do the same thing.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `key` (string): The name of the option that you want to set. Specifying nested keys is not supported.
 3. `value` (any): The value to set the option to.
 
-#### `setMedia(id, media)`
+##### `setMedia(id, media)`
 Sets the media.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `media` (object): The new media you want to set.
 
-#### `clearMedia(id)`
+##### `clearMedia(id)`
 Clear the media and reset all status values. This will be rarely used, if you are setting new media you **don't** need to use this function beforehand as `setMedia` already internally clears existing values before setting a new media.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 
-#### `play(id, [time])`
+##### `play(id, [time])`
 Play the media.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `time` (number): The time that the jPlayer should start playing from, defaults to the current time.
 
-#### `pause(id, [time])`
+##### `pause(id, [time])`
 Pauses the media.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `time` (number): The time that the jPlayer should pause from, defaults to the current time.
 
-#### `setPlayHead(id, percent)`
+##### `setPlayHead(id, percent)`
 Moves the play-head to the value specified. This only moves the play-head. Whether the media plays from that point depends on its current state, i.e. If it was playing, play continues from the new play-head. If it was paused, the media is cued to the new play-head position.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `percent` (number): The percent that the play bar should be moved to.
 
-#### `setVolume(id, volume)`
+##### `setVolume(id, volume)`
 Sets the volume.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `volume` (number): Value given should be between 0 - 1. The volume will be capped at either 0 or 1 if the value given is outside this range.
 
-#### `setMute(id, mute)`
+##### `setMute(id, mute)`
 Mutes or un-mutes.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 2. `mute` (bool)
 
-#### `focus(id)`
+##### `focus(id)`
 This method is called internally for each of the other actions if that jPlayer has keyEnabled set to true. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling this method.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
 
-### Props
 #### Options
 You specify these values on a functions static property that must be called `options` as shown in the [example](https://github.com/MartinDawson/react-jPlayer#most-basic-setup). Properties in this object are used to initialize the jPlayer. They are deep merged with the default values.
 
@@ -635,10 +652,17 @@ More information on this can be found in this [MDN article](https://developer.mo
 ##### `focused` (bool)
 Default: false
 
-This property determines which jPlayer should take precendance when the user is using key presses to affect the media.
-This is only ever true if the current jPlayer has [`keyEnabled`](https://github.com/MartinDawson/react-jPlayer#keyenabled-bool) set to true.
+This property determines which jPlayer should take precendance when the user is using key presses to affect the media and is only ever true if the current jPlayer has [`keyEnabled`](https://github.com/MartinDawson/react-jPlayer#keyenabled-bool) set to true.
+This is set internally for each action that the user takes on the jPlayer, i.e. each time a jPlayer [action](https://github.com/MartinDawson/react-jPlayer#actions) is called. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling [`focus()`](https://github.com/MartinDawson/react-jPlayer#focusid).
 
-This method is set internally for each action that the user takes on the jPlayer, i.e. each time a jPlayer action is called. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling [`focus`](https://github.com/MartinDawson/react-jPlayer#focusid).
+#### jPlayers
+The other jPlayers get passed into each of your jPlayer components so you can modify or read the properties on these easily as well.
+
+[0...N]
+##### `[nameOfYourjPlayer]` (object)
+
+&ensp;&ensp;[`options`](https://github.com/MartinDawson/react-jPlayer#options)
+&ensp;&ensp;[`status`](https://github.com/MartinDawson/react-jPlayer#status)
 
 ### Components
 All components accept custom props that will be applied as attributes to the component if the names don't conflict with existing properties. 
@@ -653,19 +677,19 @@ E.g. `<JPlayer className="jp-sleek" />` will render <div className="jp-jplayer j
 
 #### `JPlayer`
 **props**
-1. Required: `children` (element or array: elements)`
+1. `children` (element or array: elements)` : Required
 
-A required component that needs to be the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
+This component needs to be at the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
 
 #### `GUI`
 **props**
-1. Required: `children` (element or array: elements)`
+1. `children` (element or array: elements)` : Required
 
 Should wrap all of the components that the user interacts with. Handles the fading in and out when in full screen mode.
 
 #### `SeekBar`
 **props**
-1. Required: `children` (element or array: elements)`
+1. `children` (element or array: elements)` : Required
 
 Should wrap the `PlayBar` and `BufferBar`. Handles the user being able to seek to a new time when the user clicks, drags or touches on the progress bar. 
 
@@ -709,25 +733,25 @@ Default: `media.artist` - `media.title`
 
 #### `FullScreen`
 **props**
-1. Required: `children` (node)
+1. `children` (node) : Required
 
 Handles clicks on this component toggling the full screen of the jPlayer.
 
 #### `Mute`
 **props**
-1. Required: `children` (node)
+1.`children` (node) : Required
 
 Handles clicks on this component toggling the mute of the jPlayer.
 
 #### `Play`
 **props**
-1. Required: `children` (node)
+1. `children` (node) : Required
 
 Handles clicks on this component setting the jPlayer to be paused or playing.
 
 #### `Repeat`
 **props**
-1. Required: `children` (node)
+1. `children` (node) : Required
 
 Handles clicks on this component toggling the looping of the jPlayer.
 
@@ -761,7 +785,7 @@ This is used by the `VolumeBar` by default so the majority of applications won't
 
 #### `Download`
 **props**
-1. Required: `children` (node)
+1. `children` (node) : Required
 
 Handles clicks on this component downloading the media if the `media.free` option is true. 
 
