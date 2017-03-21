@@ -165,7 +165,6 @@ open http://localhost:8080/
 ### TL:DR
 - All of the jPlayer properties that you need are passed into your jPlayer component.
 - Audio/Video events can be subscribed to by passing functions to the `events` props for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component. E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
-- The id of the jPlayer is the same as the name you declared the jPlayer component as.
 
 ### Most Basic Setup
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
@@ -279,8 +278,7 @@ Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 (function): A function that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
 
 **Static Properties**
-1. `id`: The id of the jPlayer, this is whatever name you called your jPlayer function. This is passed down as a context so that react-jPlayer can internally know which jPlayer is the current one.
-2. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
+1. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
 
 **Renders**
 
@@ -293,13 +291,13 @@ jPlayer automatically passes the following in to your jPlayer component:
 - [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlayer properties at runtime.
 - [`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): Options that the jPlayer is using.
 - [`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): Status properties of the jPlayer. Treat these as immutable.
-- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jPlayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers.
+- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jPlayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers. The names of the jPlayers are what you specified for each one in `options.id`.
 
 #### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
 
 If you need to call these actions from another part of your codebase that isn't a jPlayer then it will be best to use Redux's `connect()` on your component and call dispatch on the imported action.
-For example, if you wanted to toggle the `showRemainingDuration` from somewhere else in the application on a jPlayer called `'AudioPlayer'`:
+For example, if you wanted to toggle the [`showRemainingDuration`](https://github.com/MartinDawson/react-jPlayer#showremainingduration-bool) from somewhere else in the application on a jPlayer called `'AudioPlayer'`:
 
 ```
 import React from 'react';
@@ -392,6 +390,9 @@ This method is called internally for each of the other actions if that jPlayer h
 You specify these values on a functions static property that must be called `options` as shown in the [example](https://github.com/MartinDawson/react-jPlayer#most-basic-setup). Properties in this object are used to initialize the jPlayer. They are deep merged with the default values.
 
 Some properties in this object will be updated internally, so do not rely on these options staying the same throughout the jPlayer's lifetime.
+
+##### `id` (string) : Required
+The unique id of the jPlayer.
 
 ##### [`preload` (string)](https://developer.mozilla.org/en/docs/Web/HTML/Element/video#attr-preload)
 Default: "metadata"
@@ -677,19 +678,19 @@ E.g. `<JPlayer className="jp-sleek" />` will render <div className="jp-jplayer j
 
 #### `JPlayer`
 **props**
-1. `children` (element or array: elements)` : Required
+1. `children` (element or array: elements) : Required
 
 This component needs to be at the root of any other jPlayer components. Handles the states that are applied to the jPlayer DOM element.
 
 #### `GUI`
 **props**
-1. `children` (element or array: elements)` : Required
+1. `children` (element or array: elements) : Required
 
 Should wrap all of the components that the user interacts with. Handles the fading in and out when in full screen mode.
 
 #### `SeekBar`
 **props**
-1. `children` (element or array: elements)` : Required
+1. `children` (element or array: elements) : Required
 
 Should wrap the `PlayBar` and `BufferBar`. Handles the user being able to seek to a new time when the user clicks, drags or touches on the progress bar. 
 
