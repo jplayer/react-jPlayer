@@ -97,19 +97,22 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 :: 2. Select node version
 call :SelectNodeVersion
 
-:: 3. Install npm packages
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
+  :: 3. Install npm packages
   pushd "%DEPLOYMENT_TARGET%"
   call :ExecuteCmd !NPM_CMD! install
   IF !ERRORLEVEL! NEQ 0 goto error
+
+  :: 3. Update npm packages
+  call :ExecuteCmd !NPM_CMD! update
+  IF !ERRORLEVEL! NEQ 0 goto error
+
+  :: 4. Build the compiled files
+  call :ExecuteCmd !NPM_CMD! run build
+  IF !ERRORLEVEL! NEQ 0 goto error
+
   popd
 )
-
-:: 4. Build the compiled files
-pushd "%DEPLOYMENT_TARGET%"
-call :ExecuteCmd !NPM_CMD! run build
-IF !ERRORLEVEL! NEQ 0 goto error
-popd
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
