@@ -58,7 +58,7 @@ VideoPlayer.options = {
     artist: 'peach.blender',
     title: 'Big Buck Bunny Trailer',
     sources: {
-      m4v: "http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
+      m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
       ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
       webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
     },
