@@ -182,7 +182,10 @@ class MediaContainer extends React.Component {
     };
   }
   componentDidMount() {
-    this.currentMedia.src = this.props.src;
+    if (this.props.src !== '') {
+      this.currentMedia.src = this.props.src;
+    }
+
     this.props.setOption(this.props.id, 'volumeSupported', canSetVolume());
 
     this.updateCurrentMedia(this.props);
@@ -190,7 +193,8 @@ class MediaContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.updateCurrentMedia(nextProps);
 
-    if (nextProps.src !== this.props.src) {
+    if (nextProps.src !== this.props.src &&
+        nextProps.src !== '') {
       this.currentMedia.src = nextProps.src;
     }
 

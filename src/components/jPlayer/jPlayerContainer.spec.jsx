@@ -5,6 +5,7 @@ import { mount, shallow } from 'enzyme';
 import { getJPlayers } from '../../util/common.spec';
 import { noFormatSupportedError } from '../../util/index';
 import { classes, defaultOptions } from '../../util/constants';
+import { setOption, setMedia } from '../../actions/actions';
 import { __get__, __Rewire__, __ResetDependency__ } from './jPlayerContainer';
 import JPlayer from './jPlayer';
 
@@ -105,14 +106,10 @@ describe('<JPlayerContainer />', () => {
   it('mapDispatchToProps returns correct actions', () => {
     const expected = mapDispatchToProps();
 
-    spyOn(expected, 'setMedia');
-    spyOn(expected, 'setOption');
-
-    expected.setMedia();
-    expected.setOption();
-
-    expect(expected.setMedia).toHaveBeenCalled();
-    expect(expected.setOption).toHaveBeenCalled();
+    expect(expected).toEqual({
+      setMedia,
+      setOption,
+    });
   });
 
   it('listens for closing full screen if screenFull is enabled', () => {

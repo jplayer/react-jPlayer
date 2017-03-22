@@ -27,6 +27,7 @@ export default {
   entry: {
     'react-jPlayerExample': './src/app.jsx',
   },
+  devtool: dev ? 'inline-sourcemap' : false,
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',

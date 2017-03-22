@@ -1,10 +1,9 @@
 import includes from 'lodash.includes';
 
-import { actionNames, formats, defaultStatus, defaultOptions } from '../util/constants';
+import { actionNames, formats, defaultStatus, internalStatus,
+   defaultOptions } from '../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
   InvalidGlobalMethodException } from '../util/index';
-
-const resetStatus = state => updateObject(state, { ...defaultStatus });
 
 const updateFormats = (state, media) => {
   const newMediaSettings = { ...state.mediaSettings };
@@ -34,12 +33,18 @@ const updateFormats = (state, media) => {
   });
 };
 
+const clearMedia = state => updateObject(state, {
+  ...defaultStatus,
+  media: defaultOptions.media,
+});
+
 const setMedia = (state, { media = { sources: [] } }) => {
-  const newState = {
-    ...state,
-    ...resetStatus(state),
-    ...updateFormats(state, media),
+  let newState = {
+    ...clearMedia(state),
+    mediaSettings: internalStatus.mediaSettings,
   };
+
+  newState = updateFormats(newState, media);
 
   newState.mediaSettings.formats.forEach((format) => {
     if (format.supported && !newState.mediaSettings.foundSupported) {
@@ -59,11 +64,6 @@ const setMedia = (state, { media = { sources: [] } }) => {
 
   return newState;
 };
-
-const clearMedia = state => updateObject(state, {
-  ...resetStatus(state),
-  media: defaultOptions.media,
-});
 
 const play = (state, { time }) => {
   if (state.src) {

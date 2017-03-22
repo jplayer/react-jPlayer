@@ -13,6 +13,7 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
 
 <!-- toc -->
 
+  * [Live Demo](#live-demo)
   * [Installation](#installation)
     + [NPM](#npm)
     + [UMD](#umd)
@@ -61,7 +62,6 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
       - [`keyEnabled` (bool)](#keyenabled-bool)
       - [`timeFormats` (object)](#timeformats-object)
     + [Status](#status)
-      - [`mediaSettings` (object)](#mediasettings-object)
       - [`paused` (bool)](#paused-bool)
       - [`seeking` (bool)](#seeking-bool)
       - [`src` (string)](#src-string)
@@ -104,7 +104,6 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
 - [Thanks](#thanks)
 
 <!-- tocstop -->
-
 
 ### Live Demo
 http://react-jplayer.azurewebsites.net/
@@ -580,25 +579,6 @@ timeFormats: {
 
 #### Status
 Properties in this object are not meant to be modified and should be treated as read-only. These properties are automatically set and updated by jPlayer depending on the [options](https://github.com/MartinDawson/react-jPlayer#options) that you specified.
-
-##### `mediaSettings` (object)
-Default:
-```
-mediaSettings: {
-  video: false,
-  foundSupported: false,
-  formats: [],
-}
-```
-&ensp;&ensp;`video` (bool): renders the audio or video and is automatically determined by the media you specify.
-
-&ensp;&ensp;`foundSupported` (bool): true if any valid media can be played.
-
-&ensp;&ensp;`formats` (array: objects)
-
-&ensp;&ensp;&ensp;&ensp;`supplied` (string): the type of media you supplied in the `media.sources` options, e.g. `mp3`.
-  
-&ensp;&ensp;&ensp;&ensp;`supported` (bool): true if the media can be played, the same as `foundSupported` but for each media type.
 
 ##### [`paused` (bool)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/paused)
 Default: true

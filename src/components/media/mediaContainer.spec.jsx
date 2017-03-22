@@ -113,6 +113,27 @@ describe('MediaContainer', () => {
     expect(props.setOption).toHaveBeenCalledWith(id, 'volumeSupported', true);
   });
 
+  it('doesn\'t set src if empty on startup', () => {
+    const src = 'test.mp3';
+    const { instance } = setup();
+
+    instance.currentMedia.src = src;
+    instance.componentDidMount();
+
+    expect(instance.currentMedia.src).toBe(src);
+  });
+
+  it('doesn\'t set src if empty on updated props', () => {
+    const src = 'test.mp3';
+    const { instance, wrapper } = setup({ src });
+
+    instance.currentMedia.src = src;
+
+    wrapper.setProps({ src: '' });
+
+    expect(instance.currentMedia.src).toBe(src);
+  });
+
   it('updates media when props change', () => {
     const sharedMedia = {
       src: 'test.mp3',

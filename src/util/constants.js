@@ -148,14 +148,14 @@ export const internalStatus = {
   guiFadeOut: false,
   playHeadPercent: 0,
   error: {},
-};
-
-export const defaultStatus = {
   mediaSettings: {
     video: false,
     foundSupported: false,
     formats: [],
   },
+};
+
+export const defaultStatus = {
   paused: true,
   seeking: false,
   src: '',
