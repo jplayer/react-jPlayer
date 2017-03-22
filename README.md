@@ -496,6 +496,7 @@ keyBindings: {
 &ensp;&ensp;`fn` is the function that will be executed once the key has been pressed.
 
 The keybindings you specify will be deep merged with the defaults.
+Key presses for the html elements `input`, `textArea` and `select` when these elements have focus will not trigger the `keyBinding` function.
 
 ##### `showRemainingDuration` (bool)
 Default: false

@@ -210,4 +210,4 @@ export const defaultOptions = {
   },
 };
 
-export const keyIgnoreElementNames = ['A', 'INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
+export const keyIgnoreElementNames = ['INPUT', 'TEXTAREA', 'SELECT'];
