@@ -106,13 +106,14 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   :: 3. Update npm packages
   call :ExecuteCmd !NPM_CMD! update
   IF !ERRORLEVEL! NEQ 0 goto error
-
-  :: 4. Build the compiled files
-  call :ExecuteCmd !NPM_CMD! run build
-  IF !ERRORLEVEL! NEQ 0 goto error
-
   popd
 )
+
+pushd "%DEPLOYMENT_TARGET%"
+:: 4. Build the compiled files
+call :ExecuteCmd !NPM_CMD! run build
+IF !ERRORLEVEL! NEQ 0 goto error
+popd
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
