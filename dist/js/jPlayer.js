@@ -230,15 +230,15 @@ var internalStatus = exports.internalStatus = {
   newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
   guiFadeOut: false,
   playHeadPercent: 0,
-  error: {}
-};
-
-var defaultStatus = exports.defaultStatus = {
+  error: {},
   mediaSettings: {
     video: false,
     foundSupported: false,
     formats: []
-  },
+  }
+};
+
+var defaultStatus = exports.defaultStatus = {
   paused: true,
   seeking: false,
   src: '',
@@ -1003,7 +1003,10 @@ var MediaContainer = function (_React$Component) {
   _createClass(MediaContainer, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.currentMedia.src = this.props.src;
+      if (this.props.src !== '') {
+        this.currentMedia.src = this.props.src;
+      }
+
       this.props.setOption(this.props.id, 'volumeSupported', (0, _index.canSetVolume)());
 
       this.updateCurrentMedia(this.props);
@@ -1013,7 +1016,7 @@ var MediaContainer = function (_React$Component) {
     value: function componentWillReceiveProps(nextProps) {
       this.updateCurrentMedia(nextProps);
 
-      if (nextProps.src !== this.props.src) {
+      if (nextProps.src !== this.props.src && nextProps.src !== '') {
         this.currentMedia.src = nextProps.src;
       }
 
@@ -2576,10 +2579,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var resetStatus = function resetStatus(state) {
-  return (0, _index.updateObject)(state, _extends({}, _constants.defaultStatus));
-};
-
 var updateFormats = function updateFormats(state, media) {
   var newMediaSettings = _extends({}, state.mediaSettings);
   var newFormats = [];
@@ -2607,11 +2606,21 @@ var updateFormats = function updateFormats(state, media) {
   });
 };
 
+var clearMedia = function clearMedia(state) {
+  return (0, _index.updateObject)(state, _extends({}, _constants.defaultStatus, {
+    media: _constants.defaultOptions.media
+  }));
+};
+
 var setMedia = function setMedia(state, _ref) {
   var _ref$media = _ref.media,
       media = _ref$media === undefined ? { sources: [] } : _ref$media;
 
-  var newState = _extends({}, state, resetStatus(state), updateFormats(state, media));
+  var newState = _extends({}, clearMedia(state), {
+    mediaSettings: _constants.internalStatus.mediaSettings
+  });
+
+  newState = updateFormats(newState, media);
 
   newState.mediaSettings.formats.forEach(function (format) {
     if (format.supported && !newState.mediaSettings.foundSupported) {
@@ -2628,12 +2637,6 @@ var setMedia = function setMedia(state, _ref) {
   newState.media = (0, _index.updateObject)(_constants.defaultOptions.media, media);
 
   return newState;
-};
-
-var clearMedia = function clearMedia(state) {
-  return (0, _index.updateObject)(state, _extends({}, resetStatus(state), {
-    media: _constants.defaultOptions.media
-  }));
 };
 
 var play = function play(state, _ref2) {
