@@ -16,21 +16,6 @@
       "env": {
         "BABEL_ENV": "test"
       }
-    },
-    {
-      "request": "launch",
-      "name": "Debug Acceptance Tests",
-      "type": "node2",
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "src/**/*.acceptance.js",
-        "-t",
-        "100000ms",
-        "--opts",
-        "./mocha.opts"
-      ],
-      "cwd": "${workspaceRoot}",
-      "runtimeExecutable": null
     }
   ]
 }
