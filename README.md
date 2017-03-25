@@ -26,7 +26,7 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
 - [Documentation](#documentation)
     + [`getInitialStates([jPlayers])` : Required](#getinitialstatesjplayers--required)
     + [`reducer` : Required](#reducer--required)
-    + [`connect(jPlayer)` : Required](#connectjplayer--required)
+    + [`connect(jPlayer, options)` : Required](#connectjplayer-options--required)
   * [Props](#props)
     + [Actions](#actions)
       - [`setOption(id, key, value)`](#setoptionid-key-value)
@@ -224,7 +224,7 @@ const AudioPlayer = () => (
 These options will be deep merged with the default jPlayer options so you actually don't 
 even need to specify any apart from the 'media.sources' and 'id' if you just want the default options. */
 
-AudioPlayer.options = {
+const options = {
   id: 'AudioPlayer',
   verticalVolume: true,
   media: {
@@ -236,10 +236,10 @@ AudioPlayer.options = {
 
 /* react-jPlayer provides it's own connect function which will return a connected jPlayer. */
 
-const ConnectedAudioPlayer = connect(AudioPlayer);
+const ConnectedAudioPlayer = connect(AudioPlayer, options);
 
 /* We now need to connect our jPlayer to the store now so each of the components inside
-react-jPlayer can talk to each other. This also gives you a 'jPlayers' object with the AudioPlayer in your redux state. */
+react-jPlayer can talk to each other. This also gives you a `jPlayers` object with the `AudioPlayer` in your redux state. */
 
 const store = createStore(combineReducers(reducer), getInitialStates(ConnectedAudioPlayer));
 
@@ -271,18 +271,20 @@ Deep merges the static options that you specified on your jPlayer with react-jPl
 #### `reducer` : Required
 The jPlayer reducer that will be called whenever a jPlayer function is called or dispatched. Must be passed to your store.
 
-#### `connect(jPlayer)` : Required
+#### `connect(jPlayer, options)` : Required
 Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Arguments**
 1. `jPlayer` (function): Your jPlayer with which to connect to the store.
+2. `options` (object): The options that you want the jPlayer to be initialized with.
 
 **Returns**
 
-(function): A function that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
+(function): A component that wraps your jPlayer. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlayer.
 
 **Static Properties**
-1. `jPlayer`: The original function that you passed in. E.g. if you wanted to read the original jPlayer's options that you specified.
+1. `jPlayer`: The original jPlayer component that you passed in.
+2. `options`: The options that you passed into the `connect()`.
 
 **Renders**
 

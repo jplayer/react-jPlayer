@@ -49,9 +49,8 @@ const AudioPlayer = props => (
   </JPlayer>
 );
 
-AudioPlayer.options = {
+const options = {
   id: 'AudioPlayer',
-  muted: false,
   keyEnabled: true,
   verticalVolume: true,
   media: {
@@ -66,4 +65,4 @@ AudioPlayer.options = {
   },
 };
 
-export default connect(AudioPlayer);
+export default connect(AudioPlayer, options);

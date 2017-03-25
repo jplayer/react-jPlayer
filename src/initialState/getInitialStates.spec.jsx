@@ -8,10 +8,10 @@ import getInitialStates from './getInitialStates';
 const MockJPlayer = () => <div />;
 const MockJPlayerTwo = () => <div />;
 
-const connectMock = JPlayer => (
+const connectMock = (JPlayer, options) => (
   class ConnectedMockJPlayer extends React.Component {
-    static get jPlayer() {
-      return JPlayer;
+    static get options() {
+      return options;
     }
     render() {
       return <JPlayer />;
@@ -19,19 +19,19 @@ const connectMock = JPlayer => (
   }
 );
 
-MockJPlayer.options = {
+const mockJPlayerOneOptions = {
   muted: true,
   id: 'MockJPlayer',
 };
 
-MockJPlayerTwo.options = {
+const mockJPlayerTwoOptions = {
   autoplay: true,
   id: 'MockJPlayerTwo',
 };
 
 describe('getInitialStates', () => {
   it('sets initial state correctly with one player', () => {
-    const connectedMockJPlayer = connectMock(MockJPlayer);
+    const connectedMockJPlayer = connectMock(MockJPlayer, mockJPlayerOneOptions);
     const jPlayerInitialStates = getInitialStates(connectedMockJPlayer);
 
     expect(jPlayerInitialStates).toEqual({
@@ -40,15 +40,15 @@ describe('getInitialStates', () => {
           ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
-        }, connectedMockJPlayer.jPlayer.options),
+        }, mockJPlayerOneOptions),
       },
     });
   });
 
   it('sets initial state correctly with multiple players', () => {
     const connectedMockJPlayers = [
-      connectMock(MockJPlayer),
-      connectMock(MockJPlayerTwo),
+      connectMock(MockJPlayer, mockJPlayerOneOptions),
+      connectMock(MockJPlayerTwo, mockJPlayerTwoOptions),
     ];
     const jPlayerInitialStates = getInitialStates(connectedMockJPlayers);
 
@@ -58,12 +58,12 @@ describe('getInitialStates', () => {
           ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
-        }, connectedMockJPlayers[0].jPlayer.options),
+        }, mockJPlayerOneOptions),
         MockJPlayerTwo: merge({}, {
           ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
-        }, connectedMockJPlayers[1].jPlayer.options),
+        }, mockJPlayerTwoOptions),
       },
     });
   });

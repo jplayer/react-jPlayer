@@ -29,8 +29,8 @@ const App = () => (
     </NavBar>
     <NavContentContainer>
       {connectedJPlayers.map(ConnectedJPlayer =>
-        <NavContent key={ConnectedJPlayer.jPlayer.options.id}>
-          <StatusWrapper id={ConnectedJPlayer.jPlayer.options.id}>
+        <NavContent key={ConnectedJPlayer.options.id}>
+          <StatusWrapper id={ConnectedJPlayer.options.id}>
             <ConnectedJPlayer />
           </StatusWrapper>
         </NavContent>,

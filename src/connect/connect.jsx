@@ -58,12 +58,15 @@ const mapDispatchToProps = {
   focus,
 };
 
-const Connect = (jPlayer) => {
+const Connect = (jPlayer, options) => {
   const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
 
   return class ConnectedJPlayer extends React.Component {
     static get jPlayer() {
       return jPlayer;
+    }
+    static get options() {
+      return options;
     }
     static get childContextTypes() {
       return {
@@ -71,10 +74,10 @@ const Connect = (jPlayer) => {
       };
     }
     getChildContext = () => ({
-      id: jPlayer.options.id,
+      id: options.id,
     });
     render() {
-      return <ConnectedPlayer id={jPlayer.options.id} {...this.props} />;
+      return <ConnectedPlayer id={options.id} {...this.props} />;
     }
   };
 };

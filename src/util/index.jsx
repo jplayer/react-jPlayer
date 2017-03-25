@@ -37,14 +37,6 @@ export const noFormatSupportedError = context => ({
   hint: hints.FORMAT_NO_SUPPORT,
 });
 
-export class InvalidGlobalMethodException {
-  constructor(context) {
-    this.context = context;
-    this.message = errors.INVALID_GLOBAL_METHOD;
-    this.hint = hints.INVALID_GLOBAL_METHOD;
-  }
-}
-
 export const urlNotSupportedError = context => ({
   context,
   message: errors.URL_NO_SUPPORT,

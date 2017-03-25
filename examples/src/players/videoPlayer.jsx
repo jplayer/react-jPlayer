@@ -49,9 +49,8 @@ const VideoPlayer = props => (
   </JPlayer>
 );
 
-VideoPlayer.options = {
+const options = {
   id: 'VideoPlayer',
-  muted: false,
   keyEnabled: true,
   verticalVolume: true,
   media: {
@@ -66,4 +65,4 @@ VideoPlayer.options = {
   },
 };
 
-export default connect(VideoPlayer);
+export default connect(VideoPlayer, options);

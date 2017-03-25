@@ -8,7 +8,6 @@ export default {
   target: 'node',
   externals: {
     classames: 'classNames',
-    'lodash.includes': '_.includes',
     'lodash.merge': '_.merge',
     react: 'React',
     'react-dom': 'ReactDOM',

@@ -11,11 +11,11 @@ const getInitialStates = (connectedJPlayers) => {
   }
 
   newConnectedJPlayers.forEach((connectedJPlayer) => {
-    jPlayerStates[connectedJPlayer.jPlayer.options.id] = merge({}, {
+    jPlayerStates[connectedJPlayer.options.id] = merge({}, {
       ...internalStatus,
       ...defaultStatus,
       ...defaultOptions,
-    }, connectedJPlayer.jPlayer.options);
+    }, connectedJPlayer.options);
   });
 
   return {

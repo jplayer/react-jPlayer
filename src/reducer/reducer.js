@@ -1,9 +1,6 @@
-import includes from 'lodash.includes';
-
 import { actionNames, formats, defaultStatus, internalStatus,
    defaultOptions } from '../util/constants';
-import { limitValue, updateObject, urlNotSetError, noFormatSupportedError,
-  InvalidGlobalMethodException } from '../util/index';
+import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 
 const updateFormats = (state, media) => {
   const newMediaSettings = { ...state.mediaSettings };
@@ -153,36 +150,11 @@ const updatePlayer = (jPlayer, action) => {
   }
 };
 
-const actionTypeValid = actionType =>
-  Object.keys(actionNames).some(currentActionType => currentActionType === actionType);
-
-const setGlobalOptions = (state, action) => {
-  let newState = { ...state };
-
-  Object.keys(newState).forEach((key) => {
-    const { global = [] } = newState[key];
-
-    global.forEach((actionType) => {
-      if (!actionTypeValid(actionType)) {
-        throw new InvalidGlobalMethodException(actionType);
-      }
-    });
-
-    if (key !== action.id && includes(global, action.type)) {
-      newState = updateObject(newState, {
-        [key]: updatePlayer(newState[key], action, action.type),
-      });
-    }
-  });
-  return newState;
-};
-
 const jPlayerReducer = (state, action) => {
   let newState = { ...state };
   const jPlayer = updatePlayer(newState[action.id], action);
 
   if (jPlayer !== null) {
-    newState = setGlobalOptions(newState, action);
     newState = updateObject(newState, {
       [action.id]: jPlayer,
     });

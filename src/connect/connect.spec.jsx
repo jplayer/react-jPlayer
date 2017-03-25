@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { getDefaultJPlayers } from '../util/common.spec';
+import { getDefaultJPlayers, getJPlayers } from '../util/common.spec';
 import { defaultOptions, defaultStatus } from '../util/constants';
 import connect, { __get__ } from './connect';
 import * as actions from '../actions/actions';
@@ -24,7 +24,6 @@ describe('JPlayerConnect', () => {
 
   beforeEach(() => {
     MockPlayer = () => <div />;
-    MockPlayer.options = mockPlayerOptions;
   });
 
   it('maps props with custom props', () => {
@@ -38,13 +37,13 @@ describe('JPlayerConnect', () => {
   });
 
   it('custom props with same name as state get overwritten', () => {
-    const options = 'test';
-    const jPlayers = getDefaultJPlayers().jPlayers;
-    const expected = mapStateToProps({ jPlayers }, { id, options });
+    const props = {
+      status: {},
+    };
+    const jPlayers = getJPlayers().jPlayers;
+    const expected = mapStateToProps({ jPlayers }, { id, ...props });
 
-    expect(expected).toNotContain({
-      options,
-    });
+    expect(defaultStatus).toEqual(expected.status);
   });
 
   it('maps current player', () => {
@@ -116,17 +115,23 @@ describe('JPlayerConnect', () => {
   });
 
   it('renders connected player', () => {
-    const Component = connect(MockPlayer);
+    const Component = connect(MockPlayer, mockPlayerOptions);
     const wrapper = shallow(<Component test="test" />);
 
-    expect(wrapper.prop('id')).toBe(MockPlayer.options.id);
+    expect(wrapper.prop('id')).toBe(mockPlayerOptions.id);
     expect(wrapper.prop('test')).toBe('test');
   });
 
   it('component returns original jPlayer', () => {
-    const Component = connect(MockPlayer);
+    const Component = connect(MockPlayer, mockPlayerOptions);
 
     expect(Component.jPlayer).toBe(MockPlayer);
+  });
+
+  it('component returns options', () => {
+    const Component = connect(MockPlayer, mockPlayerOptions);
+
+    expect(Component.options).toBe(mockPlayerOptions);
   });
 
   afterEach(() => {
