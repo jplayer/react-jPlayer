@@ -2,8 +2,8 @@ import { actionNames, formats, defaultStatus, internalStatus,
    defaultOptions } from '../util/constants';
 import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
 
-const updateFormats = (state, media) => {
-  const newMediaSettings = { ...state.mediaSettings };
+const updateFormats = (jPlayer, media) => {
+  const newMediaSettings = { ...jPlayer.mediaSettings };
   const newFormats = [];
 
   Object.keys(media.sources).forEach((supplied) => {
@@ -25,111 +25,130 @@ const updateFormats = (state, media) => {
 
   newMediaSettings.formats = newFormats;
 
-  return updateObject(state, {
+  return updateObject(jPlayer, {
     mediaSettings: newMediaSettings,
   });
 };
 
-const clearMedia = state => updateObject(state, {
+const clearMedia = jPlayer => updateObject(jPlayer, {
   ...defaultStatus,
   media: defaultOptions.media,
 });
 
-const setMedia = (state, { media = { sources: [] } }) => {
-  let newState = {
-    ...clearMedia(state),
+const setMedia = (jPlayer, { media = { sources: [] } }) => {
+  let newJPlayer = {
+    ...clearMedia(jPlayer),
     mediaSettings: internalStatus.mediaSettings,
   };
 
-  newState = updateFormats(newState, media);
+  newJPlayer = updateFormats(newJPlayer, media);
 
-  newState.mediaSettings.formats.forEach((format) => {
-    if (format.supported && !newState.mediaSettings.foundSupported) {
-      newState.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
-      newState.src = media.sources[format.supplied];
-      newState.paused = true;
-      newState.mediaSettings.foundSupported = true;
+  newJPlayer.mediaSettings.formats.forEach((format) => {
+    if (format.supported && !newJPlayer.mediaSettings.foundSupported) {
+      newJPlayer.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
+      newJPlayer.src = media.sources[format.supplied];
+      newJPlayer.paused = true;
+      newJPlayer.mediaSettings.foundSupported = true;
     }
   });
 
-  if (!newState.mediaSettings.foundSupported) {
-    newState.error = noFormatSupportedError(
+  if (!newJPlayer.mediaSettings.foundSupported) {
+    newJPlayer.error = noFormatSupportedError(
       `{ media.sources: '${Object.keys(media.sources).join(', ')}' }`,
     );
   }
-  newState.media = updateObject(defaultOptions.media, media);
+  newJPlayer.media = updateObject(defaultOptions.media, media);
 
-  return newState;
+  return newJPlayer;
 };
 
-const play = (state, { time }) => {
-  if (state.src) {
-    return updateObject(state, {
+const play = (jPlayer, { time }) => {
+  if (jPlayer.src) {
+    return updateObject(jPlayer, {
       paused: false,
-      newTime: !isNaN(time) ? time : state.newTime,
+      newTime: !isNaN(time) ? time : jPlayer.newTime,
     });
   }
-  return updateObject(state, {
+  return updateObject(jPlayer, {
     error: urlNotSetError(play.name),
   });
 };
 
-const pause = (state, { time }) => {
-  if (state.src) {
-    return updateObject(state, {
+const pause = (jPlayer, { time }) => {
+  if (jPlayer.src) {
+    return updateObject(jPlayer, {
       paused: true,
-      newTime: !isNaN(time) ? time : state.newTime,
+      newTime: !isNaN(time) ? time : jPlayer.newTime,
     });
   }
-  return updateObject(state, {
+  return updateObject(jPlayer, {
     error: urlNotSetError(pause.name),
   });
 };
 
-const setPlayHead = (state, { percent }) => {
+const setPlayHead = (jPlayer, { percent }) => {
   const limitedPercent = limitValue(percent, 0, 100);
 
-  if (state.src) {
-    return updateObject(state, {
+  if (jPlayer.src) {
+    return updateObject(jPlayer, {
       playHeadPercent: limitedPercent,
     });
   }
-  return updateObject(state, {
+  return updateObject(jPlayer, {
     error: urlNotSetError(setPlayHead.name),
   });
 };
 
-const setVolume = (state, { volume }) => updateObject(state, {
+const setVolume = (jPlayer, { volume }) => updateObject(jPlayer, {
   volume: limitValue(volume, 0, 1),
   muted: volume <= 0,
 });
 
-const setMute = (state, { mute }) => updateObject(state, {
+const setMute = (jPlayer, { mute }) => updateObject(jPlayer, {
   muted: mute,
 });
 
-const focus = (state, { id }) => {
-  const newState = { ...state };
-  const firstKeyEnabledPlayer = Object.keys(state).filter(key => newState[key].keyEnabled).shift();
+const focus = (jPlayer, { id }) => {
+  const newJPlayer = { ...jPlayer };
+  const firstKeyEnabledPlayer = Object.keys(newJPlayer).filter(key =>
+    newJPlayer[key].keyEnabled,
+  ).shift();
 
-  if (newState[id].keyEnabled) {
-    Object.keys(state).forEach((key) => {
+  if (newJPlayer[id].keyEnabled) {
+    Object.keys(newJPlayer).forEach((key) => {
       if (key === id) {
-        newState[key] = updateObject(newState[key], { focused: true });
+        newJPlayer[key] = updateObject(newJPlayer[key], { focused: true });
       } else {
-        newState[key] = updateObject(newState[key], { focused: false });
+        newJPlayer[key] = updateObject(newJPlayer[key], { focused: false });
       }
     });
-  } else if (newState[firstKeyEnabledPlayer] !== undefined) {
-    const focusedPlayer = updateObject(newState[firstKeyEnabledPlayer], { focused: true });
-    return updateObject(newState, { [firstKeyEnabledPlayer]: focusedPlayer });
+  } else if (newJPlayer[firstKeyEnabledPlayer] !== undefined) {
+    const focusedPlayer = updateObject(newJPlayer[firstKeyEnabledPlayer], { focused: true });
+    return updateObject(newJPlayer, { [firstKeyEnabledPlayer]: focusedPlayer });
   }
-  return newState;
+  return newJPlayer;
 };
 
 const updatePlayer = (jPlayer, action) => {
   switch (action.type) {
     case actionNames.SET_OPTION:
+      switch (action.key) {
+        case 'media': {
+          const media = action.value;
+          if (Object.keys(media).some(v => v)) {
+            return setMedia(jPlayer, { media });
+          }
+          return clearMedia(jPlayer);
+        }
+        case 'playHeadPercent':
+          return setPlayHead(jPlayer, { percent: action.value });
+        case 'volume':
+          return setVolume(jPlayer, { volume: action.value });
+        case 'muted':
+          return setMute(jPlayer, { mute: action.value });
+        default:
+          break;
+      }
       return updateObject(jPlayer, { [action.key]: action.value });
     case actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);

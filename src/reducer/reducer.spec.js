@@ -1,9 +1,9 @@
-import expect, { spyOn } from 'expect';
+import expect, { createSpy, spyOn } from 'expect';
 
 import reducer from './reducer';
 import * as reducerData from './reducerData.spec';
 import { actionNames, defaultOptions, formats } from '../util/constants';
-import { getDefaultJPlayers } from '../util/common.spec';
+import { getDefaultJPlayers, getJPlayers } from '../util/common.spec';
 
 const jPlayerOneId = 'jPlayer-1';
 
@@ -29,7 +29,7 @@ describe('jPlayer reducer', () => {
     expect(reducer(undefined, '@@jPlayer-test')).toEqual({});
   });
 
-  it('should handle SET_OPTION', () => {
+  it('should handle generic SET_OPTION value', () => {
     const jPlayer = reducer(state, {
       type: actionNames.SET_OPTION,
       id: jPlayerOneId,
@@ -42,22 +42,110 @@ describe('jPlayer reducer', () => {
     });
   });
 
-  it('should handle CLEAR_MEDIA', () => {
-    reducerData.clearMediaData.forEach((test) => {
-      const newState = {
-        ...state,
-        [jPlayerOneId]: {
-          ...state[jPlayerOneId],
-          ...test.state,
-        },
-      };
+  it('setOption handles media', () => {
+    const setMediaSpy = createSpy();
 
-      const jPlayer = reducer(newState, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
+    reducer.__Rewire__('setMedia', (...args) => {
+      setMediaSpy(...args);
+      return getJPlayers(1);
     });
+
+    const media = {
+      sources: {
+        mp3: 'test.mp3',
+      },
+    };
+
+    reducer(state, {
+      type: actionNames.SET_OPTION,
+      id: jPlayerOneId,
+      key: 'media',
+      value: media,
+    });
+
+    expect(setMediaSpy).toHaveBeenCalledWith(state[jPlayerOneId], { media });
+    reducer.__ResetDependency__('setMedia');
+  });
+
+  it('setOption handles no media', () => {
+    const clearMediaSpy = createSpy();
+
+    reducer.__Rewire__('clearMedia', (...args) => {
+      clearMediaSpy(...args);
+      return getJPlayers(1);
+    });
+
+    const media = {};
+
+    reducer(state, {
+      type: actionNames.SET_OPTION,
+      id: jPlayerOneId,
+      key: 'media',
+      value: media,
+    });
+
+    expect(clearMediaSpy).toHaveBeenCalledWith(state[jPlayerOneId]);
+    reducer.__ResetDependency__('clearMedia');
+  });
+
+  it('setOption handles playHeadPercent', () => {
+    const percent = 22.3;
+    const setPlayHeadSpy = createSpy();
+
+    reducer.__Rewire__('setPlayHead', (...args) => {
+      setPlayHeadSpy(...args);
+      return getJPlayers(1);
+    });
+
+    reducer(state, {
+      type: actionNames.SET_OPTION,
+      id: jPlayerOneId,
+      key: 'playHeadPercent',
+      value: percent,
+    });
+
+    expect(setPlayHeadSpy).toHaveBeenCalledWith(state[jPlayerOneId], { percent });
+    reducer.__ResetDependency__('setPlayHead');
+  });
+
+  it('setOption handles volume', () => {
+    const volume = 0.23;
+    const setVolume = createSpy();
+
+    reducer.__Rewire__('setVolume', (...args) => {
+      setVolume(...args);
+      return getJPlayers(1);
+    });
+
+    reducer(state, {
+      type: actionNames.SET_OPTION,
+      id: jPlayerOneId,
+      key: 'volume',
+      value: volume,
+    });
+
+    expect(setVolume).toHaveBeenCalledWith(state[jPlayerOneId], { volume });
+    reducer.__ResetDependency__('setVolume');
+  });
+
+  it('setOption handles muted', () => {
+    const mute = true;
+    const setMute = createSpy();
+
+    reducer.__Rewire__('setMute', (...args) => {
+      setMute(...args);
+      return getJPlayers(1);
+    });
+
+    reducer(state, {
+      type: actionNames.SET_OPTION,
+      id: jPlayerOneId,
+      key: 'muted',
+      value: mute,
+    });
+
+    expect(setMute).toHaveBeenCalledWith(state[jPlayerOneId], { mute });
+    reducer.__ResetDependency__('setMute');
   });
 
   it('SET_MEDIA should handle all possible formats', () => {
@@ -193,10 +281,10 @@ describe('jPlayer reducer', () => {
     });
   });
 
-  it('should focus on the jPlayer for every action apart from focus', () => {
-    state = getDefaultJPlayers(2, true).jPlayers;
+  Object.keys(actionNames).forEach((type) => {
+    it(`should focus on the jPlayer for the action ${type}`, () => {
+      state = getDefaultJPlayers(2, true).jPlayers;
 
-    Object.keys(actionNames).forEach((type) => {
       if (type !== actionNames.FOCUS) {
         const jPlayers = reducer(state, {
           type,
@@ -213,6 +301,7 @@ describe('jPlayer reducer', () => {
       }
     });
   });
+
 
   afterEach(() => {
     expect.restoreSpies();
