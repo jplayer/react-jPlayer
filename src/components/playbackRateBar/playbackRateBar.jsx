@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes } from '../../../util/constants';
+import { classes } from '../../util/constants';
 
 const PlaybackRateBar = ({ onClick, onMouseDown, onTouchStart,
   setBar, children, ...attributes }) => (

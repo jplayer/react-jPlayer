@@ -1,6 +1,6 @@
 import React from 'react';
-import { connectWithId, getHeight, getWidth, getOffset } from '../../../util/index';
-import { setOption } from '../../../actions/actions';
+import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
+import { setOption } from '../../actions/actions';
 import Bar from '../bar';
 import PlaybackRateBar from './playbackRateBar';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';

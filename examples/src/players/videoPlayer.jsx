@@ -5,7 +5,7 @@ import { connect, JPlayer, Gui, SeekBar, BufferBar,
   VolumeBar, Duration, CurrentTime, BrowserUnsupported } from 'react-jplayer';
 
 import videoPoster from '../../assets/Big Buck Bunny Trailer.jpg';
-import { isVolumeBarVisible, setMuteIfVolumeVisible } from './muteHoverControl';
+import { isVolumeBarVisible, setMuteIfVolumeVisible } from '../util/muteHoverControl';
 
 const VideoPlayer = props => (
   <JPlayer className="jp-sleek">

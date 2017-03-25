@@ -1,8 +1,8 @@
 import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { shallow } from 'enzyme';
-import { getJPlayers } from '../../../util/common.spec';
-import { setPlayHead } from '../../../actions/actions';
+import { getJPlayers } from '../../util/common.spec';
+import { setPlayHead } from '../../actions/actions';
 import { __get__ } from './seekBarContainer';
 import Bar from '../bar';
 import SeekBar from './seekBar';

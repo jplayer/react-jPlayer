@@ -1,6 +1,6 @@
 import React from 'react';
-import { connectWithId, getHeight, getWidth, getOffset } from '../../../util/index';
-import { setVolume } from '../../../actions/actions';
+import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
+import { setVolume } from '../../actions/actions';
 import Bar from '../bar';
 import VolumeBar from './volumeBar';
 import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';

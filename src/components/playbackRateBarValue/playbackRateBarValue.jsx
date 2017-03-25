@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes } from '../../../util/constants';
+import { classes } from '../../util/constants';
 
 const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
     verticalPlaybackRate, attributes }) => {

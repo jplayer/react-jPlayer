@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { classes } from '../../../../src/util/constants';
+import { classes } from '../../../src/util/constants';
 import VolumeBarValue from './volumeBarValue';
 
 const styleTests = [

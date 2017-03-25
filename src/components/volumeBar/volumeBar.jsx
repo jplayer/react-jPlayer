@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes } from '../../../util/constants';
+import { classes } from '../../util/constants';
 
 const VolumeBar = ({ setBar, onClick, onMouseDown,
 onTouchStart, ...attributes }) => (

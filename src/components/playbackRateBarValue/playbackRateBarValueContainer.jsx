@@ -1,4 +1,4 @@
-import { connectWithId } from '../../../util/index';
+import { connectWithId } from '../../util/index';
 import PlaybackRateBarValue from './playbackRateBarValue';
 
 const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({

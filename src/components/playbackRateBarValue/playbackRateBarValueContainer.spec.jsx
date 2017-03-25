@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { getJPlayers } from '../../../util/common.spec';
+import { getJPlayers } from '../../util/common.spec';
 import { __get__ } from './playbackRateBarValueContainer';
 
 const mapStateToProps = __get__('mapStateToProps');

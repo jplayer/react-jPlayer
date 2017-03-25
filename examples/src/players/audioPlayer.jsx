@@ -6,7 +6,7 @@ import { connect, JPlayer, Gui, SeekBar, BufferBar,
  } from 'react-jplayer';
 
 import poster from '../../assets/Miaow - Bubble.jpg';
-import { isVolumeBarVisible, setMuteIfVolumeVisible } from './muteHoverControl';
+import { isVolumeBarVisible, setMuteIfVolumeVisible } from '../util/muteHoverControl';
 
 const AudioPlayer = props => (
   <JPlayer className="jp-sleek">

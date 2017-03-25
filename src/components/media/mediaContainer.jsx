@@ -209,7 +209,8 @@ class MediaContainer extends React.Component {
       if (this.currentMedia.seekable.length > 0) {
         this.currentMedia.currentTime = toRelativePercentage(nextProps.playHeadPercent,
           this.getSeekableEnd());
-        // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
+        /* Media events don't fire fast enough to give a smooth animation
+          when dragging so we update it here as well, same problem as above? */
         this.props.setOption(
           this.props.id,
           'currentPercentRelative',

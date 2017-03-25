@@ -1,6 +1,6 @@
 import React from 'react';
-import { connectWithId, getWidth, getOffset } from '../../../util/index';
-import { setPlayHead } from '../../../actions/actions';
+import { connectWithId, getWidth, getOffset } from '../../util/index';
+import { setPlayHead } from '../../actions/actions';
 import Bar from '../bar';
 import SeekBar from './seekBar';
 

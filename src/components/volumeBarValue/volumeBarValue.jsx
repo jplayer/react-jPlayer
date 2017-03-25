@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { classes, defaultOptions } from '../../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 
 const VolumeBarValue = ({ muted, volume, verticalVolume, attributes }) => {
   const style = () => {
