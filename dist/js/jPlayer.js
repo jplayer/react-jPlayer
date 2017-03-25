@@ -993,10 +993,7 @@ var MediaContainer = function (_React$Component) {
   _createClass(MediaContainer, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      if (this.props.src !== '') {
-        this.currentMedia.src = this.props.src;
-      }
-
+      this.currentMedia.src = this.props.src;
       this.props.setOption(this.props.id, 'volumeSupported', (0, _index.canSetVolume)());
 
       this.updateCurrentMedia(this.props);
@@ -2571,8 +2568,8 @@ var _index = __webpack_require__(2);
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var updateFormats = function updateFormats(state, media) {
-  var newMediaSettings = _extends({}, state.mediaSettings);
+var updateFormats = function updateFormats(jPlayer, media) {
+  var newMediaSettings = _extends({}, jPlayer.mediaSettings);
   var newFormats = [];
 
   Object.keys(media.sources).forEach(function (supplied) {
@@ -2593,128 +2590,148 @@ var updateFormats = function updateFormats(state, media) {
 
   newMediaSettings.formats = newFormats;
 
-  return (0, _index.updateObject)(state, {
+  return (0, _index.updateObject)(jPlayer, {
     mediaSettings: newMediaSettings
   });
 };
 
-var clearMedia = function clearMedia(state) {
-  return (0, _index.updateObject)(state, _extends({}, _constants.defaultStatus, {
+var clearMedia = function clearMedia(jPlayer) {
+  return (0, _index.updateObject)(jPlayer, _extends({}, _constants.defaultStatus, {
     media: _constants.defaultOptions.media
   }));
 };
 
-var setMedia = function setMedia(state, _ref) {
+var setMedia = function setMedia(jPlayer, _ref) {
   var _ref$media = _ref.media,
       media = _ref$media === undefined ? { sources: [] } : _ref$media;
 
-  var newState = _extends({}, clearMedia(state), {
+  var newJPlayer = _extends({}, clearMedia(jPlayer), {
     mediaSettings: _constants.internalStatus.mediaSettings
   });
 
-  newState = updateFormats(newState, media);
+  newJPlayer = updateFormats(newJPlayer, media);
 
-  newState.mediaSettings.formats.forEach(function (format) {
-    if (format.supported && !newState.mediaSettings.foundSupported) {
-      newState.mediaSettings.video = _constants.formats[format.supplied].MEDIA === 'video';
-      newState.src = media.sources[format.supplied];
-      newState.paused = true;
-      newState.mediaSettings.foundSupported = true;
+  newJPlayer.mediaSettings.formats.forEach(function (format) {
+    if (format.supported && !newJPlayer.mediaSettings.foundSupported) {
+      newJPlayer.mediaSettings.video = _constants.formats[format.supplied].MEDIA === 'video';
+      newJPlayer.src = media.sources[format.supplied];
+      newJPlayer.paused = true;
+      newJPlayer.mediaSettings.foundSupported = true;
     }
   });
 
-  if (!newState.mediaSettings.foundSupported) {
-    newState.error = (0, _index.noFormatSupportedError)('{ media.sources: \'' + Object.keys(media.sources).join(', ') + '\' }');
+  if (!newJPlayer.mediaSettings.foundSupported) {
+    newJPlayer.error = (0, _index.noFormatSupportedError)('{ media.sources: \'' + Object.keys(media.sources).join(', ') + '\' }');
   }
-  newState.media = (0, _index.updateObject)(_constants.defaultOptions.media, media);
+  newJPlayer.media = (0, _index.updateObject)(_constants.defaultOptions.media, media);
 
-  return newState;
+  return newJPlayer;
 };
 
-var play = function play(state, _ref2) {
+var play = function play(jPlayer, _ref2) {
   var time = _ref2.time;
 
-  if (state.src) {
-    return (0, _index.updateObject)(state, {
+  if (jPlayer.src) {
+    return (0, _index.updateObject)(jPlayer, {
       paused: false,
-      newTime: !isNaN(time) ? time : state.newTime
+      newTime: !isNaN(time) ? time : jPlayer.newTime
     });
   }
-  return (0, _index.updateObject)(state, {
+  return (0, _index.updateObject)(jPlayer, {
     error: (0, _index.urlNotSetError)(play.name)
   });
 };
 
-var pause = function pause(state, _ref3) {
+var pause = function pause(jPlayer, _ref3) {
   var time = _ref3.time;
 
-  if (state.src) {
-    return (0, _index.updateObject)(state, {
+  if (jPlayer.src) {
+    return (0, _index.updateObject)(jPlayer, {
       paused: true,
-      newTime: !isNaN(time) ? time : state.newTime
+      newTime: !isNaN(time) ? time : jPlayer.newTime
     });
   }
-  return (0, _index.updateObject)(state, {
+  return (0, _index.updateObject)(jPlayer, {
     error: (0, _index.urlNotSetError)(pause.name)
   });
 };
 
-var setPlayHead = function setPlayHead(state, _ref4) {
+var setPlayHead = function setPlayHead(jPlayer, _ref4) {
   var percent = _ref4.percent;
 
   var limitedPercent = (0, _index.limitValue)(percent, 0, 100);
 
-  if (state.src) {
-    return (0, _index.updateObject)(state, {
+  if (jPlayer.src) {
+    return (0, _index.updateObject)(jPlayer, {
       playHeadPercent: limitedPercent
     });
   }
-  return (0, _index.updateObject)(state, {
+  return (0, _index.updateObject)(jPlayer, {
     error: (0, _index.urlNotSetError)(setPlayHead.name)
   });
 };
 
-var setVolume = function setVolume(state, _ref5) {
+var setVolume = function setVolume(jPlayer, _ref5) {
   var volume = _ref5.volume;
-  return (0, _index.updateObject)(state, {
+  return (0, _index.updateObject)(jPlayer, {
     volume: (0, _index.limitValue)(volume, 0, 1),
     muted: volume <= 0
   });
 };
 
-var setMute = function setMute(state, _ref6) {
+var setMute = function setMute(jPlayer, _ref6) {
   var mute = _ref6.mute;
-  return (0, _index.updateObject)(state, {
+  return (0, _index.updateObject)(jPlayer, {
     muted: mute
   });
 };
 
-var focus = function focus(state, _ref7) {
+var focus = function focus(jPlayer, _ref7) {
   var id = _ref7.id;
 
-  var newState = _extends({}, state);
-  var firstKeyEnabledPlayer = Object.keys(state).filter(function (key) {
-    return newState[key].keyEnabled;
+  var newJPlayer = _extends({}, jPlayer);
+  var firstKeyEnabledPlayer = Object.keys(newJPlayer).filter(function (key) {
+    return newJPlayer[key].keyEnabled;
   }).shift();
 
-  if (newState[id].keyEnabled) {
-    Object.keys(state).forEach(function (key) {
+  if (newJPlayer[id].keyEnabled) {
+    Object.keys(newJPlayer).forEach(function (key) {
       if (key === id) {
-        newState[key] = (0, _index.updateObject)(newState[key], { focused: true });
+        newJPlayer[key] = (0, _index.updateObject)(newJPlayer[key], { focused: true });
       } else {
-        newState[key] = (0, _index.updateObject)(newState[key], { focused: false });
+        newJPlayer[key] = (0, _index.updateObject)(newJPlayer[key], { focused: false });
       }
     });
-  } else if (newState[firstKeyEnabledPlayer] !== undefined) {
-    var focusedPlayer = (0, _index.updateObject)(newState[firstKeyEnabledPlayer], { focused: true });
-    return (0, _index.updateObject)(newState, _defineProperty({}, firstKeyEnabledPlayer, focusedPlayer));
+  } else if (newJPlayer[firstKeyEnabledPlayer] !== undefined) {
+    var focusedPlayer = (0, _index.updateObject)(newJPlayer[firstKeyEnabledPlayer], { focused: true });
+    return (0, _index.updateObject)(newJPlayer, _defineProperty({}, firstKeyEnabledPlayer, focusedPlayer));
   }
-  return newState;
+  return newJPlayer;
 };
 
 var updatePlayer = function updatePlayer(jPlayer, action) {
   switch (action.type) {
     case _constants.actionNames.SET_OPTION:
+      switch (action.key) {
+        case 'media':
+          {
+            var media = action.value;
+            if (Object.keys(media).some(function (v) {
+              return v;
+            })) {
+              return setMedia(jPlayer, { media: media });
+            }
+            return clearMedia(jPlayer);
+          }
+        case 'playHeadPercent':
+          return setPlayHead(jPlayer, { percent: action.value });
+        case 'volume':
+          return setVolume(jPlayer, { volume: action.value });
+        case 'muted':
+          return setMute(jPlayer, { mute: action.value });
+        default:
+          break;
+      }
       return (0, _index.updateObject)(jPlayer, _defineProperty({}, action.key, action.value));
     case _constants.actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);
