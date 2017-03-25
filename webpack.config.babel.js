@@ -2,6 +2,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import autoprefixer from 'autoprefixer';
+import path from 'path';
 
 export default {
   context: __dirname,
@@ -26,7 +27,7 @@ export default {
     'css/skins/sleek.min.css': './src/less/skins/sleek.less',
   },
   output: {
-    path: './dist/',
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name]',
     libraryTarget: 'var',
     library: 'ReactJPlayer',

@@ -64,7 +64,7 @@ var ReactJPlayer =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 59);
+/******/ 	return __webpack_require__(__webpack_require__.s = 55);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -293,7 +293,7 @@ var defaultOptions = exports.defaultOptions = {
   }
 };
 
-var keyIgnoreElementNames = exports.keyIgnoreElementNames = ['A', 'INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
+var keyIgnoreElementNames = exports.keyIgnoreElementNames = ['INPUT', 'TEXTAREA', 'SELECT'];
 
 /***/ }),
 /* 2 */
@@ -305,7 +305,7 @@ var keyIgnoreElementNames = exports.keyIgnoreElementNames = ['A', 'INPUT', 'TEXT
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.convertTime = exports.canSetVolume = exports.limitValue = exports.getHeight = exports.getWidth = exports.getOffset = exports.urlNotSetError = exports.urlNotSupportedError = exports.InvalidGlobalMethodException = exports.noFormatSupportedError = exports.updateObject = exports.traverseParentsUntilClassName = exports.toRelativePercentage = exports.toPercentage = exports.connectWithId = undefined;
+exports.convertTime = exports.canSetVolume = exports.limitValue = exports.getHeight = exports.getWidth = exports.getOffset = exports.urlNotSetError = exports.urlNotSupportedError = exports.noFormatSupportedError = exports.updateObject = exports.traverseParentsUntilClassName = exports.toRelativePercentage = exports.toPercentage = exports.connectWithId = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -315,13 +315,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(9);
 
-var _recompose = __webpack_require__(56);
+var _recompose = __webpack_require__(59);
 
 var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var connectWithId = exports.connectWithId = function connectWithId() {
   return (0, _recompose.compose)((0, _recompose.getContext)({ id: _react2.default.PropTypes.string }), _reactRedux.connect.apply(undefined, arguments));
@@ -357,14 +355,6 @@ var noFormatSupportedError = exports.noFormatSupportedError = function noFormatS
     message: _constants.errors.FORMAT_NO_SUPPORT,
     hint: _constants.hints.FORMAT_NO_SUPPORT
   };
-};
-
-var InvalidGlobalMethodException = exports.InvalidGlobalMethodException = function InvalidGlobalMethodException(context) {
-  _classCallCheck(this, InvalidGlobalMethodException);
-
-  this.context = context;
-  this.message = _constants.errors.INVALID_GLOBAL_METHOD;
-  this.hint = _constants.hints.INVALID_GLOBAL_METHOD;
 };
 
 var urlNotSupportedError = exports.urlNotSupportedError = function urlNotSupportedError(context) {
@@ -1857,11 +1847,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _screenfull = __webpack_require__(58);
+var _screenfull = __webpack_require__(60);
 
 var _screenfull2 = _interopRequireDefault(_screenfull);
 
-var _classnames = __webpack_require__(55);
+var _classnames = __webpack_require__(56);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -2465,7 +2455,7 @@ var mapDispatchToProps = {
   focus: _actions.focus
 };
 
-var Connect = function Connect(jPlayer) {
+var Connect = function Connect(jPlayer, options) {
   var ConnectedPlayer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(jPlayer);
 
   return function (_React$Component) {
@@ -2484,7 +2474,7 @@ var Connect = function Connect(jPlayer) {
 
       return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = ConnectedJPlayer.__proto__ || Object.getPrototypeOf(ConnectedJPlayer)).call.apply(_ref3, [this].concat(args))), _this), _this.getChildContext = function () {
         return {
-          id: jPlayer.options.id
+          id: options.id
         };
       }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -2492,12 +2482,17 @@ var Connect = function Connect(jPlayer) {
     _createClass(ConnectedJPlayer, [{
       key: 'render',
       value: function render() {
-        return _react2.default.createElement(ConnectedPlayer, _extends({ id: jPlayer.options.id }, this.props));
+        return _react2.default.createElement(ConnectedPlayer, _extends({ id: options.id }, this.props));
       }
     }], [{
       key: 'jPlayer',
       get: function get() {
         return jPlayer;
+      }
+    }, {
+      key: 'options',
+      get: function get() {
+        return options;
       }
     }, {
       key: 'childContextTypes',
@@ -2544,7 +2539,7 @@ var getInitialStates = function getInitialStates(connectedJPlayers) {
   }
 
   newConnectedJPlayers.forEach(function (connectedJPlayer) {
-    jPlayerStates[connectedJPlayer.jPlayer.options.id] = (0, _lodash2.default)({}, _extends({}, _constants.internalStatus, _constants.defaultStatus, _constants.defaultOptions), connectedJPlayer.jPlayer.options);
+    jPlayerStates[connectedJPlayer.options.id] = (0, _lodash2.default)({}, _extends({}, _constants.internalStatus, _constants.defaultStatus, _constants.defaultOptions), connectedJPlayer.options);
   });
 
   return {
@@ -2567,15 +2562,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _lodash = __webpack_require__(57);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _constants = __webpack_require__(1);
 
 var _index = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -2743,39 +2732,11 @@ var updatePlayer = function updatePlayer(jPlayer, action) {
   }
 };
 
-var actionTypeValid = function actionTypeValid(actionType) {
-  return Object.keys(_constants.actionNames).some(function (currentActionType) {
-    return currentActionType === actionType;
-  });
-};
-
-var setGlobalOptions = function setGlobalOptions(state, action) {
-  var newState = _extends({}, state);
-
-  Object.keys(newState).forEach(function (key) {
-    var _newState$key$global = newState[key].global,
-        global = _newState$key$global === undefined ? [] : _newState$key$global;
-
-
-    global.forEach(function (actionType) {
-      if (!actionTypeValid(actionType)) {
-        throw new _index.InvalidGlobalMethodException(actionType);
-      }
-    });
-
-    if (key !== action.id && (0, _lodash2.default)(global, action.type)) {
-      newState = (0, _index.updateObject)(newState, _defineProperty({}, key, updatePlayer(newState[key], action, action.type)));
-    }
-  });
-  return newState;
-};
-
 var jPlayerReducer = function jPlayerReducer(state, action) {
   var newState = _extends({}, state);
   var jPlayer = updatePlayer(newState[action.id], action);
 
   if (jPlayer !== null) {
-    newState = setGlobalOptions(newState, action);
     newState = (0, _index.updateObject)(newState, _defineProperty({}, action.id, jPlayer));
 
     return jPlayerReducer(newState, {
@@ -4012,79 +3973,6 @@ exports.default = Video;
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-  Copyright (c) 2016 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-	'use strict';
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames () {
-		var classes = [];
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				classes.push(classNames.apply(null, arg));
-			} else if (argType === 'object') {
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
-			}
-		}
-
-		return classes.join(' ');
-	}
-
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = classNames;
-	} else if (true) {
-		// register as 'classnames', consistent with npm package name
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-			return classNames;
-		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-		window.classNames = classNames;
-	}
-}());
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-module.exports = Recompose;
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-module.exports = _.includes;
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports) {
-
-module.exports = screenfull;
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -4231,6 +4119,75 @@ exports.Download = _downloadContainer2.default;
 exports.Duration = _durationContainer2.default;
 exports.CurrentTime = _currentTimeContainer2.default;
 exports.BrowserUnsupported = _browserUnsupportedContainer2.default;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
+
+/***/ }),
+/* 57 */,
+/* 58 */,
+/* 59 */
+/***/ (function(module, exports) {
+
+module.exports = Recompose;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports) {
+
+module.exports = screenfull;
 
 /***/ })
 /******/ ]);
