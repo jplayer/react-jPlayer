@@ -629,7 +629,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _playbackRateBarValue = __webpack_require__(34);
+var _playbackRateBarValue = __webpack_require__(46);
 
 var _playbackRateBarValue2 = _interopRequireDefault(_playbackRateBarValue);
 
@@ -667,7 +667,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _volumeBarValue = __webpack_require__(37);
+var _volumeBarValue = __webpack_require__(53);
 
 var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
 
@@ -1020,7 +1020,8 @@ var MediaContainer = function (_React$Component) {
         // Hasn't fully loaded the song????
         if (this.currentMedia.seekable.length > 0) {
           this.currentMedia.currentTime = (0, _index.toRelativePercentage)(nextProps.playHeadPercent, this.getSeekableEnd());
-          // Media events don't fire fast enough to give a smooth animation when dragging so we update it here as well, same problem as above?
+          /* Media events don't fire fast enough to give a smooth animation
+            when dragging so we update it here as well, same problem as above? */
           this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
         }
       }
@@ -1125,352 +1126,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
 var _index = __webpack_require__(2);
 
-var _actions = __webpack_require__(3);
-
-var _bar = __webpack_require__(4);
-
-var _bar2 = _interopRequireDefault(_bar);
-
-var _playbackRateBar = __webpack_require__(35);
-
-var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
-
-var _playbackRateBarValueContainer = __webpack_require__(5);
-
-var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    movePlaybackRate: function movePlaybackRate(bar, dispatch, e) {
-      var _jPlayers$id = jPlayers[id],
-          verticalPlaybackRate = _jPlayers$id.verticalPlaybackRate,
-          minPlaybackRate = _jPlayers$id.minPlaybackRate,
-          maxPlaybackRate = _jPlayers$id.maxPlaybackRate;
-
-      var offset = (0, _index.getOffset)(bar);
-      var x = e.pageX - offset.left;
-      var w = (0, _index.getWidth)(bar);
-      var y = (0, _index.getHeight)(bar) - e.pageY + offset.top;
-      var h = (0, _index.getHeight)(bar);
-      var ratio = void 0;
-
-      if (verticalPlaybackRate) {
-        ratio = y / h;
-      } else {
-        ratio = x / w;
-      }
-
-      var playbackRateValue = ratio * (maxPlaybackRate - minPlaybackRate) + minPlaybackRate;
-
-      dispatch((0, _actions.setOption)(id, 'playbackRate', playbackRateValue));
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var mergeProps = function mergeProps(_ref3, _ref4) {
-  var movePlaybackRate = _ref3.movePlaybackRate,
-      children = _ref3.children,
-      attributes = _ref3.attributes;
-  var dispatch = _ref4.dispatch;
-  return {
-    onClick: function onClick(bar, e) {
-      return movePlaybackRate(bar, dispatch, e);
-    },
-    onTouchMove: function onTouchMove(bar, e) {
-      // Stop page scrolling
-      e.preventDefault();
-
-      movePlaybackRate(bar, dispatch, e.touches[0]);
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var PlaybackRateBarContainer = function PlaybackRateBarContainer(_ref5) {
-  var onClick = _ref5.onClick,
-      onTouchMove = _ref5.onTouchMove,
-      children = _ref5.children,
-      attributes = _ref5.attributes;
-  return _react2.default.createElement(
-    _bar2.default,
-    {
-      clickMoveBar: onClick,
-      touchMoveBar: onTouchMove
-    },
-    _react2.default.createElement(
-      _playbackRateBar2.default,
-      attributes,
-      children
-    )
-  );
-};
-
-PlaybackRateBarContainer.defaultProps = {
-  children: _react2.default.createElement(_playbackRateBarValueContainer2.default, null)
-};
-
-PlaybackRateBarContainer.propTypes = {
-  attributes: _react2.default.PropTypes.object.isRequired,
-  children: _react2.default.PropTypes.node,
-  onClick: _react2.default.PropTypes.func.isRequired,
-  onTouchMove: _react2.default.PropTypes.func.isRequired
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _index = __webpack_require__(2);
-
-var _actions = __webpack_require__(3);
-
-var _bar = __webpack_require__(4);
-
-var _bar2 = _interopRequireDefault(_bar);
-
-var _seekBar = __webpack_require__(36);
-
-var _seekBar2 = _interopRequireDefault(_seekBar);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    seekPercent: jPlayers[id].seekPercent,
-    movePlayHead: function movePlayHead(bar, dispatch, e) {
-      var offset = (0, _index.getOffset)(bar);
-      var x = e.pageX - offset.left;
-      var w = (0, _index.getWidth)(bar);
-      var percentage = 100 * (x / w);
-
-      dispatch((0, _actions.setPlayHead)(id, percentage));
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var mergeProps = function mergeProps(_ref3, _ref4) {
-  var movePlayHead = _ref3.movePlayHead,
-      seekPercent = _ref3.seekPercent,
-      children = _ref3.children,
-      attributes = _ref3.attributes;
-  var dispatch = _ref4.dispatch;
-  return {
-    onClick: function onClick(bar, e) {
-      return movePlayHead(bar, dispatch, e);
-    },
-    onTouchMove: function onTouchMove(bar, e) {
-      // Stop page scrolling
-      e.preventDefault();
-
-      movePlayHead(bar, dispatch, e.touches[0]);
-    },
-    seekPercent: seekPercent,
-    children: children,
-    attributes: attributes
-  };
-};
-
-var SeekBarContainer = function SeekBarContainer(_ref5) {
-  var onClick = _ref5.onClick,
-      onTouchMove = _ref5.onTouchMove,
-      seekPercent = _ref5.seekPercent,
-      children = _ref5.children,
-      attributes = _ref5.attributes;
-  return _react2.default.createElement(
-    _bar2.default,
-    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
-    _react2.default.createElement(
-      _seekBar2.default,
-      _extends({ seekPercent: seekPercent }, attributes),
-      children
-    )
-  );
-};
-
-SeekBarContainer.defaultProps = {
-  children: null
-};
-
-SeekBarContainer.propTypes = {
-  children: _react2.default.PropTypes.node,
-  attributes: _react2.default.PropTypes.object.isRequired,
-  onClick: _react2.default.PropTypes.func.isRequired,
-  onTouchMove: _react2.default.PropTypes.func.isRequired,
-  seekPercent: _react2.default.PropTypes.number.isRequired
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(SeekBarContainer);
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _index = __webpack_require__(2);
-
-var _actions = __webpack_require__(3);
-
-var _bar = __webpack_require__(4);
-
-var _bar2 = _interopRequireDefault(_bar);
-
-var _volumeBar = __webpack_require__(38);
-
-var _volumeBar2 = _interopRequireDefault(_volumeBar);
-
-var _volumeBarValueContainer = __webpack_require__(6);
-
-var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    moveVolumeBar: function moveVolumeBar(bar, dispatch, e) {
-      var verticalVolume = jPlayers[id].verticalVolume;
-
-      var offset = (0, _index.getOffset)(bar);
-      var x = e.pageX - offset.left;
-      var w = (0, _index.getWidth)(bar);
-      var y = (0, _index.getHeight)(bar) - e.pageY + offset.top;
-      var h = (0, _index.getHeight)(bar);
-
-      if (verticalVolume) {
-        dispatch((0, _actions.setVolume)(id, y / h));
-      } else {
-        dispatch((0, _actions.setVolume)(id, x / w));
-      }
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var mergeProps = function mergeProps(_ref3, _ref4) {
-  var moveVolumeBar = _ref3.moveVolumeBar,
-      children = _ref3.children,
-      attributes = _ref3.attributes;
-  var dispatch = _ref4.dispatch;
-  return {
-    onClick: function onClick(bar, e) {
-      return moveVolumeBar(bar, dispatch, e);
-    },
-    onTouchMove: function onTouchMove(bar, e) {
-      // Stop page scrolling
-      e.preventDefault();
-
-      moveVolumeBar(bar, dispatch, e.touches[0]);
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var VolumeBarContainer = function VolumeBarContainer(_ref5) {
-  var onClick = _ref5.onClick,
-      onTouchMove = _ref5.onTouchMove,
-      children = _ref5.children,
-      attributes = _ref5.attributes;
-  return _react2.default.createElement(
-    _bar2.default,
-    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
-    _react2.default.createElement(
-      _volumeBar2.default,
-      attributes,
-      children
-    )
-  );
-};
-
-VolumeBarContainer.defaultProps = {
-  children: _react2.default.createElement(_volumeBarValueContainer2.default, null)
-};
-
-VolumeBarContainer.propTypes = {
-  attributes: _react2.default.PropTypes.object.isRequired,
-  children: _react2.default.PropTypes.node,
-  onClick: _react2.default.PropTypes.func.isRequired,
-  onTouchMove: _react2.default.PropTypes.func.isRequired
-};
-
-exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(VolumeBarContainer);
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = __webpack_require__(2);
-
-var _browserUnsupported = __webpack_require__(39);
+var _browserUnsupported = __webpack_require__(34);
 
 var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
 
@@ -1495,7 +1153,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_browserUnsupported2.default);
 
 /***/ }),
-/* 16 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1513,7 +1171,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _index = __webpack_require__(2);
 
-var _bufferBar = __webpack_require__(40);
+var _bufferBar = __webpack_require__(35);
 
 var _bufferBar2 = _interopRequireDefault(_bufferBar);
 
@@ -1615,7 +1273,7 @@ var BufferBarContainer = function (_React$Component) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(BufferBarContainer);
 
 /***/ }),
-/* 17 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1627,7 +1285,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _currentTime = __webpack_require__(41);
+var _currentTime = __webpack_require__(36);
 
 var _currentTime2 = _interopRequireDefault(_currentTime);
 
@@ -1651,7 +1309,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_currentTime2.default);
 
 /***/ }),
-/* 18 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1663,7 +1321,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _download = __webpack_require__(42);
+var _download = __webpack_require__(37);
 
 var _download2 = _interopRequireDefault(_download);
 
@@ -1689,7 +1347,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_download2.default);
 
 /***/ }),
-/* 19 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1701,7 +1359,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _duration = __webpack_require__(43);
+var _duration = __webpack_require__(38);
 
 var _duration2 = _interopRequireDefault(_duration);
 
@@ -1725,7 +1383,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_duration2.default);
 
 /***/ }),
-/* 20 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1739,7 +1397,7 @@ var _index = __webpack_require__(2);
 
 var _actions = __webpack_require__(3);
 
-var _fullScreen = __webpack_require__(44);
+var _fullScreen = __webpack_require__(39);
 
 var _fullScreen2 = _interopRequireDefault(_fullScreen);
 
@@ -1773,7 +1431,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_fullScreen2.default);
 
 /***/ }),
-/* 21 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1789,7 +1447,7 @@ var _index = __webpack_require__(2);
 
 var _actions = __webpack_require__(3);
 
-var _gui = __webpack_require__(45);
+var _gui = __webpack_require__(40);
 
 var _gui2 = _interopRequireDefault(_gui);
 
@@ -1829,7 +1487,7 @@ var mergeProps = function mergeProps(stateProps, _ref4, _ref3) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(_gui2.default);
 
 /***/ }),
-/* 22 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1859,7 +1517,7 @@ var _index = __webpack_require__(2);
 
 var _constants = __webpack_require__(1);
 
-var _jPlayer = __webpack_require__(46);
+var _jPlayer = __webpack_require__(41);
 
 var _jPlayer2 = _interopRequireDefault(_jPlayer);
 
@@ -1940,17 +1598,17 @@ var JPlayerContainer = function (_React$Component) {
       }
     }, _this.setJPlayer = function (ref) {
       return _this.jPlayer = ref;
-    }, _this.setFullScreen = function (_ref4) {
-      var fullScreen = _ref4.fullScreen;
-
-      if (fullScreen) {
+    }, _this.requestFullScreen = function () {
+      if (_this.props.fullScreen) {
         if (_screenfull2.default.enabled) {
           _screenfull2.default.request(_this.jPlayer);
         }
         // Legacy browsers don't implement full screen api
         // Safari 5.1 doesn't hide the other elements even with fullscreen api
         document.body.style.visibility = 'hidden';
-      } else {
+      }
+    }, _this.exitFullScreen = function () {
+      if (!_this.props.fullScreen) {
         if (_screenfull2.default.enabled) {
           _screenfull2.default.exit();
         }
@@ -1970,8 +1628,8 @@ var JPlayerContainer = function (_React$Component) {
       if (!_screenfull2.default.isFullscreen) {
         _this.props.setOption(_this.props.id, 'fullScreen', false);
       }
-    }, _this.logError = function (_ref5) {
-      var error = _ref5.error;
+    }, _this.logError = function (_ref4) {
+      var error = _ref4.error;
       return console.error(error);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -1987,6 +1645,7 @@ var JPlayerContainer = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.props.setMedia(this.props.id, this.props.media);
+      this.requestFullScreen();
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -1994,15 +1653,16 @@ var JPlayerContainer = function (_React$Component) {
       if (nextProps.error !== this.props.error) {
         this.logError(nextProps);
       }
-      if (nextProps.fullScreen !== this.props.fullScreen) {
-        this.setFullScreen(nextProps);
-      }
     }
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
       if (prevProps.paused !== this.props.paused) {
         this.startGuiFadeOutTimer();
+      }
+      if (prevProps.fullScreen !== this.props.fullScreen) {
+        this.requestFullScreen();
+        this.exitFullScreen();
       }
     }
   }, {
@@ -2069,7 +1729,7 @@ var JPlayerContainer = function (_React$Component) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps())(JPlayerContainer);
 
 /***/ }),
-/* 23 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2083,7 +1743,7 @@ var _index = __webpack_require__(2);
 
 var _actions = __webpack_require__(3);
 
-var _mute = __webpack_require__(48);
+var _mute = __webpack_require__(43);
 
 var _mute2 = _interopRequireDefault(_mute);
 
@@ -2117,7 +1777,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_mute2.default);
 
 /***/ }),
-/* 24 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2129,7 +1789,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _playBar = __webpack_require__(49);
+var _playBar = __webpack_require__(44);
 
 var _playBar2 = _interopRequireDefault(_playBar);
 
@@ -2154,7 +1814,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_playBar2.default);
 
 /***/ }),
-/* 25 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2168,7 +1828,7 @@ var _actions = __webpack_require__(3);
 
 var _index = __webpack_require__(2);
 
-var _play = __webpack_require__(50);
+var _play = __webpack_require__(45);
 
 var _play2 = _interopRequireDefault(_play);
 
@@ -2202,7 +1862,130 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_play2.default);
 
 /***/ }),
-/* 26 */
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _index = __webpack_require__(2);
+
+var _actions = __webpack_require__(3);
+
+var _bar = __webpack_require__(4);
+
+var _bar2 = _interopRequireDefault(_bar);
+
+var _playbackRateBar = __webpack_require__(47);
+
+var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
+
+var _playbackRateBarValueContainer = __webpack_require__(5);
+
+var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
+  return {
+    movePlaybackRate: function movePlaybackRate(bar, dispatch, e) {
+      var _jPlayers$id = jPlayers[id],
+          verticalPlaybackRate = _jPlayers$id.verticalPlaybackRate,
+          minPlaybackRate = _jPlayers$id.minPlaybackRate,
+          maxPlaybackRate = _jPlayers$id.maxPlaybackRate;
+
+      var offset = (0, _index.getOffset)(bar);
+      var x = e.pageX - offset.left;
+      var w = (0, _index.getWidth)(bar);
+      var y = (0, _index.getHeight)(bar) - e.pageY + offset.top;
+      var h = (0, _index.getHeight)(bar);
+      var ratio = void 0;
+
+      if (verticalPlaybackRate) {
+        ratio = y / h;
+      } else {
+        ratio = x / w;
+      }
+
+      var playbackRateValue = ratio * (maxPlaybackRate - minPlaybackRate) + minPlaybackRate;
+
+      dispatch((0, _actions.setOption)(id, 'playbackRate', playbackRateValue));
+    },
+    children: children,
+    attributes: attributes
+  };
+};
+
+var mergeProps = function mergeProps(_ref3, _ref4) {
+  var movePlaybackRate = _ref3.movePlaybackRate,
+      children = _ref3.children,
+      attributes = _ref3.attributes;
+  var dispatch = _ref4.dispatch;
+  return {
+    onClick: function onClick(bar, e) {
+      return movePlaybackRate(bar, dispatch, e);
+    },
+    onTouchMove: function onTouchMove(bar, e) {
+      // Stop page scrolling
+      e.preventDefault();
+
+      movePlaybackRate(bar, dispatch, e.touches[0]);
+    },
+    children: children,
+    attributes: attributes
+  };
+};
+
+var PlaybackRateBarContainer = function PlaybackRateBarContainer(_ref5) {
+  var onClick = _ref5.onClick,
+      onTouchMove = _ref5.onTouchMove,
+      children = _ref5.children,
+      attributes = _ref5.attributes;
+  return _react2.default.createElement(
+    _bar2.default,
+    {
+      clickMoveBar: onClick,
+      touchMoveBar: onTouchMove
+    },
+    _react2.default.createElement(
+      _playbackRateBar2.default,
+      attributes,
+      children
+    )
+  );
+};
+
+PlaybackRateBarContainer.defaultProps = {
+  children: _react2.default.createElement(_playbackRateBarValueContainer2.default, null)
+};
+
+PlaybackRateBarContainer.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
+  children: _react2.default.PropTypes.node,
+  onClick: _react2.default.PropTypes.func.isRequired,
+  onTouchMove: _react2.default.PropTypes.func.isRequired
+};
+
+exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);
+
+/***/ }),
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2214,7 +1997,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _poster = __webpack_require__(51);
+var _poster = __webpack_require__(48);
 
 var _poster2 = _interopRequireDefault(_poster);
 
@@ -2237,7 +2020,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_poster2.default);
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2251,7 +2034,7 @@ var _index = __webpack_require__(2);
 
 var _actions = __webpack_require__(3);
 
-var _repeat = __webpack_require__(52);
+var _repeat = __webpack_require__(49);
 
 var _repeat2 = _interopRequireDefault(_repeat);
 
@@ -2285,7 +2068,115 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, mapDispatchToProps)(_repeat2.default);
 
 /***/ }),
-/* 28 */
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _index = __webpack_require__(2);
+
+var _actions = __webpack_require__(3);
+
+var _bar = __webpack_require__(4);
+
+var _bar2 = _interopRequireDefault(_bar);
+
+var _seekBar = __webpack_require__(50);
+
+var _seekBar2 = _interopRequireDefault(_seekBar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
+  return {
+    seekPercent: jPlayers[id].seekPercent,
+    movePlayHead: function movePlayHead(bar, dispatch, e) {
+      var offset = (0, _index.getOffset)(bar);
+      var x = e.pageX - offset.left;
+      var w = (0, _index.getWidth)(bar);
+      var percentage = 100 * (x / w);
+
+      dispatch((0, _actions.setPlayHead)(id, percentage));
+    },
+    children: children,
+    attributes: attributes
+  };
+};
+
+var mergeProps = function mergeProps(_ref3, _ref4) {
+  var movePlayHead = _ref3.movePlayHead,
+      seekPercent = _ref3.seekPercent,
+      children = _ref3.children,
+      attributes = _ref3.attributes;
+  var dispatch = _ref4.dispatch;
+  return {
+    onClick: function onClick(bar, e) {
+      return movePlayHead(bar, dispatch, e);
+    },
+    onTouchMove: function onTouchMove(bar, e) {
+      // Stop page scrolling
+      e.preventDefault();
+
+      movePlayHead(bar, dispatch, e.touches[0]);
+    },
+    seekPercent: seekPercent,
+    children: children,
+    attributes: attributes
+  };
+};
+
+var SeekBarContainer = function SeekBarContainer(_ref5) {
+  var onClick = _ref5.onClick,
+      onTouchMove = _ref5.onTouchMove,
+      seekPercent = _ref5.seekPercent,
+      children = _ref5.children,
+      attributes = _ref5.attributes;
+  return _react2.default.createElement(
+    _bar2.default,
+    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
+    _react2.default.createElement(
+      _seekBar2.default,
+      _extends({ seekPercent: seekPercent }, attributes),
+      children
+    )
+  );
+};
+
+SeekBarContainer.defaultProps = {
+  children: null
+};
+
+SeekBarContainer.propTypes = {
+  children: _react2.default.PropTypes.node,
+  attributes: _react2.default.PropTypes.object.isRequired,
+  onClick: _react2.default.PropTypes.func.isRequired,
+  onTouchMove: _react2.default.PropTypes.func.isRequired,
+  seekPercent: _react2.default.PropTypes.number.isRequired
+};
+
+exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(SeekBarContainer);
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2297,7 +2188,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _title = __webpack_require__(53);
+var _title = __webpack_require__(51);
 
 var _title2 = _interopRequireDefault(_title);
 
@@ -2323,7 +2214,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_title2.default);
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2335,7 +2226,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _index = __webpack_require__(2);
 
-var _video = __webpack_require__(54);
+var _video = __webpack_require__(52);
 
 var _video2 = _interopRequireDefault(_video);
 
@@ -2360,6 +2251,118 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
 };
 
 exports.default = (0, _index.connectWithId)(mapStateToProps)(_video2.default);
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _index = __webpack_require__(2);
+
+var _actions = __webpack_require__(3);
+
+var _bar = __webpack_require__(4);
+
+var _bar2 = _interopRequireDefault(_bar);
+
+var _volumeBar = __webpack_require__(54);
+
+var _volumeBar2 = _interopRequireDefault(_volumeBar);
+
+var _volumeBarValueContainer = __webpack_require__(6);
+
+var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var mapStateToProps = function mapStateToProps(_ref2, _ref) {
+  var jPlayers = _ref2.jPlayers;
+
+  var id = _ref.id,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
+
+  return {
+    moveVolumeBar: function moveVolumeBar(bar, dispatch, e) {
+      var verticalVolume = jPlayers[id].verticalVolume;
+
+      var offset = (0, _index.getOffset)(bar);
+      var x = e.pageX - offset.left;
+      var w = (0, _index.getWidth)(bar);
+      var y = (0, _index.getHeight)(bar) - e.pageY + offset.top;
+      var h = (0, _index.getHeight)(bar);
+
+      if (verticalVolume) {
+        dispatch((0, _actions.setVolume)(id, y / h));
+      } else {
+        dispatch((0, _actions.setVolume)(id, x / w));
+      }
+    },
+    children: children,
+    attributes: attributes
+  };
+};
+
+var mergeProps = function mergeProps(_ref3, _ref4) {
+  var moveVolumeBar = _ref3.moveVolumeBar,
+      children = _ref3.children,
+      attributes = _ref3.attributes;
+  var dispatch = _ref4.dispatch;
+  return {
+    onClick: function onClick(bar, e) {
+      return moveVolumeBar(bar, dispatch, e);
+    },
+    onTouchMove: function onTouchMove(bar, e) {
+      // Stop page scrolling
+      e.preventDefault();
+
+      moveVolumeBar(bar, dispatch, e.touches[0]);
+    },
+    children: children,
+    attributes: attributes
+  };
+};
+
+var VolumeBarContainer = function VolumeBarContainer(_ref5) {
+  var onClick = _ref5.onClick,
+      onTouchMove = _ref5.onTouchMove,
+      children = _ref5.children,
+      attributes = _ref5.attributes;
+  return _react2.default.createElement(
+    _bar2.default,
+    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
+    _react2.default.createElement(
+      _volumeBar2.default,
+      attributes,
+      children
+    )
+  );
+};
+
+VolumeBarContainer.defaultProps = {
+  children: _react2.default.createElement(_volumeBarValueContainer2.default, null)
+};
+
+VolumeBarContainer.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
+  children: _react2.default.PropTypes.node,
+  onClick: _react2.default.PropTypes.func.isRequired,
+  onTouchMove: _react2.default.PropTypes.func.isRequired
+};
+
+exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(VolumeBarContainer);
 
 /***/ }),
 /* 30 */
@@ -2842,276 +2845,6 @@ var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var PlaybackRateBarValue = function PlaybackRateBarValue(_ref) {
-  var playbackRate = _ref.playbackRate,
-      minPlaybackRate = _ref.minPlaybackRate,
-      maxPlaybackRate = _ref.maxPlaybackRate,
-      verticalPlaybackRate = _ref.verticalPlaybackRate,
-      attributes = _ref.attributes;
-
-  var style = function style() {
-    var ratio = (playbackRate - minPlaybackRate) / (maxPlaybackRate - minPlaybackRate);
-    var playbackRateBarPercentage = ratio * 100 + '%';
-
-    return {
-      width: !verticalPlaybackRate ? playbackRateBarPercentage : null,
-      height: verticalPlaybackRate ? playbackRateBarPercentage : null
-    };
-  };
-  return _react2.default.createElement('div', _extends({
-    className: _constants.classes.PLAYBACK_RATE_BAR_VALUE, style: style()
-  }, attributes));
-};
-
-PlaybackRateBarValue.propTypes = {
-  attributes: _react2.default.PropTypes.object.isRequired,
-  verticalPlaybackRate: _react2.default.PropTypes.bool.isRequired,
-  minPlaybackRate: _react2.default.PropTypes.number.isRequired,
-  maxPlaybackRate: _react2.default.PropTypes.number.isRequired,
-  playbackRate: _react2.default.PropTypes.number.isRequired
-};
-
-exports.default = PlaybackRateBarValue;
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var PlaybackRateBar = function PlaybackRateBar(_ref) {
-  var onClick = _ref.onClick,
-      onMouseDown = _ref.onMouseDown,
-      onTouchStart = _ref.onTouchStart,
-      setBar = _ref.setBar,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['onClick', 'onMouseDown', 'onTouchStart', 'setBar', 'children']);
-
-  return _react2.default.createElement(
-    'div',
-    _extends({
-      ref: setBar, className: _constants.classes.PLAYBACK_RATE_BAR,
-      onClick: onClick, onMouseDown: onMouseDown,
-      onTouchStart: onTouchStart }, attributes),
-    children
-  );
-};
-
-PlaybackRateBar.defaultProps = {
-  onClick: null,
-  onMouseDown: null,
-  onTouchStart: null,
-  setBar: null
-};
-
-PlaybackRateBar.propTypes = {
-  onClick: _react2.default.PropTypes.func,
-  onMouseDown: _react2.default.PropTypes.func,
-  onTouchStart: _react2.default.PropTypes.func,
-  setBar: _react2.default.PropTypes.func,
-  children: _react2.default.PropTypes.node.isRequired
-};
-
-exports.default = PlaybackRateBar;
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var SeekBar = function SeekBar(_ref) {
-  var setBar = _ref.setBar,
-      onClick = _ref.onClick,
-      onMouseDown = _ref.onMouseDown,
-      onTouchStart = _ref.onTouchStart,
-      seekPercent = _ref.seekPercent,
-      attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart', 'seekPercent']);
-
-  return _react2.default.createElement('div', _extends({
-    ref: setBar, className: _constants.classes.SEEK_BAR,
-    style: { width: seekPercent + '%' }, onClick: onClick,
-    onTouchStart: onTouchStart, onMouseDown: onMouseDown
-  }, attributes));
-};
-
-SeekBar.defaultProps = {
-  setBar: null,
-  onClick: null,
-  onMouseDown: null,
-  onTouchStart: null
-};
-
-SeekBar.propTypes = {
-  seekPercent: _react2.default.PropTypes.number.isRequired,
-  setBar: _react2.default.PropTypes.func,
-  onClick: _react2.default.PropTypes.func,
-  onMouseDown: _react2.default.PropTypes.func,
-  onTouchStart: _react2.default.PropTypes.func,
-  children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.arrayOf(_react2.default.PropTypes.element), _react2.default.PropTypes.element]).isRequired
-};
-
-exports.default = SeekBar;
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var VolumeBarValue = function VolumeBarValue(_ref) {
-  var muted = _ref.muted,
-      volume = _ref.volume,
-      verticalVolume = _ref.verticalVolume,
-      attributes = _ref.attributes;
-
-  var style = function style() {
-    var volumeBarValuePercentage = (muted ? 0 : volume * 100) + '%';
-
-    return {
-      width: !verticalVolume ? volumeBarValuePercentage : null,
-      height: verticalVolume ? volumeBarValuePercentage : null
-    };
-  };
-  return _react2.default.createElement('div', _extends({ className: _constants.classes.VOLUME_BAR_VALUE, style: style() }, attributes));
-};
-
-VolumeBarValue.defaultProps = {
-  verticalVolume: _constants.defaultOptions.verticalVolume
-};
-
-VolumeBarValue.propTypes = {
-  attributes: _react2.default.PropTypes.object.isRequired,
-  muted: _react2.default.PropTypes.bool.isRequired,
-  volume: _react2.default.PropTypes.number.isRequired,
-  verticalVolume: _react2.default.PropTypes.bool
-};
-
-exports.default = VolumeBarValue;
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var VolumeBar = function VolumeBar(_ref) {
-  var setBar = _ref.setBar,
-      onClick = _ref.onClick,
-      onMouseDown = _ref.onMouseDown,
-      onTouchStart = _ref.onTouchStart,
-      attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart']);
-
-  return _react2.default.createElement('div', _extends({
-    ref: setBar, className: _constants.classes.VOLUME_BAR,
-    onClick: onClick, onMouseDown: onMouseDown, onTouchStart: onTouchStart
-  }, attributes));
-};
-
-VolumeBar.defaultProps = {
-  onClick: null,
-  setBar: null,
-  onMouseDown: null,
-  onTouchStart: null
-};
-
-VolumeBar.propTypes = {
-  onClick: _react2.default.PropTypes.func,
-  onMouseDown: _react2.default.PropTypes.func,
-  onTouchStart: _react2.default.PropTypes.func,
-  setBar: _react2.default.PropTypes.func,
-  children: _react2.default.PropTypes.node.isRequired
-};
-
-exports.default = VolumeBar;
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var BrowserUnsupported = function BrowserUnsupported(_ref) {
   var foundSupported = _ref.foundSupported,
       children = _ref.children,
@@ -3145,7 +2878,7 @@ BrowserUnsupported.propTypes = {
 exports.default = BrowserUnsupported;
 
 /***/ }),
-/* 40 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3181,7 +2914,7 @@ BufferBar.propTypes = {
 exports.default = BufferBar;
 
 /***/ }),
-/* 41 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3219,7 +2952,7 @@ CurrentTime.propTypes = {
 exports.default = CurrentTime;
 
 /***/ }),
-/* 42 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3264,7 +2997,7 @@ Download.propTypes = {
 exports.default = Download;
 
 /***/ }),
-/* 43 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3302,7 +3035,7 @@ Duration.propTypes = {
 exports.default = Duration;
 
 /***/ }),
-/* 44 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3351,7 +3084,7 @@ FullScreen.propTypes = {
 exports.default = FullScreen;
 
 /***/ }),
-/* 45 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3414,7 +3147,7 @@ Gui.propTypes = {
 exports.default = Gui;
 
 /***/ }),
-/* 46 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3430,7 +3163,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _keyControlContainer = __webpack_require__(47);
+var _keyControlContainer = __webpack_require__(42);
 
 var _keyControlContainer2 = _interopRequireDefault(_keyControlContainer);
 
@@ -3465,7 +3198,7 @@ JPlayer.propTypes = {
 exports.default = JPlayer;
 
 /***/ }),
-/* 47 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3622,7 +3355,7 @@ var KeyControlContainer = function (_React$Component) {
 exports.default = (0, _index.connectWithId)(mapStateToProps, null, mergeProps)(KeyControlContainer);
 
 /***/ }),
-/* 48 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3668,7 +3401,7 @@ Mute.propTypes = {
 exports.default = Mute;
 
 /***/ }),
-/* 49 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3717,7 +3450,7 @@ PlayBar.propTypes = {
 exports.default = PlayBar;
 
 /***/ }),
-/* 50 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3763,7 +3496,117 @@ Play.propTypes = {
 exports.default = Play;
 
 /***/ }),
-/* 51 */
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PlaybackRateBarValue = function PlaybackRateBarValue(_ref) {
+  var playbackRate = _ref.playbackRate,
+      minPlaybackRate = _ref.minPlaybackRate,
+      maxPlaybackRate = _ref.maxPlaybackRate,
+      verticalPlaybackRate = _ref.verticalPlaybackRate,
+      attributes = _ref.attributes;
+
+  var style = function style() {
+    var ratio = (playbackRate - minPlaybackRate) / (maxPlaybackRate - minPlaybackRate);
+    var playbackRateBarPercentage = ratio * 100 + '%';
+
+    return {
+      width: !verticalPlaybackRate ? playbackRateBarPercentage : null,
+      height: verticalPlaybackRate ? playbackRateBarPercentage : null
+    };
+  };
+  return _react2.default.createElement('div', _extends({
+    className: _constants.classes.PLAYBACK_RATE_BAR_VALUE, style: style()
+  }, attributes));
+};
+
+PlaybackRateBarValue.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
+  verticalPlaybackRate: _react2.default.PropTypes.bool.isRequired,
+  minPlaybackRate: _react2.default.PropTypes.number.isRequired,
+  maxPlaybackRate: _react2.default.PropTypes.number.isRequired,
+  playbackRate: _react2.default.PropTypes.number.isRequired
+};
+
+exports.default = PlaybackRateBarValue;
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var PlaybackRateBar = function PlaybackRateBar(_ref) {
+  var onClick = _ref.onClick,
+      onMouseDown = _ref.onMouseDown,
+      onTouchStart = _ref.onTouchStart,
+      setBar = _ref.setBar,
+      children = _ref.children,
+      attributes = _objectWithoutProperties(_ref, ['onClick', 'onMouseDown', 'onTouchStart', 'setBar', 'children']);
+
+  return _react2.default.createElement(
+    'div',
+    _extends({
+      ref: setBar, className: _constants.classes.PLAYBACK_RATE_BAR,
+      onClick: onClick, onMouseDown: onMouseDown,
+      onTouchStart: onTouchStart }, attributes),
+    children
+  );
+};
+
+PlaybackRateBar.defaultProps = {
+  onClick: null,
+  onMouseDown: null,
+  onTouchStart: null,
+  setBar: null
+};
+
+PlaybackRateBar.propTypes = {
+  onClick: _react2.default.PropTypes.func,
+  onMouseDown: _react2.default.PropTypes.func,
+  onTouchStart: _react2.default.PropTypes.func,
+  setBar: _react2.default.PropTypes.func,
+  children: _react2.default.PropTypes.node.isRequired
+};
+
+exports.default = PlaybackRateBar;
+
+/***/ }),
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3803,7 +3646,7 @@ Poster.propTypes = {
 exports.default = Poster;
 
 /***/ }),
-/* 52 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3849,7 +3692,63 @@ Repeat.propTypes = {
 exports.default = Repeat;
 
 /***/ }),
-/* 53 */
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var SeekBar = function SeekBar(_ref) {
+  var setBar = _ref.setBar,
+      onClick = _ref.onClick,
+      onMouseDown = _ref.onMouseDown,
+      onTouchStart = _ref.onTouchStart,
+      seekPercent = _ref.seekPercent,
+      attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart', 'seekPercent']);
+
+  return _react2.default.createElement('div', _extends({
+    ref: setBar, className: _constants.classes.SEEK_BAR,
+    style: { width: seekPercent + '%' }, onClick: onClick,
+    onTouchStart: onTouchStart, onMouseDown: onMouseDown
+  }, attributes));
+};
+
+SeekBar.defaultProps = {
+  setBar: null,
+  onClick: null,
+  onMouseDown: null,
+  onTouchStart: null
+};
+
+SeekBar.propTypes = {
+  seekPercent: _react2.default.PropTypes.number.isRequired,
+  setBar: _react2.default.PropTypes.func,
+  onClick: _react2.default.PropTypes.func,
+  onMouseDown: _react2.default.PropTypes.func,
+  onTouchStart: _react2.default.PropTypes.func,
+  children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.arrayOf(_react2.default.PropTypes.element), _react2.default.PropTypes.element]).isRequired
+};
+
+exports.default = SeekBar;
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3895,7 +3794,7 @@ Title.propTypes = {
 exports.default = Title;
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3970,6 +3869,110 @@ Video.propTypes = {
 exports.default = Video;
 
 /***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var VolumeBarValue = function VolumeBarValue(_ref) {
+  var muted = _ref.muted,
+      volume = _ref.volume,
+      verticalVolume = _ref.verticalVolume,
+      attributes = _ref.attributes;
+
+  var style = function style() {
+    var volumeBarValuePercentage = (muted ? 0 : volume * 100) + '%';
+
+    return {
+      width: !verticalVolume ? volumeBarValuePercentage : null,
+      height: verticalVolume ? volumeBarValuePercentage : null
+    };
+  };
+  return _react2.default.createElement('div', _extends({ className: _constants.classes.VOLUME_BAR_VALUE, style: style() }, attributes));
+};
+
+VolumeBarValue.defaultProps = {
+  verticalVolume: _constants.defaultOptions.verticalVolume
+};
+
+VolumeBarValue.propTypes = {
+  attributes: _react2.default.PropTypes.object.isRequired,
+  muted: _react2.default.PropTypes.bool.isRequired,
+  volume: _react2.default.PropTypes.number.isRequired,
+  verticalVolume: _react2.default.PropTypes.bool
+};
+
+exports.default = VolumeBarValue;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var VolumeBar = function VolumeBar(_ref) {
+  var setBar = _ref.setBar,
+      onClick = _ref.onClick,
+      onMouseDown = _ref.onMouseDown,
+      onTouchStart = _ref.onTouchStart,
+      attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart']);
+
+  return _react2.default.createElement('div', _extends({
+    ref: setBar, className: _constants.classes.VOLUME_BAR,
+    onClick: onClick, onMouseDown: onMouseDown, onTouchStart: onTouchStart
+  }, attributes));
+};
+
+VolumeBar.defaultProps = {
+  onClick: null,
+  setBar: null,
+  onMouseDown: null,
+  onTouchStart: null
+};
+
+VolumeBar.propTypes = {
+  onClick: _react2.default.PropTypes.func,
+  onMouseDown: _react2.default.PropTypes.func,
+  onTouchStart: _react2.default.PropTypes.func,
+  setBar: _react2.default.PropTypes.func,
+  children: _react2.default.PropTypes.node.isRequired
+};
+
+exports.default = VolumeBar;
+
+/***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3997,11 +4000,11 @@ var _connect = __webpack_require__(30);
 
 var _connect2 = _interopRequireDefault(_connect);
 
-var _guiContainer = __webpack_require__(21);
+var _guiContainer = __webpack_require__(18);
 
 var _guiContainer2 = _interopRequireDefault(_guiContainer);
 
-var _videoContainer = __webpack_require__(29);
+var _videoContainer = __webpack_require__(28);
 
 var _videoContainer2 = _interopRequireDefault(_videoContainer);
 
@@ -4009,47 +4012,47 @@ var _audioContainer = __webpack_require__(11);
 
 var _audioContainer2 = _interopRequireDefault(_audioContainer);
 
-var _jPlayerContainer = __webpack_require__(22);
+var _jPlayerContainer = __webpack_require__(19);
 
 var _jPlayerContainer2 = _interopRequireDefault(_jPlayerContainer);
 
-var _playBarContainer = __webpack_require__(24);
+var _playBarContainer = __webpack_require__(21);
 
 var _playBarContainer2 = _interopRequireDefault(_playBarContainer);
 
-var _bufferBarContainer = __webpack_require__(16);
+var _bufferBarContainer = __webpack_require__(13);
 
 var _bufferBarContainer2 = _interopRequireDefault(_bufferBarContainer);
 
-var _posterContainer = __webpack_require__(26);
+var _posterContainer = __webpack_require__(24);
 
 var _posterContainer2 = _interopRequireDefault(_posterContainer);
 
-var _titleContainer = __webpack_require__(28);
+var _titleContainer = __webpack_require__(27);
 
 var _titleContainer2 = _interopRequireDefault(_titleContainer);
 
-var _fullScreenContainer = __webpack_require__(20);
+var _fullScreenContainer = __webpack_require__(17);
 
 var _fullScreenContainer2 = _interopRequireDefault(_fullScreenContainer);
 
-var _muteContainer = __webpack_require__(23);
+var _muteContainer = __webpack_require__(20);
 
 var _muteContainer2 = _interopRequireDefault(_muteContainer);
 
-var _playContainer = __webpack_require__(25);
+var _playContainer = __webpack_require__(22);
 
 var _playContainer2 = _interopRequireDefault(_playContainer);
 
-var _repeatContainer = __webpack_require__(27);
+var _repeatContainer = __webpack_require__(25);
 
 var _repeatContainer2 = _interopRequireDefault(_repeatContainer);
 
-var _seekBarContainer = __webpack_require__(13);
+var _seekBarContainer = __webpack_require__(26);
 
 var _seekBarContainer2 = _interopRequireDefault(_seekBarContainer);
 
-var _playbackRateBarContainer = __webpack_require__(12);
+var _playbackRateBarContainer = __webpack_require__(23);
 
 var _playbackRateBarContainer2 = _interopRequireDefault(_playbackRateBarContainer);
 
@@ -4057,7 +4060,7 @@ var _playbackRateBarValueContainer = __webpack_require__(5);
 
 var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
 
-var _volumeBarContainer = __webpack_require__(14);
+var _volumeBarContainer = __webpack_require__(29);
 
 var _volumeBarContainer2 = _interopRequireDefault(_volumeBarContainer);
 
@@ -4065,19 +4068,19 @@ var _volumeBarValueContainer = __webpack_require__(6);
 
 var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
 
-var _downloadContainer = __webpack_require__(18);
+var _downloadContainer = __webpack_require__(15);
 
 var _downloadContainer2 = _interopRequireDefault(_downloadContainer);
 
-var _durationContainer = __webpack_require__(19);
+var _durationContainer = __webpack_require__(16);
 
 var _durationContainer2 = _interopRequireDefault(_durationContainer);
 
-var _currentTimeContainer = __webpack_require__(17);
+var _currentTimeContainer = __webpack_require__(14);
 
 var _currentTimeContainer2 = _interopRequireDefault(_currentTimeContainer);
 
-var _browserUnsupportedContainer = __webpack_require__(15);
+var _browserUnsupportedContainer = __webpack_require__(12);
 
 var _browserUnsupportedContainer2 = _interopRequireDefault(_browserUnsupportedContainer);
 

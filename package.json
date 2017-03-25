@@ -1,6 +1,6 @@
 {
   "name": "react-jplayer",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Html5 audio and video player library for React",
   "author": "Martin Dawson <u1356770@gmail.com>",
   "repository": {
