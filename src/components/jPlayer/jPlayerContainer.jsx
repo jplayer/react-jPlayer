@@ -90,18 +90,20 @@ class JPlayerContainer extends React.Component {
   }
   componentDidMount() {
     this.props.setMedia(this.props.id, this.props.media);
+    this.requestFullScreen();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== this.props.error) {
       this.logError(nextProps);
     }
-    if (nextProps.fullScreen !== this.props.fullScreen) {
-      this.setFullScreen(nextProps);
-    }
   }
   componentDidUpdate(prevProps) {
     if (prevProps.paused !== this.props.paused) {
       this.startGuiFadeOutTimer();
+    }
+    if (prevProps.fullScreen !== this.props.fullScreen) {
+      this.requestFullScreen();
+      this.exitFullScreen();
     }
   }
   componentWillUnmount() {
@@ -120,15 +122,18 @@ class JPlayerContainer extends React.Component {
     }
   }
   setJPlayer = ref => (this.jPlayer = ref)
-  setFullScreen = ({ fullScreen }) => {
-    if (fullScreen) {
+  requestFullScreen = () => {
+    if (this.props.fullScreen) {
       if (screenfull.enabled) {
         screenfull.request(this.jPlayer);
       }
       // Legacy browsers don't implement full screen api
       // Safari 5.1 doesn't hide the other elements even with fullscreen api
       document.body.style.visibility = 'hidden';
-    } else {
+    }
+  }
+  exitFullScreen = () => {
+    if (!this.props.fullScreen) {
       if (screenfull.enabled) {
         screenfull.exit();
       }

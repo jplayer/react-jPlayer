@@ -158,6 +158,18 @@ describe('<JPlayerContainer />', () => {
     expect(setMediaSpy).toHaveBeenCalledWith(id, props.media);
   });
 
+  it('requestsFullScreen on load', () => {
+    const props = getJPlayers().jPlayers[id];
+    const wrapper = shallow(<JPlayerContainer {...props} setMedia={() => null} />);
+    const instance = wrapper.instance();
+
+    spyOn(instance, 'requestFullScreen');
+
+    instance.componentDidMount();
+
+    expect(instance.requestFullScreen).toHaveBeenCalled();
+  });
+
   it('logs errors', () => {
     const spy = spyOn(console, 'error');
     const props = getJPlayers().jPlayers[id];
@@ -170,8 +182,9 @@ describe('<JPlayerContainer />', () => {
   });
 
   it('doesn\'t request full screen when screenfull not supported', () => {
-    const props = getJPlayers().jPlayers[id];
+    const props = getJPlayers({ fullScreen: true }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
+    const instance = wrapper.instance();
     const spy = createSpy();
 
     __Rewire__('screenfull', {
@@ -179,15 +192,16 @@ describe('<JPlayerContainer />', () => {
       request: spy,
     });
 
-    wrapper.setProps({ fullScreen: true });
+    instance.componentDidUpdate({ fullScreen: false });
 
     expect(spy).toNotHaveBeenCalled();
     expect(document.body.style.visibility).toBe('hidden');
   });
 
   it('requests full screen when true and screenfull supported', () => {
-    const props = getJPlayers().jPlayers[id];
+    const props = getJPlayers({ fullScreen: true }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
+    const instance = wrapper.instance();
     const spy = createSpy();
 
     __Rewire__('screenfull', {
@@ -195,15 +209,16 @@ describe('<JPlayerContainer />', () => {
       request: spy,
     });
 
-    wrapper.setProps({ fullScreen: true });
+    instance.componentDidUpdate({ fullScreen: false });
 
     expect(spy).toHaveBeenCalledWith(wrapper.instance().jPlayer);
     expect(document.body.style.visibility).toBe('hidden');
   });
 
   it('doesn\'t exit full screen when false and screenfull not supported', () => {
-    const props = getJPlayers({ fullScreen: true }).jPlayers[id];
+    const props = getJPlayers({ fullScreen: false }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
+    const instance = wrapper.instance();
     const spy = createSpy();
 
     __Rewire__('screenfull', {
@@ -211,15 +226,16 @@ describe('<JPlayerContainer />', () => {
       exit: spy,
     });
 
-    wrapper.setProps({ fullScreen: false });
+    instance.componentDidUpdate({ fullScreen: true });
 
     expect(spy).toNotHaveBeenCalled();
     expect(document.body.style.visibility).toBe('visible');
   });
 
   it('exits full screen when false and screenfull supported', () => {
-    const props = getJPlayers({ fullScreen: true }).jPlayers[id];
+    const props = getJPlayers({ fullScreen: false }).jPlayers[id];
     const wrapper = shallow(<JPlayerContainer {...props} />);
+    const instance = wrapper.instance();
     const spy = createSpy();
 
     __Rewire__('screenfull', {
@@ -227,7 +243,7 @@ describe('<JPlayerContainer />', () => {
       exit: spy,
     });
 
-    wrapper.setProps({ fullScreen: false });
+    instance.componentDidUpdate({ fullScreen: true });
 
     expect(spy).toHaveBeenCalled();
     expect(document.body.style.visibility).toBe('visible');
