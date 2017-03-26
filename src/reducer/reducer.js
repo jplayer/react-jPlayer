@@ -147,9 +147,8 @@ const updatePlayer = (jPlayer, action) => {
         case 'muted':
           return setMute(jPlayer, { mute: action.value });
         default:
-          break;
+          return updateObject(jPlayer, { [action.key]: action.value });
       }
-      return updateObject(jPlayer, { [action.key]: action.value });
     case actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);
     case actionNames.CLEAR_MEDIA:

@@ -23,7 +23,6 @@
         "import/no-extraneous-dependencies": ["error", { "devDependencies": [
             "jsdom.js",
              "**/*.spec.*{js,jsx}",
-             "**/*.acceptance.js",
              "**/*.config.*js"
         ] }],
         "no-underscore-dangle": "off"
