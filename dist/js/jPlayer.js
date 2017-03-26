@@ -2193,6 +2193,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+var formatArtistAndTitle = function formatArtistAndTitle(artist, title) {
+  var titleText = '';
+
+  if (artist !== '') {
+    titleText += '' + artist;
+  }
+
+  if (title !== '') {
+    if (artist !== '') {
+      titleText += ' - ';
+    }
+    titleText += '' + title;
+  }
+
+  return titleText;
+};
+
 var mapStateToProps = function mapStateToProps(_ref2, _ref) {
   var jPlayers = _ref2.jPlayers;
 
@@ -2201,9 +2218,7 @@ var mapStateToProps = function mapStateToProps(_ref2, _ref) {
       attributes = _objectWithoutProperties(_ref, ['id', 'children']);
 
   return {
-    title: jPlayers[id].media.title,
-    artist: jPlayers[id].media.artist,
-    children: children,
+    children: children || formatArtistAndTitle(jPlayers[id].media.artist, jPlayers[id].media.title),
     attributes: attributes
   };
 };
@@ -3647,7 +3662,7 @@ var Poster = function Poster(_ref) {
   var src = _ref.src,
       alt = _ref.alt,
       attributes = _ref.attributes;
-  return _react2.default.createElement('img', _extends({ className: _constants.classes.POSTER, alt: alt, src: src }, attributes));
+  return src !== '' ? _react2.default.createElement('img', _extends({ className: _constants.classes.POSTER, alt: alt, src: src }, attributes)) : null;
 };
 
 Poster.defaultProps = {
@@ -3786,26 +3801,18 @@ var _constants = __webpack_require__(1);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Title = function Title(_ref) {
-  var artist = _ref.artist,
-      title = _ref.title,
-      children = _ref.children,
+  var children = _ref.children,
       attributes = _ref.attributes;
-  return _react2.default.createElement(
+  return children !== '' ? _react2.default.createElement(
     'div',
     _extends({ className: _constants.classes.TITLE }, attributes),
-    children === null ? artist + ' - ' + title : children
-  );
-};
-
-Title.defaultProps = {
-  children: null
+    children
+  ) : null;
 };
 
 Title.propTypes = {
   attributes: _react2.default.PropTypes.object.isRequired,
-  children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]),
-  artist: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired,
-  title: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
+  children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
 };
 
 exports.default = Title;
