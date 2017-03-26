@@ -2,27 +2,17 @@ import React from 'react';
 
 import { classes } from '../../util/constants';
 
-const Title = ({ artist, title, children, attributes }) => (
-  <div className={classes.TITLE} {...attributes}>
-    {children === null ? `${artist} - ${title}` : children}
-  </div>
+const Title = ({ children, attributes }) => (
+  children !== '' ?
+    <div className={classes.TITLE} {...attributes}>
+      {children}
+    </div>
+  : null
 );
-
-Title.defaultProps = {
-  children: null,
-};
 
 Title.propTypes = {
   attributes: React.PropTypes.object.isRequired,
   children: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
-  ]),
-  artist: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
-  ]).isRequired,
-  title: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
   ]).isRequired,

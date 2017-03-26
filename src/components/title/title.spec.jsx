@@ -10,8 +10,7 @@ const setup = (newProps) => {
     attributes: {
       'data-test': 'test',
     },
-    artist: 'Alan Walker',
-    title: 'Fade',
+    children: 'Fade - Alan Walker',
     ...newProps,
   };
 
@@ -28,19 +27,15 @@ describe('<Title />', () => {
   let props;
 
   it('renders self and subcomponents', () => {
-    const children = <div>Alan Walker - Fade</div>;
-
-    ({ wrapper, props } = setup({ children }));
+    ({ wrapper, props } = setup());
 
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
   });
 
-  it('renders artist and title if children are not specified', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.prop('children')).toBe(`${props.artist} - ${props.title}`);
-    expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
+  it('renders null if children is empty string', () => {
+    ({ wrapper, props } = setup({ children: '' }));
+    expect(wrapper.type()).toBe(null);
   });
 });

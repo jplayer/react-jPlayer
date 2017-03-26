@@ -331,7 +331,7 @@ export default connect(mapStateToProps)(SomeRandomFunc);
 (object): All actions return an action creator that is meant to be passed to redux's `dispatch()` unless you are accessing the action from the jPlayer components props in which case you can call it directly as it has already been bound to `dispatch()`.
 
 ##### `setOption(id, key, value)`
-Sets any jPlayer option. For some properties such as `muted` you can either use this method or `setMute()`. They both do the same thing.
+Sets any jPlayer option. Some of the options can be set using the below actions as well as this method, it doesn't matter which one you use as they both do the same thing internally.
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
