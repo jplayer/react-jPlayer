@@ -82,12 +82,7 @@
     "all": true,
     "cache": true,
     "sourceMap": false,
-    "instrument": false,
-    "check-coverage": false,
-    "lines": 99,
-    "statements": 99,
-    "functions": 99,
-    "branches": 99
+    "instrument": false
   },
   "devDependencies": {
     "autoprefixer": "^6.7.3",
