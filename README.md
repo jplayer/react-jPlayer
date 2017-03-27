@@ -174,6 +174,7 @@ open http://localhost:8080/
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
 If you just want the most basic setup to get an understanding of jPlayer, you can follow the code below.
 
+jPlayer.css must be included somewhere for jPlayer to work properly.
 If you want the jPlayer to look good you will need to include the examples .css or .less files from src or dist.
 
 ```
@@ -220,8 +221,7 @@ const AudioPlayer = () => (
   </JPlayer>
 );
 
-/* All jPlayer options must be defined statically on the jPlayer component on an object called 'options'. 
-These options will be deep merged with the default jPlayer options so you actually don't 
+/* These options will be deep merged with the default jPlayer options so you actually don't 
 even need to specify any apart from the 'media.sources' and 'id' if you just want the default options. */
 
 const options = {
