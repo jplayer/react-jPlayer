@@ -125,19 +125,7 @@ For example, if you copied the `/dist/` folder to a `/packages/jPlayer/` folder 
 Module is exported to a global variable called `ReactJPlayer`.
 
 ### Examples
-Run the jPlayer examples. 
-
-```
-git clone https://github.com/MartinDawson/react-jPlayer.git
-
-cd react-jPlayer/examples
-
-npm install
-
-npm run dev
-
-open http://localhost:8080/
-```
+https://github.com/MartinDawson/react-jPlayerExamples
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers
@@ -174,7 +162,7 @@ open http://localhost:8080/
 The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
 If you just want the most basic setup to get an understanding of jPlayer, you can follow the code below.
 
-If you want the jPlayer to look good you will need to include the examples .css or .less files from src or dist.
+If you want the jPlayer to look good you will need to include the examples .less .css or files from src or dist.
 
 ```
 import React from 'react';

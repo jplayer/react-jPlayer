@@ -33,15 +33,14 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
+    "lint": "eslint --fix --ext .jsx,.js ./src",
     "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test": "cross-env BABEL_ENV=test mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm test -- -w",
-    "packages": "david && cd examples && david",
-    "packages:update": "david update && cd examples && david update",
+    "packages": "david",
+    "packages:update": "david update",
     "dist": "rimraf dist && webpack",
     "build": "rimraf lib && babel src --out-dir lib --ignore spec.js,spec.jsx",
-    "deploy": "git subtree push --prefix examples azure master",
     "preversion": "npm test && npm run lint",
     "version": "npm run dist && npm run build && git add -A dist",
     "postversion": "git push && git push --tags",
