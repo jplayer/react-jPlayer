@@ -187,14 +187,11 @@
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
 }
-.jp-sleek .jp-gui .jp-controls .jp-progress .jp-current-time {
-  float: left;
-}
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-duration {
-  float: right;
+  right: 0;
+  position: absolute;
 }
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-seek-bar {
-  position: relative;
   cursor: pointer;
   height: 100%;
 }

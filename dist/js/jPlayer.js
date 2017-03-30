@@ -1016,10 +1016,14 @@ var MediaContainer = function (_React$Component) {
         // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
         // Hasn't fully loaded the song????
         if (this.currentMedia.seekable.length > 0) {
-          this.currentMedia.currentTime = (0, _index.toRelativePercentage)(nextProps.playHeadPercent, this.getSeekableEnd());
-          /* Media events don't fire fast enough to give a smooth animation
-            when dragging so we update it here as well, same problem as above? */
-          this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
+          var seekableEnd = this.getSeekableEnd();
+
+          if (isFinite(seekableEnd)) {
+            this.currentMedia.currentTime = (0, _index.toRelativePercentage)(nextProps.playHeadPercent, seekableEnd);
+            /* Media events don't fire fast enough to give a smooth animation
+              when dragging so we update it here as well, same problem as above? */
+            this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
+          }
         }
       }
 
@@ -2745,9 +2749,8 @@ var updatePlayer = function updatePlayer(jPlayer, action) {
         case 'muted':
           return setMute(jPlayer, { mute: action.value });
         default:
-          break;
+          return (0, _index.updateObject)(jPlayer, _defineProperty({}, action.key, action.value));
       }
-      return (0, _index.updateObject)(jPlayer, _defineProperty({}, action.key, action.value));
     case _constants.actionNames.SET_MEDIA:
       return setMedia(jPlayer, action);
     case _constants.actionNames.CLEAR_MEDIA:
