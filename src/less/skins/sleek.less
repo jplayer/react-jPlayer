@@ -153,14 +153,13 @@
         .jp-duration {
           .time;
         }
-        .jp-current-time {
-          float: left;
-        }
         .jp-duration {
-          float: right;
+          right: 0;
+          position: absolute;
         }
         .jp-seek-bar {
-          position: relative;
+          cursor:pointer;
+          height:100%;
           .jp-play-bar {
             background-color:@foregroundColour;
             height:100%;
@@ -172,8 +171,6 @@
             position:absolute;
             display: block;
           }
-          cursor:pointer;
-          height:100%;
         }
       }
 
