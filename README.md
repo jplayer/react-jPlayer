@@ -281,7 +281,7 @@ The connected jPlayer. Any additional props that you passed in are passed throug
 ### Props
 jPlayer automatically passes the following in to your jPlayer component:
 
-- `[id]` (string): The current jPlayer's id. This is the same as the name you declared the jPlayer component as.
+- `[id]` (string): The current jPlayer's id that you supplied through the options.
 - [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlayer properties at runtime.
 - [`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): Options that the jPlayer is using.
 - [`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): Status properties of the jPlayer. Treat these as immutable.
