@@ -1,5 +1,5 @@
 export const actionNames = {
-  SET_OPTION: 'SET_OPTION',
+  SET_OPTION: 'SET_JPLAYER_OPTION',
   SET_MEDIA: 'SET_MEDIA',
   CLEAR_MEDIA: 'CLEAR_MEDIA',
   PLAY: 'PLAY',

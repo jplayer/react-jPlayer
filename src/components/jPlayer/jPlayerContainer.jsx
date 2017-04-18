@@ -42,11 +42,6 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   },
 });
 
-const mapDispatchToProps = () => ({
-  setMedia,
-  setOption,
-});
-
 class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
@@ -58,9 +53,8 @@ class JPlayerContainer extends React.Component {
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
       }).isRequired,
-      setOption: React.PropTypes.func.isRequired,
-      setMedia: React.PropTypes.func.isRequired,
       id: React.PropTypes.string.isRequired,
+      dispatch: React.PropTypes.func.isRequired,
       error: React.PropTypes.shape({
         context: React.PropTypes.string,
         message: React.PropTypes.string,
@@ -89,7 +83,7 @@ class JPlayerContainer extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.setMedia(this.props.id, this.props.media);
+    // this.props.dispatch(setMedia(this.props.id, this.props.media));
     this.requestFullScreen();
   }
   componentWillReceiveProps(nextProps) {
@@ -143,19 +137,19 @@ class JPlayerContainer extends React.Component {
   startGuiFadeOutTimer = () => {
     if (this.props.fullScreen && !this.props.paused) {
       clearTimeout(this.props.guiFadeHoldTimeout);
-      this.props.setOption(this.props.id, 'guiFadeOut', false);
-      this.props.setOption(this.props.id, 'guiFadeHoldTimeout', setTimeout(this.startGuiFadeOut,
-        this.props.guiFadeHoldTime));
+      this.props.dispatch(setOption(this.props.id, 'guiFadeOut', false));
+      this.props.dispatch(setOption(this.props.id, 'guiFadeHoldTimeout', setTimeout(this.startGuiFadeOut,
+        this.props.guiFadeHoldTime)));
     }
   }
   startGuiFadeOut = () => {
     if (this.props.fullScreen && !this.props.paused) {
-      this.props.setOption(this.props.id, 'guiFadeOut', true);
+      this.props.dispatch(setOption(this.props.id, 'guiFadeOut', true));
     }
   }
   closeFullScreen = () => {
     if (!screenfull.isFullscreen) {
-      this.props.setOption(this.props.id, 'fullScreen', false);
+      this.props.dispatch(setOption(this.props.id, 'fullScreen', false));
     }
   }
   // eslint-disable-next-line no-console
@@ -164,7 +158,7 @@ class JPlayerContainer extends React.Component {
     return (
       <JPlayer
         setJPlayer={this.setJPlayer} keyEnabled={this.props.keyEnabled}
-        onMouseMove={this.onMouseMove} {...this.props.attributes}
+        onMouseMove={this.onMouseMove} {...{ id: this.props.id, ...this.props.attributes }}
       >
         {this.props.children}
       </JPlayer>
@@ -172,4 +166,4 @@ class JPlayerContainer extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps, mapDispatchToProps())(JPlayerContainer);
+export default connectWithId(mapStateToProps)(JPlayerContainer);

@@ -1,7 +1,6 @@
-import React from 'react';
 import { connect } from 'react-redux';
+import { connect as jPlayerConnect, jPlayerDefaultOptions, jPlayerDefaultStatus } from 'react-jplayer-utils';
 
-import { defaultOptions, defaultStatus } from '../util/constants';
 import { setOption, setMedia, clearMedia, play, pause, setPlayHead,
   setVolume, setMute, focus } from '../actions/actions';
 
@@ -13,13 +12,13 @@ const mapStateToProps = ({ jPlayers }, { id, ...props }) => {
     const options = {};
     const status = {};
 
-    Object.keys(defaultOptions).forEach((key) => {
+    Object.keys(jPlayerDefaultOptions).forEach((key) => {
       if (jPlayer[key] !== undefined) {
         options[key] = jPlayer[key];
       }
     });
 
-    Object.keys(defaultStatus).forEach((key) => {
+    Object.keys(jPlayerDefaultStatus).forEach((key) => {
       if (jPlayer[key] !== undefined) {
         status[key] = jPlayer[key];
       }
@@ -59,27 +58,9 @@ const mapDispatchToProps = {
 };
 
 const Connect = (jPlayer, options) => {
-  const ConnectedPlayer = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
+  const ConnectedPlaylist = connect(mapStateToProps, mapDispatchToProps)(jPlayer);
 
-  return class ConnectedJPlayer extends React.Component {
-    static get jPlayer() {
-      return jPlayer;
-    }
-    static get options() {
-      return options;
-    }
-    static get childContextTypes() {
-      return {
-        id: React.PropTypes.string,
-      };
-    }
-    getChildContext = () => ({
-      id: options.id,
-    });
-    render() {
-      return <ConnectedPlayer id={options.id} {...this.props} />;
-    }
-  };
+  return jPlayerConnect(jPlayer, options, ConnectedPlaylist);
 };
 
 export default Connect;
