@@ -6,4 +6,4 @@ export default connectedJPlayers =>
     ...jPlayerInternalStatus,
     ...jPlayerDefaultStatus,
     ...jPlayerDefaultOptions,
-});
+}, 'options');
