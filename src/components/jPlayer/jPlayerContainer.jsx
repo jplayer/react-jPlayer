@@ -13,7 +13,7 @@ Object.keys(formats).forEach((key) => {
   formatPropTypes[key] = React.PropTypes.string;
 });
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children, customStates, ...attributes }) => ({
   media: jPlayers[id].media,
   error: jPlayers[id].error,
   fullScreen: jPlayers[id].fullScreen,
@@ -38,6 +38,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
       [classes.states.LOOPED]: jPlayers[id].loop,
       [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
       [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
+      ...customStates,
     }),
   },
 });

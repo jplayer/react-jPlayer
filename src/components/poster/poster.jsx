@@ -3,7 +3,7 @@ import React from 'react';
 import { classes } from '../../util/constants';
 
 const Poster = ({ src, alt, attributes }) => (
-  src !== null ? <img className={classes.POSTER} alt={alt} src={src} {...attributes} />
+  src !== '' ? <img className={classes.POSTER} alt={alt} src={src} {...attributes} />
     : null
 );
 

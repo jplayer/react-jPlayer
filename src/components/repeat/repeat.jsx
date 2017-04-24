@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -9,11 +10,14 @@ const Repeat = ({ onClick, id, loop, children, attributes }) => (
 );
 
 Repeat.propTypes = {
-  loop: React.PropTypes.bool.isRequired,
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node.isRequired,
-  id: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  loop: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+  ]).isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+  id: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Repeat;
