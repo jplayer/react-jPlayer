@@ -53,6 +53,7 @@ class JPlayerContainer extends React.Component {
         sources: React.PropTypes.shape(formatPropTypes).isRequired,
         poster: React.PropTypes.string,
         free: React.PropTypes.bool,
+        id: React.PropTypes.string.isRequired,
       }).isRequired,
       id: React.PropTypes.string.isRequired,
       dispatch: React.PropTypes.func.isRequired,

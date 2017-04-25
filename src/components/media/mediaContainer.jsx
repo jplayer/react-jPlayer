@@ -19,6 +19,7 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   autoplay: jPlayers[id].autoplay,
   newTime: jPlayers[id].newTime,
   timeFormats: jPlayers[id].timeFormats,
+  mediaId: jPlayers[id].media.id,
   children,
 });
 
@@ -60,6 +61,7 @@ class MediaContainer extends React.Component {
       setOption: React.PropTypes.func.isRequired,
       pause: React.PropTypes.func.isRequired,
       id: React.PropTypes.string.isRequired,
+      mediaId: React.PropTypes.string.isRequired,
       timeFormats: React.PropTypes.shape({
         showHour: React.PropTypes.bool.isRequired,
         showMin: React.PropTypes.bool.isRequired,
@@ -190,7 +192,7 @@ class MediaContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.updateCurrentMedia(nextProps);
 
-    if (nextProps.src !== this.props.src &&
+    if (nextProps.mediaId !== this.props.mediaId &&
         nextProps.src !== '') {
       this.currentMedia.src = nextProps.src;
     }
