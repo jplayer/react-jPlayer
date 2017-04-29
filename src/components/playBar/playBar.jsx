@@ -1,5 +1,6 @@
 import React from 'react';
 import { Motion, spring } from 'react-motion';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -19,10 +20,10 @@ const PlayBar = ({ currentPercentAbsolute, currentPercentRelative,
 );
 
 PlayBar.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  currentPercentRelative: React.PropTypes.number.isRequired,
-  currentPercentAbsolute: React.PropTypes.number.isRequired,
-  smoothPlayBar: React.PropTypes.bool.isRequired,
+  attributes: PropTypes.object.isRequired,
+  currentPercentRelative: PropTypes.number.isRequired,
+  currentPercentAbsolute: PropTypes.number.isRequired,
+  smoothPlayBar: PropTypes.bool.isRequired,
 };
 
 export default PlayBar;

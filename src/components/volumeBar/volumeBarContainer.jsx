@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
 import { setVolume } from '../../actions/actions';
 import Bar from '../bar';
@@ -49,10 +51,10 @@ VolumeBarContainer.defaultProps = {
 };
 
 VolumeBarContainer.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node,
-  onClick: React.PropTypes.func.isRequired,
-  onTouchMove: React.PropTypes.func.isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  onClick: PropTypes.func.isRequired,
+  onTouchMove: PropTypes.func.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(VolumeBarContainer);

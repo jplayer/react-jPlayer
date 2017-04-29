@@ -60,7 +60,7 @@ const MockJPlayer = ({ setJPlayer }) =>
   <div ref={setJPlayer} />;
 
 MockJPlayer.propTypes = {
-  setJPlayer: React.PropTypes.func.isRequired,
+  setJPlayer: PropTypes.func.isRequired,
 };
 
 describe('<JPlayerContainer />', () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Motion, spring } from 'react-motion';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -14,7 +15,6 @@ const motion = (values, onMouseMove, attributes) => (
   />
 );
 
-// TODO: onMouseEnter instead of mouseMove?
 const Gui = ({ fullScreen, guiFadeOut, onMouseMove, ...attributes }) => (
   <Motion
     defaultStyle={{ opacity: 1 }}
@@ -25,13 +25,13 @@ const Gui = ({ fullScreen, guiFadeOut, onMouseMove, ...attributes }) => (
 );
 
 Gui.propTypes = {
-  onMouseMove: React.PropTypes.func.isRequired,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
+  onMouseMove: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
   ]).isRequired,
-  guiFadeOut: React.PropTypes.bool.isRequired,
-  fullScreen: React.PropTypes.bool.isRequired,
+  guiFadeOut: PropTypes.bool.isRequired,
+  fullScreen: PropTypes.bool.isRequired,
 };
 
 export default Gui;

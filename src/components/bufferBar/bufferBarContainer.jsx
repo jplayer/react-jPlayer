@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { connectWithId } from '../../util/index';
 import BufferBar from './bufferBar';
@@ -13,14 +14,14 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
 class BufferBarContainer extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.object.isRequired,
-      bufferedTimeRanges: React.PropTypes.arrayOf(React.PropTypes.shape({
-        start: React.PropTypes.number.isRequired,
-        end: React.PropTypes.number.isRequired,
+      attributes: PropTypes.object.isRequired,
+      bufferedTimeRanges: PropTypes.arrayOf(PropTypes.shape({
+        start: PropTypes.number.isRequired,
+        end: PropTypes.number.isRequired,
       })).isRequired,
       /* eslint-disable react/no-unused-prop-types */
-      bufferColour: React.PropTypes.string.isRequired,
-      duration: React.PropTypes.number.isRequired,
+      bufferColour: PropTypes.string.isRequired,
+      duration: PropTypes.number.isRequired,
       /* eslint-enable react/no-unused-prop-types */
     };
   }

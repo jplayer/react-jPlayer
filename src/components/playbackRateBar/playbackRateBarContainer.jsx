@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
 import { setOption } from '../../actions/actions';
 import Bar from '../bar';
@@ -60,10 +62,10 @@ PlaybackRateBarContainer.defaultProps = {
 };
 
 PlaybackRateBarContainer.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node,
-  onClick: React.PropTypes.func.isRequired,
-  onTouchMove: React.PropTypes.func.isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  onClick: PropTypes.func.isRequired,
+  onTouchMove: PropTypes.func.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);

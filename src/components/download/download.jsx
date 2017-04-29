@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -15,10 +16,10 @@ const Download = ({ free, url, children, attributes }) => (
 );
 
 Download.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node.isRequired,
-  url: React.PropTypes.string.isRequired,
-  free: React.PropTypes.bool.isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+  url: PropTypes.string.isRequired,
+  free: PropTypes.bool.isRequired,
 };
 
 export default Download;

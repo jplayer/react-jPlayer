@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { classes } from '../../util/constants';
 
 const BrowserUnsupported = ({ foundSupported, children, attributes }) => (
@@ -19,9 +21,9 @@ BrowserUnsupported.defaultProps = {
 };
 
 BrowserUnsupported.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node,
-  foundSupported: React.PropTypes.bool.isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  foundSupported: PropTypes.bool.isRequired,
 };
 
 export default BrowserUnsupported;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -10,8 +11,8 @@ const BufferBar = ({ setCanvas, attributes }) => (
 );
 
 BufferBar.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  setCanvas: React.PropTypes.func.isRequired,
+  attributes: PropTypes.object.isRequired,
+  setCanvas: PropTypes.func.isRequired,
 };
 
 export default BufferBar;

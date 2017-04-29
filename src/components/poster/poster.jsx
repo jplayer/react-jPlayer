@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -13,9 +14,9 @@ Poster.defaultProps = {
 };
 
 Poster.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  src: React.PropTypes.string,
-  alt: React.PropTypes.string,
+  attributes: PropTypes.object.isRequired,
+  src: PropTypes.string,
+  alt: PropTypes.string,
 };
 
 export default Poster;

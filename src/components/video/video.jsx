@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
@@ -18,33 +19,33 @@ Video.defaultProps = {
 };
 
 Video.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node,
-  require: React.PropTypes.bool.isRequired,
-  events: React.PropTypes.shape({
-    onAbort: React.PropTypes.func,
-    onCanPlay: React.PropTypes.func,
-    onCanPlayThrough: React.PropTypes.func,
-    onDurationChange: React.PropTypes.func,
-    onEmptied: React.PropTypes.func,
-    onEncrypted: React.PropTypes.func,
-    onEnded: React.PropTypes.func,
-    onError: React.PropTypes.func,
-    onLoadedData: React.PropTypes.func,
-    onLoadedMetadata: React.PropTypes.func,
-    onLoadStart: React.PropTypes.func,
-    onPause: React.PropTypes.func,
-    onPlay: React.PropTypes.func,
-    onPlaying: React.PropTypes.func,
-    onProgress: React.PropTypes.func,
-    onRateChange: React.PropTypes.func,
-    onSeeked: React.PropTypes.func,
-    onSeeking: React.PropTypes.func,
-    onStalled: React.PropTypes.func,
-    onSuspend: React.PropTypes.func,
-    onTimeUpdate: React.PropTypes.func,
-    onVolumeChange: React.PropTypes.func,
-    onWaiting: React.PropTypes.func,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  require: PropTypes.bool.isRequired,
+  events: PropTypes.shape({
+    onAbort: PropTypes.func,
+    onCanPlay: PropTypes.func,
+    onCanPlayThrough: PropTypes.func,
+    onDurationChange: PropTypes.func,
+    onEmptied: PropTypes.func,
+    onEncrypted: PropTypes.func,
+    onEnded: PropTypes.func,
+    onError: PropTypes.func,
+    onLoadedData: PropTypes.func,
+    onLoadedMetadata: PropTypes.func,
+    onLoadStart: PropTypes.func,
+    onPause: PropTypes.func,
+    onPlay: PropTypes.func,
+    onPlaying: PropTypes.func,
+    onProgress: PropTypes.func,
+    onRateChange: PropTypes.func,
+    onSeeked: PropTypes.func,
+    onSeeking: PropTypes.func,
+    onStalled: PropTypes.func,
+    onSuspend: PropTypes.func,
+    onTimeUpdate: PropTypes.func,
+    onVolumeChange: PropTypes.func,
+    onWaiting: PropTypes.func,
   }),
 };
 

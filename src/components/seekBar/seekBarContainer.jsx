@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { connectWithId, getWidth, getOffset } from '../../util/index';
 import { setPlayHead } from '../../actions/actions';
 import Bar from '../bar';
@@ -44,11 +46,11 @@ SeekBarContainer.defaultProps = {
 };
 
 SeekBarContainer.propTypes = {
-  children: React.PropTypes.node,
-  attributes: React.PropTypes.object.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  onTouchMove: React.PropTypes.func.isRequired,
-  seekPercent: React.PropTypes.number.isRequired,
+  children: PropTypes.node,
+  attributes: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onTouchMove: PropTypes.func.isRequired,
+  seekPercent: PropTypes.number.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(SeekBarContainer);

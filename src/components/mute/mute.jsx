@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -9,11 +10,11 @@ const Mute = ({ onClick, id, muted, children, attributes }) => (
 );
 
 Mute.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  id: React.PropTypes.string.isRequired,
-  children: React.PropTypes.node.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  muted: React.PropTypes.bool.isRequired,
+  attributes: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
+  muted: PropTypes.bool.isRequired,
 };
 
 export default Mute;

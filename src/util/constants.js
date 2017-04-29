@@ -209,5 +209,3 @@ export const defaultOptions = {
     sepSec: '',
   },
 };
-
-export const keyIgnoreElementNames = ['INPUT', 'TEXTAREA', 'SELECT'];

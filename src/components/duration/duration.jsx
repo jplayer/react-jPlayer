@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -11,8 +12,8 @@ const Duration = ({ children, attributes }) => (
 );
 
 Duration.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.string.isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 export default Duration;

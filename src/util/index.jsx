@@ -1,11 +1,11 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { compose, getContext } from 'recompose';
+import PropTypes from 'prop-types';
 
 import { errors, hints } from './constants';
 
 export const connectWithId = (...args) => compose(
-  getContext({ id: React.PropTypes.string }),
+  getContext({ id: PropTypes.string }),
   connect(...args),
 );
 

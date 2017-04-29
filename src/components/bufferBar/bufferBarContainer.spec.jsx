@@ -26,7 +26,7 @@ const MockBufferBar = ({ setCanvas }) => <canvas ref={setCanvas} />;
 __Rewire__('BufferBar', MockBufferBar);
 
 MockBufferBar.propTypes = {
-  setCanvas: React.PropTypes.func.isRequired,
+  setCanvas: PropTypes.func.isRequired,
 };
 
 describe('<BufferBarContainer />', () => {
