@@ -21,6 +21,8 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   newTime: jPlayers[id].newTime,
   timeFormats: jPlayers[id].timeFormats,
   mediaId: jPlayers[id].media.id,
+  otherJPlayerIds: Object.keys(jPlayers).filter(key => key !== id),
+  pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
   children,
 });
 
@@ -63,6 +65,10 @@ class MediaContainer extends React.Component {
       pause: PropTypes.func.isRequired,
       id: PropTypes.string.isRequired,
       mediaId: PropTypes.string,
+      pauseOthersOnPlay: PropTypes.bool.isRequired,
+      otherJPlayerIds: PropTypes.arrayOf(
+        PropTypes.string,
+      ).isRequired,
       timeFormats: PropTypes.shape({
         showHour: PropTypes.bool.isRequired,
         showMin: PropTypes.bool.isRequired,
@@ -150,6 +156,11 @@ class MediaContainer extends React.Component {
       onPause: this.props.onPause,
       onPlay: () => {
         this.props.setOption(this.props.id, 'paused', false);
+
+        if (this.props.pauseOthersOnPlay) {
+          this.pauseOthers();
+        }
+
         this.props.onPlay();
       },
       onPlaying: this.props.onPlaying,
@@ -273,6 +284,9 @@ class MediaContainer extends React.Component {
     const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
 
     this.props.setOption(this.props.id, 'currentTimeText', currentTimeText);
+  }
+  pauseOthers = () => {
+    this.props.otherJPlayerIds.forEach(id => this.props.pause(id));
   }
   updateMediaStatus = () => {
     let seekPercent = 0;
