@@ -141,6 +141,9 @@
   border-spacing: 5px 0;
   margin: 0 auto;
 }
+.jp-sleek .jp-gui .jp-controls button {
+  font-size: inherit;
+}
 .jp-sleek .jp-gui .jp-controls .jp-title-container {
   font-size: 12px;
 }
