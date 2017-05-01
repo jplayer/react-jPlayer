@@ -125,7 +125,7 @@ For example, if you copied the `/dist/` folder to a `/packages/jPlayer/` folder 
 Module is exported to a global variable called `ReactJPlayer`.
 
 ### Examples
-The examples need simplyifing is at the top of my priorities list.
+The examples need simplyifing greatly and it is at the top of my priorities list.
 
 New users should use this repo for most basic setup:
 https://github.com/MartinDawson/react-jPlayer-basic
