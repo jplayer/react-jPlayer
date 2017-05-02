@@ -1,4 +1,4 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import Audio from './audio';
 
 const mapStateToProps = ({ jPlayers }, { id, events, children, ...attributes }) => ({

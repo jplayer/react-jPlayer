@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { connectWithId } from '../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   barDrag: jPlayers[id].barDrag,

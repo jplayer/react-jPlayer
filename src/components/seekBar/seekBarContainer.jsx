@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connectWithId, getElementOffset } from 'react-jplayer-utils';
 
-import { connectWithId, getWidth, getOffset } from '../../util/index';
 import { setPlayHead } from '../../actions/actions';
 import Bar from '../bar';
 import SeekBar from './seekBar';
@@ -9,9 +9,9 @@ import SeekBar from './seekBar';
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   seekPercent: jPlayers[id].seekPercent,
   movePlayHead: (bar, dispatch, e) => {
-    const offset = getOffset(bar);
+    const offset = getElementOffset(bar);
     const x = e.pageX - offset.left;
-    const w = getWidth(bar);
+    const w = bar.getBoundingClientRect().width;
     const percentage = 100 * (x / w);
 
     dispatch(setPlayHead(id, percentage));

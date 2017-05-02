@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connectWithId, toPercentage, toRelativePercentage,
+  convertTime, canSetVolume } from 'react-jplayer-utils';
 
-import { connectWithId, urlNotSupportedError, convertTime, canSetVolume,
-  toPercentage, toRelativePercentage } from '../../util/index';
+import urlNotSupportedError from '../../util/errorHandlers/urlNotSupportedError';
 import { setOption, pause } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id, children }) => ({

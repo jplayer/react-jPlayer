@@ -1,4 +1,4 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import VolumeBarValue from './volumeBarValue';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({

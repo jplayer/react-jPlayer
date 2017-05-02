@@ -1,4 +1,4 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import { setOption } from '../../actions/actions';
 import FullScreen from './fullScreen';
 

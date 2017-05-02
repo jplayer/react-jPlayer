@@ -1,8 +1,10 @@
 import shortid from 'shortid';
+import { updateObject, limitValue } from 'react-jplayer-utils';
 
 import { actionNames, formats, defaultStatus, internalStatus,
    defaultOptions } from '../util/constants';
-import { limitValue, updateObject, urlNotSetError, noFormatSupportedError } from '../util/index';
+import urlNotSetError from '../util/errorHandlers/urlNotSetError';
+import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
 
 const updateFormats = (jPlayer, media) => {
   const newMediaSettings = { ...jPlayer.mediaSettings };

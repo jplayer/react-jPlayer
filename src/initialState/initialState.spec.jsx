@@ -3,7 +3,7 @@ import expect from 'expect';
 import merge from 'lodash.merge';
 
 import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
-import getInitialStates from './getInitialStates';
+import initialState from './initialState';
 
 const MockJPlayer = () => <div />;
 const MockJPlayerTwo = () => <div />;
@@ -29,10 +29,10 @@ const mockJPlayerTwoOptions = {
   id: 'MockJPlayerTwo',
 };
 
-describe('getInitialStates', () => {
+describe('initialState', () => {
   it('sets initial state correctly with one player', () => {
     const connectedMockJPlayer = connectMock(MockJPlayer, mockJPlayerOneOptions);
-    const jPlayerInitialStates = getInitialStates(connectedMockJPlayer);
+    const jPlayerInitialStates = initialState(connectedMockJPlayer);
 
     expect(jPlayerInitialStates).toEqual({
       jPlayers: {
@@ -50,7 +50,7 @@ describe('getInitialStates', () => {
       connectMock(MockJPlayer, mockJPlayerOneOptions),
       connectMock(MockJPlayerTwo, mockJPlayerTwoOptions),
     ];
-    const jPlayerInitialStates = getInitialStates(connectedMockJPlayers);
+    const jPlayerInitialStates = initialState(connectedMockJPlayers);
 
     expect(jPlayerInitialStates).toEqual({
       jPlayers: {

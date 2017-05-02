@@ -1,12 +1,13 @@
-import { initialState, jPlayerDefaultOptions, jPlayerInternalStatus,
-  jPlayerDefaultStatus } from 'react-jplayer-utils';
+import { initialState } from 'react-jplayer-utils';
 import shortid from 'shortid';
+
+import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
 
 export default (connectedJPlayers) => {
   const jPlayers = initialState(connectedJPlayers, {
-    ...jPlayerInternalStatus,
-    ...jPlayerDefaultStatus,
-    ...jPlayerDefaultOptions,
+    ...internalStatus,
+    ...defaultStatus,
+    ...defaultOptions,
   }, 'options');
 
   Object.keys(jPlayers).forEach((key) => {

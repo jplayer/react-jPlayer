@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connectWithId, getElementOffset } from 'react-jplayer-utils';
 
-import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
 import { setOption } from '../../actions/actions';
 import Bar from '../bar';
 import PlaybackRateBar from './playbackRateBar';
@@ -11,11 +11,11 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   movePlaybackRate: (bar, dispatch, e) => {
     const { verticalPlaybackRate, minPlaybackRate,
       maxPlaybackRate } = jPlayers[id];
-    const offset = getOffset(bar);
+    const offset = getElementOffset(bar);
+    const w = bar.getBoundingClientRect().width;
+    const h = bar.getBoundingClientRect().height;
     const x = e.pageX - offset.left;
-    const w = getWidth(bar);
-    const y = (getHeight(bar) - e.pageY) + offset.top;
-    const h = getHeight(bar);
+    const y = (h - e.pageY) + offset.top;
     let ratio;
 
     if (verticalPlaybackRate) {

@@ -153,6 +153,7 @@ export const internalStatus = {
     foundSupported: false,
     formats: [],
   },
+  volumeSupported: false,
 };
 
 export const defaultStatus = {
@@ -179,6 +180,7 @@ export const defaultOptions = {
   bufferColour: '#ddd',
   volume: 0.8,
   barDrag: true,
+  pauseOthersOnPlay: true,
   guiFadeHoldTime: 3000,
   media: {
     sources: {},

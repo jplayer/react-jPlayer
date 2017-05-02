@@ -2,11 +2,10 @@ import React from 'react';
 import screenfull from 'screenfull';
 import classNames from 'classnames';
 import merge from 'lodash.merge';
-import { KeyControl } from 'react-jplayer-utils';
+import { connectWithId, traverseParentsUntilClassName, KeyControl } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
 import formatPropTypes from '../../util/formatPropTypes';
-import { connectWithId, traverseParentsUntilClassName } from '../../util/index';
 import { classes } from '../../util/constants';
 import JPlayer from './jPlayer';
 import { setOption, setMedia, play, pause, setMute, setVolume } from '../../actions/actions';

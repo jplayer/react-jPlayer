@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import BufferBar from './bufferBar';
 
 const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({

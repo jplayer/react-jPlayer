@@ -1,6 +1,6 @@
 import expect from 'expect';
+import { convertTime } from 'react-jplayer-utils';
 
-import { convertTime } from './index';
 import { defaultOptions } from './constants';
 
 describe('convertTime', () => {

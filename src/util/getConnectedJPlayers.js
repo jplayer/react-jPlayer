@@ -1,4 +1,4 @@
-import { jPlayerDefaultOptions, jPlayerDefaultStatus } from 'react-jplayer-utils';
+import { defaultOptions, defaultStatus } from '../util/constants';
 
 export default (jPlayers) => {
   const newJPlayers = {};
@@ -8,13 +8,13 @@ export default (jPlayers) => {
     const options = {};
     const status = {};
 
-    Object.keys(jPlayerDefaultOptions).forEach((key) => {
+    Object.keys(defaultOptions).forEach((key) => {
       if (jPlayer[key] !== undefined) {
         options[key] = jPlayer[key];
       }
     });
 
-    Object.keys(jPlayerDefaultStatus).forEach((key) => {
+    Object.keys(defaultStatus).forEach((key) => {
       if (jPlayer[key] !== undefined) {
         status[key] = jPlayer[key];
       }

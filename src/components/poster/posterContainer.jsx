@@ -1,4 +1,4 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import Poster from './poster';
 
 const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
