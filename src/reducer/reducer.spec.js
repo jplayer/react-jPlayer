@@ -1,7 +1,7 @@
 import expect, { createSpy, spyOn } from 'expect';
 
 import reducer from './reducer';
-import * as reducerData from './reducerData.spec';
+import * as reducerData from '../util/mockData/mockReducerData';
 import { actionNames, defaultOptions, formats } from '../util/constants';
 import { getDefaultJPlayers, getJPlayers } from '../util/common.spec';
 

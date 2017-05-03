@@ -1,5 +1,5 @@
 import { defaultOptions, defaultStatus, actionNames,
-  errors, hints } from '../util/constants';
+  errors, hints } from '../../util/constants';
 
 const jPlayerOneId = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
