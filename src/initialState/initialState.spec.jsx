@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import merge from 'lodash.merge';
 
-import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
+import { defaultOptions, defaultStatus } from '../util/constants';
 import initialState from './initialState';
 
 const MockJPlayer = () => <div />;
@@ -37,7 +37,6 @@ describe('initialState', () => {
     expect(jPlayerInitialStates).toEqual({
       jPlayers: {
         MockJPlayer: merge({}, {
-          ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
         }, mockJPlayerOneOptions),
@@ -55,12 +54,10 @@ describe('initialState', () => {
     expect(jPlayerInitialStates).toEqual({
       jPlayers: {
         MockJPlayer: merge({}, {
-          ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
         }, mockJPlayerOneOptions),
         MockJPlayerTwo: merge({}, {
-          ...internalStatus,
           ...defaultStatus,
           ...defaultOptions,
         }, mockJPlayerTwoOptions),

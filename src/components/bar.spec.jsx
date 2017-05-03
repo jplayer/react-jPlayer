@@ -1,6 +1,7 @@
 import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow, mount } from 'enzyme';
+import PropTypes from 'prop-types';
 
 import { getJPlayers } from '../util/common.spec';
 import { __get__ } from './bar';

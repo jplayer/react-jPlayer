@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 
 import { getJPlayers } from '../../util/common.spec';
-import { internalStatus } from '../../util/constants';
+import { defaultStatus } from '../../util/constants';
 import { __get__ } from './browserUnsupportedContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -17,7 +17,7 @@ describe('BrowserUnsupportedContainer', () => {
     const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
 
     expect(expected).toEqual({
-      foundSupported: internalStatus.mediaSettings.foundSupported,
+      foundSupported: defaultStatus.mediaSettings.foundSupported,
       attributes,
       children,
     });

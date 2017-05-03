@@ -143,7 +143,7 @@ export const formats = {
   },
 };
 
-export const internalStatus = {
+export const defaultStatus = {
   newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
   guiFadeOut: false,
   playHeadPercent: 0,
@@ -154,9 +154,6 @@ export const internalStatus = {
     formats: [],
   },
   volumeSupported: false,
-};
-
-export const defaultStatus = {
   paused: true,
   seeking: false,
   src: '',

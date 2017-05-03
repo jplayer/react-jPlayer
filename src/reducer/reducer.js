@@ -1,8 +1,7 @@
 import shortid from 'shortid';
 import { updateObject, limitValue } from 'react-jplayer-utils';
 
-import { actionNames, formats, defaultStatus, internalStatus,
-   defaultOptions } from '../util/constants';
+import { actionNames, formats, defaultStatus, defaultOptions } from '../util/constants';
 import urlNotSetError from '../util/errorHandlers/urlNotSetError';
 import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
 
@@ -42,7 +41,7 @@ const clearMedia = jPlayer => updateObject(jPlayer, {
 const setMedia = (jPlayer, { media = { sources: [] } }) => {
   let newJPlayer = {
     ...clearMedia(jPlayer),
-    mediaSettings: internalStatus.mediaSettings,
+    mediaSettings: defaultStatus.mediaSettings,
   };
 
   newJPlayer = updateFormats(newJPlayer, media);

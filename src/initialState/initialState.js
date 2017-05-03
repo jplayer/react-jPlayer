@@ -1,10 +1,9 @@
 import { initialState } from 'react-jplayer-utils';
 
-import { defaultOptions, defaultStatus, internalStatus } from '../util/constants';
+import { defaultOptions, defaultStatus } from '../util/constants';
 
 export default (connectedJPlayers) => {
   const jPlayers = initialState(connectedJPlayers, {
-    ...internalStatus,
     ...defaultStatus,
     ...defaultOptions,
   }, 'options');
