@@ -1,38 +1,34 @@
 import React from 'react';
 import expect from 'expect';
 
-import { getJPlayers } from '../../util/common.spec';
 import { __get__ } from './audioContainer';
+import { events } from './audio.spec';
+import mockJPlayer from '../../util/mockData/mockJPlayer';
 
 const mapStateToProps = __get__('mapStateToProps');
-const videoStates = [
-  { mediaSettings: { video: false } },
-  { mediaSettings: { video: true } },
-];
 const attributes = {
   'data-test': 'test',
 };
 const children = <div />;
 const id = 'jPlayer-1';
-const events = {
-  onProgress: null,
-};
 
 describe('AudioContainer', () => {
+  let jPlayers;
+
+  beforeEach(() => {
+    jPlayers = {
+      [id]: mockJPlayer,
+    };
+  });
+
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, events, children, ...attributes });
-    expect(expected).toEqual({
+    const stateProps = mapStateToProps({ jPlayers }, { id, events, children, ...attributes });
+
+    expect(stateProps).toEqual({
       require: true,
       events,
       children,
       attributes,
-    });
-  });
-
-  videoStates.forEach((videoState) => {
-    it(`require if no video (value: ${videoState.mediaSettings.video})`, () => {
-      const expected = mapStateToProps(getJPlayers(videoState), { id });
-      expect(expected.require).toBe(!videoState.mediaSettings.video);
     });
   });
 });

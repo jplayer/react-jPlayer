@@ -21,7 +21,7 @@ const setup = () => {
   };
 };
 
-describe('<BufferBar />', () => {
+describe('BufferBar', () => {
   let wrapper;
   let props;
 

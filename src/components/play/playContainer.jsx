@@ -1,5 +1,6 @@
-import { play, pause } from '../../actions/actions';
 import { connectWithId } from 'react-jplayer-utils';
+
+import { play, pause } from '../../actions/actions';
 import Play from './play';
 
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({

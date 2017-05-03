@@ -23,7 +23,8 @@
         "import/no-extraneous-dependencies": ["error", { "devDependencies": [
             "jsdom.js",
              "**/*.spec.*{js,jsx}",
-             "**/*.config.*js"
+             "**/*.config.*js",
+             "src/util/mockData/**/*"
         ] }],
         "no-underscore-dangle": "off"
     },

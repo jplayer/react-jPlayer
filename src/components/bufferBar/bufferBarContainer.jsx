@@ -19,18 +19,16 @@ class BufferBarContainer extends React.Component {
         start: PropTypes.number.isRequired,
         end: PropTypes.number.isRequired,
       })).isRequired,
-      /* eslint-disable react/no-unused-prop-types */
       bufferColour: PropTypes.string.isRequired,
       duration: PropTypes.number.isRequired,
-      /* eslint-enable react/no-unused-prop-types */
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
-      if (nextProps.bufferedTimeRanges.length === 0) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
+      if (this.props.bufferedTimeRanges.length === 0) {
         this.clearBuffer();
       }
-      this.fillBufferPartially(nextProps);
+      this.fillBufferPartially();
     }
   }
   setCanvas = (ref) => {
@@ -39,16 +37,16 @@ class BufferBarContainer extends React.Component {
   clearBuffer = () => {
     this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
-  fillBufferPartially = ({ bufferedTimeRanges, bufferColour, duration }) => {
-    const modifier = this.canvas.width / duration;
+  fillBufferPartially = () => {
+    const modifier = this.canvas.width / this.props.duration;
     const context = this.canvas.getContext('2d');
 
-    bufferedTimeRanges.forEach((bufferedTimeRange) => {
+    this.props.bufferedTimeRanges.forEach((bufferedTimeRange) => {
       const startX = bufferedTimeRange.start * modifier;
       const endX = bufferedTimeRange.end * modifier;
       const width = endX - startX;
 
-      context.fillStyle = bufferColour;
+      context.fillStyle = this.props.bufferColour;
       context.fillRect(startX, 0, width, this.canvas.height);
     });
   }
