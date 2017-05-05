@@ -25,11 +25,9 @@ describe('<CurrentTime />', () => {
   let wrapper;
   let props;
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
-  });
-
   it('renders self and subcomponents', () => {
+    ({ wrapper, props } = setup());
+
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.CURRENT_TIME)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);

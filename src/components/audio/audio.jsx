@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Audio = ({ require, events, children, attributes }) => (
+const Audio = ({ require, events, children, ...attributes }) => (
   require ?
     <Media {...events}>
       <audio {...attributes}>
@@ -20,7 +20,6 @@ Audio.defaultProps = {
 
 Audio.propTypes = {
   children: PropTypes.node,
-  attributes: PropTypes.object.isRequired,
   require: PropTypes.bool.isRequired,
   events: PropTypes.shape({
     onAbort: PropTypes.func,

@@ -2,15 +2,12 @@ import { connectWithId } from 'react-jplayer-utils';
 import { setOption } from '../../actions/actions';
 import FullScreen from './fullScreen';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   fullScreen: jPlayers[id].fullScreen,
-  id,
-  children,
-  attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: (id, fullScreen) => dispatch(setOption(id, 'fullScreen', !fullScreen)),
-});
+const mapDispatchToProps = {
+  toggleFullScreen: (id, fullScreen) => setOption(id, 'fullScreen', !fullScreen),
+};
 
 export default connectWithId(mapStateToProps, mapDispatchToProps)(FullScreen);

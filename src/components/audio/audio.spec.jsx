@@ -3,7 +3,6 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import Audio from './audio';
-import Media from '../media/mediaContainer';
 
 const events = {
   onAbort: null,
@@ -36,9 +35,7 @@ const setup = () => {
     events,
     require: true,
     children: 'test',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Audio {...props} />);
@@ -63,7 +60,7 @@ describe('Audio', () => {
     });
 
     expect(audio.prop('children')).toBe(props.children);
-    expect(audio.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(audio.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when not required', () => {
@@ -73,5 +70,3 @@ describe('Audio', () => {
     expect(wrapper.type()).toBe(null);
   });
 });
-
-export default { events };

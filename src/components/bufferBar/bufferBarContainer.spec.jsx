@@ -1,5 +1,5 @@
 import React from 'react';
-import expect, { spyOn } from 'expect';
+import expect from 'expect';
 import { mount } from 'enzyme';
 
 import { __get__ } from './bufferBarContainer';
@@ -42,6 +42,10 @@ describe('BufferBarContainer', () => {
     };
   });
 
+  afterEach(() => {
+    mockCanvasContext.resetSpies();
+  });
+
   it('maps state', () => {
     ({ props } = setup());
     const stateProps = mapStateToProps({ jPlayers }, { id, ...props.attributes });
@@ -57,7 +61,7 @@ describe('BufferBarContainer', () => {
   it('clears buffer bar if not buffered', () => {
     ({ wrapper, instance } = setup());
 
-    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+    expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
     wrapper.setProps({ bufferedTimeRanges: [] });
 
@@ -68,7 +72,7 @@ describe('BufferBarContainer', () => {
   it('doesn\'t fill buffer bar if values are same as previous', () => {
     ({ wrapper, props, instance } = setup());
 
-    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+    expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
     wrapper.setProps({ bufferedTimeRanges: props.bufferedTimeRanges });
 
@@ -83,7 +87,7 @@ describe('BufferBarContainer', () => {
        { start: 10, end: 25 },
     ];
 
-    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+    expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
     wrapper.setProps({ bufferedTimeRanges });
 
@@ -96,9 +100,5 @@ describe('BufferBarContainer', () => {
 
     expect(wrapper.find(BufferBar).is(BufferBar)).toBeTruthy();
     expect(wrapper.prop('attributes')).toEqual(props.attributes);
-  });
-
-  afterEach(() => {
-    mockCanvasContext.resetSpies();
   });
 });

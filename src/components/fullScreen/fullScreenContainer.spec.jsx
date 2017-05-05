@@ -1,33 +1,30 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 
-import { getJPlayers } from '../../util/common.spec';
-import { setOption } from '../../actions/actions';
-import { __get__ } from './fullScreenContainer';
+import mockJPlayer from '../../util/mockData/mockJPlayer';
+import { __get__, __Rewire__, __ResetDependency__ } from './fullScreenContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
 const id = 'jPlayer-1';
-const children = <div />;
-const attributes = {
-  'data-test': 'test',
-};
 
 describe('FullScreenContainer', () => {
-  let dispatch;
+  let jPlayers;
 
   beforeEach(() => {
-    dispatch = createSpy();
+    jPlayers = {
+      [id]: mockJPlayer,
+    };
+  });
+
+  afterEach(() => {
+    __ResetDependency__('setOption');
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
+    const stateProps = mapStateToProps({ jPlayers }, { id });
 
-    expect(expected).toEqual({
+    expect(stateProps).toEqual({
       fullScreen: false,
-      id,
-      attributes,
-      children,
     });
   });
 
@@ -37,17 +34,19 @@ describe('FullScreenContainer', () => {
   ];
 
   fullScreenData.forEach((datum) => {
-    it(`mapDispatchToProps onClick toggles fullScreen 
+    it(`mapDispatchToProps toggleFullScreen toggles fullScreen 
     (value: ${datum.fullScreen})`, () => {
-      const mappedDispatched = mapDispatchToProps(dispatch);
+      const setOptionSpy = expect.createSpy();
 
-      mappedDispatched.onClick(id, datum.fullScreen);
+      __Rewire__('setOption', setOptionSpy);
 
-      expect(dispatch).toHaveBeenCalledWith(setOption(
+      mapDispatchToProps.toggleFullScreen(id, datum.fullScreen);
+
+      expect(setOptionSpy).toHaveBeenCalledWith(
         id,
         'fullScreen',
         !datum.fullScreen,
-      ));
+      );
     });
   });
 });

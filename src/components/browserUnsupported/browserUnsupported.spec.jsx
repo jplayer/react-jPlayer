@@ -8,9 +8,7 @@ import BrowserUnsupported from './browserUnsupported';
 const setup = (newProps) => {
   const props = {
     foundSupported: false,
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
     ...newProps,
   };
   const wrapper = shallow(<BrowserUnsupported {...props} />);
@@ -32,7 +30,7 @@ describe('BrowserUnsupported', () => {
     expect(wrapper.prop('children')).toNotBe(children);
     expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
     expect(wrapper.find('h4').exists()).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when supported media types', () => {

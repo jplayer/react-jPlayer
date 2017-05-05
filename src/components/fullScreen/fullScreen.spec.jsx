@@ -1,5 +1,5 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { classes } from '../../../src/util/constants';
@@ -7,13 +7,11 @@ import FullScreen from './fullScreen';
 
 const setup = () => {
   const props = {
-    onClick: createSpy(),
-    children: (<i className="@@jPlayer-test" />),
+    toggleFullScreen: expect.createSpy(),
+    children: 'test',
     fullScreen: false,
     id: 'jPlayer-1',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<FullScreen {...props} />);
@@ -28,16 +26,14 @@ describe('<FullScreen />', () => {
   let wrapper;
   let props;
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
-  });
-
   it('renders self and subcomponents', () => {
+    ({ wrapper, props } = setup());
+
     wrapper.simulate('click');
 
-    expect(props.onClick).toHaveBeenCalledWith(props.id, props.fullScreen);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(props.toggleFullScreen).toHaveBeenCalledWith(props.id, props.fullScreen);
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.FULL_SCREEN)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

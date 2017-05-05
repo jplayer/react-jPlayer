@@ -28,6 +28,7 @@ describe('<Duration />', () => {
 
   it('renders self and subcomponents', () => {
     ({ wrapper, props } = setup());
+
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
