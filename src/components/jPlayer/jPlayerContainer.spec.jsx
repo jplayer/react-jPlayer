@@ -1,4 +1,4 @@
-/*import React from 'react';
+/* import React from 'react';
 import expect, { createSpy, spyOn, restoreSpies } from 'expect';
 import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
