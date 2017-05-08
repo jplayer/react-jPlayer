@@ -56,7 +56,12 @@ export const setMediaData = [
       src: 'test.mp3',
       paused: true,
       media: {
-        ...{ ...defaultOptions.media, ...{ sources: { mp3: 'test.mp3', oga: 'test.ogg' } } },
+        ...defaultOptions.media,
+        id: 'testId',
+        sources: {
+          mp3: 'test.mp3',
+          oga: 'test.ogg',
+        },
       },
     },
   },

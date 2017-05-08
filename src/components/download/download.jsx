@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Download = ({ free, url, children, attributes }) => (
+const Download = ({ free, url, children, ...attributes }) => (
   free ?
     <a
       className={classes.DOWNLOAD} href={url}
@@ -16,7 +16,6 @@ const Download = ({ free, url, children, attributes }) => (
 );
 
 Download.propTypes = {
-  attributes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
   url: PropTypes.string.isRequired,
   free: PropTypes.bool.isRequired,

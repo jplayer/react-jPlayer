@@ -1,9 +1,8 @@
 import { connectWithId } from 'react-jplayer-utils';
 import CurrentTime from './currentTime';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   children: children || jPlayers[id].currentTimeText,
-  attributes,
 });
 
-export default connectWithId(mapStateToProps)(CurrentTime);
+export default connectWithId(mapStateToProps, {})(CurrentTime);

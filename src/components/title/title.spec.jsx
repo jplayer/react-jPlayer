@@ -7,9 +7,7 @@ import Title from './title';
 
 const setup = (newProps) => {
   const props = {
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
     children: 'Fade - Alan Walker',
     ...newProps,
   };
@@ -22,7 +20,7 @@ const setup = (newProps) => {
   };
 };
 
-describe('<Title />', () => {
+describe('Title', () => {
   let wrapper;
   let props;
 
@@ -31,7 +29,7 @@ describe('<Title />', () => {
 
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null if children is empty string', () => {

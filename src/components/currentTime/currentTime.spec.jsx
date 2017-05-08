@@ -8,9 +8,7 @@ import CurrentTime from './currentTime';
 const setup = () => {
   const props = {
     children: '0:00',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<CurrentTime {...props} />);
@@ -21,7 +19,7 @@ const setup = () => {
   };
 };
 
-describe('<CurrentTime />', () => {
+describe('CurrentTime', () => {
   let wrapper;
   let props;
 
@@ -30,6 +28,6 @@ describe('<CurrentTime />', () => {
 
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.CURRENT_TIME)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

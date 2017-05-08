@@ -2,29 +2,25 @@ import expect from 'expect';
 
 import { defaultStatus } from '../../util/constants';
 import { __get__ } from './durationContainer';
-import mockJPlayer from '../../util/mockData/mockJPlayer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 
 const mapStateToProps = __get__('mapStateToProps');
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
 
 describe('DurationContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayer,
+      [id]: mockJPlayerOptions,
     };
   });
 
   it('maps state', () => {
-    const stateProps = mapStateToProps({ jPlayers }, { id, ...attributes });
+    const stateProps = mapStateToProps({ jPlayers }, { id });
 
     expect(stateProps).toEqual({
       children: defaultStatus.durationText,
-      attributes,
     });
   });
 

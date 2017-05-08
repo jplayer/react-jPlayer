@@ -1,11 +1,9 @@
 import { connectWithId } from 'react-jplayer-utils';
 import Download from './download';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   free: jPlayers[id].media.free,
   url: jPlayers[id].src,
-  children,
-  attributes,
 });
 
-export default connectWithId(mapStateToProps)(Download);
+export default connectWithId(mapStateToProps, {})(Download);

@@ -1,9 +1,8 @@
 import { connectWithId } from 'react-jplayer-utils';
 import Duration from './duration';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   children: children || jPlayers[id].durationText,
-  attributes,
 });
 
-export default connectWithId(mapStateToProps)(Duration);
+export default connectWithId(mapStateToProps, {})(Duration);

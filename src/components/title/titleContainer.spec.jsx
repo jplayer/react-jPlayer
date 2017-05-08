@@ -6,9 +6,6 @@ import { __get__ } from './titleContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
 
 describe('TitleContainer', () => {
   it('maps state', () => {
@@ -19,12 +16,11 @@ describe('TitleContainer', () => {
         title,
         artist,
       },
-    }), { id, ...attributes });
+    }), { id });
     const children = `${artist} - ${title}`;
 
     expect(expected).toEqual({
       children,
-      attributes,
     });
   });
 
@@ -37,11 +33,10 @@ describe('TitleContainer', () => {
         title,
         artist,
       },
-    }), { children, id, ...attributes });
+    }), { children, id });
 
     expect(expected).toEqual({
       children,
-      attributes,
     });
   });
 
@@ -53,11 +48,11 @@ describe('TitleContainer', () => {
         title,
         artist,
       },
-    }), { id, ...attributes });
+    }), { id });
     const children = `${title}`;
+
     expect(expected).toEqual({
       children,
-      attributes,
     });
   });
 
@@ -69,11 +64,11 @@ describe('TitleContainer', () => {
         title,
         artist,
       },
-    }), { id, ...attributes });
+    }), { id });
     const children = `${artist}`;
+
     expect(expected).toEqual({
       children,
-      attributes,
     });
   });
 
@@ -85,11 +80,11 @@ describe('TitleContainer', () => {
         title,
         artist,
       },
-    }), { id, ...attributes });
+    }), { id });
     const children = '';
+
     expect(expected).toEqual({
       children,
-      attributes,
     });
   });
 });

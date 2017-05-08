@@ -9,9 +9,7 @@ const setup = (newProps) => {
   const props = {
     src: 'http://www.test.jpg',
     alt: 'test-poster',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
     ...newProps,
   };
 
@@ -33,7 +31,7 @@ describe('<Poster />', () => {
     expect(wrapper.hasClass(classes.POSTER)).toBeTruthy();
     expect(wrapper.prop('alt')).toBe(props.alt);
     expect(wrapper.prop('src')).toBe(props.src);
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null if src is not set', () => {

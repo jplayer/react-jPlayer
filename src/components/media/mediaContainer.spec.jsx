@@ -25,6 +25,7 @@ const setup = (state, newProps, isAudio = true) => {
   const props = {
     ...getProps(state),
     ...newProps,
+    otherJPlayerIds: [],
   };
   const wrapper = mount(
     <MediaContainer {...props}>
@@ -64,9 +65,9 @@ const setup = (state, newProps, isAudio = true) => {
 
 describe('MediaContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children: mockAudio });
+    const stateProps = mapStateToProps(getJPlayers(), { id, children: mockAudio });
 
-    expect(expected).toEqual({
+    expect(stateProps).toEqual({
       loop: false,
       showRemainingDuration: false,
       src: '',
@@ -82,6 +83,9 @@ describe('MediaContainer', () => {
       newTime: null,
       children: mockAudio,
       timeFormats: defaultOptions.timeFormats,
+      mediaId: undefined,
+      pauseOthersOnPlay: true,
+      otherJPlayerIds: [],
     });
   });
 

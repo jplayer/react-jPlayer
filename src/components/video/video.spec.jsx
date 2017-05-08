@@ -35,10 +35,8 @@ const setup = () => {
   const props = {
     events,
     require: true,
-    children: (<source className="@@jPlayer-test" />),
-    attributes: {
-      'data-test': 'test',
-    },
+    children: 'test',
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Video {...props} />);
@@ -65,8 +63,8 @@ describe('<Video />', () => {
     });
 
     expect(video.parent().type()).toBe(Media);
-    expect(video.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(video.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(video.prop('children')).toBe(props.children);
+    expect(video.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when not required', () => {

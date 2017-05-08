@@ -7,7 +7,7 @@ import FullScreen from './fullScreen';
 
 const setup = () => {
   const props = {
-    toggleFullScreen: expect.createSpy(),
+    setFullScreen: expect.createSpy(),
     children: 'test',
     fullScreen: false,
     id: 'jPlayer-1',
@@ -22,7 +22,7 @@ const setup = () => {
   };
 };
 
-describe('<FullScreen />', () => {
+describe('FullScreen', () => {
   let wrapper;
   let props;
 
@@ -31,7 +31,7 @@ describe('<FullScreen />', () => {
 
     wrapper.simulate('click');
 
-    expect(props.toggleFullScreen).toHaveBeenCalledWith(props.id, props.fullScreen);
+    expect(props.setFullScreen).toHaveBeenCalledWith(props.id, !props.fullScreen);
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.FULL_SCREEN)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props['data-test']);

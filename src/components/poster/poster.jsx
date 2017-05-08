@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Poster = ({ src, alt, attributes }) => (
+const Poster = ({ src, alt, ...attributes }) => (
   src !== '' ? <img className={classes.POSTER} alt={alt} src={src} {...attributes} />
     : null
 );
@@ -14,7 +14,6 @@ Poster.defaultProps = {
 };
 
 Poster.propTypes = {
-  attributes: PropTypes.object.isRequired,
   src: PropTypes.string,
   alt: PropTypes.string,
 };

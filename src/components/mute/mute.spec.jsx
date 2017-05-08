@@ -7,13 +7,11 @@ import Mute from './mute';
 
 const setup = () => {
   const props = {
-    onClick: createSpy(),
+    setMute: createSpy(),
     muted: false,
     children: (<i className="@@jPlayer-test" />),
     id: 'jPlayer-1',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Mute {...props} />);
@@ -24,7 +22,7 @@ const setup = () => {
   };
 };
 
-describe('<Mute />', () => {
+describe('Mute', () => {
   let wrapper;
   let props;
 
@@ -35,9 +33,9 @@ describe('<Mute />', () => {
   it('renders self and subcomponents', () => {
     wrapper.simulate('click');
 
-    expect(props.onClick).toHaveBeenCalledWith(props.id, props.muted);
+    expect(props.setMute).toHaveBeenCalledWith(props.id, !props.muted);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

@@ -1,48 +1,44 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 
-import { getJPlayers } from '../../util/common.spec';
-import { setOption } from '../../actions/actions';
-import { __get__ } from './repeatContainer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
+import { __get__, __Rewire__, __ResetDependency__ } from './repeatContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
-const attributes = {
-  'data-test': 'test',
-};
-const children = <div />;
 const id = 'jPlayer-1';
 
 describe('RepeatContainer', () => {
-  let dispatch;
+  let jPlayers;
 
   beforeEach(() => {
-    dispatch = createSpy();
+    jPlayers = {
+      [id]: mockJPlayerOptions,
+    };
+  });
+
+  afterEach(() => {
+    __ResetDependency__('setOption');
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
+    const expected = mapStateToProps({ jPlayers }, { id });
 
     expect(expected).toEqual({
       loop: false,
-      id,
-      children,
-      attributes,
     });
   });
 
-  const loopDatum = [
-    { loop: false },
-    { loop: true },
-  ];
+  it('mapDispatchToProps setLoop sets loop', () => {
+    const setOptionSpy = expect.createSpy();
 
-  it('mappedDispatch onClick toggles loop', () => {
-    loopDatum.forEach((datum) => {
-      const mappedDispatch = mapDispatchToProps(dispatch);
+    __Rewire__('setOption', setOptionSpy);
 
-      mappedDispatch.onClick(id, datum.loop);
+    mapDispatchToProps.setLoop(id, false);
 
-      expect(dispatch).toHaveBeenCalledWith(setOption(id, 'loop', !datum.loop));
-    });
+    expect(setOptionSpy).toHaveBeenCalledWith(
+      id,
+      'loop',
+      false,
+    );
   });
 });

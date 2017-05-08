@@ -10,9 +10,7 @@ const setup = () => {
     url: 'http://www.test.mp3',
     free: true,
     children: 'test',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Download {...props} />);
@@ -23,7 +21,7 @@ const setup = () => {
   };
 };
 
-describe('<Download />', () => {
+describe('Download', () => {
   let wrapper;
   let props;
 
@@ -34,7 +32,7 @@ describe('<Download />', () => {
     expect(wrapper.prop('url')).toBe(props.href);
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when audio is not free', () => {

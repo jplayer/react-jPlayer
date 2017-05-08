@@ -19,6 +19,14 @@ describe('jPlayer reducer', () => {
 
   beforeEach(() => {
     state = getDefaultJPlayers().jPlayers;
+    reducer.__Rewire__('shortid', {
+      generate: () => 'testId',
+    });
+  });
+
+  afterEach(() => {
+    expect.restoreSpies();
+    reducer.__ResetDependency__('shortid');
   });
 
   it('should return the state if action is invalid', () => {
@@ -279,31 +287,5 @@ describe('jPlayer reducer', () => {
         }
       });
     });
-  });
-
-  Object.keys(actionNames).forEach((type) => {
-    it(`should focus on the jPlayer for the action ${type}`, () => {
-      state = getDefaultJPlayers(2, true).jPlayers;
-
-      if (type !== actionNames.FOCUS) {
-        const jPlayers = reducer(state, {
-          type,
-          id: jPlayerOneId,
-        });
-
-        Object.keys(jPlayers).forEach((key) => {
-          if (key !== jPlayerOneId) {
-            expect(jPlayers[key].focused).toBeFalsy();
-          } else {
-            expect(jPlayers[key].focused).toBeTruthy();
-          }
-        });
-      }
-    });
-  });
-
-
-  afterEach(() => {
-    expect.restoreSpies();
   });
 });

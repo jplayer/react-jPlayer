@@ -9,9 +9,7 @@ const setup = () => {
   const props = {
     currentPercentAbsolute: 20,
     currentPercentRelative: 30,
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<PlayBar {...props} />);
@@ -22,7 +20,7 @@ const setup = () => {
   };
 };
 
-describe('<PlayBar />', () => {
+describe('PlayBar', () => {
   let wrapper;
   let props;
 
@@ -35,7 +33,7 @@ describe('<PlayBar />', () => {
 
     expect(playBar.prop('style').width).toBe(`${props.currentPercentRelative}%`);
     expect(playBar.hasClass(classes.PLAY_BAR)).toBeTruthy();
-    expect(playBar.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(playBar.prop('data-test')).toBe(props['data-test']);
   });
 
   it('width is currentPercentAbsolute when smoothPlayBar', () => {

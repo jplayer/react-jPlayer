@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import { defaultStatus } from '../../util/constants';
 import { __get__ } from './browserUnsupportedContainer';
-import mockJPlayer from '../../util/mockData/mockJPlayer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 
 const mapStateToProps = __get__('mapStateToProps');
 const id = 'jPlayer-1';
@@ -12,7 +12,7 @@ describe('BrowserUnsupportedContainer', () => {
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayer,
+      [id]: mockJPlayerOptions,
     };
   });
 

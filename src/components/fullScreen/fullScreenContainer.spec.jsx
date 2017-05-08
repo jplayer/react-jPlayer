@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import mockJPlayer from '../../util/mockData/mockJPlayer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 import { __get__, __Rewire__, __ResetDependency__ } from './fullScreenContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -12,7 +12,7 @@ describe('FullScreenContainer', () => {
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayer,
+      [id]: mockJPlayerOptions,
     };
   });
 
@@ -28,25 +28,18 @@ describe('FullScreenContainer', () => {
     });
   });
 
-  const fullScreenData = [
-    { fullScreen: false },
-    { fullScreen: true },
-  ];
 
-  fullScreenData.forEach((datum) => {
-    it(`mapDispatchToProps toggleFullScreen toggles fullScreen 
-    (value: ${datum.fullScreen})`, () => {
-      const setOptionSpy = expect.createSpy();
+  it('mapDispatchToProps setFullScreen sets fullScreen', () => {
+    const setOptionSpy = expect.createSpy();
 
-      __Rewire__('setOption', setOptionSpy);
+    __Rewire__('setOption', setOptionSpy);
 
-      mapDispatchToProps.toggleFullScreen(id, datum.fullScreen);
+    mapDispatchToProps.setFullScreen(id, false);
 
-      expect(setOptionSpy).toHaveBeenCalledWith(
-        id,
-        'fullScreen',
-        !datum.fullScreen,
-      );
-    });
+    expect(setOptionSpy).toHaveBeenCalledWith(
+      id,
+      'fullScreen',
+      false,
+    );
   });
 });

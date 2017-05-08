@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { classes } from '../../util/constants';
 
 const PlayBar = ({ currentPercentAbsolute, currentPercentRelative,
-  smoothPlayBar, attributes }) => (
+  smoothPlayBar, ...attributes }) => (
     <Motion style={{ smoothWidth: spring(currentPercentAbsolute, [250]) }}>
       {values => (
         <div
@@ -20,7 +20,6 @@ const PlayBar = ({ currentPercentAbsolute, currentPercentRelative,
 );
 
 PlayBar.propTypes = {
-  attributes: PropTypes.object.isRequired,
   currentPercentRelative: PropTypes.number.isRequired,
   currentPercentAbsolute: PropTypes.number.isRequired,
   smoothPlayBar: PropTypes.bool.isRequired,

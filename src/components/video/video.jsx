@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Video = ({ require, events, children, attributes }) => (
+const Video = ({ require, events, children, ...attributes }) => (
   require ?
     <Media {...events}>
       <video {...attributes}>
@@ -19,7 +19,6 @@ Video.defaultProps = {
 };
 
 Video.propTypes = {
-  attributes: PropTypes.object.isRequired,
   children: PropTypes.node,
   require: PropTypes.bool.isRequired,
   events: PropTypes.shape({

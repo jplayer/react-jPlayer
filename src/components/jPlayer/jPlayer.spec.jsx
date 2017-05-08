@@ -18,7 +18,7 @@ const setup = () => {
   };
 };
 
-describe('<JPlayer />', () => {
+describe('jPlayer', () => {
   let wrapper;
   let props;
 

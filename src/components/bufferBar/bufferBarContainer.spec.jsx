@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { __get__ } from './bufferBarContainer';
 import BufferBar from './bufferBar';
-import mockJPlayer from '../../util/mockData/mockJPlayer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 import mockCanvasContext from '../../util/mockData/mockCanvasContext';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -13,9 +13,9 @@ const id = 'jPlayer-1';
 
 const setup = () => {
   const props = {
-    bufferedTimeRanges: mockJPlayer.bufferedTimeRanges,
-    duration: mockJPlayer.duration,
-    bufferColour: mockJPlayer.bufferColour,
+    bufferedTimeRanges: mockJPlayerOptions.bufferedTimeRanges,
+    duration: mockJPlayerOptions.duration,
+    bufferColour: mockJPlayerOptions.bufferColour,
     attributes: {
       'data-test': 'test',
     },
@@ -38,7 +38,7 @@ describe('BufferBarContainer', () => {
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayer,
+      [id]: mockJPlayerOptions,
     };
   });
 
@@ -51,9 +51,9 @@ describe('BufferBarContainer', () => {
     const stateProps = mapStateToProps({ jPlayers }, { id, ...props.attributes });
 
     expect(stateProps).toEqual({
-      bufferedTimeRanges: mockJPlayer.bufferedTimeRanges,
-      duration: mockJPlayer.duration,
-      bufferColour: mockJPlayer.bufferColour,
+      bufferedTimeRanges: mockJPlayerOptions.bufferedTimeRanges,
+      duration: mockJPlayerOptions.duration,
+      bufferColour: mockJPlayerOptions.bufferColour,
       attributes: props.attributes,
     });
   });

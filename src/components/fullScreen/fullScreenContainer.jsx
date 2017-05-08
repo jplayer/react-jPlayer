@@ -7,7 +7,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 });
 
 const mapDispatchToProps = {
-  toggleFullScreen: (id, fullScreen) => setOption(id, 'fullScreen', !fullScreen),
+  setFullScreen: (id, fullScreen) => setOption(id, 'fullScreen', fullScreen),
 };
 
 export default connectWithId(mapStateToProps, mapDispatchToProps)(FullScreen);
