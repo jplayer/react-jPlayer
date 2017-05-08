@@ -152,7 +152,6 @@ export const defaultStatus = {
     foundSupported: false,
     formats: [],
   },
-  volumeSupported: false,
   paused: true,
   seeking: false,
   src: '',
