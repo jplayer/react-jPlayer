@@ -38,7 +38,7 @@ describe('RepeatContainer', () => {
     expect(setOptionSpy).toHaveBeenCalledWith(
       id,
       'loop',
-      false,
+      true,
     );
   });
 });

@@ -33,7 +33,7 @@ describe('<Repeat />', () => {
   it('renders self and subcomponents', () => {
     wrapper.simulate('click');
 
-    expect(props.setLoop).toHaveBeenCalledWith(props.id, !props.loop);
+    expect(props.setLoop).toHaveBeenCalledWith(props.id, props.loop);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
     expect(wrapper.prop('data-test')).toBe(props['data-test']);
