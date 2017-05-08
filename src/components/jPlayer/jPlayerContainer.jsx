@@ -98,7 +98,7 @@ class JPlayerContainer extends React.Component {
         context: PropTypes.string,
         message: PropTypes.string,
         hint: PropTypes.string,
-      }).isRequired,
+      }),
       fullScreen: PropTypes.bool.isRequired,
       children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.element),
@@ -113,6 +113,7 @@ class JPlayerContainer extends React.Component {
     return {
       attributes: null,
       guiFadeHoldTimeout: null,
+      error: null,
     };
   }
   componentWillMount() {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Title = ({ children, ...attributes }) => (
+const Title = ({ children, attributes }) => (
   children !== '' ?
     <div className={classes.TITLE} {...attributes}>
       {children}
@@ -12,6 +12,7 @@ const Title = ({ children, ...attributes }) => (
 );
 
 Title.propTypes = {
+  attributes: PropTypes.object.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
