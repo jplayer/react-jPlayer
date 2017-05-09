@@ -9,6 +9,9 @@
     height: auto;
   }
 }
+.jp-hidden {
+  display: none;
+}
 .jp-state-no-volume-support .jp-mute,
 .jp-state-no-volume-support .jp-volume-bar,
 .jp-state-no-volume-support .jp-volume-bar-value {
