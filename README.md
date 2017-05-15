@@ -5,26 +5,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # react-jPlayer
-A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/) but without the jQuery dependency and much, much better.
+A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/) but without the jQuery dependency.
 
-react-jPlayer depends on [Redux](https://github.com/reactjs/redux). Redux is a tiny 2KB and is well worth it to keep the react-jPlayer components componentized.
-
-jPlayer does not support playlists yet. This will be coming in an upcoming npm package called react-jPlaylist.
+For playlist functionaility, see [react-jPlaylist](https://github.com/MartinDawson/react-jPlaylist).
 
 <!-- toc -->
 
   * [Live Demo](#live-demo)
+  * [Examples](#examples)
   * [Installation](#installation)
     + [NPM](#npm)
     + [UMD](#umd)
-  * [Examples](#examples)
   * [Features](#features)
   * [To Note](#to-note)
   * [Supported browsers](#supported-browsers)
   * [TL:DR](#tldr)
-  * [Most Basic Setup](#most-basic-setup)
 - [Documentation](#documentation)
-    + [`getInitialStates([jPlayers])` : Required](#getinitialstatesjplayers--required)
+    + [`initialState([jPlayers])` : Required](#initialstatejplayers--required)
     + [`reducer` : Required](#reducer--required)
     + [`connect(jPlayer, options)` : Required](#connectjplayer-options--required)
   * [Props](#props)
@@ -108,24 +105,25 @@ jPlayer does not support playlists yet. This will be coming in an upcoming npm p
 ### Live Demo
 http://react-jplayer.azurewebsites.net/
 
+### Examples
+https://github.com/MartinDawson/react-jPlayerExamples
+
 ### Installation
 #### NPM
 `npm install --save react-jplayer`
 
 #### UMD
-Available from the `/dist/` folder.
-For example, if you copied the `/dist/` folder to a `/packages/jPlayer/` folder at the root of your project then the src tags would look like this:
+The recommended way to use this package is through npm and webpack. However if you insist on including the .js and .css files manually then it is available from the `/dist/` folder.
+For example, if you copied the `/dist/` folder to the root of your project then the src tags would look like this:
 
-`<script src="./packages/jPlayer/dist/js/jPlayer.js"></script>`
+```
+<link rel="stylesheet" type="text/css" href="./dist/css/controls/iconControls.css">
+<link rel="stylesheet" type="text/css" href="./dist/css/sleek.css">
 
-`<script src="./packages/jPlayer/dist/css/jPlayer.css"></script>`
-
-`<script src="./packages/jPlayer/dist/css/sleek.css"></script>`
+<script src="./dist/js/jPlayer.js"></script>
+```
 
 Module is exported to a global variable called `ReactJPlayer`.
-
-### Examples
-https://github.com/MartinDawson/react-jPlayerExamples
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers
@@ -158,113 +156,26 @@ https://github.com/MartinDawson/react-jPlayerExamples
 - All of the jPlayer properties that you need are passed into your jPlayer component.
 - Audio/Video events can be subscribed to by passing functions to the `events` prop for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component, E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
 
-### Most Basic Setup
-The examples in the project contain legacy browser, mobile fixes and helpers such as the run-time events and props showing.
-If you just want the most basic setup to get an understanding of jPlayer, you can follow the code below.
-
-jPlayer.css must be included somewhere for jPlayer to work properly.
-If you want the jPlayer to look good you will need to include the examples .less or .css files from src or dist.
-
-```
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-import { getInitialStates, reducer, connect, JPlayer, Gui, SeekBar,
-  Audio, FullScreen, Mute, Play, PlayBar,
-  VolumeBar, Duration, CurrentTime, BrowserUnsupported,
- } from 'react-jplayer';
-
-/* Our stateless jPlayer component. This function holds everything to do with the jPlayer components. 
-If you wanted a video player instead, you could just replace `<Audio />` with `<Video />`
-and provide a video src instead of an audio src as the first element in the options.media.sources. */
-
-const AudioPlayer = () => (
-  <JPlayer className="jp-sleek">
-    <Audio />
-    <Gui>
-      <div className="jp-controls jp-icon-controls">
-        <Play><i className="fa">{/* Icon set in css*/}</i></Play>
-        <div className="jp-progress">
-          <SeekBar>
-            <PlayBar />
-            <CurrentTime />
-            <Duration />
-          </SeekBar>
-        </div>
-        <div className="jp-volume-container">
-          <Mute>
-            <i className="fa">{/* Icon set in css*/}</i>
-          </Mute>
-          <div className="jp-volume-slider">
-            <div className="jp-volume-bar-container">
-              <VolumeBar />
-            </div>
-          </div>
-        </div>
-        <FullScreen><i className="fa fa-expand" /></FullScreen>
-      </div>
-      <BrowserUnsupported />
-    </Gui>
-  </JPlayer>
-);
-
-/* These options will be deep merged with the default jPlayer options so you actually don't 
-even need to specify any apart from the 'media.sources' and 'id' if you just want the default options. */
-
-const options = {
-  id: 'AudioPlayer',
-  verticalVolume: true,
-  media: {
-    sources: {
-      m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
-    },
-  },
-};
-
-/* react-jPlayer provides it's own connect function which will return a connected jPlayer. */
-
-const ConnectedAudioPlayer = connect(AudioPlayer, options);
-
-/* We now need to connect our jPlayer to the store now so each of the components inside
-react-jPlayer can talk to each other. This also gives you a `jPlayers` object with the `AudioPlayer` in your redux state. */
-
-const store = createStore(combineReducers(reducer), getInitialStates(ConnectedAudioPlayer));
-
-const App = () => (
-  <ConnectedAudioPlayer />
-);
-
-/* Pass the store to the provider. See Redux for more information. */
-
-ReactDOM.render((
-  <Provider store={store}>
-    <App />
-  </Provider>
-), document.getElementById('app'));
-
-```
-
 ## Documentation
-#### `getInitialStates([jPlayers])` : Required
-Deep merges the static options that you specified on your jPlayer with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
+#### `initialState([jPlayers])` : Required
+Deep merges the options that you passed into the [`connect`](https://github.com/MartinDawson/react-jPlayer#connectjplayer-options--required) function with react-jPlayer's default options. The result of this must be passed to your stores initial state.
 
 **Arguments**
-1. `jPlayer(s)` (array or function): Accepts either an array of jPlayers or a single jPlayer. 
+1. `jPlayers(s)` (array or single react element): Accepts either an array of jPlayers or a single jPlayer. 
 
 **Returns**
 
 (object): The initial state for the jPlayer(s) that needs to be passed to the Redux store.
 
 #### `reducer` : Required
-The jPlayer reducer that will be called whenever a jPlayer function is called or dispatched. Must be passed to your store.
+The jPlayer reducer that will be called whenever a jPlayer function is dispatched. Must be passed to your store with the key named 'jPlayer'.
 
 #### `connect(jPlayer, options)` : Required
 Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Arguments**
 1. `jPlayer` (function): Your jPlayer with which to connect to the store.
-2. `options` (object): The options that you want the jPlayer to be initialized with.
+2. `options` (object): The [jPlayer options](https://github.com/MartinDawson/react-jPlayer#options) that you want the jPlayer to be initialized with.
 
 **Returns**
 
@@ -272,20 +183,18 @@ Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Static Properties**
 1. `jPlayer`: The original jPlayer component that you passed in.
-2. `options`: The options that you passed into the `connect()`.
+2. `options`: The jPlayer options that you passed into the `connect()`.
 
 **Renders**
 
 The connected jPlayer. Any additional props that you passed in are passed through to your jPlayer so you can use them as usual.
 
 ### Props
-jPlayer automatically passes the following in to your jPlayer component:
+jPlayer automatically passes the following properties in to your jPlayer component:
 
-- `[id]` (string): The current jPlayer's id that you supplied through the options.
-- [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlayer properties at runtime.
-- [`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): Options that the jPlayer is using.
-- [`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): Status properties of the jPlayer. Treat these as immutable.
-- [`jPlayers`](https://github.com/MartinDawson/react-jPlayer#jplayers) (object): The other jPlayers can be accessed here. Only available if you actually have multiple jPlayers. The names of the jPlayers are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
+- `id` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
+- [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
+- `jPlayers` (object): All of the jPlayers options get passed in here. The names of the jPlayers are what you specified for each one in [`options.id`].
 
 #### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
@@ -314,12 +223,8 @@ export default connect(mapStateToProps)(SomeRandomFunc);
 
 ```
 
-**Returns**
-
-(object): All actions return an action creator that is meant to be passed to redux's `dispatch()` unless you are accessing the action from the jPlayer components props in which case you can call it directly as it has already been bound to `dispatch()`.
-
 ##### `setOption(id, key, value)`
-Sets any jPlayer option. Some of the options can be set using the below actions as well as this method, it doesn't matter which one you use as they both do the same thing internally.
+Sets any jPlayer [option](https://github.com/MartinDawson/react-jPlayer#options).
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
@@ -381,9 +286,7 @@ This method is called internally for each of the other actions if that jPlayer h
 1. `id` (string): Id of the jPlayer to apply this to.
 
 #### Options
-You specify these values on a functions static property that must be called `options` as shown in the [example](https://github.com/MartinDawson/react-jPlayer#most-basic-setup). Properties in this object are used to initialize the jPlayer. They are deep merged with the default values.
-
-Some properties in this object will be updated internally, so do not rely on these options staying the same throughout the jPlayer's lifetime.
+These properties are used to initialize the jPlayer. They are deep merged with the default jPlayer options.
 
 ##### `id` (string) : Required
 The unique id of the jPlayer.
