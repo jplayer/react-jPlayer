@@ -27,7 +27,9 @@ import CurrentTime from './components/currentTime/currentTimeContainer';
 import BrowserUnsupported from './components/browserUnsupported/browserUnsupportedContainer';
 import * as constants from './util/constants';
 
-export { constants, initialState, reducer, actions, connect, JPlayer, Gui, SeekBar, PlayBar,
+export default JPlayer;
+
+export { constants, initialState, reducer, actions, connect, Gui, SeekBar, PlayBar,
   BufferBar, Poster, Video, Audio, Title, FullScreen,
   Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
   VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };

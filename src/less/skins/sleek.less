@@ -1,5 +1,6 @@
 @import "../mixins";
 @import "../variables";
+@import "../jPlayer";
 
 .jp-sleek.jp-jplayer.jp-state-no-volume-support {
   .jp-gui .jp-controls {
@@ -104,6 +105,10 @@
       display: table;
       border-spacing: 5px 0;
       margin: 0 auto;
+
+      button {
+        font-size: inherit;
+      }
 
       .jp-title-container {
         font-size: 12px;
