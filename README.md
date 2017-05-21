@@ -125,6 +125,9 @@ For example, if you copied the `/dist/` folder to the root of your project then 
 
 Module is exported to a global variable called `ReactJPlayer`.
 
+### Examples
+https://github.com/MartinDawson/react-jPlayer-examples
+
 ### Features
 * Cross compatible with many legacy different Html5 browsers
 * Fully customizable, modular and componentized
