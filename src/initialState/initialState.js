@@ -8,7 +8,5 @@ export default (connectedJPlayers) => {
     ...defaultOptions,
   }, 'options');
 
-  return {
-    jPlayers,
-  };
+  return jPlayers;
 };

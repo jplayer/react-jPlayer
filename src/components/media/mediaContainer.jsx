@@ -61,7 +61,6 @@ class MediaContainer extends React.Component {
       showRemainingDuration: PropTypes.bool.isRequired,
       src: PropTypes.string.isRequired,
       playHeadPercent: PropTypes.number.isRequired,
-      paused: PropTypes.bool.isRequired,
       setOption: PropTypes.func.isRequired,
       pause: PropTypes.func.isRequired,
       id: PropTypes.string.isRequired,
@@ -82,6 +81,7 @@ class MediaContainer extends React.Component {
         sepSec: PropTypes.string.isRequired,
       }).isRequired,
       /* eslint-disable react/no-unused-prop-types */
+      paused: PropTypes.bool.isRequired,
       newTime: PropTypes.number,
       loop: PropTypes.bool.isRequired,
       autoplay: PropTypes.bool.isRequired,
@@ -238,12 +238,10 @@ class MediaContainer extends React.Component {
       }
     }
 
-    if (nextProps.paused !== this.props.paused) {
-      if (nextProps.paused) {
-        this.currentMedia.pause();
-      } else {
-        this.currentMedia.play();
-      }
+    if (nextProps.paused) {
+      this.currentMedia.pause();
+    } else {
+      this.currentMedia.play();
     }
   }
   componentDidUpdate(prevProps) {

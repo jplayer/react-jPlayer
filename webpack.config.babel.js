@@ -8,7 +8,7 @@ export default {
   context: __dirname,
   target: 'node',
   externals: {
-    classames: 'classNames',
+    classnames: 'classNames',
     'lodash.merge': '_.merge',
     react: 'React',
     'react-dom': 'ReactDOM',
@@ -17,6 +17,8 @@ export default {
     recompose: 'Recompose',
     redux: 'Redux',
     screenfull: 'screenfull',
+    'prop-types': 'PropTypes',
+    shortid: 'shortid',
   },
   entry: {
     'js/jPlayer.js': './src/index.js',
