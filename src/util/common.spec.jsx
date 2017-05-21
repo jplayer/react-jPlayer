@@ -1,6 +1,5 @@
 import merge from 'lodash.merge';
-import { createSpy, isSpy } from 'expect';
-import { defaultOptions, defaultStatus, internalStatus } from './constants';
+import { defaultOptions, defaultStatus } from './constants';
 
 export const getJPlayers = (...options) => {
   const jPlayers = {};
@@ -9,7 +8,7 @@ export const getJPlayers = (...options) => {
     const id = `jPlayer-${jPlayerNumber}`;
 
     jPlayers[id] = {
-      ...merge({}, internalStatus, defaultStatus, defaultOptions, option),
+      ...merge({}, defaultStatus, defaultOptions, option),
       id,
     };
   };
@@ -32,38 +31,10 @@ export const getDefaultJPlayers = (numberOfJPlayers = 1, mergeDefaultValues = fa
 
   for (let i = 1; i < numberOfJPlayers + 1; i += 1) {
     jPlayers[`jPlayer-${i}`] = mergeDefaultValues ?
-      merge({}, internalStatus, defaultStatus, defaultOptions, options) : { ...options };
+      merge({}, defaultStatus, defaultOptions, options) : { ...options };
   }
 
   return {
     jPlayers,
   };
-};
-
-export const mockCanvasContext = {
-  fillRect: createSpy(),
-  clearRect: createSpy(),
-  getImageData: createSpy().andReturn([]),
-  putImageData: createSpy(),
-  createImageData: createSpy().andReturn([]),
-  setTransform: createSpy(),
-  drawImage: createSpy(),
-  save: createSpy(),
-  fillText: createSpy(),
-  restore: createSpy(),
-  beginPath: createSpy(),
-  moveTo: createSpy(),
-  lineTo: createSpy(),
-  closePath: createSpy(),
-  stroke: createSpy(),
-  translate: createSpy(),
-  scale: createSpy(),
-  rotate: createSpy(),
-  arc: createSpy(),
-  fill: createSpy(),
-  resetSpies: () => Object.values(mockCanvasContext).forEach((spy) => {
-    if (isSpy(spy)) {
-      spy.reset();
-    }
-  }),
 };

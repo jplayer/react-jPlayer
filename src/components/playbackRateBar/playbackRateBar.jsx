@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -21,11 +22,11 @@ PlaybackRateBar.defaultProps = {
 };
 
 PlaybackRateBar.propTypes = {
-  onClick: React.PropTypes.func,
-  onMouseDown: React.PropTypes.func,
-  onTouchStart: React.PropTypes.func,
-  setBar: React.PropTypes.func,
-  children: React.PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  onMouseDown: PropTypes.func,
+  onTouchStart: PropTypes.func,
+  setBar: PropTypes.func,
+  children: PropTypes.node.isRequired,
 };
 
 export default PlaybackRateBar;

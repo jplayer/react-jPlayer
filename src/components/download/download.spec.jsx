@@ -9,10 +9,8 @@ const setup = () => {
   const props = {
     url: 'http://www.test.mp3',
     free: true,
-    children: <i className="@@jPlayer-test" />,
-    attributes: {
-      'data-test': 'test',
-    },
+    children: 'test',
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Download {...props} />);
@@ -23,23 +21,23 @@ const setup = () => {
   };
 };
 
-describe('<Download />', () => {
+describe('Download', () => {
   let wrapper;
   let props;
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
-  });
-
   it('renders self and subcomponents', () => {
+    ({ wrapper, props } = setup());
+
     expect(wrapper.prop('download')).toBeTruthy();
     expect(wrapper.prop('url')).toBe(props.href);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when audio is not free', () => {
+    ({ wrapper, props } = setup());
+
     wrapper.setProps({ free: false });
     expect(wrapper.node).toBe(null);
   });

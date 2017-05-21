@@ -1,11 +1,10 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import PlayBar from './playBar';
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   smoothPlayBar: jPlayers[id].smoothPlayBar,
   currentPercentAbsolute: jPlayers[id].currentPercentAbsolute,
   currentPercentRelative: jPlayers[id].currentPercentRelative,
-  attributes,
 });
 
-export default connectWithId(mapStateToProps)(PlayBar);
+export default connectWithId(mapStateToProps, {})(PlayBar);

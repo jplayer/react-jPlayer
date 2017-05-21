@@ -1,6 +1,6 @@
 import React from 'react';
-
-import { connectWithId } from '../util/index';
+import PropTypes from 'prop-types';
+import { connectWithId } from 'react-jplayer-utils';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   barDrag: jPlayers[id].barDrag,
@@ -9,10 +9,10 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 class Bar extends React.Component {
   static get propTypes() {
     return {
-      clickMoveBar: React.PropTypes.func.isRequired,
-      touchMoveBar: React.PropTypes.func.isRequired,
-      barDrag: React.PropTypes.bool.isRequired,
-      children: React.PropTypes.node.isRequired,
+      clickMoveBar: PropTypes.func.isRequired,
+      touchMoveBar: PropTypes.func.isRequired,
+      barDrag: PropTypes.bool.isRequired,
+      children: PropTypes.node.isRequired,
     };
   }
   componentWillMount() {

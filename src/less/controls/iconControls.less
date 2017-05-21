@@ -2,21 +2,22 @@
 @import "../variables";
 
 .jp-icon-controls {
-  a:hover,
-  button:hover {
-    color: @iconHoverColour;
-  }
- 
   button:focus {
     outline: none;
   }
 
   button {
-    color:@iconColour;
-    padding: 0;
     border: none;
     background-color: transparent;
-    min-width: 42px;
+    
+  }
+
+  .jp-download,
+  .jp-play,
+  .jp-repeat,
+  .jp-full-screen,
+  .jp-mute {
+    .icon;
   }
 
   a {

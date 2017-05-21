@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const FullScreen = ({ onClick, id, fullScreen, children, attributes }) => (
+const FullScreen = ({ setFullScreen, id, fullScreen, children, ...attributes }) => (
   <button
     className={classes.FULL_SCREEN}
-    onClick={() => onClick(id, fullScreen)}
+    onClick={() => setFullScreen(id, !fullScreen)}
     {...attributes}
   >
     {children}
@@ -13,11 +14,10 @@ const FullScreen = ({ onClick, id, fullScreen, children, attributes }) => (
 );
 
 FullScreen.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string.isRequired,
-  fullScreen: React.PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+  setFullScreen: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  fullScreen: PropTypes.bool.isRequired,
 };
 
 export default FullScreen;

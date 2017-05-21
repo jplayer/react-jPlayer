@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -23,11 +24,11 @@ const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
 };
 
 PlaybackRateBarValue.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  verticalPlaybackRate: React.PropTypes.bool.isRequired,
-  minPlaybackRate: React.PropTypes.number.isRequired,
-  maxPlaybackRate: React.PropTypes.number.isRequired,
-  playbackRate: React.PropTypes.number.isRequired,
+  attributes: PropTypes.object.isRequired,
+  verticalPlaybackRate: PropTypes.bool.isRequired,
+  minPlaybackRate: PropTypes.number.isRequired,
+  maxPlaybackRate: PropTypes.number.isRequired,
+  playbackRate: PropTypes.number.isRequired,
 };
 
 export default PlaybackRateBarValue;

@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connectWithId, toPercentage, toRelativePercentage,
+  convertTime, canSetVolume } from 'react-jplayer-utils';
 
-import { connectWithId, urlNotSupportedError, convertTime, canSetVolume,
-  toPercentage, toRelativePercentage } from '../../util/index';
+import urlNotSupportedError from '../../util/errorHandlers/urlNotSupportedError';
 import { setOption, pause } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id, children }) => ({
@@ -19,6 +21,9 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   autoplay: jPlayers[id].autoplay,
   newTime: jPlayers[id].newTime,
   timeFormats: jPlayers[id].timeFormats,
+  mediaId: jPlayers[id].media.id,
+  otherJPlayerIds: Object.keys(jPlayers).filter(key => key !== id),
+  pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
   children,
 });
 
@@ -30,60 +35,65 @@ const mapDispatchToProps = {
 class MediaContainer extends React.Component {
   static get propTypes() {
     return {
-      onAbort: React.PropTypes.func,
-      onCanPlay: React.PropTypes.func,
-      onCanPlayThrough: React.PropTypes.func,
-      onDurationChange: React.PropTypes.func,
-      onEmptied: React.PropTypes.func,
-      onEncrypted: React.PropTypes.func,
-      onEnded: React.PropTypes.func,
-      onError: React.PropTypes.func,
-      onLoadedData: React.PropTypes.func,
-      onLoadedMetadata: React.PropTypes.func,
-      onLoadStart: React.PropTypes.func,
-      onPause: React.PropTypes.func,
-      onPlay: React.PropTypes.func,
-      onPlaying: React.PropTypes.func,
-      onProgress: React.PropTypes.func,
-      onRateChange: React.PropTypes.func,
-      onSeeked: React.PropTypes.func,
-      onSeeking: React.PropTypes.func,
-      onStalled: React.PropTypes.func,
-      onSuspend: React.PropTypes.func,
-      onTimeUpdate: React.PropTypes.func,
-      onVolumeChange: React.PropTypes.func,
-      onWaiting: React.PropTypes.func,
-      showRemainingDuration: React.PropTypes.bool.isRequired,
-      src: React.PropTypes.string.isRequired,
-      playHeadPercent: React.PropTypes.number.isRequired,
-      paused: React.PropTypes.bool.isRequired,
-      setOption: React.PropTypes.func.isRequired,
-      pause: React.PropTypes.func.isRequired,
-      id: React.PropTypes.string.isRequired,
-      timeFormats: React.PropTypes.shape({
-        showHour: React.PropTypes.bool.isRequired,
-        showMin: React.PropTypes.bool.isRequired,
-        showSec: React.PropTypes.bool.isRequired,
-        padHour: React.PropTypes.bool.isRequired,
-        padMin: React.PropTypes.bool.isRequired,
-        padSec: React.PropTypes.bool.isRequired,
-        sepHour: React.PropTypes.string.isRequired,
-        sepMin: React.PropTypes.string.isRequired,
-        sepSec: React.PropTypes.string.isRequired,
+      onAbort: PropTypes.func,
+      onCanPlay: PropTypes.func,
+      onCanPlayThrough: PropTypes.func,
+      onDurationChange: PropTypes.func,
+      onEmptied: PropTypes.func,
+      onEncrypted: PropTypes.func,
+      onEnded: PropTypes.func,
+      onError: PropTypes.func,
+      onLoadedData: PropTypes.func,
+      onLoadedMetadata: PropTypes.func,
+      onLoadStart: PropTypes.func,
+      onPause: PropTypes.func,
+      onPlay: PropTypes.func,
+      onPlaying: PropTypes.func,
+      onProgress: PropTypes.func,
+      onRateChange: PropTypes.func,
+      onSeeked: PropTypes.func,
+      onSeeking: PropTypes.func,
+      onStalled: PropTypes.func,
+      onSuspend: PropTypes.func,
+      onTimeUpdate: PropTypes.func,
+      onVolumeChange: PropTypes.func,
+      onWaiting: PropTypes.func,
+      showRemainingDuration: PropTypes.bool.isRequired,
+      src: PropTypes.string.isRequired,
+      playHeadPercent: PropTypes.number.isRequired,
+      setOption: PropTypes.func.isRequired,
+      pause: PropTypes.func.isRequired,
+      id: PropTypes.string.isRequired,
+      mediaId: PropTypes.string,
+      pauseOthersOnPlay: PropTypes.bool.isRequired,
+      otherJPlayerIds: PropTypes.arrayOf(
+        PropTypes.string,
+      ).isRequired,
+      timeFormats: PropTypes.shape({
+        showHour: PropTypes.bool.isRequired,
+        showMin: PropTypes.bool.isRequired,
+        showSec: PropTypes.bool.isRequired,
+        padHour: PropTypes.bool.isRequired,
+        padMin: PropTypes.bool.isRequired,
+        padSec: PropTypes.bool.isRequired,
+        sepHour: PropTypes.string.isRequired,
+        sepMin: PropTypes.string.isRequired,
+        sepSec: PropTypes.string.isRequired,
       }).isRequired,
       /* eslint-disable react/no-unused-prop-types */
-      newTime: React.PropTypes.number,
-      loop: React.PropTypes.bool.isRequired,
-      autoplay: React.PropTypes.bool.isRequired,
-      defaultPlaybackRate: React.PropTypes.number.isRequired,
-      muted: React.PropTypes.bool.isRequired,
-      playbackRate: React.PropTypes.number.isRequired,
-      preload: React.PropTypes.string.isRequired,
-      volume: React.PropTypes.number.isRequired,
+      paused: PropTypes.bool.isRequired,
+      newTime: PropTypes.number,
+      loop: PropTypes.bool.isRequired,
+      autoplay: PropTypes.bool.isRequired,
+      defaultPlaybackRate: PropTypes.number.isRequired,
+      muted: PropTypes.bool.isRequired,
+      playbackRate: PropTypes.number.isRequired,
+      preload: PropTypes.string.isRequired,
+      volume: PropTypes.number.isRequired,
       /* eslint-enable react/no-unused-prop-types */
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.element),
-        React.PropTypes.element,
+      children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.element),
+        PropTypes.element,
       ]).isRequired,
     };
   }
@@ -113,6 +123,7 @@ class MediaContainer extends React.Component {
       onVolumeChange: Function.prototype,
       onWaiting: Function.prototype,
       newTime: null,
+      mediaId: null,
     };
   }
   constructor(props) {
@@ -146,6 +157,11 @@ class MediaContainer extends React.Component {
       onPause: this.props.onPause,
       onPlay: () => {
         this.props.setOption(this.props.id, 'paused', false);
+
+        if (this.props.pauseOthersOnPlay) {
+          this.pauseOthers();
+        }
+
         this.props.onPlay();
       },
       onPlaying: this.props.onPlaying,
@@ -190,7 +206,7 @@ class MediaContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.updateCurrentMedia(nextProps);
 
-    if (nextProps.src !== this.props.src &&
+    if (nextProps.mediaId !== this.props.mediaId &&
         nextProps.src !== '') {
       this.currentMedia.src = nextProps.src;
     }
@@ -222,12 +238,10 @@ class MediaContainer extends React.Component {
       }
     }
 
-    if (nextProps.paused !== this.props.paused) {
-      if (nextProps.paused) {
-        this.currentMedia.pause();
-      } else {
-        this.currentMedia.play();
-      }
+    if (nextProps.paused) {
+      this.currentMedia.pause();
+    } else {
+      this.currentMedia.play();
     }
   }
   componentDidUpdate(prevProps) {
@@ -269,6 +283,9 @@ class MediaContainer extends React.Component {
     const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
 
     this.props.setOption(this.props.id, 'currentTimeText', currentTimeText);
+  }
+  pauseOthers = () => {
+    this.props.otherJPlayerIds.forEach(id => this.props.pause(id));
   }
   updateMediaStatus = () => {
     let seekPercent = 0;

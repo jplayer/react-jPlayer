@@ -22,7 +22,7 @@ const setup = (newProps) => {
   };
 };
 
-describe('<Title />', () => {
+describe('Title', () => {
   let wrapper;
   let props;
 

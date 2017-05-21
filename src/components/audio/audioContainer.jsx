@@ -1,11 +1,8 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import Audio from './audio';
 
-const mapStateToProps = ({ jPlayers }, { id, events, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   require: !jPlayers[id].mediaSettings.video,
-  events,
-  children,
-  attributes,
 });
 
-export default connectWithId(mapStateToProps)(Audio);
+export default connectWithId(mapStateToProps, {})(Audio);

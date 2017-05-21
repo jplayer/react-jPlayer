@@ -1,6 +1,6 @@
 {
   "name": "react-jplayer",
-  "version": "4.0.5",
+  "version": "5.0.1",
   "description": "Html5 audio and video player library for React",
   "author": "Martin Dawson <u1356770@gmail.com>",
   "repository": {
@@ -100,7 +100,7 @@
     "css-loader": "^0.27.2",
     "david": "^11.0.0",
     "editorconfig": "^0.13.2",
-    "enzyme": "^2.2.0",
+    "enzyme": "^2.8.2",
     "enzyme-redux": "^0.1.6",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
@@ -124,6 +124,7 @@
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.0.0",
     "react-motion": "^0.4.4",
+    "react-test-renderer": "^15.5.4",
     "redux": "^3.6.0",
     "rimraf": "^2.6.1",
     "style-loader": "^0.13.1",
@@ -133,12 +134,15 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "lodash.merge": "^4.6.0",
+    "prop-types": "^15.5.8",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
+    "react-jplayer-utils": "^1.0.0",
     "react-motion": "^0.4.4",
     "react-redux": "^5.0.2",
     "recompose": "^0.22.0",
     "redux": "^3.6.0",
-    "screenfull": "^3.0.2"
+    "screenfull": "^3.0.2",
+    "shortid": "^2.2.8"
   }
 }

@@ -4,19 +4,15 @@ import { __get__ } from './playBarContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
 
 describe('PlayBarContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, ...attributes });
+    const expected = mapStateToProps(getJPlayers(), { id });
 
     expect(expected).toEqual({
       smoothPlayBar: false,
       currentPercentAbsolute: 0,
       currentPercentRelative: 0,
-      attributes,
     });
   });
 });

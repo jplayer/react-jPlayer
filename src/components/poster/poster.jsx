@@ -1,21 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Poster = ({ src, alt, attributes }) => (
-  src !== '' ?
-    <img className={classes.POSTER} alt={alt} src={src} {...attributes} />
-  : null
+const Poster = ({ src, alt, ...attributes }) => (
+  src !== '' ? <img className={classes.POSTER} alt={alt} src={src} {...attributes} />
+    : null
 );
 
 Poster.defaultProps = {
   alt: null,
+  src: null,
 };
 
 Poster.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  src: React.PropTypes.string.isRequired,
-  alt: React.PropTypes.string,
+  src: PropTypes.string,
+  alt: PropTypes.string,
 };
 
 export default Poster;

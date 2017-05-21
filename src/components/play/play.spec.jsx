@@ -7,13 +7,11 @@ import Play from './play';
 
 const setup = () => {
   const props = {
-    onClick: createSpy(),
+    play: createSpy(),
     paused: true,
     children: (<i className="@@jPlayer-test" />),
     id: 'jPlayer-1',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Play {...props} />);
@@ -24,20 +22,18 @@ const setup = () => {
   };
 };
 
-describe('<Play />', () => {
+describe('Play', () => {
   let wrapper;
   let props;
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
-  });
-
   it('renders self and subcomponents', () => {
+    ({ wrapper, props } = setup());
+
     wrapper.simulate('click');
 
-    expect(props.onClick).toHaveBeenCalledWith(props.id, props.paused);
+    expect(props.play).toHaveBeenCalledWith(props.id, props.paused);
     expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
     expect(wrapper.hasClass(classes.PLAY)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

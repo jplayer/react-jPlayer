@@ -1,26 +1,27 @@
-import React from 'react';
 import expect from 'expect';
 
-import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions, defaultStatus } from '../../util/constants';
 import { __get__ } from './downloadContainer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 
 const mapStateToProps = __get__('mapStateToProps');
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
-const children = <div />;
 
 describe('DownloadContainer', () => {
-  it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
+  let jPlayers;
 
-    expect(expected).toEqual({
+  beforeEach(() => {
+    jPlayers = {
+      [id]: mockJPlayerOptions,
+    };
+  });
+
+  it('maps state', () => {
+    const stateProps = mapStateToProps({ jPlayers }, { id });
+
+    expect(stateProps).toEqual({
       free: defaultOptions.media.free,
       url: defaultStatus.src,
-      children,
-      attributes,
     });
   });
 });

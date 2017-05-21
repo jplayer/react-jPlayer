@@ -1,11 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import KeyControl from '../keyControl/keyControlContainer';
-
-const JPlayer = ({ keyEnabled, setJPlayer, children, ...attributes }) => (
+const JPlayer = ({ setJPlayer, children, ...attributes }) => (
   <div ref={setJPlayer} draggable={false} {...attributes}>
     {children}
-    {keyEnabled && <KeyControl />}
   </div>
 );
 
@@ -14,12 +12,8 @@ JPlayer.defaultProps = {
 };
 
 JPlayer.propTypes = {
-  setJPlayer: React.PropTypes.func,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
-  ]).isRequired,
-  keyEnabled: React.PropTypes.bool.isRequired,
+  setJPlayer: PropTypes.func,
+  children: PropTypes.node.isRequired,
 };
 
 export default JPlayer;

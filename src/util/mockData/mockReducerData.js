@@ -1,5 +1,5 @@
 import { defaultOptions, defaultStatus, actionNames,
-  errors, hints } from '../util/constants';
+  errors, hints } from '../../util/constants';
 
 const jPlayerOneId = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
@@ -56,7 +56,12 @@ export const setMediaData = [
       src: 'test.mp3',
       paused: true,
       media: {
-        ...{ ...defaultOptions.media, ...{ sources: { mp3: 'test.mp3', oga: 'test.ogg' } } },
+        ...defaultOptions.media,
+        id: 'testId',
+        sources: {
+          mp3: 'test.mp3',
+          oga: 'test.ogg',
+        },
       },
     },
   },

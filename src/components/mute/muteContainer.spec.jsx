@@ -1,47 +1,36 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { getJPlayers } from '../../util/common.spec';
-import { setMute } from '../../actions/actions';
+import expect from 'expect';
+
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 import { __get__ } from './muteContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
 const mapDispatchToProps = __get__('mapDispatchToProps');
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
-const children = <div />;
 
 describe('MuteContainer', () => {
-  let dispatch;
+  let jPlayers;
 
   beforeEach(() => {
-    dispatch = createSpy();
+    jPlayers = {
+      [id]: mockJPlayerOptions,
+    };
   });
 
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
+    const stateProps = mapStateToProps({ jPlayers }, { id });
 
-    expect(expected).toEqual({
+    expect(stateProps).toEqual({
       muted: false,
-      id,
-      children,
-      attributes,
     });
   });
 
-  const muteData = [
-    { muted: false },
-    { muted: true },
-  ];
+  it('mapDispatchToProps maps setMute', () => {
+    const dispatchProps = mapDispatchToProps;
 
-  it('mapDispatchToProps onClick toggles mute', () => {
-    muteData.forEach((datum) => {
-      const mappedDispatched = mapDispatchToProps(dispatch);
+    expect.spyOn(dispatchProps, 'setMute');
 
-      mappedDispatched.onClick(id, datum.muted);
+    dispatchProps.setMute(id, false);
 
-      expect(dispatch).toHaveBeenCalledWith(setMute(id, !datum.muted));
-    });
+    expect(dispatchProps.setMute).toHaveBeenCalledWith(id, false);
   });
 });

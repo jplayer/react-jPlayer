@@ -5,7 +5,7 @@ import merge from 'lodash.merge';
 
 import { getJPlayers } from '../../util/common.spec';
 import { defaultOptions } from '../../util/constants';
-import { urlNotSupportedError } from '../../util/index';
+import urlNotSupportedError from '../../util/errorHandlers/urlNotSupportedError';
 import { setOption, pause } from '../../actions/actions';
 import { __get__ } from './mediaContainer';
 
@@ -25,6 +25,7 @@ const setup = (state, newProps, isAudio = true) => {
   const props = {
     ...getProps(state),
     ...newProps,
+    otherJPlayerIds: [],
   };
   const wrapper = mount(
     <MediaContainer {...props}>
@@ -64,9 +65,9 @@ const setup = (state, newProps, isAudio = true) => {
 
 describe('MediaContainer', () => {
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children: mockAudio });
+    const stateProps = mapStateToProps(getJPlayers(), { id, children: mockAudio });
 
-    expect(expected).toEqual({
+    expect(stateProps).toEqual({
       loop: false,
       showRemainingDuration: false,
       src: '',
@@ -82,6 +83,9 @@ describe('MediaContainer', () => {
       newTime: null,
       children: mockAudio,
       timeFormats: defaultOptions.timeFormats,
+      mediaId: undefined,
+      pauseOthersOnPlay: true,
+      otherJPlayerIds: [],
     });
   });
 

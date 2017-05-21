@@ -24,7 +24,7 @@ const setup = (newProps) => {
 };
 const motion = __get__('motion');
 
-describe('<Gui />', () => {
+describe('Gui', () => {
   let wrapper;
   let props;
 

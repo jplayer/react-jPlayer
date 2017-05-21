@@ -8,9 +8,7 @@ import Duration from './duration';
 const setup = (newProps) => {
   const props = {
     children: '50',
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
     ...newProps,
   };
 
@@ -22,15 +20,16 @@ const setup = (newProps) => {
   };
 };
 
-describe('<Duration />', () => {
+describe('Duration', () => {
   let wrapper;
   let props;
 
   it('renders self and subcomponents', () => {
     ({ wrapper, props } = setup());
+
     expect(wrapper.prop('children')).toBe(props.children);
     expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null if children is empty', () => {

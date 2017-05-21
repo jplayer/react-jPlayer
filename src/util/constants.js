@@ -1,5 +1,5 @@
 export const actionNames = {
-  SET_OPTION: 'SET_OPTION',
+  SET_OPTION: 'SET_JPLAYER_OPTION',
   SET_MEDIA: 'SET_MEDIA',
   CLEAR_MEDIA: 'CLEAR_MEDIA',
   PLAY: 'PLAY',
@@ -143,19 +143,15 @@ export const formats = {
   },
 };
 
-export const internalStatus = {
+export const defaultStatus = {
   newTime: null, // Needed to set a newTime as currentTime is auto updated by the audio
   guiFadeOut: false,
   playHeadPercent: 0,
-  error: {},
   mediaSettings: {
     video: false,
     foundSupported: false,
     formats: [],
   },
-};
-
-export const defaultStatus = {
   paused: true,
   seeking: false,
   src: '',
@@ -179,6 +175,7 @@ export const defaultOptions = {
   bufferColour: '#ddd',
   volume: 0.8,
   barDrag: true,
+  pauseOthersOnPlay: true,
   guiFadeHoldTime: 3000,
   media: {
     sources: {},
@@ -209,5 +206,3 @@ export const defaultOptions = {
     sepSec: '',
   },
 };
-
-export const keyIgnoreElementNames = ['INPUT', 'TEXTAREA', 'SELECT'];

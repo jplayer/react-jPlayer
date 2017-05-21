@@ -8,9 +8,7 @@ import BrowserUnsupported from './browserUnsupported';
 const setup = (newProps) => {
   const props = {
     foundSupported: false,
-    attributes: {
-      'data-test': 'test',
-    },
+    'data-test': 'test',
     ...newProps,
   };
   const wrapper = shallow(<BrowserUnsupported {...props} />);
@@ -20,28 +18,32 @@ const setup = (newProps) => {
     wrapper,
   };
 };
+const children = 'test';
 
-describe('<BrowserUnsupported />', () => {
+describe('BrowserUnsupported', () => {
+  let wrapper;
+  let props;
+
   it('renders self and sub components when no supported media types', () => {
-    const { wrapper, props } = setup();
+    ({ wrapper, props } = setup());
 
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeFalsy();
+    expect(wrapper.prop('children')).toNotBe(children);
     expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
     expect(wrapper.find('h4').exists()).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when supported media types', () => {
-    const { wrapper } = setup();
+    ({ wrapper, props } = setup());
 
     wrapper.setProps({ foundSupported: true });
     expect(wrapper.type()).toBe(null);
   });
 
   it('custom children overwrite default if specified', () => {
-    const { wrapper } = setup({ children: <div className="@@jPlayer-test" /> });
+    ({ wrapper, props } = setup({ children }));
 
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
+    expect(wrapper.prop('children')).toBe(children);
     expect(wrapper.find('h4').exists()).toBeFalsy();
   });
 });

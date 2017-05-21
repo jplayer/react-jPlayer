@@ -1,11 +1,6 @@
 @import "../mixins";
 @import "../variables";
-
-.jp-sleek.jp-jplayer .jp-gui .jp-controls .jp-title-container .jp-title {
-  @media (max-width: 950px) {
-    max-width: 135px;
-  }
-}
+@import "../jPlayer";
 
 .jp-sleek.jp-jplayer.jp-state-no-volume-support {
   .jp-gui .jp-controls {
@@ -119,7 +114,8 @@
         font-size: 12px;
         .jp-title {
           font-weight:bold;
-          max-width: 250px;
+          max-width: 230px;
+          min-width: 230px;
           text-overflow: ellipsis;
           overflow: hidden;
           display: inline-block;

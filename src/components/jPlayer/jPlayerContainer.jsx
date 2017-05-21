@@ -1,19 +1,17 @@
 import React from 'react';
 import screenfull from 'screenfull';
 import classNames from 'classnames';
+import merge from 'lodash.merge';
+import { connectWithId, traverseParentsUntilClassName, KeyControl } from 'react-jplayer-utils';
+import PropTypes from 'prop-types';
 
-import { connectWithId, traverseParentsUntilClassName } from '../../util/index';
-import { formats, classes } from '../../util/constants';
+import formatPropTypes from '../../util/formatPropTypes';
+import { classes } from '../../util/constants';
 import JPlayer from './jPlayer';
-import { setOption, setMedia } from '../../actions/actions';
+import { setOption, setMedia, play, pause, setMute, setVolume } from '../../actions/actions';
 
-const formatPropTypes = {};
-
-Object.keys(formats).forEach((key) => {
-  formatPropTypes[key] = React.PropTypes.string;
-});
-
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id, customStates, children,
+keyBindings, ...attributes }) => ({
   media: jPlayers[id].media,
   error: jPlayers[id].error,
   fullScreen: jPlayers[id].fullScreen,
@@ -21,6 +19,10 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   paused: jPlayers[id].paused,
   guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
   guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
+  muted: jPlayers[id].muted,
+  volume: jPlayers[id].volume,
+  loop: jPlayers[id].loop,
+  keyBindings,
   id,
   children,
   attributes: {
@@ -38,58 +40,87 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
       [classes.states.LOOPED]: jPlayers[id].loop,
       [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
       [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
+      ...customStates,
     }),
   },
 });
 
-const mapDispatchToProps = () => ({
-  setMedia,
-  setOption,
+const mergeProps = (stateProps, { dispatch }) => ({
+  ...stateProps,
+  dispatch,
+  keyBindings: merge({}, {
+    play: {
+      key: 80, // p
+      fn: () => (stateProps.paused ? dispatch(play(stateProps.id)) :
+                                      dispatch(pause(stateProps.id))),
+    },
+    fullScreen: {
+      key: 70, // f
+      fn: () => dispatch(setOption(stateProps.id, 'fullScreen', !stateProps.fullScreen)),
+    },
+    mute: {
+      key: 77, // m
+      fn: () => dispatch(setMute(stateProps.id, !stateProps.muted)),
+    },
+    volumeUp: {
+      key: 190, // .
+      fn: () => {
+        dispatch(setVolume(stateProps.id, stateProps.volume + 0.1));
+      },
+    },
+    volumeDown: {
+      key: 188, // ,
+      fn: () => dispatch(setVolume(stateProps.id, stateProps.volume - 0.1)),
+    },
+    loop: {
+      key: 76, // l
+      fn: () => dispatch(setOption(stateProps.id, 'loop', !stateProps.loop)),
+    },
+  }, stateProps.keyBindings),
 });
 
 class JPlayerContainer extends React.Component {
   static get propTypes() {
     return {
-      attributes: React.PropTypes.object,
-      media: React.PropTypes.shape({
-        title: React.PropTypes.string,
-        artist: React.PropTypes.string,
-        sources: React.PropTypes.shape(formatPropTypes).isRequired,
-        poster: React.PropTypes.string,
-        free: React.PropTypes.bool,
+      attributes: PropTypes.object,
+      media: PropTypes.shape({
+        title: PropTypes.string,
+        artist: PropTypes.string,
+        sources: PropTypes.shape(formatPropTypes).isRequired,
+        poster: PropTypes.string,
+        free: PropTypes.bool,
+        id: PropTypes.string,
       }).isRequired,
-      setOption: React.PropTypes.func.isRequired,
-      setMedia: React.PropTypes.func.isRequired,
-      id: React.PropTypes.string.isRequired,
-      error: React.PropTypes.shape({
-        context: React.PropTypes.string,
-        message: React.PropTypes.string,
-        hint: React.PropTypes.string,
-      }).isRequired,
-      fullScreen: React.PropTypes.bool.isRequired,
-      children: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.element),
-        React.PropTypes.element,
+      keyBindings: PropTypes.object.isRequired,
+      id: PropTypes.string.isRequired,
+      dispatch: PropTypes.func.isRequired,
+      error: PropTypes.shape({
+        context: PropTypes.string,
+        message: PropTypes.string,
+        hint: PropTypes.string,
+      }),
+      fullScreen: PropTypes.bool.isRequired,
+      children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.element),
+        PropTypes.element,
       ]).isRequired,
-      keyEnabled: React.PropTypes.bool.isRequired,
-      paused: React.PropTypes.bool.isRequired,
-      guiFadeHoldTime: React.PropTypes.number.isRequired,
-      guiFadeHoldTimeout: React.PropTypes.number,
+      paused: PropTypes.bool.isRequired,
+      guiFadeHoldTime: PropTypes.number.isRequired,
+      guiFadeHoldTimeout: PropTypes.number,
     };
   }
   static get defaultProps() {
     return {
       attributes: null,
       guiFadeHoldTimeout: null,
+      error: null,
     };
   }
   componentWillMount() {
     if (screenfull.enabled) {
       document.addEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
     }
-  }
-  componentDidMount() {
-    this.props.setMedia(this.props.id, this.props.media);
+    this.props.dispatch(setMedia(this.props.id, this.props.media));
     this.requestFullScreen();
   }
   componentWillReceiveProps(nextProps) {
@@ -143,19 +174,19 @@ class JPlayerContainer extends React.Component {
   startGuiFadeOutTimer = () => {
     if (this.props.fullScreen && !this.props.paused) {
       clearTimeout(this.props.guiFadeHoldTimeout);
-      this.props.setOption(this.props.id, 'guiFadeOut', false);
-      this.props.setOption(this.props.id, 'guiFadeHoldTimeout', setTimeout(this.startGuiFadeOut,
-        this.props.guiFadeHoldTime));
+      this.props.dispatch(setOption(this.props.id, 'guiFadeOut', false));
+      this.props.dispatch(setOption(this.props.id, 'guiFadeHoldTimeout', setTimeout(this.startGuiFadeOut,
+        this.props.guiFadeHoldTime)));
     }
   }
   startGuiFadeOut = () => {
     if (this.props.fullScreen && !this.props.paused) {
-      this.props.setOption(this.props.id, 'guiFadeOut', true);
+      this.props.dispatch(setOption(this.props.id, 'guiFadeOut', true));
     }
   }
   closeFullScreen = () => {
     if (!screenfull.isFullscreen) {
-      this.props.setOption(this.props.id, 'fullScreen', false);
+      this.props.dispatch(setOption(this.props.id, 'fullScreen', false));
     }
   }
   // eslint-disable-next-line no-console
@@ -163,13 +194,14 @@ class JPlayerContainer extends React.Component {
   render() {
     return (
       <JPlayer
-        setJPlayer={this.setJPlayer} keyEnabled={this.props.keyEnabled}
-        onMouseMove={this.onMouseMove} {...this.props.attributes}
+        setJPlayer={this.setJPlayer} onMouseMove={this.onMouseMove}
+        {...{ id: this.props.id, ...this.props.attributes }}
       >
+        <KeyControl keyBindings={this.props.keyBindings} />
         {this.props.children}
       </JPlayer>
     );
   }
 }
 
-export default connectWithId(mapStateToProps, mapDispatchToProps())(JPlayerContainer);
+export default connectWithId(mapStateToProps, null, mergeProps)(JPlayerContainer);

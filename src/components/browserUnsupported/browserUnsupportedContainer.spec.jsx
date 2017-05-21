@@ -1,25 +1,26 @@
-import React from 'react';
 import expect from 'expect';
 
-import { getJPlayers } from '../../util/common.spec';
-import { internalStatus } from '../../util/constants';
+import { defaultStatus } from '../../util/constants';
 import { __get__ } from './browserUnsupportedContainer';
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
 
 const mapStateToProps = __get__('mapStateToProps');
-const children = <div />;
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
 
 describe('BrowserUnsupportedContainer', () => {
+  let jPlayers;
+
+  beforeEach(() => {
+    jPlayers = {
+      [id]: mockJPlayerOptions,
+    };
+  });
+
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
+    const expected = mapStateToProps({ jPlayers }, { id });
 
     expect(expected).toEqual({
-      foundSupported: internalStatus.mediaSettings.foundSupported,
-      attributes,
-      children,
+      foundSupported: defaultStatus.mediaSettings.foundSupported,
     });
   });
 });

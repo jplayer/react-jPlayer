@@ -1,5 +1,7 @@
 import React from 'react';
-import { connectWithId, getWidth, getOffset } from '../../util/index';
+import PropTypes from 'prop-types';
+import { connectWithId, getElementOffset } from 'react-jplayer-utils';
+
 import { setPlayHead } from '../../actions/actions';
 import Bar from '../bar';
 import SeekBar from './seekBar';
@@ -7,9 +9,9 @@ import SeekBar from './seekBar';
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   seekPercent: jPlayers[id].seekPercent,
   movePlayHead: (bar, dispatch, e) => {
-    const offset = getOffset(bar);
+    const offset = getElementOffset(bar);
     const x = e.pageX - offset.left;
-    const w = getWidth(bar);
+    const w = bar.getBoundingClientRect().width;
     const percentage = 100 * (x / w);
 
     dispatch(setPlayHead(id, percentage));
@@ -44,11 +46,11 @@ SeekBarContainer.defaultProps = {
 };
 
 SeekBarContainer.propTypes = {
-  children: React.PropTypes.node,
-  attributes: React.PropTypes.object.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  onTouchMove: React.PropTypes.func.isRequired,
-  seekPercent: React.PropTypes.number.isRequired,
+  children: PropTypes.node,
+  attributes: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onTouchMove: PropTypes.func.isRequired,
+  seekPercent: PropTypes.number.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(SeekBarContainer);

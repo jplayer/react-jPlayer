@@ -3,7 +3,6 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import Audio from './audio';
-import Media from '../media/mediaContainer';
 
 const events = {
   onAbort: null,
@@ -35,10 +34,8 @@ const setup = () => {
   const props = {
     events,
     require: true,
-    attributes: {
-      children: (<track className="@@jPlayer-test" />),
-      'data-test': 'test',
-    },
+    children: 'test',
+    'data-test': 'test',
   };
 
   const wrapper = shallow(<Audio {...props} />);
@@ -49,27 +46,26 @@ const setup = () => {
   };
 };
 
-describe('<Audio />', () => {
+describe('Audio', () => {
   let wrapper;
   let props;
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
-  });
-
   it('renders self and subcomponents', () => {
+    ({ wrapper, props } = setup());
+
     const audio = wrapper.find('audio');
 
-    Object.entries(events).forEach((val) => {
-      expect(wrapper.prop(val[0])).toBe(val[1]);
+    Object.keys(events).forEach((key) => {
+      expect(wrapper.prop(key)).toBe(events[key]);
     });
 
-    expect(audio.parent().type()).toBe(Media);
-    expect(audio.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(audio.prop('data-test')).toBe(props.attributes['data-test']);
+    expect(audio.prop('children')).toBe(props.children);
+    expect(audio.prop('data-test')).toBe(props['data-test']);
   });
 
   it('renders null when not required', () => {
+    ({ wrapper } = setup());
+
     wrapper.setProps({ require: false });
     expect(wrapper.type()).toBe(null);
   });

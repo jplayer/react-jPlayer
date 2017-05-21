@@ -1,16 +1,13 @@
-import { connectWithId } from '../../util/index';
+import { connectWithId } from 'react-jplayer-utils';
 import { setOption } from '../../actions/actions';
 import Repeat from './repeat';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   loop: jPlayers[id].loop,
-  id,
-  children,
-  attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: (id, loop) => dispatch(setOption(id, 'loop', !loop)),
-});
+const mapDispatchToProps = {
+  setLoop: (id, loop) => setOption(id, 'loop', !loop),
+};
 
 export default connectWithId(mapStateToProps, mapDispatchToProps)(Repeat);

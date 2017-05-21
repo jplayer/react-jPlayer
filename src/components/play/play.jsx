@@ -1,19 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Play = ({ onClick, id, paused, children, attributes }) => (
-  <button className={classes.PLAY} onClick={() => onClick(id, paused)} {...attributes}>
+const Play = ({ play, id, paused, children, ...attributes }) => (
+  <button className={classes.PLAY} onClick={() => play(id, paused)} {...attributes}>
     {children}
   </button>
 );
 
 Play.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string.isRequired,
-  paused: React.PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+  play: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  paused: PropTypes.bool.isRequired,
 };
 
 export default Play;

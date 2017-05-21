@@ -1,48 +1,67 @@
 import React from 'react';
-import expect, { spyOn } from 'expect';
-import { mount, shallow } from 'enzyme';
+import expect from 'expect';
+import { mount } from 'enzyme';
 
-import { getJPlayers, mockCanvasContext } from '../../util/common.spec';
-import { __get__, __Rewire__, __ResetDependency__ } from './bufferBarContainer';
+import { __get__ } from './bufferBarContainer';
 import BufferBar from './bufferBar';
-
-const state = {
-  bufferedTimeRanges: [
-    { start: 0, end: 20 },
-    { start: 30, end: 50 },
-  ],
-  duration: 150,
-  bufferColour: '#eee',
-};
+import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
+import mockCanvasContext from '../../util/mockData/mockCanvasContext';
 
 const mapStateToProps = __get__('mapStateToProps');
 const BufferBarContainer = __get__('BufferBarContainer');
 const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-  children: <div />,
-};
-const MockBufferBar = ({ setCanvas }) => <canvas ref={setCanvas} />;
-__Rewire__('BufferBar', MockBufferBar);
 
-MockBufferBar.propTypes = {
-  setCanvas: React.PropTypes.func.isRequired,
+const setup = () => {
+  const props = {
+    bufferedTimeRanges: mockJPlayerOptions.bufferedTimeRanges,
+    duration: mockJPlayerOptions.duration,
+    bufferColour: mockJPlayerOptions.bufferColour,
+    attributes: {
+      'data-test': 'test',
+    },
+  };
+
+  const wrapper = mount(<BufferBarContainer {...props} />);
+
+  return {
+    props,
+    wrapper,
+    instance: wrapper.instance(),
+  };
 };
 
-describe('<BufferBarContainer />', () => {
+describe('BufferBarContainer', () => {
+  let wrapper;
+  let props;
+  let instance;
+  let jPlayers;
+
+  beforeEach(() => {
+    jPlayers = {
+      [id]: mockJPlayerOptions,
+    };
+  });
+
+  afterEach(() => {
+    mockCanvasContext.resetSpies();
+  });
+
   it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(state), { id, ...attributes });
-    expect(expected).toEqual({
-      ...state,
-      attributes,
+    ({ props } = setup());
+    const stateProps = mapStateToProps({ jPlayers }, { id, ...props.attributes });
+
+    expect(stateProps).toEqual({
+      bufferedTimeRanges: mockJPlayerOptions.bufferedTimeRanges,
+      duration: mockJPlayerOptions.duration,
+      bufferColour: mockJPlayerOptions.bufferColour,
+      attributes: props.attributes,
     });
   });
 
   it('clears buffer bar if not buffered', () => {
-    const wrapper = mount(<BufferBarContainer {...state} />);
-    const instance = wrapper.instance();
+    ({ wrapper, instance } = setup());
 
-    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+    expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
     wrapper.setProps({ bufferedTimeRanges: [] });
 
@@ -51,46 +70,35 @@ describe('<BufferBarContainer />', () => {
   });
 
   it('doesn\'t fill buffer bar if values are same as previous', () => {
-    const wrapper = mount(<BufferBarContainer {...state} />);
-    const instance = wrapper.instance();
+    ({ wrapper, props, instance } = setup());
 
-    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+    expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
-    wrapper.setProps({ bufferedTimeRanges: state.bufferedTimeRanges });
+    wrapper.setProps({ bufferedTimeRanges: props.bufferedTimeRanges });
 
     expect(mockCanvasContext.fillRect).toNotHaveBeenCalled();
   });
 
   it('fills buffer bar if buffering', () => {
-    const wrapper = mount(<BufferBarContainer {...state} />);
-    const instance = wrapper.instance();
+    ({ wrapper, props, instance } = setup());
+
     const bufferedTimeRanges = [
        { start: 0, end: 10 },
        { start: 10, end: 25 },
     ];
 
-    spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
+    expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);
 
     wrapper.setProps({ bufferedTimeRanges });
 
-    expect(mockCanvasContext.fillRect.calls.length)
-      .toBe(bufferedTimeRanges.length);
-    expect(mockCanvasContext.fillStyle).toBe(state.bufferColour);
+    expect(mockCanvasContext.fillRect.calls.length).toBe(bufferedTimeRanges.length);
+    expect(mockCanvasContext.fillStyle).toBe(props.bufferColour);
   });
 
   it('renders BufferBar', () => {
-    __ResetDependency__('BufferBar');
-    const wrapper = shallow(<BufferBarContainer {...state} attributes={attributes} />);
+    ({ wrapper } = setup());
 
-    expect(wrapper.type()).toBe(BufferBar);
-    expect(wrapper.prop('attributes')).toBe(attributes);
-  });
-
-  afterEach(() => {
-    mockCanvasContext.resetSpies();
-  });
-
-  after(() => {
-    __ResetDependency__('BufferBar');
+    expect(wrapper.find(BufferBar).is(BufferBar)).toBeTruthy();
+    expect(wrapper.prop('attributes')).toEqual(props.attributes);
   });
 });

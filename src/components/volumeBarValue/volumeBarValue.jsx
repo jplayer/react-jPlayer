@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes, defaultOptions } from '../../util/constants';
 
@@ -19,10 +20,10 @@ VolumeBarValue.defaultProps = {
 };
 
 VolumeBarValue.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  muted: React.PropTypes.bool.isRequired,
-  volume: React.PropTypes.number.isRequired,
-  verticalVolume: React.PropTypes.bool,
+  attributes: PropTypes.object.isRequired,
+  muted: PropTypes.bool.isRequired,
+  volume: PropTypes.number.isRequired,
+  verticalVolume: PropTypes.bool,
 };
 
 export default VolumeBarValue;

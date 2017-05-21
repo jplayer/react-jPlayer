@@ -1,5 +1,7 @@
 import React from 'react';
-import { connectWithId, getHeight, getWidth, getOffset } from '../../util/index';
+import PropTypes from 'prop-types';
+import { connectWithId, getElementOffset } from 'react-jplayer-utils';
+
 import { setVolume } from '../../actions/actions';
 import Bar from '../bar';
 import VolumeBar from './volumeBar';
@@ -8,11 +10,11 @@ import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
   moveVolumeBar: (bar, dispatch, e) => {
     const { verticalVolume } = jPlayers[id];
-    const offset = getOffset(bar);
+    const offset = getElementOffset(bar);
+    const w = bar.getBoundingClientRect().width;
+    const h = bar.getBoundingClientRect().height;
+    const y = (h - e.pageY) + offset.top;
     const x = e.pageX - offset.left;
-    const w = getWidth(bar);
-    const y = (getHeight(bar) - e.pageY) + offset.top;
-    const h = getHeight(bar);
 
     if (verticalVolume) {
       dispatch(setVolume(id, y / h));
@@ -49,10 +51,10 @@ VolumeBarContainer.defaultProps = {
 };
 
 VolumeBarContainer.propTypes = {
-  attributes: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node,
-  onClick: React.PropTypes.func.isRequired,
-  onTouchMove: React.PropTypes.func.isRequired,
+  attributes: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  onClick: PropTypes.func.isRequired,
+  onTouchMove: PropTypes.func.isRequired,
 };
 
 export default connectWithId(mapStateToProps, null, mergeProps)(VolumeBarContainer);

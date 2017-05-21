@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
@@ -20,14 +21,14 @@ SeekBar.defaultProps = {
 };
 
 SeekBar.propTypes = {
-  seekPercent: React.PropTypes.number.isRequired,
-  setBar: React.PropTypes.func,
-  onClick: React.PropTypes.func,
-  onMouseDown: React.PropTypes.func,
-  onTouchStart: React.PropTypes.func,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.arrayOf(React.PropTypes.element),
-    React.PropTypes.element,
+  seekPercent: PropTypes.number.isRequired,
+  setBar: PropTypes.func,
+  onClick: PropTypes.func,
+  onMouseDown: PropTypes.func,
+  onTouchStart: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
   ]).isRequired,
 };
 
