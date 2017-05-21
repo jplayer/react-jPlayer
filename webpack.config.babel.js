@@ -25,6 +25,8 @@ export default {
     'js/jPlayer.min.js': './src/index.js',
     'css/jPlayer.css': './src/less/jPlayer.less',
     'css/jPlayer.min.css': './src/less/jPlayer.less',
+    'css/controls/iconControls.css': './src/less/controls/iconControls.less',
+    'css/controls/iconControls.min.css': './src/less/controls/iconControls.less',
     'css/skins/sleek.css': './src/less/skins/sleek.less',
     'css/skins/sleek.min.css': './src/less/skins/sleek.less',
   },

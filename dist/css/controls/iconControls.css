@@ -1,0 +1,38 @@
+.jp-icon-controls button:focus {
+  outline: none;
+}
+.jp-icon-controls button {
+  border: none;
+  background-color: transparent;
+}
+.jp-icon-controls .jp-download,
+.jp-icon-controls .jp-play,
+.jp-icon-controls .jp-repeat,
+.jp-icon-controls .jp-full-screen,
+.jp-icon-controls .jp-mute {
+  min-width: 42px;
+  color: #000;
+  padding: 0;
+}
+.jp-icon-controls a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  text-align: center;
+  min-width: 42px;
+}
+.jp-jplayer .jp-icon-controls .jp-play i:before {
+  content: "\F04B";
+}
+.jp-jplayer.jp-state-playing .jp-icon-controls .jp-play i:before {
+  content: "\F04C";
+}
+.jp-jplayer.jp-state-muted .jp-icon-controls .jp-mute i:before {
+  content: "\F026";
+}
+.jp-jplayer.jp-state-volume-low .jp-icon-controls .jp-mute i:before {
+  content: "\F027";
+}
+.jp-jplayer.jp-state-volume-high .jp-icon-controls .jp-mute i:before {
+  content: "\F028";
+}

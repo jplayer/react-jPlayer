@@ -802,7 +802,6 @@ var MediaContainer = function (_React$Component) {
         showRemainingDuration: _propTypes2.default.bool.isRequired,
         src: _propTypes2.default.string.isRequired,
         playHeadPercent: _propTypes2.default.number.isRequired,
-        paused: _propTypes2.default.bool.isRequired,
         setOption: _propTypes2.default.func.isRequired,
         pause: _propTypes2.default.func.isRequired,
         id: _propTypes2.default.string.isRequired,
@@ -821,6 +820,7 @@ var MediaContainer = function (_React$Component) {
           sepSec: _propTypes2.default.string.isRequired
         }).isRequired,
         /* eslint-disable react/no-unused-prop-types */
+        paused: _propTypes2.default.bool.isRequired,
         newTime: _propTypes2.default.number,
         loop: _propTypes2.default.bool.isRequired,
         autoplay: _propTypes2.default.bool.isRequired,
@@ -1480,11 +1480,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _screenfull = __webpack_require__(81);
+var _screenfull = __webpack_require__(82);
 
 var _screenfull2 = _interopRequireDefault(_screenfull);
 
-var _classnames = __webpack_require__(80);
+var _classnames = __webpack_require__(81);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -2411,7 +2411,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _shortid = __webpack_require__(82);
+var _shortid = __webpack_require__(83);
 
 var _shortid2 = _interopRequireDefault(_shortid);
 
@@ -4547,19 +4547,20 @@ exports.default = formatPropTypes;
 /***/ }),
 /* 78 */,
 /* 79 */,
-/* 80 */
+/* 80 */,
+/* 81 */
 /***/ (function(module, exports) {
 
 module.exports = classNames;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports) {
 
 module.exports = screenfull;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports) {
 
 module.exports = shortid;
