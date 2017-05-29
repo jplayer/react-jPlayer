@@ -107,7 +107,7 @@ For playlist functionaility, see [react-jPlaylist](https://github.com/jPlayer/re
 http://react-jplayer.azurewebsites.net/
 
 ### Examples
-https://github.com/jPlayer/react-jPlayerExamples
+https://github.com/jPlayer/react-jPlayer-examples
 
 ### Installation
 #### NPM
