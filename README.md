@@ -1,13 +1,13 @@
-[![Build Status](https://travis-ci.org/MartinDawson/react-jPlayer.svg?branch=master)](https://travis-ci.org/MartinDawson/react-jPlayer)
-[![Coverage Status](https://coveralls.io/repos/github/MartinDawson/react-jPlayer/badge.svg?branch=master)](https://coveralls.io/github/MartinDawson/react-jPlayer?branch=master)
-[![dependencies Status](https://david-dm.org/martindawson/react-jPlayer/status.svg)](https://david-dm.org/martindawson/react-jPlayer)
-[![devDependencies Status](https://david-dm.org/martindawson/react-jPlayer/dev-status.svg)](https://david-dm.org/martindawson/react-jPlayer?type=dev)
+[![Build Status](https://travis-ci.org/jPlayer/react-jPlayer.svg?branch=master)](https://travis-ci.org/jPlayer/react-jPlayer)
+[![Coverage Status](https://coveralls.io/repos/github/jPlayer/react-jPlayer/badge.svg?branch=master)](https://coveralls.io/github/jPlayer/react-jPlayer?branch=master)
+[![dependencies Status](https://david-dm.org/jPlayer/react-jPlayer/status.svg)](https://david-dm.org/jPlayer/react-jPlayer)
+[![devDependencies Status](https://david-dm.org/jPlayer/react-jPlayer/dev-status.svg)](https://david-dm.org/jPlayer/react-jPlayer?type=dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # react-jPlayer
 A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.com/) plugin [jPlayer](http://jplayer.org/) but without the jQuery dependency.
 
-For playlist functionaility, see [react-jPlaylist](https://github.com/MartinDawson/react-jPlaylist).
+For playlist functionaility, see [react-jPlaylist](https://github.com/jPlayer/react-jPlaylist).
 
 <!-- toc -->
 
@@ -107,7 +107,7 @@ For playlist functionaility, see [react-jPlaylist](https://github.com/MartinDaws
 http://react-jplayer.azurewebsites.net/
 
 ### Examples
-https://github.com/MartinDawson/react-jPlayerExamples
+https://github.com/jPlayer/react-jPlayerExamples
 
 ### Installation
 #### NPM
@@ -127,12 +127,12 @@ For example, if you copied the `/dist/` folder to the root of your project then 
 Module is exported to a global variable called `ReactJPlayer`.
 
 ### Examples
-https://github.com/MartinDawson/react-jPlayer-examples
+https://github.com/jPlayer/react-jPlayer-examples
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers
 * Fully customizable, modular and componentized
-* Supports a large range of [Html5 Audio/Video formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats)
+* Supports a large range of [Html5 Audio/Video formats](https://github.com/jPlayer/react-jPlayer#user-content-supported-media-formats)
 * Comes with a fully reponsive css skin for your players
 * No jQuery dependency that is in the standard [jPlayer](http://jplayer.org/)
 * Fast and performant
@@ -158,11 +158,11 @@ https://github.com/MartinDawson/react-jPlayer-examples
 
 ### TL:DR
 - All of the jPlayer properties that you need are passed into your jPlayer component.
-- Audio/Video events can be subscribed to by passing functions to the `events` prop for the [Audio](https://github.com/MartinDawson/react-jPlayer#audio) or [Video](https://github.com/MartinDawson/react-jPlayer#video) component, E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
+- Audio/Video events can be subscribed to by passing functions to the `events` prop for the [Audio](https://github.com/jPlayer/react-jPlayer#audio) or [Video](https://github.com/jPlayer/react-jPlayer#video) component, E.g: ` <audio events={{ play: () => console.log("playing media") }} />`.
 
 ## Documentation
 #### `initialState([jPlayers])` : Required
-Deep merges the options that you passed into the [`connect`](https://github.com/MartinDawson/react-jPlayer#connectjplayer-options--required) function with react-jPlayer's default options. The result of this must be passed to your stores initial state.
+Deep merges the options that you passed into the [`connect`](https://github.com/jPlayer/react-jPlayer#connectjplayer-options--required) function with react-jPlayer's default options. The result of this must be passed to your stores initial state.
 
 **Arguments**
 1. `jPlayers(s)` (array or single react element): Accepts either an array of jPlayers or a single jPlayer. 
@@ -179,7 +179,7 @@ Connects your jPlayer to the jPlayer store by wrapping Redux's original connect.
 
 **Arguments**
 1. `jPlayer` (function): Your jPlayer with which to connect to the store.
-2. `options` (object): The [jPlayer options](https://github.com/MartinDawson/react-jPlayer#options) that you want the jPlayer to be initialized with.
+2. `options` (object): The [jPlayer options](https://github.com/jPlayer/react-jPlayer#options) that you want the jPlayer to be initialized with.
 
 **Returns**
 
@@ -196,15 +196,15 @@ The connected jPlayer. Any additional props that you passed in are passed throug
 ### Props
 jPlayer automatically passes the following properties in to your jPlayer component:
 
-- `id` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
-- [`[...actions]`](https://github.com/MartinDawson/react-jPlayer#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
+- `id` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/jPlayer/react-jPlayer#id-string--required).
+- [`[...actions]`](https://github.com/jPlayer/react-jPlayer#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
 - `jPlayers` (object): All of the jPlayers options get passed in here. The names of the jPlayers are what you specified for each one in [`options.id`].
 
 #### Actions
 All of the actions automatically get passed into your jPlayers for ease of use so you can just call them directly.
 
 If you need to call these actions from another part of your codebase that isn't a jPlayer then it will be best to use Redux's `connect()` on your component and call dispatch on the imported action.
-For example, if you wanted to toggle the [`showRemainingDuration`](https://github.com/MartinDawson/react-jPlayer#showremainingduration-bool) from somewhere else in the application on a jPlayer called `'AudioPlayer'`:
+For example, if you wanted to toggle the [`showRemainingDuration`](https://github.com/jPlayer/react-jPlayer#showremainingduration-bool) from somewhere else in the application on a jPlayer called `'AudioPlayer'`:
 
 ```
 import React from 'react';
@@ -228,7 +228,7 @@ export default connect(mapStateToProps)(SomeRandomFunc);
 ```
 
 ##### `setOption(id, key, value)`
-Sets any jPlayer [option](https://github.com/MartinDawson/react-jPlayer#options).
+Sets any jPlayer [option](https://github.com/jPlayer/react-jPlayer#options).
 
 **Arguments**
 1. `id` (string): Id of the jPlayer to apply this to.
@@ -317,7 +317,7 @@ Default: 1.0
 ##### `bufferColour` (string)
 Default: "#ddd"
 
-The [`BufferBar`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component renders a `<canvas />` element and uses the fillStyle property to fill in the bar. Therefore the colour property must be set in JS and not css.
+The [`BufferBar`](https://github.com/jPlayer/react-jPlayer#bufferbar-) component renders a `<canvas />` element and uses the fillStyle property to fill in the bar. Therefore the colour property must be set in JS and not css.
 
 ##### [`volume` (number)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/volume)
 Default: 0.8
@@ -325,7 +325,7 @@ Default: 0.8
 ##### `barDrag` (bool)
 Default: true
 
-Allows dragging of all of the components which are bars, e.g. [`VolumeBar`](https://github.com/MartinDawson/react-jPlayer#volumebar-), [`PlaybackRateBar`](https://github.com/MartinDawson/react-jPlayer#playbackratebar-) and [`SeekBar`](https://github.com/MartinDawson/react-jPlayer#seekbar-).
+Allows dragging of all of the components which are bars, e.g. [`VolumeBar`](https://github.com/jPlayer/react-jPlayer#volumebar-), [`PlaybackRateBar`](https://github.com/jPlayer/react-jPlayer#playbackratebar-) and [`SeekBar`](https://github.com/jPlayer/react-jPlayer#seekbar-).
 
 ##### `guiFadeHoldTime` (number)
 Default: 3000
@@ -345,7 +345,7 @@ media: {
   }
 }
 ```
-&ensp;&ensp;`sources` is where you specify the media to play. The keys must be one of the [supported formats](https://github.com/MartinDawson/react-jPlayer#user-content-supported-media-formats). The values must be a valid media url.
+&ensp;&ensp;`sources` is where you specify the media to play. The keys must be one of the [supported formats](https://github.com/jPlayer/react-jPlayer#user-content-supported-media-formats). The values must be a valid media url.
 
 &ensp;&ensp;`title` is the title of the media.
 
@@ -353,7 +353,7 @@ media: {
 
 &ensp;&ensp;`poster` needs to be a valid image element url.
 
-&ensp;&ensp;`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/MartinDawson/react-jPlayer#download-).
+&ensp;&ensp;`free` specifies that the media is free. This is used internally to hide/show the download. [Setting this to false does not mean the media is secure](https://github.com/jPlayer/react-jPlayer#download-).
 
 ##### `keyBindings` (object)
 Default:
@@ -436,7 +436,7 @@ Set this to true if your volume bar is vertical. Clicks on the volume bar will t
 ##### `keyEnabled` (bool)
 Default: true
 
-Allows key presses to affect the jPlayer. For the [`keyBindings`](https://github.com/MartinDawson/react-jPlayer#keybindings-object) object to have any affect this will need to be true.
+Allows key presses to affect the jPlayer. For the [`keyBindings`](https://github.com/jPlayer/react-jPlayer#keybindings-object) object to have any affect this will need to be true.
 
 ##### `timeFormats` (object)
 Defines the display format of the currentTime and duration times.
@@ -476,7 +476,7 @@ timeFormats: {
 &ensp;&ensp;`sepSec` string after second.
 
 #### Status
-Properties in this object are not meant to be modified and should be treated as read-only. These properties are automatically set and updated by jPlayer depending on the [options](https://github.com/MartinDawson/react-jPlayer#options) that you specified.
+Properties in this object are not meant to be modified and should be treated as read-only. These properties are automatically set and updated by jPlayer depending on the [options](https://github.com/jPlayer/react-jPlayer#options) that you specified.
 
 ##### [`paused` (bool)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/paused)
 Default: true
@@ -494,12 +494,12 @@ This is the current media's src url that you specified in `media.sources`.
 ##### `currentTimeText` (string)
 Default: '0:00'
 
-The current time that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`CurrentTime`](https://github.com/MartinDawson/react-jPlayer#currenttime-) component.
+The current time that is formatted into text using the [`timeFormats`](https://github.com/jPlayer/react-jPlayer#timeformats-object) object that is being used for the [`CurrentTime`](https://github.com/jPlayer/react-jPlayer#currenttime-) component.
 
 ##### `durationText` (string)
 Default: ''
 
-The duration that is formatted into text using the [`timeFormats`](https://github.com/MartinDawson/react-jPlayer#timeformats-object) object that is being used for the [`Duration`](https://github.com/MartinDawson/react-jPlayer#duration-) component.
+The duration that is formatted into text using the [`timeFormats`](https://github.com/jPlayer/react-jPlayer#timeformats-object) object that is being used for the [`Duration`](https://github.com/jPlayer/react-jPlayer#duration-) component.
 
 ##### `seekPercent` (number)
 Default: 0
@@ -529,15 +529,15 @@ Default: []
 
 &ensp;&ensp;`end` (string): the end time, in seconds of where the media is buffering.
 
-The start and end of where the buffering has occured. If the user seeks to different parts of the media, then the browser will automatically start downloading from that position and skip the media in between if it hasn't already been downloaded. The properties in this array represent that and are used internally by the [`BufferBar`](https://github.com/MartinDawson/react-jPlayer#bufferbar-) component.
+The start and end of where the buffering has occured. If the user seeks to different parts of the media, then the browser will automatically start downloading from that position and skip the media in between if it hasn't already been downloaded. The properties in this array represent that and are used internally by the [`BufferBar`](https://github.com/jPlayer/react-jPlayer#bufferbar-) component.
 
 More information on this can be found in this [MDN article](https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/buffering_seeking_time_ranges).
 
 ##### `focused` (bool)
 Default: false
 
-This property determines which jPlayer should take precendance when the user is using key presses to affect the media and is only ever true if the current jPlayer has [`keyEnabled`](https://github.com/MartinDawson/react-jPlayer#keyenabled-bool) set to true.
-This is set internally for each action that the user takes on the jPlayer, i.e. each time a jPlayer [action](https://github.com/MartinDawson/react-jPlayer#actions) is called. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling [`focus()`](https://github.com/MartinDawson/react-jPlayer#focusid).
+This property determines which jPlayer should take precendance when the user is using key presses to affect the media and is only ever true if the current jPlayer has [`keyEnabled`](https://github.com/jPlayer/react-jPlayer#keyenabled-bool) set to true.
+This is set internally for each action that the user takes on the jPlayer, i.e. each time a jPlayer [action](https://github.com/jPlayer/react-jPlayer#actions) is called. You can also manually focus on the jPlayer if it has keyEnabled set to true by calling [`focus()`](https://github.com/jPlayer/react-jPlayer#focusid).
 
 #### jPlayers
 The other jPlayers get passed into each of your jPlayer components so you can modify or read the properties on these easily as well.
@@ -545,9 +545,9 @@ The other jPlayers get passed into each of your jPlayer components so you can mo
 [0...N]
 ##### `[nameOfYourjPlayer]` (object)
 
-&ensp;&ensp;[`options`](https://github.com/MartinDawson/react-jPlayer#options) (object): The options that you specified for this jPlayer.
+&ensp;&ensp;[`options`](https://github.com/jPlayer/react-jPlayer#options) (object): The options that you specified for this jPlayer.
 
-&ensp;&ensp;[`status`](https://github.com/MartinDawson/react-jPlayer#status) (object): The status values that react-jPlayer internally sets for you to use.
+&ensp;&ensp;[`status`](https://github.com/jPlayer/react-jPlayer#status) (object): The status values that react-jPlayer internally sets for you to use.
 
 ### Components
 All components accept custom props that will be applied as attributes to the component if the names don't conflict with existing properties. 
@@ -681,7 +681,7 @@ If the browser doesn't support the `download` attribute then clicks on this comp
 **props**
 1. `children` (node)
 
-Default: [durationText](https://github.com/MartinDawson/react-jPlayer#durationtext-string)
+Default: [durationText](https://github.com/jPlayer/react-jPlayer#durationtext-string)
 
 Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn't been set yet (i.e IOS until the user manually plays the media).
 
@@ -689,7 +689,7 @@ Renders the `durationText` of the jPlayer. Renders nothing if the duration hasn'
 **props**
 1. `children` (node)
 
-Default: [durationText](https://github.com/MartinDawson/react-jPlayer#currenttimetext-string)
+Default: [durationText](https://github.com/jPlayer/react-jPlayer#currenttimetext-string)
 
 Renders the `currentTimeText` of the jPlayer.
 
