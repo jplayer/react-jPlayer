@@ -1,1 +1,1 @@
-All notable changes are described on the [Releases](https://github.com/jPlayer/react-jPlayer/releases) page.
+All notable changes are described on the [Releases](https://github.com/jplayer/react-jPlayer/releases) page.
