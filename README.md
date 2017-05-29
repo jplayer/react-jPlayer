@@ -16,6 +16,7 @@ For playlist functionaility, see [react-jPlaylist](https://github.com/MartinDaws
   * [Installation](#installation)
     + [NPM](#npm)
     + [UMD](#umd)
+  * [Examples](#examples-1)
   * [Features](#features)
   * [To Note](#to-note)
   * [Supported browsers](#supported-browsers)

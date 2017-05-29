@@ -5,10 +5,10 @@
   "author": "Martin Dawson <u1356770@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MartinDawson/react-jPlayer.git"
+    "url": "https://github.com/jplayer/react-jPlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/MartinDawson/react-jPlayer/issues"
+    "url": "https://github.com/jplayer/react-jPlayer/issues"
   },
   "keywords": [
     "audio",
@@ -24,7 +24,7 @@
     "html5-video",
     "media"
   ],
-  "homepage": "https://github.com/MartinDawson/react-jPlayer",
+  "homepage": "https://github.com/jplayer/react-jPlayer",
   "license": "MIT",
   "main": "./lib/index.js",
   "files": [
