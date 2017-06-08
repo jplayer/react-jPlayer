@@ -10,13 +10,10 @@ A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.
 For playlist functionaility, see [react-jPlaylist](https://github.com/jplayer/react-jPlaylist).
 
 <!-- toc -->
-
-  * [Live Demo](#live-demo)
   * [Examples](#examples)
   * [Installation](#installation)
     + [NPM](#npm)
     + [UMD](#umd)
-  * [Examples](#examples-1)
   * [Features](#features)
   * [To Note](#to-note)
   * [Supported browsers](#supported-browsers)
@@ -103,9 +100,6 @@ For playlist functionaility, see [react-jPlaylist](https://github.com/jplayer/re
 
 <!-- tocstop -->
 
-### Live Demo
-http://react-jplayer.azurewebsites.net/
-
 ### Examples
 https://github.com/jplayer/react-jPlayer-examples
 
@@ -125,9 +119,6 @@ For example, if you copied the `/dist/` folder to the root of your project then 
 ```
 
 Module is exported to a global variable called `ReactJPlayer`.
-
-### Examples
-https://github.com/jplayer/react-jPlayer-examples
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers
