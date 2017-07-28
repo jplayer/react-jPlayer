@@ -44,7 +44,9 @@ class Bar extends React.Component {
   onMouseUp = () => {
     this.dragging = false;
   }
-  setBar = ref => (this.bar = ref)
+  setBar = (ref) => {
+    this.bar = ref;
+  }
   render() {
     return React.cloneElement(React.Children.only(this.props.children), {
       onClick: this.onClick,

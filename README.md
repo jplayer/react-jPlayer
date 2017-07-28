@@ -10,6 +10,7 @@ A Html5 audio/video player that has been inspired by the [jQuery](http://jquery.
 For playlist functionaility, see [react-jPlaylist](https://github.com/jplayer/react-jPlaylist).
 
 <!-- toc -->
+
   * [Examples](#examples)
   * [Installation](#installation)
     + [NPM](#npm)

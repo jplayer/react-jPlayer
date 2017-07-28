@@ -152,7 +152,9 @@ class JPlayerContainer extends React.Component {
       this.startGuiFadeOutTimer();
     }
   }
-  setJPlayer = ref => (this.jPlayer = ref)
+  setJPlayer = (ref) => {
+    this.jPlayer = ref;
+  }
   requestFullScreen = () => {
     if (this.props.fullScreen) {
       if (screenfull.enabled) {

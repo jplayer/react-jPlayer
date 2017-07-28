@@ -238,10 +238,12 @@ class MediaContainer extends React.Component {
       }
     }
 
-    if (nextProps.paused) {
-      this.currentMedia.pause();
-    } else {
-      this.currentMedia.play();
+    if (nextProps.paused !== this.props.paused) {
+      if (nextProps.paused) {
+        this.currentMedia.pause();
+      } else {
+        this.currentMedia.play();
+      }
     }
   }
   componentDidUpdate(prevProps) {

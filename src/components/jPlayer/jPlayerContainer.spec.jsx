@@ -394,4 +394,4 @@ describe('<JPlayerContainer />', () => {
     __ResetDependency__('JPlayer');
     restoreSpies();
   });
-});*/
+}); */
