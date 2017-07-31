@@ -1,11 +1,5 @@
 import { actionNames } from '../util/constants';
 
-export const setOption = (id, key, value) => ({
-  type: actionNames.SET_OPTION,
-  id,
-  key,
-  value,
-});
 export const setMedia = (id, media) => ({
   type: actionNames.SET_MEDIA,
   id,
@@ -43,4 +37,10 @@ export const setMute = (id, mute) => ({
 export const focus = id => ({
   type: actionNames.FOCUS,
   id,
+});
+export const setOption = (id, key, value) => ({
+  type: actionNames.SET_OPTION,
+  id,
+  key,
+  value,
 });

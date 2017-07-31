@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connectWithId, toPercentage, toRelativePercentage,
-  convertTime, canSetVolume } from 'react-jplayer-utils';
+import {
+  connectWithId, toPercentage, toRelativePercentage,
+  convertTime, canSetVolume,
+} from 'react-jplayer-utils';
 
 import urlNotSupportedError from '../../util/errorHandlers/urlNotSupportedError';
 import { setOption, pause } from '../../actions/actions';

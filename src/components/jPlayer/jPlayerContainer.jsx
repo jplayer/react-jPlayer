@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import screenfull from 'screenfull';
 import classNames from 'classnames';
 import merge from 'lodash.merge';
-import { connectWithId, traverseParentsUntilClassName, KeyControl } from 'react-jplayer-utils';
+import { traverseParentsUntilClassName, KeyControl } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
 import formatPropTypes from '../../util/formatPropTypes';
@@ -10,40 +11,41 @@ import { classes } from '../../util/constants';
 import JPlayer from './jPlayer';
 import { setOption, setMedia, play, pause, setMute, setVolume } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlayers }, { id, customStates, children,
-keyBindings, ...attributes }) => ({
-  media: jPlayers[id].media,
-  error: jPlayers[id].error,
-  fullScreen: jPlayers[id].fullScreen,
-  keyEnabled: jPlayers[id].keyEnabled,
-  paused: jPlayers[id].paused,
-  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
-  guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
-  muted: jPlayers[id].muted,
-  volume: jPlayers[id].volume,
-  loop: jPlayers[id].loop,
-  keyBindings,
-  id,
-  children,
-  attributes: {
-    ...attributes,
-    className: classNames(attributes.className, classes.JPLAYER, {
-      [classes.states.AUDIO]: !jPlayers[id].mediaSettings.video,
-      [classes.states.VIDEO]: jPlayers[id].mediaSettings.video,
-      [classes.states.PLAYING]: !jPlayers[id].paused,
-      [classes.states.IDLE]: jPlayers[id].currentTime === 0,
-      [classes.states.FULL_SCREEN]: jPlayers[id].fullScreen,
-      [classes.states.MUTED]: jPlayers[id].muted,
-      [classes.states.VOLUME_LOW]: !jPlayers[id].muted && jPlayers[id].volume < 0.5,
-      [classes.states.VOLUME_HIGH]: !jPlayers[id].muted && jPlayers[id].volume >= 0.5,
-      [classes.states.SEEKING]: jPlayers[id].seeking,
-      [classes.states.LOOPED]: jPlayers[id].loop,
-      [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
-      [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
-      ...customStates,
-    }),
-  },
-});
+const mapStateToProps = ({ jPlayers }, { options: { id, ...options }, customStates, children,
+  keyBindings, ...attributes }) => ({
+    media: jPlayers[id].media,
+    error: jPlayers[id].error,
+    fullScreen: jPlayers[id].fullScreen,
+    keyEnabled: jPlayers[id].keyEnabled,
+    paused: jPlayers[id].paused,
+    guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+    guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
+    muted: jPlayers[id].muted,
+    volume: jPlayers[id].volume,
+    loop: jPlayers[id].loop,
+    options,
+    keyBindings,
+    id,
+    children,
+    attributes: {
+      ...attributes,
+      className: classNames(attributes.className, classes.JPLAYER, {
+        [classes.states.AUDIO]: !jPlayers[id].mediaSettings.video,
+        [classes.states.VIDEO]: jPlayers[id].mediaSettings.video,
+        [classes.states.PLAYING]: !jPlayers[id].paused,
+        [classes.states.IDLE]: jPlayers[id].currentTime === 0,
+        [classes.states.FULL_SCREEN]: jPlayers[id].fullScreen,
+        [classes.states.MUTED]: jPlayers[id].muted,
+        [classes.states.VOLUME_LOW]: !jPlayers[id].muted && jPlayers[id].volume < 0.5,
+        [classes.states.VOLUME_HIGH]: !jPlayers[id].muted && jPlayers[id].volume >= 0.5,
+        [classes.states.SEEKING]: jPlayers[id].seeking,
+        [classes.states.LOOPED]: jPlayers[id].loop,
+        [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
+        [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
+        ...customStates,
+      }),
+    },
+  });
 
 const mergeProps = (stateProps, { dispatch }) => ({
   ...stateProps,
@@ -52,7 +54,7 @@ const mergeProps = (stateProps, { dispatch }) => ({
     play: {
       key: 80, // p
       fn: () => (stateProps.paused ? dispatch(play(stateProps.id)) :
-                                      dispatch(pause(stateProps.id))),
+        dispatch(pause(stateProps.id))),
     },
     fullScreen: {
       key: 70, // f
@@ -89,14 +91,11 @@ class JPlayerContainer extends React.Component {
         sources: PropTypes.shape(formatPropTypes).isRequired,
         poster: PropTypes.string,
         free: PropTypes.bool,
-        id: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.number,
-        ]).isRequired,
       }).isRequired,
       keyBindings: PropTypes.object.isRequired,
       id: PropTypes.string.isRequired,
       dispatch: PropTypes.func.isRequired,
+      options: PropTypes.object.isRequired,
       error: PropTypes.shape({
         context: PropTypes.string,
         message: PropTypes.string,
@@ -119,12 +118,30 @@ class JPlayerContainer extends React.Component {
       error: null,
     };
   }
+  static get childContextTypes() {
+    return {
+      id: PropTypes.string,
+    };
+  }
+  static get jPlayerIds() {
+    return {
+      [id]: this,
+    };
+  }
+  getChildContext = () => ({
+    id: this.props.id,
+  });
   componentWillMount() {
     if (screenfull.enabled) {
       document.addEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
     }
     this.props.dispatch(setMedia(this.props.id, this.props.media));
     this.requestFullScreen();
+  }
+  componentDidMount() {
+    Object.keys(this.props.options).forEach((key) => {
+      this.props.dispatch(setOption(this.props.id, key, this.props.options[key]));
+    });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== this.props.error) {
@@ -209,4 +226,4 @@ class JPlayerContainer extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps, null, mergeProps)(JPlayerContainer);
+export default connect(mapStateToProps, null, mergeProps)(JPlayerContainer);

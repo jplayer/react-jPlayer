@@ -1,8 +1,9 @@
-import { updateObject } from 'react-jplayer-utils';
+import { limitValue } from 'react-jplayer-utils';
 
 import { actionNames, formats as supportedFormats, defaultStatus } from '../util/constants';
 import urlNotSetError from '../util/errorHandlers/urlNotSetError';
 import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
+import { jPlayerIds } from '../connect/connect';
 
 const updateFormats = (sources) => {
   const formats = [];
@@ -66,51 +67,58 @@ const setMedia = (media) => {
   };
 };
 
-const play = (jPlayer, { time }) => {
-  if (jPlayer.src) {
-    return updateObject(jPlayer, {
+const resetStatus = () => ({
+  ...defaultStatus,
+});
+
+const play = (src, time) => {
+  if (src) {
+    return {
       paused: false,
-      newTime: !isNaN(time) ? time : jPlayer.newTime,
-    });
+      newTime: !isNaN(time) ? time : null,
+    };
   }
-  return updateObject(jPlayer, {
+
+  return {
     error: urlNotSetError(play.name),
-  });
+  };
 };
 
-const pause = (jPlayer, { time }) => {
-  if (jPlayer.src) {
-    return updateObject(jPlayer, {
+const pause = (src, time) => {
+  if (src) {
+    return {
       paused: true,
-      newTime: !isNaN(time) ? time : jPlayer.newTime,
-    });
+      newTime: !isNaN(time) ? time : null,
+    };
   }
-  return updateObject(jPlayer, {
+
+  return {
     error: urlNotSetError(pause.name),
-  });
+  };
 };
 
-// const setPlayHead = (jPlayer, { percent }) => {
-//   const limitedPercent = limitValue(percent, 0, 100);
+const setPlayHead = (src, percent) => {
+  const limitedPercent = limitValue(percent, 0, 100);
 
-//   if (jPlayer.src) {
-//     return updateObject(jPlayer, {
-//       playHeadPercent: limitedPercent,
-//     });
-//   }
-//   return updateObject(jPlayer, {
-//     error: urlNotSetError(setPlayHead.name),
-//   });
-// };
+  if (src) {
+    return {
+      playHeadPercent: limitedPercent,
+    };
+  }
 
-// const setVolume = (jPlayer, { volume }) => updateObject(jPlayer, {
-//   volume: limitValue(volume, 0, 1),
-//   muted: volume <= 0,
-// });
+  return {
+    error: urlNotSetError(setPlayHead.name),
+  };
+};
 
-// const setMute = (jPlayer, { mute }) => updateObject(jPlayer, {
-//   muted: mute,
-// });
+const setVolume = volume => ({
+  volume: limitValue(volume, 0, 1),
+  muted: volume <= 0,
+});
+
+const setMute = mute => ({
+  muted: mute,
+});
 
 // const focus = (jPlayer, { id }) => {
 //   const newJPlayer = { ...jPlayer };
@@ -172,6 +180,27 @@ const pause = (jPlayer, { time }) => {
 //   }
 // };
 
+const setOption = (state, key, value) => {
+  switch (key) {
+    case 'media': {
+      if (Object.keys(value).some(v => v)) {
+        return setMedia(value);
+      }
+      return resetStatus();
+    }
+    case 'playHeadPercent':
+      return setPlayHead(state.src, value);
+    case 'volume':
+      return setVolume(value);
+    case 'muted':
+      return setMute(value);
+    default:
+      return {
+        [key]: value,
+      };
+  }
+};
+
 const updateJPlayer = (state, action, value) => ({
   ...state,
   [action.id]: {
@@ -184,22 +213,22 @@ const reducer = (state = {}, action) => {
   const jPlayer = state[action.id];
 
   switch (action.type) {
-    case actionNames.SET_OPTION:
-      return updateJPlayer(state, action, { [action.key]: action.value });
     case actionNames.SET_MEDIA:
       return updateJPlayer(state, action, setMedia(action.media));
     case actionNames.CLEAR_MEDIA:
-      return updateJPlayer(state, action, defaultStatus);
+      return updateJPlayer(state, action, resetStatus());
     case actionNames.PLAY:
-      return play(state, action, { paused: false });
+      return updateJPlayer(state, action, play(jPlayer.src, action.time));
     case actionNames.PAUSE:
-      return pause(jPlayer, action);
-    // case actionNames.PLAY_HEAD:
-    //   return setPlayHead(jPlayer, action);
-    // case actionNames.VOLUME:
-    //   return setVolume(jPlayer, action);
-    // case actionNames.MUTE:
-    //   return setMute(jPlayer, action);
+      return updateJPlayer(state, action, pause(jPlayer.src, action.time));
+    case actionNames.PLAY_HEAD:
+      return updateJPlayer(state, action, setPlayHead(jPlayer.src, action.percent));
+    case actionNames.VOLUME:
+      return updateJPlayer(state, action, setVolume(action.volume));
+    case actionNames.MUTE:
+      return updateJPlayer(state, action, setMute(action.mute));
+    case actionNames.SET_OPTION:
+      return updateJPlayer(state, action, setOption(state, action.key, action.value));
     default:
       return state;
   }
