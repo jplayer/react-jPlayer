@@ -6,4 +6,4 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   url: jPlayers[id].src,
 });
 
-export default connectWithId(mapStateToProps, {})(Download);
+export default connectWithId(mapStateToProps)(Download);

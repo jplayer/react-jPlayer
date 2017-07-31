@@ -21,7 +21,6 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   autoplay: jPlayers[id].autoplay,
   newTime: jPlayers[id].newTime,
   timeFormats: jPlayers[id].timeFormats,
-  mediaId: jPlayers[id].media.id,
   otherJPlayerIds: Object.keys(jPlayers).filter(key => key !== id),
   pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
   children,
@@ -64,7 +63,6 @@ class MediaContainer extends React.Component {
       setOption: PropTypes.func.isRequired,
       pause: PropTypes.func.isRequired,
       id: PropTypes.string.isRequired,
-      mediaId: PropTypes.string,
       pauseOthersOnPlay: PropTypes.bool.isRequired,
       otherJPlayerIds: PropTypes.arrayOf(
         PropTypes.string,
@@ -123,7 +121,6 @@ class MediaContainer extends React.Component {
       onVolumeChange: Function.prototype,
       onWaiting: Function.prototype,
       newTime: null,
-      mediaId: null,
     };
   }
   constructor(props) {
@@ -206,8 +203,7 @@ class MediaContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.updateCurrentMedia(nextProps);
 
-    if (nextProps.mediaId !== this.props.mediaId &&
-        nextProps.src !== '') {
+    if (nextProps.src !== this.props.src) {
       this.currentMedia.src = nextProps.src;
     }
 

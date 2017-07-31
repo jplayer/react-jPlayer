@@ -83,7 +83,6 @@ describe('MediaContainer', () => {
       newTime: null,
       children: mockAudio,
       timeFormats: defaultOptions.timeFormats,
-      mediaId: undefined,
       pauseOthersOnPlay: true,
       otherJPlayerIds: [],
     });
@@ -117,16 +116,16 @@ describe('MediaContainer', () => {
     expect(props.setOption).toHaveBeenCalledWith(id, 'volumeSupported', true);
   });
 
-  it('doesn\'t set src if empty on updated props', () => {
-    const src = 'test.mp3';
-    const { instance, wrapper } = setup({ src });
+  // it('doesn\'t set src if empty on updated props', () => {
+  //   const src = 'test.mp3';
+  //   const { instance, wrapper } = setup({ src });
 
-    instance.currentMedia.src = src;
+  //   instance.currentMedia.src = src;
 
-    wrapper.setProps({ src: '' });
+  //   wrapper.setProps({ src: '' });
 
-    expect(instance.currentMedia.src).toBe(src);
-  });
+  //   expect(instance.currentMedia.src).toBe(src);
+  // });
 
   it('updates media when props change', () => {
     const sharedMedia = {

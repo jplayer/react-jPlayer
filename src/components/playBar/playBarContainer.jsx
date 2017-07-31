@@ -7,4 +7,4 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   currentPercentRelative: jPlayers[id].currentPercentRelative,
 });
 
-export default connectWithId(mapStateToProps, {})(PlayBar);
+export default connectWithId(mapStateToProps)(PlayBar);

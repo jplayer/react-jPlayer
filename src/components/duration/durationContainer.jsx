@@ -5,4 +5,4 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   children: children || jPlayers[id].durationText,
 });
 
-export default connectWithId(mapStateToProps, {})(Duration);
+export default connectWithId(mapStateToProps)(Duration);

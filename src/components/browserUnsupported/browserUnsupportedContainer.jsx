@@ -5,4 +5,4 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   foundSupported: jPlayers[id].mediaSettings.foundSupported,
 });
 
-export default connectWithId(mapStateToProps, {})(BrowserUnsupported);
+export default connectWithId(mapStateToProps)(BrowserUnsupported);

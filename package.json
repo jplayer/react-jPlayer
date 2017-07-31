@@ -26,7 +26,7 @@
   ],
   "homepage": "https://github.com/jplayer/react-jPlayer",
   "license": "MIT",
-  "main": "./lib/index.js",
+  "main": "./src/index.js",
   "files": [
     "dist",
     "lib",
@@ -143,6 +143,5 @@
     "recompose": "^0.22.0",
     "redux": "^3.6.0",
     "screenfull": "^3.0.2",
-    "shortid": "^2.2.8"
   }
 }

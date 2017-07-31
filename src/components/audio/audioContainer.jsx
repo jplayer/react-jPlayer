@@ -5,4 +5,4 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   require: !jPlayers[id].mediaSettings.video,
 });
 
-export default connectWithId(mapStateToProps, {})(Audio);
+export default connectWithId(mapStateToProps)(Audio);
