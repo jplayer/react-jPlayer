@@ -1,5 +1,9 @@
 import { actionNames } from '../util/constants';
 
+export const initialize = options => ({
+  type: actionNames.INITIALIZE,
+  options,
+});
 export const setMedia = (id, media) => ({
   type: actionNames.SET_MEDIA,
   id,

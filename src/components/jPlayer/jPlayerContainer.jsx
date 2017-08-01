@@ -6,6 +6,7 @@ import merge from 'lodash.merge';
 import { traverseParentsUntilClassName, KeyControl } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
+import initialize from './initialize/initialize';
 import formatPropTypes from '../../util/formatPropTypes';
 import { classes } from '../../util/constants';
 import JPlayer from './jPlayer';
@@ -123,11 +124,6 @@ class JPlayerContainer extends React.Component {
       id: PropTypes.string,
     };
   }
-  static get jPlayerIds() {
-    return {
-      [id]: this,
-    };
-  }
   getChildContext = () => ({
     id: this.props.id,
   });
@@ -226,4 +222,6 @@ class JPlayerContainer extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, null, mergeProps)(JPlayerContainer);
+const connectedJPlayer = connect(mapStateToProps, null, mergeProps)(JPlayerContainer);
+
+export default initialize(connectedJPlayer);

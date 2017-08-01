@@ -1,9 +1,8 @@
 import { limitValue } from 'react-jplayer-utils';
 
-import { actionNames, formats as supportedFormats, defaultStatus } from '../util/constants';
+import { actionNames, formats as supportedFormats, defaultStatus, defaultOptions } from '../util/constants';
 import urlNotSetError from '../util/errorHandlers/urlNotSetError';
 import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
-import { jPlayerIds } from '../connect/connect';
 
 const updateFormats = (sources) => {
   const formats = [];
@@ -210,19 +209,25 @@ const updateJPlayer = (state, action, value) => ({
 });
 
 const reducer = (state = {}, action) => {
-  const jPlayer = state[action.id];
-
   switch (action.type) {
+    case actionNames.INITIALIZE:
+      return {
+        [action.options.id]: {
+          ...defaultStatus,
+          ...defaultOptions,
+          ...action.options,
+        },
+      };
     case actionNames.SET_MEDIA:
       return updateJPlayer(state, action, setMedia(action.media));
     case actionNames.CLEAR_MEDIA:
       return updateJPlayer(state, action, resetStatus());
     case actionNames.PLAY:
-      return updateJPlayer(state, action, play(jPlayer.src, action.time));
+      return updateJPlayer(state, action, play(state[action.id].src, action.time));
     case actionNames.PAUSE:
-      return updateJPlayer(state, action, pause(jPlayer.src, action.time));
+      return updateJPlayer(state, action, pause(state[action.id].src, action.time));
     case actionNames.PLAY_HEAD:
-      return updateJPlayer(state, action, setPlayHead(jPlayer.src, action.percent));
+      return updateJPlayer(state, action, setPlayHead(state[action.id].src, action.percent));
     case actionNames.VOLUME:
       return updateJPlayer(state, action, setVolume(action.volume));
     case actionNames.MUTE:
