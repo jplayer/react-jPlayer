@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const BrowserUnsupported = ({ foundSupported, children, ...attributes }) => (
-  foundSupported ? null :
-  <div className={classes.NO_BROWSER_SUPPORT} {...attributes}>
-    {children}
-  </div>
+const BrowserUnsupported = ({ nonSupported, children, ...attributes }) => (
+  nonSupported ?
+    <div className={classes.NO_BROWSER_SUPPORT} {...attributes}>
+      {children}
+    </div> : null
 );
 
 BrowserUnsupported.defaultProps = {
@@ -22,7 +22,7 @@ BrowserUnsupported.defaultProps = {
 
 BrowserUnsupported.propTypes = {
   children: PropTypes.node,
-  foundSupported: PropTypes.bool.isRequired,
+  nonSupported: PropTypes.bool.isRequired,
 };
 
 export default BrowserUnsupported;

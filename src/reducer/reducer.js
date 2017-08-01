@@ -1,6 +1,7 @@
 import { limitValue } from 'react-jplayer-utils';
 
-import { actionNames, formats as supportedFormats, defaultStatus, defaultOptions } from '../util/constants';
+import { initialState } from '../initializeOptions/initializeOptions';
+import { actionNames, formats as supportedFormats, defaultStatus } from '../util/constants';
 import urlNotSetError from '../util/errorHandlers/urlNotSetError';
 import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
 
@@ -31,21 +32,21 @@ const setMedia = (media) => {
   let video;
   let src;
   let paused;
-  let foundSupported;
+  let nonSupported = true;
   let error;
 
   const formats = updateFormats(media.sources);
 
   formats.forEach((format) => {
-    if (format.supported && !foundSupported) {
+    if (format.supported && nonSupported) {
       video = supportedFormats[format.supplied].MEDIA === 'video';
       src = media.sources[format.supplied];
       paused = true;
-      foundSupported = true;
+      nonSupported = false;
     }
   });
 
-  if (!foundSupported) {
+  if (nonSupported) {
     error = noFormatSupportedError(
       `media.sources: '${Object.keys(media.sources).join(', ')}'`,
     );
@@ -56,7 +57,7 @@ const setMedia = (media) => {
     mediaSettings: {
       ...formats,
       video,
-      foundSupported,
+      nonSupported,
     },
     media,
     video,
@@ -208,16 +209,8 @@ const updateJPlayer = (state, action, value) => ({
   },
 });
 
-const reducer = (state = {}, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionNames.INITIALIZE:
-      return {
-        [action.options.id]: {
-          ...defaultStatus,
-          ...defaultOptions,
-          ...action.options,
-        },
-      };
     case actionNames.SET_MEDIA:
       return updateJPlayer(state, action, setMedia(action.media));
     case actionNames.CLEAR_MEDIA:

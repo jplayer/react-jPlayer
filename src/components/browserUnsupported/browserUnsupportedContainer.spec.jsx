@@ -20,7 +20,7 @@ describe('BrowserUnsupportedContainer', () => {
     const expected = mapStateToProps({ jPlayers }, { id });
 
     expect(expected).toEqual({
-      foundSupported: defaultStatus.mediaSettings.foundSupported,
+      nonSupported: defaultStatus.mediaSettings.nonSupported,
     });
   });
 });

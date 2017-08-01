@@ -22,7 +22,7 @@ const stateClassTests = [
   { state: {
     mediaSettings: {
       video: true,
-      foundSupported: false,
+      nonSupported: true,
     },
     volumeSupported: false,
     paused: false,

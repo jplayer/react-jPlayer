@@ -7,7 +7,7 @@ import BrowserUnsupported from './browserUnsupported';
 
 const setup = (newProps) => {
   const props = {
-    foundSupported: false,
+    nonSupported: true,
     'data-test': 'test',
     ...newProps,
   };
@@ -36,7 +36,7 @@ describe('BrowserUnsupported', () => {
   it('renders null when supported media types', () => {
     ({ wrapper, props } = setup());
 
-    wrapper.setProps({ foundSupported: true });
+    wrapper.setProps({ nonSupported: false });
     expect(wrapper.type()).toBe(null);
   });
 

@@ -6,13 +6,12 @@ import merge from 'lodash.merge';
 import { traverseParentsUntilClassName, KeyControl } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
-import initialize from './initialize/initialize';
 import formatPropTypes from '../../util/formatPropTypes';
-import { classes } from '../../util/constants';
+import { classes, defaultOptions } from '../../util/constants';
 import JPlayer from './jPlayer';
 import { setOption, setMedia, play, pause, setMute, setVolume } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlayers }, { options: { id, ...options }, customStates, children,
+const mapStateToProps = ({ jPlayers }, { id, customStates, children,
   keyBindings, ...attributes }) => ({
     media: jPlayers[id].media,
     error: jPlayers[id].error,
@@ -24,7 +23,6 @@ const mapStateToProps = ({ jPlayers }, { options: { id, ...options }, customStat
     muted: jPlayers[id].muted,
     volume: jPlayers[id].volume,
     loop: jPlayers[id].loop,
-    options,
     keyBindings,
     id,
     children,
@@ -41,7 +39,7 @@ const mapStateToProps = ({ jPlayers }, { options: { id, ...options }, customStat
         [classes.states.VOLUME_HIGH]: !jPlayers[id].muted && jPlayers[id].volume >= 0.5,
         [classes.states.SEEKING]: jPlayers[id].seeking,
         [classes.states.LOOPED]: jPlayers[id].loop,
-        [classes.states.NO_BROWSER_SUPPORT]: !jPlayers[id].mediaSettings.foundSupported,
+        [classes.states.NO_BROWSER_SUPPORT]: jPlayers[id].mediaSettings.nonSupported,
         [classes.states.NO_VOLUME_SUPPORT]: !jPlayers[id].volumeSupported,
         ...customStates,
       }),
@@ -96,7 +94,6 @@ class JPlayerContainer extends React.Component {
       keyBindings: PropTypes.object.isRequired,
       id: PropTypes.string.isRequired,
       dispatch: PropTypes.func.isRequired,
-      options: PropTypes.object.isRequired,
       error: PropTypes.shape({
         context: PropTypes.string,
         message: PropTypes.string,
@@ -131,13 +128,12 @@ class JPlayerContainer extends React.Component {
     if (screenfull.enabled) {
       document.addEventListener(screenfull.raw.fullscreenchange, this.closeFullScreen);
     }
-    this.props.dispatch(setMedia(this.props.id, this.props.media));
+
+    if (this.props.media !== defaultOptions.media) {
+      this.props.dispatch(setMedia(this.props.id, this.props.media));
+    }
+
     this.requestFullScreen();
-  }
-  componentDidMount() {
-    Object.keys(this.props.options).forEach((key) => {
-      this.props.dispatch(setOption(this.props.id, key, this.props.options[key]));
-    });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== this.props.error) {
@@ -222,6 +218,4 @@ class JPlayerContainer extends React.Component {
   }
 }
 
-const connectedJPlayer = connect(mapStateToProps, null, mergeProps)(JPlayerContainer);
-
-export default initialize(connectedJPlayer);
+export default connect(mapStateToProps, null, mergeProps)(JPlayerContainer);

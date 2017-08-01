@@ -1,5 +1,7 @@
-import { defaultOptions, defaultStatus, actionNames,
-  errors, hints } from '../../util/constants';
+import {
+  defaultOptions, defaultStatus, actionNames,
+  errors, hints,
+} from '../../util/constants';
 
 const jPlayerOneId = 'jPlayer-1';
 const jPlayerTwoId = 'jPlayer-2';
@@ -41,7 +43,7 @@ export const setMediaData = [
     expected: {
       mediaSettings: {
         video: false,
-        foundSupported: true,
+        nonSupported: false,
         formats: [
           {
             supplied: 'mp3',

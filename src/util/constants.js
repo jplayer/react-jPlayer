@@ -1,5 +1,4 @@
 export const actionNames = {
-  INITIALIZE: 'INITIALIZE',
   SET_OPTION: 'SET_JPLAYER_OPTION',
   SET_MEDIA: 'SET_MEDIA',
   CLEAR_MEDIA: 'CLEAR_MEDIA',
@@ -150,7 +149,7 @@ export const defaultStatus = {
   playHeadPercent: 0,
   mediaSettings: {
     video: false,
-    foundSupported: false,
+    nonSupported: false,
     formats: [],
   },
   paused: true,

@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 
+import initializeOptions from './initializeOptions/initializeOptions';
 import reducer from './reducer/reducer';
 import * as actions from './actions/actions';
 import Gui from './components/gui/guiContainer';
@@ -27,7 +28,9 @@ import * as constants from './util/constants';
 
 export default JPlayer;
 
-export { constants, reducer, actions, Gui, SeekBar, PlayBar,
+export {
+  initializeOptions, constants, reducer, actions, Gui, SeekBar, PlayBar,
   BufferBar, Poster, Video, Audio, Title, FullScreen,
   Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
-  VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };
+  VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported,
+};
