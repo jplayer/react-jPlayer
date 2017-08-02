@@ -28,6 +28,10 @@ const updateFormats = (sources) => {
   return formats;
 };
 
+const resetStatus = () => ({
+  ...defaultStatus,
+});
+
 const setMedia = (media) => {
   let video;
   let src;
@@ -53,7 +57,7 @@ const setMedia = (media) => {
   }
 
   return {
-    ...defaultStatus,
+    ...resetStatus(),
     mediaSettings: {
       ...formats,
       video,
@@ -66,10 +70,6 @@ const setMedia = (media) => {
     error,
   };
 };
-
-const resetStatus = () => ({
-  ...defaultStatus,
-});
 
 const play = (src, time) => {
   if (src) {
@@ -119,6 +119,96 @@ const setVolume = volume => ({
 const setMute = mute => ({
   muted: mute,
 });
+
+const focus = keyEnabled => ({
+  focused: keyEnabled,
+});
+
+const resetFocus = (jPlayers) => {
+  const newJPlayers = jPlayers;
+
+  Object.keys(jPlayers).forEach((key) => {
+    newJPlayers[key].focused = false;
+  });
+
+  return newJPlayers;
+};
+
+const setOption = (state, key, value) => {
+  switch (key) {
+    case 'media': {
+      if (Object.keys(value).some(v => v)) {
+        return setMedia(value);
+      }
+      return resetStatus();
+    }
+    case 'playHeadPercent':
+      return setPlayHead(state.src, value);
+    case 'volume':
+      return setVolume(value);
+    case 'muted':
+      return setMute(value);
+    default:
+      return {
+        [key]: value,
+      };
+  }
+};
+
+const updateJPlayer = (state, action, value) => {
+  const newState = resetFocus(state);
+  const jPlayer = state[action.id];
+
+  return {
+    ...newState,
+    [action.id]: {
+      ...jPlayer,
+      ...focus(jPlayer.keyEnabled),
+      ...value,
+    },
+  };
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case actionNames.SET_MEDIA:
+      return updateJPlayer(state, action, setMedia(action.media));
+    case actionNames.CLEAR_MEDIA:
+      return updateJPlayer(state, action, resetStatus());
+    case actionNames.PLAY:
+      return updateJPlayer(state, action, play(state[action.id].src, action.time));
+    case actionNames.PAUSE:
+      return updateJPlayer(state, action, pause(state[action.id].src, action.time));
+    case actionNames.PLAY_HEAD:
+      return updateJPlayer(state, action, setPlayHead(state[action.id].src, action.percent));
+    case actionNames.VOLUME:
+      return updateJPlayer(state, action, setVolume(action.volume));
+    case actionNames.MUTE:
+      return updateJPlayer(state, action, setMute(action.mute));
+    case actionNames.FOCUS:
+      return updateJPlayer(state, action, focus(state.keyEnabled));
+    case actionNames.SET_OPTION:
+      return updateJPlayer(state, action, setOption(state, action.key, action.value));
+    default:
+      return state;
+  }
+  // const jPlayer = updatePlayer(newState[action.id], action);
+
+  // if (jPlayer !== null) {
+  //   newState = updateObject(newState, {
+  //     [action.id]: jPlayer,
+  //   });
+
+  //   return reducer(newState, {
+  //     type: actionNames.FOCUS,
+  //     id: action.id,
+  //   });
+  // }
+
+  // if (action.type === actionNames.FOCUS) {
+  //   newState = updateObject(newState, focus(newState, action));
+  // }
+};
 
 // const focus = (jPlayer, { id }) => {
 //   const newJPlayer = { ...jPlayer };
@@ -179,73 +269,5 @@ const setMute = mute => ({
 //       return null;
 //   }
 // };
-
-const setOption = (state, key, value) => {
-  switch (key) {
-    case 'media': {
-      if (Object.keys(value).some(v => v)) {
-        return setMedia(value);
-      }
-      return resetStatus();
-    }
-    case 'playHeadPercent':
-      return setPlayHead(state.src, value);
-    case 'volume':
-      return setVolume(value);
-    case 'muted':
-      return setMute(value);
-    default:
-      return {
-        [key]: value,
-      };
-  }
-};
-
-const updateJPlayer = (state, action, value) => ({
-  ...state,
-  [action.id]: {
-    ...state[action.id],
-    ...value,
-  },
-});
-
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case actionNames.SET_MEDIA:
-      return updateJPlayer(state, action, setMedia(action.media));
-    case actionNames.CLEAR_MEDIA:
-      return updateJPlayer(state, action, resetStatus());
-    case actionNames.PLAY:
-      return updateJPlayer(state, action, play(state[action.id].src, action.time));
-    case actionNames.PAUSE:
-      return updateJPlayer(state, action, pause(state[action.id].src, action.time));
-    case actionNames.PLAY_HEAD:
-      return updateJPlayer(state, action, setPlayHead(state[action.id].src, action.percent));
-    case actionNames.VOLUME:
-      return updateJPlayer(state, action, setVolume(action.volume));
-    case actionNames.MUTE:
-      return updateJPlayer(state, action, setMute(action.mute));
-    case actionNames.SET_OPTION:
-      return updateJPlayer(state, action, setOption(state, action.key, action.value));
-    default:
-      return state;
-  }
-  // const jPlayer = updatePlayer(newState[action.id], action);
-
-  // if (jPlayer !== null) {
-  //   newState = updateObject(newState, {
-  //     [action.id]: jPlayer,
-  //   });
-
-  //   return reducer(newState, {
-  //     type: actionNames.FOCUS,
-  //     id: action.id,
-  //   });
-  // }
-
-  // if (action.type === actionNames.FOCUS) {
-  //   newState = updateObject(newState, focus(newState, action));
-  // }
-};
 
 export default reducer;
