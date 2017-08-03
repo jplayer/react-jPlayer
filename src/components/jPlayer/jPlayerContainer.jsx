@@ -199,7 +199,7 @@ class JPlayerContainer extends React.Component {
     }
   }
   closeFullScreen = () => {
-    if (!screenfull.isFullscreen) {
+    if (!screenfull.isFullscreen && this.props.fullScreen) {
       this.props.dispatch(setOption(this.props.id, 'fullScreen', false));
     }
   }

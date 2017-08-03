@@ -155,12 +155,10 @@ class MediaContainer extends React.Component {
       onLoadStart: this.props.onLoadStart,
       onPause: this.props.onPause,
       onPlay: () => {
-        this.props.setOption(this.props.id, 'paused', false);
-
         if (this.props.pauseOthersOnPlay) {
           this.pauseOthers();
         }
-
+        this.props.setOption(this.props.id, 'paused', false);
         this.props.onPlay();
       },
       onPlaying: this.props.onPlaying,

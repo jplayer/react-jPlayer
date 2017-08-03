@@ -120,18 +120,40 @@ const setMute = mute => ({
   muted: mute,
 });
 
-const focus = keyEnabled => ({
-  focused: keyEnabled,
-});
+const focus = (state, id) => {
+  const newState = { ...state };
 
-const resetFocus = (jPlayers) => {
-  const newJPlayers = jPlayers;
+  if (newState[id].keyEnabled) {
+    Object.keys(newState).forEach((key) => {
+      if (key === id) {
+        newState[key].focused = true;
+      } else {
+        newState[key].focused = false;
+      }
+    });
+  }
 
-  Object.keys(jPlayers).forEach((key) => {
-    newJPlayers[key].focused = false;
-  });
+  return newState;
+};
 
-  return newJPlayers;
+const focusOnFirstKeyEnabledPlayer = (state) => {
+  const firstKeyEnabledPlayer = Object.keys(state).filter(key =>
+    state[key].keyEnabled,
+  ).shift();
+
+  if (state[firstKeyEnabledPlayer] !== undefined) {
+    const focusedPlayer = {
+      ...state[firstKeyEnabledPlayer],
+      focused: true,
+    };
+
+    return {
+      ...state,
+      [firstKeyEnabledPlayer]: focusedPlayer,
+    };
+  }
+
+  return state;
 };
 
 const setOption = (state, key, value) => {
@@ -156,14 +178,14 @@ const setOption = (state, key, value) => {
 };
 
 const updateJPlayer = (state, action, value) => {
-  const newState = resetFocus(state);
-  const jPlayer = state[action.id];
+  const newState = state[action.id].keyEnabled ? focus(state, action.id) :
+    focusOnFirstKeyEnabledPlayer(state);
+  const jPlayer = newState[action.id];
 
   return {
     ...newState,
     [action.id]: {
       ...jPlayer,
-      ...focus(jPlayer.keyEnabled),
       ...value,
     },
   };
@@ -186,88 +208,12 @@ const reducer = (state = initialState, action) => {
     case actionNames.MUTE:
       return updateJPlayer(state, action, setMute(action.mute));
     case actionNames.FOCUS:
-      return updateJPlayer(state, action, focus(state.keyEnabled));
+      return focus(state, action.id);
     case actionNames.SET_OPTION:
       return updateJPlayer(state, action, setOption(state, action.key, action.value));
     default:
       return state;
   }
-  // const jPlayer = updatePlayer(newState[action.id], action);
-
-  // if (jPlayer !== null) {
-  //   newState = updateObject(newState, {
-  //     [action.id]: jPlayer,
-  //   });
-
-  //   return reducer(newState, {
-  //     type: actionNames.FOCUS,
-  //     id: action.id,
-  //   });
-  // }
-
-  // if (action.type === actionNames.FOCUS) {
-  //   newState = updateObject(newState, focus(newState, action));
-  // }
 };
-
-// const focus = (jPlayer, { id }) => {
-//   const newJPlayer = { ...jPlayer };
-//   const firstKeyEnabledPlayer = Object.keys(newJPlayer).filter(key =>
-//     newJPlayer[key].keyEnabled,
-//   ).shift();
-
-//   if (newJPlayer[id].keyEnabled) {
-//     Object.keys(newJPlayer).forEach((key) => {
-//       if (key === id) {
-//         newJPlayer[key] = updateObject(newJPlayer[key], { focused: true });
-//       } else {
-//         newJPlayer[key] = updateObject(newJPlayer[key], { focused: false });
-//       }
-//     });
-//   } else if (newJPlayer[firstKeyEnabledPlayer] !== undefined) {
-//     const focusedPlayer = updateObject(newJPlayer[firstKeyEnabledPlayer], { focused: true });
-//     return updateObject(newJPlayer, { [firstKeyEnabledPlayer]: focusedPlayer });
-//   }
-//   return newJPlayer;
-// };
-
-// const updatePlayer = (jPlayer, action) => {
-//   switch (action.type) {
-//     case actionNames.SET_OPTION:
-//       switch (action.key) {
-//         case 'media': {
-//           const media = action.value;
-//           if (Object.keys(media).some(v => v)) {
-//             return setMedia(jPlayer, { media });
-//           }
-//           return clearMedia(jPlayer);
-//         }
-//         case 'playHeadPercent':
-//           return setPlayHead(jPlayer, { percent: action.value });
-//         case 'volume':
-//           return setVolume(jPlayer, { volume: action.value });
-//         case 'muted':
-//           return setMute(jPlayer, { mute: action.value });
-//         default:
-//           return updateObject(jPlayer, { [action.key]: action.value });
-//       }
-//     case actionNames.SET_MEDIA:
-//       return setMedia(jPlayer, action);
-//     case actionNames.CLEAR_MEDIA:
-//       return clearMedia(jPlayer);
-//     case actionNames.PLAY:
-//       return play(jPlayer, action);
-//     case actionNames.PAUSE:
-//       return pause(jPlayer, action);
-//     case actionNames.PLAY_HEAD:
-//       return setPlayHead(jPlayer, action);
-//     case actionNames.VOLUME:
-//       return setVolume(jPlayer, action);
-//     case actionNames.MUTE:
-//       return setMute(jPlayer, action);
-//     default:
-//       return null;
-//   }
-// };
 
 export default reducer;
