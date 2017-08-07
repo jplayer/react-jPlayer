@@ -35,7 +35,6 @@ const resetStatus = () => ({
 const setMedia = (media) => {
   let video;
   let src;
-  let paused;
   let nonSupported = true;
   let error;
 
@@ -45,7 +44,6 @@ const setMedia = (media) => {
     if (format.supported && nonSupported) {
       video = supportedFormats[format.supplied].MEDIA === 'video';
       src = media.sources[format.supplied];
-      paused = true;
       nonSupported = false;
     }
   });
@@ -59,14 +57,14 @@ const setMedia = (media) => {
   return {
     ...resetStatus(),
     mediaSettings: {
-      ...formats,
+      formats,
       video,
       nonSupported,
     },
     media,
     video,
     src,
-    paused,
+    paused: true,
     error,
   };
 };
@@ -156,7 +154,7 @@ const focusOnFirstKeyEnabledPlayer = (state) => {
   return state;
 };
 
-const setOption = (state, key, value) => {
+const setOption = (state, id, key, value) => {
   switch (key) {
     case 'media': {
       if (Object.keys(value).some(v => v)) {
@@ -165,7 +163,7 @@ const setOption = (state, key, value) => {
       return resetStatus();
     }
     case 'playHeadPercent':
-      return setPlayHead(state.src, value);
+      return setPlayHead(state[id].src, value);
     case 'volume':
       return setVolume(value);
     case 'muted':
@@ -210,7 +208,7 @@ const reducer = (state = initialState, action) => {
     case actionNames.FOCUS:
       return focus(state, action.id);
     case actionNames.SET_OPTION:
-      return updateJPlayer(state, action, setOption(state, action.key, action.value));
+      return updateJPlayer(state, action, setOption(state, action.id, action.key, action.value));
     default:
       return state;
   }

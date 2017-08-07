@@ -1,291 +1,378 @@
-// import expect, { createSpy, spyOn } from 'expect';
+import expect, { spyOn } from 'expect';
 
-// import reducer from './reducer';
-// import * as reducerData from '../util/mockData/mockReducerData';
-// import { actionNames, defaultOptions, formats } from '../util/constants';
-// import { getDefaultJPlayers, getJPlayers } from '../util/common.spec';
+import initializeOptions from '../initializeOptions/initializeOptions';
+import reducer from './reducer';
+import { actionNames, defaultOptions, defaultStatus } from '../util/constants';
 
-// const jPlayerOneId = 'jPlayer-1';
+const mockMedia = (mediaType) => {
+  const media = document.createElement(mediaType);
 
-// const mockMedia = (mediaType) => {
-//   const media = document.createElement(mediaType);
+  spyOn(document, 'createElement').andReturn(media);
+  spyOn(media, 'canPlayType').andReturn('probably');
+};
+const id = 'TestPlayer';
 
-//   spyOn(document, 'createElement').andReturn(media);
-//   spyOn(media, 'canPlayType').andReturn('probably');
-// };
+describe('jPlayer reducer', () => {
+  let state;
 
-// describe('jPlayer reducer', () => {
-//   let state;
+  beforeEach(() => {
+    state = {
+      [id]: {},
+    };
+  });
 
-//   beforeEach(() => {
-//     state = getDefaultJPlayers().jPlayers;
-//     reducer.__Rewire__('shortid', {
-//       generate: () => 'testId',
-//     });
-//   });
+  afterEach(() => {
+    expect.restoreSpies();
+  });
 
-//   afterEach(() => {
-//     expect.restoreSpies();
-//     reducer.__ResetDependency__('shortid');
-//   });
+  it('should return the state if action is invalid', () => {
+    expect(reducer(state, '@@jPlayer-test')).toEqual(state);
+  });
 
-//   it('should return the state if action is invalid', () => {
-//     expect(reducer(state, '@@jPlayer-test')).toEqual(state);
-//   });
+  it('should return initial state if the state is not specified', () => {
+    const jPlayerOptions = {
+      id,
+    };
+    initializeOptions(jPlayerOptions);
+    expect(reducer(undefined, '@@jPlayer-test')).toEqual({
+      [id]: {
+        ...defaultStatus,
+        ...defaultOptions,
+        ...jPlayerOptions,
+      },
+    });
+  });
 
-//   it('should return empty state if the state is not specified', () => {
-//     expect(reducer(undefined, '@@jPlayer-test')).toEqual({});
-//   });
+  it('should handle generic SET_OPTION value', () => {
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'preload',
+      value: 'auto',
+    });
 
-//   it('should handle generic SET_OPTION value', () => {
-//     const jPlayer = reducer(state, {
-//       type: actionNames.SET_OPTION,
-//       id: jPlayerOneId,
-//       key: 'preload',
-//       value: 'test',
-//     })[jPlayerOneId];
+    expect(newState[id]).toEqual({
+      preload: 'auto',
+    });
+  });
 
-//     expect(jPlayer).toEqual({
-//       preload: 'test',
-//     });
-//   });
+  it('setOption handles media', () => {
+    mockMedia('audio');
+    const src = 'test.mp3';
 
-//   it('setOption handles media', () => {
-//     const setMediaSpy = createSpy();
+    const media = {
+      sources: {
+        mp3: src,
+      },
+    };
 
-//     reducer.__Rewire__('setMedia', (...args) => {
-//       setMediaSpy(...args);
-//       return getJPlayers(1);
-//     });
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'media',
+      value: media,
+    });
 
-//     const media = {
-//       sources: {
-//         mp3: 'test.mp3',
-//       },
-//     };
+    expect(newState[id].media).toBe(media);
+  });
 
-//     reducer(state, {
-//       type: actionNames.SET_OPTION,
-//       id: jPlayerOneId,
-//       key: 'media',
-//       value: media,
-//     });
+  it('setOption handles no media', () => {
+    const media = {};
 
-//     expect(setMediaSpy).toHaveBeenCalledWith(state[jPlayerOneId], { media });
-//     reducer.__ResetDependency__('setMedia');
-//   });
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'media',
+      value: media,
+    });
 
-//   it('setOption handles no media', () => {
-//     const clearMediaSpy = createSpy();
+    expect(newState[id]).toEqual({
+      ...defaultStatus,
+    });
+  });
 
-//     reducer.__Rewire__('clearMedia', (...args) => {
-//       clearMediaSpy(...args);
-//       return getJPlayers(1);
-//     });
+  it('setOption handles playHeadPercent', () => {
+    const percent = 22.3;
+    const src = 'test.mp3';
 
-//     const media = {};
+    state[id].src = src;
 
-//     reducer(state, {
-//       type: actionNames.SET_OPTION,
-//       id: jPlayerOneId,
-//       key: 'media',
-//       value: media,
-//     });
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'playHeadPercent',
+      value: percent,
+    });
 
-//     expect(clearMediaSpy).toHaveBeenCalledWith(state[jPlayerOneId]);
-//     reducer.__ResetDependency__('clearMedia');
-//   });
+    expect(newState[id]).toEqual({
+      playHeadPercent: percent,
+      src,
+    });
+  });
 
-//   it('setOption handles playHeadPercent', () => {
-//     const percent = 22.3;
-//     const setPlayHeadSpy = createSpy();
+  it('setOption handles volume', () => {
+    const volume = 0.23;
 
-//     reducer.__Rewire__('setPlayHead', (...args) => {
-//       setPlayHeadSpy(...args);
-//       return getJPlayers(1);
-//     });
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'volume',
+      value: volume,
+    });
 
-//     reducer(state, {
-//       type: actionNames.SET_OPTION,
-//       id: jPlayerOneId,
-//       key: 'playHeadPercent',
-//       value: percent,
-//     });
+    expect(newState[id]).toEqual({
+      volume,
+      muted: false,
+    });
+  });
 
-//     expect(setPlayHeadSpy).toHaveBeenCalledWith(state[jPlayerOneId], { percent });
-//     reducer.__ResetDependency__('setPlayHead');
-//   });
+  it('setOption handles muted', () => {
+    const mute = true;
 
-//   it('setOption handles volume', () => {
-//     const volume = 0.23;
-//     const setVolume = createSpy();
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'muted',
+      value: mute,
+    });
 
-//     reducer.__Rewire__('setVolume', (...args) => {
-//       setVolume(...args);
-//       return getJPlayers(1);
-//     });
+    expect(newState[id]).toEqual({
+      muted: mute,
+    });
+  });
 
-//     reducer(state, {
-//       type: actionNames.SET_OPTION,
-//       id: jPlayerOneId,
-//       key: 'volume',
-//       value: volume,
-//     });
+  it('should handle SET_MEDIA', () => {
+    mockMedia('audio');
+    const src = 'test.mp3';
+    const media = {
+      sources: {
+        mp3: src,
+      },
+    };
 
-//     expect(setVolume).toHaveBeenCalledWith(state[jPlayerOneId], { volume });
-//     reducer.__ResetDependency__('setVolume');
-//   });
+    const newState = reducer(state, {
+      type: actionNames.SET_MEDIA,
+      id,
+      media,
+    });
 
-//   it('setOption handles muted', () => {
-//     const mute = true;
-//     const setMute = createSpy();
+    expect(newState[id]).toEqual({
+      ...defaultStatus,
+      mediaSettings: {
+        formats: [{
+          supplied: 'mp3',
+          supported: 'probably',
+        }],
+        video: false,
+        nonSupported: false,
+      },
+      media,
+      video: false,
+      src,
+      error: undefined,
+    });
+  });
 
-//     reducer.__Rewire__('setMute', (...args) => {
-//       setMute(...args);
-//       return getJPlayers(1);
-//     });
+  it('SET_MEDIA should handle non supported format', () => {
+    mockMedia('audio');
+    const media = {
+      sources: {
+        xxx: 'test.xxx',
+      },
+    };
 
-//     reducer(state, {
-//       type: actionNames.SET_OPTION,
-//       id: jPlayerOneId,
-//       key: 'muted',
-//       value: mute,
-//     });
+    const newState = reducer(state, {
+      type: actionNames.SET_MEDIA,
+      id,
+      media,
+    });
 
-//     expect(setMute).toHaveBeenCalledWith(state[jPlayerOneId], { mute });
-//     reducer.__ResetDependency__('setMute');
-//   });
+    expect(newState[id].error).toExist();
+  });
 
-//   it('SET_MEDIA should handle all possible formats', () => {
-//     Object.keys(formats).forEach((key) => {
-//       mockMedia(formats[key].MEDIA);
+  describe('PLAY', () => {
+    it('should handle with src and no custom time', () => {
+      const src = 'test.mp3';
+      state[id].src = 'test.mp3';
 
-//       const jPlayer = reducer(state, {
-//         type: actionNames.SET_MEDIA,
-//         id: jPlayerOneId,
-//         media: {
-//           sources: {
-//             [key]: `test.${key}`,
-//           },
-//         },
-//       })[jPlayerOneId];
+      const newState = reducer(state, {
+        type: actionNames.PLAY,
+        id,
+      });
 
-//       expect(jPlayer).toContain({
-//         mediaSettings: {
-//           video: formats[key].MEDIA === 'video',
-//           formats: [
-//             {
-//               supplied: key,
-//               supported: 'probably',
-//             },
-//           ],
-//         },
-//         src: `test.${key}`,
-//         paused: true,
-//         media: {
-//           ...{ ...defaultOptions.media, ...{ sources: { [key]: `test.${key}` } } },
-//         },
-//       });
-//     });
-//   });
+      expect(newState[id]).toEqual({
+        paused: false,
+        src,
+        newTime: null,
+      });
+    });
 
-//   it('should handle SET_MEDIA', () => {
-//     mockMedia('audio');
-//     reducerData.setMediaData.forEach((test) => {
-//       const jPlayer = reducer(state, test.action)[jPlayerOneId];
+    it('should handle with src and custom time', () => {
+      const src = 'test.mp3';
+      const time = 23;
+      state[id].src = 'test.mp3';
 
-//       Object.keys(test.expected).forEach((key) => {
-//         expect(jPlayer[key]).toEqual(test.expected[key]);
-//       });
-//     });
-//   });
+      const newState = reducer(state, {
+        type: actionNames.PLAY,
+        id,
+        time,
+      });
 
-//   it('should handle PLAY', () => {
-//     reducerData.playData.forEach((test) => {
-//       const newState = {
-//         ...state,
-//         [jPlayerOneId]: {
-//           ...state[jPlayerOneId],
-//           ...test.state,
-//         },
-//       };
-//       const jPlayer = reducer(newState, test.action)[jPlayerOneId];
+      expect(newState[id]).toEqual({
+        paused: false,
+        src,
+        newTime: time,
+      });
+    });
 
-//       Object.keys(test.expected).forEach((key) => {
-//         expect(jPlayer[key]).toEqual(test.expected[key]);
-//       });
-//     });
-//   });
+    it('should handle with no src', () => {
+      const newState = reducer(state, {
+        type: actionNames.PLAY,
+        id,
+      });
 
-//   it('should handle PAUSE', () => {
-//     reducerData.pauseData.forEach((test) => {
-//       const newState = {
-//         ...state,
-//         [jPlayerOneId]: {
-//           ...state[jPlayerOneId],
-//           ...test.state,
-//         },
-//       };
-//       const jPlayer = reducer(newState, test.action)[jPlayerOneId];
+      expect(newState[id].error).toExist();
+    });
+  });
 
-//       Object.keys(test.expected).forEach((key) => {
-//         expect(jPlayer[key]).toEqual(test.expected[key]);
-//       });
-//     });
-//   });
+  describe('PAUSE', () => {
+    it('should handle with src and no custom time', () => {
+      const src = 'test.mp3';
+      state[id].src = 'test.mp3';
 
-//   it('should handle PLAY_HEAD', () => {
-//     reducerData.playHeadData.forEach((test) => {
-//       const newState = {
-//         ...state,
-//         [jPlayerOneId]: {
-//           ...state[jPlayerOneId],
-//           ...test.state,
-//         },
-//       };
-//       const jPlayer = reducer(newState, test.action)[jPlayerOneId];
+      const newState = reducer(state, {
+        type: actionNames.PAUSE,
+        id,
+      });
 
-//       Object.keys(test.expected).forEach((key) => {
-//         expect(jPlayer[key]).toEqual(test.expected[key]);
-//       });
-//     });
-//   });
+      expect(newState[id]).toEqual({
+        paused: true,
+        src,
+        newTime: null,
+      });
+    });
 
-//   it('should handle VOLUME', () => {
-//     reducerData.volumeData.forEach((test) => {
-//       const jPlayer = reducer(state, test.action)[jPlayerOneId];
+    it('should handle with src and custom time', () => {
+      const src = 'test.mp3';
+      const time = 23;
+      state[id].src = 'test.mp3';
 
-//       Object.keys(test.expected).forEach((key) => {
-//         expect(jPlayer[key]).toEqual(test.expected[key]);
-//       });
-//     });
-//   });
+      const newState = reducer(state, {
+        type: actionNames.PAUSE,
+        id,
+        time,
+      });
 
-//   it('should handle MUTE', () => {
-//     reducerData.muteData.forEach((test) => {
-//       const jPlayer = reducer(state, test.action)[jPlayerOneId];
+      expect(newState[id]).toEqual({
+        paused: true,
+        src,
+        newTime: time,
+      });
+    });
 
-//       Object.keys(test.expected).forEach((key) => {
-//         expect(jPlayer[key]).toEqual(test.expected[key]);
-//       });
-//     });
-//   });
+    it('should handle PAUSE with no src', () => {
+      const newState = reducer(state, {
+        type: actionNames.PAUSE,
+        id,
+      });
 
-//   it('should handle FOCUS', () => {
-//     state = getDefaultJPlayers(3).jPlayers;
+      expect(newState[id].error).toExist();
+    });
+  });
 
-//     reducerData.focusData.forEach((test) => {
-//       state[test.id] = test.state;
+  describe('PLAY_HEAD', () => {
+    it('should handle with src', () => {
+      const percent = 22;
+      const src = 'test.mp3';
+      state[id].src = 'test.mp3';
 
-//       const jPlayers = reducer(state, test.action);
+      const newState = reducer(state, {
+        type: actionNames.PLAY_HEAD,
+        id,
+        percent,
+      });
 
-//       Object.keys(jPlayers).forEach((key) => {
-//         if (test.id !== key) {
-//           expect(jPlayers[key].focused).toBeFalsy();
-//         } else {
-//           expect(jPlayers[key].focused).toBeTruthy();
-//         }
-//       });
-//     });
-//   });
-// });
+      expect(newState[id]).toEqual({
+        playHeadPercent: percent,
+        src,
+      });
+    });
+
+    it('should handle with no src', () => {
+      const newState = reducer(state, {
+        type: actionNames.PLAY_HEAD,
+        id,
+      });
+
+      expect(newState[id].error).toExist();
+    });
+  });
+
+  describe('VOLUME', () => {
+    it('muted should be true when volume <= 0', () => {
+      const newState = reducer(state, {
+        type: actionNames.VOLUME,
+        id,
+        volume: -10,
+      });
+
+      expect(newState[id]).toEqual({
+        volume: 0,
+        muted: true,
+      });
+    });
+
+    it('muted should be false when volume >= 0', () => {
+      const newState = reducer(state, {
+        type: actionNames.VOLUME,
+        id,
+        volume: 10,
+      });
+
+      expect(newState[id]).toEqual({
+        volume: 1,
+        muted: false,
+      });
+    });
+  });
+
+  it('should handle MUTE', () => {
+    const newState = reducer(state, {
+      type: actionNames.MUTE,
+      id,
+      mute: true,
+    });
+
+    expect(newState[id]).toEqual({
+      muted: true,
+    });
+  });
+
+  // it('should handle MUTE', () => {
+  //   reducerData.muteData.forEach((test) => {
+  //     const jPlayer = reducer(state, test.action)[jPlayerOneId];
+
+  //     Object.keys(test.expected).forEach((key) => {
+  //       expect(jPlayer[key]).toEqual(test.expected[key]);
+  //     });
+  //   });
+  // });
+
+  // it('should handle FOCUS', () => {
+  //   state = getDefaultJPlayers(3).jPlayers;
+
+  //   reducerData.focusData.forEach((test) => {
+  //     state[test.id] = test.state;
+
+  //     const jPlayers = reducer(state, test.action);
+
+  //     Object.keys(jPlayers).forEach((key) => {
+  //       if (test.id !== key) {
+  //         expect(jPlayers[key].focused).toBeFalsy();
+  //       } else {
+  //         expect(jPlayers[key].focused).toBeTruthy();
+  //       }
+  //     });
+  //   });
+  // });
+});

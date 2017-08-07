@@ -21,7 +21,7 @@ export const errors = {
 export const hints = {
   FORMAT_NO_SUPPORT: 'The browser may not support these file types.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
-  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia()' +
+  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia() ' +
   'action that is passed into the component props.',
   INVALID_GLOBAL_METHOD: 'Remove the invalid method from the "global" option',
 };
