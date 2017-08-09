@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connectWithId, toPercentage, toRelativePercentage,
-  convertTime, canSetVolume } from 'react-jplayer-utils';
+import {
+  connectWithId, toPercentage, toRelativePercentage,
+  convertTime, canSetVolume,
+} from 'react-jplayer-utils';
 
 import urlNotSupportedError from '../../util/errorHandlers/urlNotSupportedError';
 import { setOption, pause } from '../../actions/actions';
@@ -207,7 +209,7 @@ class MediaContainer extends React.Component {
     this.updateCurrentMedia(nextProps);
 
     if (nextProps.mediaId !== this.props.mediaId &&
-        nextProps.src !== '') {
+      nextProps.src !== '') {
       this.currentMedia.src = nextProps.src;
     }
 
@@ -238,12 +240,10 @@ class MediaContainer extends React.Component {
       }
     }
 
-    if (nextProps.paused !== this.props.paused) {
-      if (nextProps.paused) {
-        this.currentMedia.pause();
-      } else {
-        this.currentMedia.play();
-      }
+    if (nextProps.paused) {
+      this.currentMedia.pause();
+    } else {
+      this.currentMedia.play();
     }
   }
   componentDidUpdate(prevProps) {
