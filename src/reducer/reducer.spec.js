@@ -43,6 +43,40 @@ describe('reducer', () => {
     });
   });
 
+  it('does focus on current player if keyEnabled true', () => {
+    state[id].keyEnabled = true;
+    state.SecondPlayer = {
+      focused: true,
+    };
+
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'preload',
+      value: 'auto',
+    });
+
+    expect(newState[id].focused).toBe(true);
+    expect(newState.SecondPlayer.focused).toNotBe(true);
+  });
+
+  it('focuses on first keyEnabled player if current keyEnabled is false', () => {
+    state[id].keyEnabled = false;
+    state.SecondPlayer = {
+      keyEnabled: true,
+    };
+
+    const newState = reducer(state, {
+      type: actionNames.SET_OPTION,
+      id,
+      key: 'preload',
+      value: 'auto',
+    });
+
+    expect(newState[id].focused).toNotBe(true);
+    expect(newState.SecondPlayer.focused).toBe(true);
+  });
+
   describe('SET_OPTION', () => {
     it('should handle generic value', () => {
       const newState = reducer(state, {
