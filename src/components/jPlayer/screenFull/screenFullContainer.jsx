@@ -1,6 +1,6 @@
 import screenfull from 'screenfull';
 import { connectWithId } from 'react-jplayer-utils';
-import { compose, lifecycle } from 'recompose';
+import { compose, lifecycle, withHandlers } from 'recompose';
 
 import { setOption } from '../../../actions/actions';
 
@@ -8,52 +8,55 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   fullScreen: jPlayers[id].fullScreen,
 });
 
-const requestFullScreen = (jPlayer, fullScreen) => {
-  if (fullScreen) {
-    if (screenfull.enabled) {
-      screenfull.request(jPlayer);
+const handlers = {
+  closeFullScreenListener: props => () => {
+    if (!screenfull.isFullscreen && props.fullScreen) {
+      props.setOption(props.id, 'fullScreen', false);
     }
-    // Legacy browsers don't implement full screen api
-    // Safari 5.1 doesn't hide the other elements even with fullscreen api
-    document.body.style.visibility = 'hidden';
-  }
-};
-
-const closeFullScreenListener = (fullScreen, id, dispatch) => () => {
-  if (!screenfull.isFullscreen && fullScreen) {
-    dispatch(setOption(id, 'fullScreen', false));
-  }
-};
-
-const exitFullScreen = (fullScreen) => {
-  if (!fullScreen) {
-    if (screenfull.enabled) {
-      screenfull.exit();
+  },
+  requestFullScreen: props => () => {
+    if (props.fullScreen) {
+      if (screenfull.enabled) {
+        screenfull.request(props.jPlayer);
+      }
+      // Legacy browsers don't implement full screen api
+      // Safari 5.1 doesn't hide the other elements even with fullscreen api
+      document.body.style.visibility = 'hidden';
     }
-    document.body.style.visibility = 'visible';
-  }
+  },
+  exitFullScreen: props => () => {
+    if (!props.fullScreen) {
+      if (screenfull.enabled) {
+        screenfull.exit();
+      }
+      document.body.style.visibility = 'visible';
+    }
+  },
 };
 
 export default compose(
-  connectWithId(mapStateToProps),
+  connectWithId(mapStateToProps, {
+    setOption,
+  }),
+  withHandlers(handlers),
   lifecycle({
     componentDidMount() {
       if (screenfull.enabled) {
         document.addEventListener(screenfull.raw.fullscreenchange,
-           closeFullScreenListener(this.props.fullScreen, this.props.id, this.props.dispatch));
+          this.props.closeFullScreenListener);
       }
-      requestFullScreen(this.props.jPlayer, this.props.fullScreen);
+      this.props.requestFullScreen();
     },
     componentDidUpdate(prevProps) {
-      requestFullScreen(this.props.jPlayer, this.props.fullScreen);
+      this.props.requestFullScreen();
       if (prevProps.fullScreen !== this.props.fullScreen) {
-        exitFullScreen(this.props.fullScreen);
+        this.props.exitFullScreen();
       }
     },
     componentWillUnmount() {
       if (screenfull.enabled) {
         document.removeEventListener(screenfull.raw.fullscreenchange,
-           closeFullScreenListener(this.props.fullScreen, this.props.id, this.props.dispatch));
+           this.props.closeFullScreenListener);
       }
     },
   }),

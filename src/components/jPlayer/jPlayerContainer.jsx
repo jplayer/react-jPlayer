@@ -5,6 +5,7 @@ import { traverseParentsUntilClassName } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
 import KeyControl from './keyControl/keyControlContainer';
+import ScreenFull from './screenFull/screenFullContainer';
 import formatPropTypes from '../../util/formatPropTypes';
 import { classes, defaultOptions } from '../../util/constants';
 import JPlayer from './jPlayer';
@@ -140,6 +141,7 @@ class JPlayerContainer extends React.Component {
         {...this.props.attributes} id={this.props.id} className={this.props.className}
       >
         <KeyControl keyBindings={this.props.keyBindings} />
+        <ScreenFull />
         {this.props.children}
       </JPlayer>
     );
