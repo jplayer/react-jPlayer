@@ -56,7 +56,7 @@ export default compose(
     componentWillUnmount() {
       if (screenfull.enabled) {
         document.removeEventListener(screenfull.raw.fullscreenchange,
-           this.props.closeFullScreenListener);
+          this.props.closeFullScreenListener);
       }
     },
   }),
