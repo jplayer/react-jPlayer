@@ -1,24 +1,56 @@
+import { lifecycle, withHandlers, compose, mapProps } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
-import { setOption } from '../../actions/actions';
-import Gui from './gui';
 
-const mapStateToProps = ({ jPlayers }, { id }) => ({
+import { setOption } from '../../actions/actions';
+import GuiAnimation from './animation';
+
+const timeoutIds = [];
+
+const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
   fullScreen: jPlayers[id].fullScreen,
   paused: jPlayers[id].paused,
+  startGuiFadeOut: jPlayers[id].startGuiFadeOut,
   guiFadeOut: jPlayers[id].guiFadeOut,
-  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+  guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
+  attributes,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id, ...attributes }) => ({
-  onMouseMove: () => {
-    if (stateProps.fullScreen && !stateProps.paused) {
-      dispatch(setOption(id, 'guiFadeOut', false));
-      clearTimeout(stateProps.guiFadeHoldTimeout);
+const handlers = {
+  onMouseMove: props => () => {
+    if (props.fullScreen) {
+      props.dispatch(setOption(props.id, 'startGuiFadeOut', false));
+
+      timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
     }
   },
-  fullScreen: stateProps.fullScreen,
-  guiFadeOut: stateProps.guiFadeOut,
-  ...attributes,
-});
+};
 
-export default connectWithId(mapStateToProps, null, mergeProps)(Gui);
+const lifecycleFunctions = {
+  fadeOutHandler() {
+    this.props.dispatch(setOption(this.props.id, 'guiFadeOut', true));
+  },
+  startFade() {
+    if (this.props.fullScreen && !this.props.paused && this.props.startGuiFadeOut) {
+      timeoutIds.push(setTimeout(this.fadeOutHandler, this.props.guiFadeHoldTime));
+    } else if (!this.props.startGuiFadeOut) {
+      this.props.dispatch(setOption(this.props.id, 'guiFadeOut', false));
+    }
+  },
+  componentDidUpdate(prevProps) {
+    if (prevProps.startGuiFadeOut !== this.props.startGuiFadeOut) {
+      this.startFade();
+    }
+  },
+};
+
+export default compose(
+  connectWithId(mapStateToProps),
+  withHandlers(handlers),
+  lifecycle(lifecycleFunctions),
+  mapProps(props => ({
+    fullScreen: props.fullScreen,
+    guiFadeOut: props.guiFadeOut,
+    onMouseMove: props.onMouseMove,
+    ...props.attributes,
+  })),
+)(GuiAnimation);

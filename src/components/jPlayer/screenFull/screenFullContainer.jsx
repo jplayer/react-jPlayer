@@ -34,30 +34,32 @@ const handlers = {
   },
 };
 
+const lifecycleFunctions = {
+  componentDidMount() {
+    if (screenfull.enabled) {
+      document.addEventListener(screenfull.raw.fullscreenchange,
+        this.props.closeFullScreenListener);
+    }
+    this.props.requestFullScreen();
+  },
+  componentDidUpdate(prevProps) {
+    this.props.requestFullScreen();
+    if (prevProps.fullScreen !== this.props.fullScreen) {
+      this.props.exitFullScreen();
+    }
+  },
+  componentWillUnmount() {
+    if (screenfull.enabled) {
+      document.removeEventListener(screenfull.raw.fullscreenchange,
+        this.props.closeFullScreenListener);
+    }
+  },
+};
+
 export default compose(
   connectWithId(mapStateToProps, {
     setOption,
   }),
   withHandlers(handlers),
-  lifecycle({
-    componentDidMount() {
-      if (screenfull.enabled) {
-        document.addEventListener(screenfull.raw.fullscreenchange,
-          this.props.closeFullScreenListener);
-      }
-      this.props.requestFullScreen();
-    },
-    componentDidUpdate(prevProps) {
-      this.props.requestFullScreen();
-      if (prevProps.fullScreen !== this.props.fullScreen) {
-        this.props.exitFullScreen();
-      }
-    },
-    componentWillUnmount() {
-      if (screenfull.enabled) {
-        document.removeEventListener(screenfull.raw.fullscreenchange,
-          this.props.closeFullScreenListener);
-      }
-    },
-  }),
+  lifecycle(lifecycleFunctions),
 )(() => null);

@@ -69,42 +69,44 @@ describe('ScreenFullContainer', () => {
   });
 
   describe('closeFullScreenListener', () => {
-    let testPlayer;
-
-    it('dispatches full screen if screenFull is enabled', () => {
+    it('dispatches fullScreen to false if screenFull is enabled', () => {
       ({ store } = setup({ fullScreen: true }, { isFullscreen: false }));
 
       document.dispatchEvent(new window.Event(fullscreenchange));
-      testPlayer = store.getState().jPlayers.TestPlayer;
+
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
       expect(testPlayer.fullScreen).toBe(false);
     });
 
-    it('doesnt dispatch full screen if screenFull is fullscreen', () => {
+    it('doesnt dispatch fullScreen to false if screenFull is full screen', () => {
       ({ store } = setup({ fullScreen: true }));
 
       document.dispatchEvent(new window.Event(fullscreenchange));
-      testPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(store.fullScreen).toNotBe(false);
+      const testPlayer = store.getState().jPlayers.TestPlayer;
+
+      expect(testPlayer.fullScreen).toNotBe(false);
     });
 
-    it('doesnt dispatch full screen if fullScreen is false', () => {
+    it('doesnt dispatch full screen to false if fullScreen is false', () => {
       ({ store } = setup(null, { isFullscreen: false }));
 
       document.dispatchEvent(new window.Event(fullscreenchange));
-      testPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(store.fullScreen).toNotBe(false);
+      const testPlayer = store.getState().jPlayers.TestPlayer;
+
+      expect(testPlayer.fullScreen).toNotBe(false);
     });
 
-    it('doesnt dispatch full screen if screenFull is enabled when unmounted', () => {
+    it('doesnt dispatch full screen to false if screenFull is enabled when unmounted', () => {
       ({ wrapper, store } = setup({ fullScreen: true }));
 
       wrapper.unmount();
 
       document.dispatchEvent(new window.Event(fullscreenchange));
-      testPlayer = store.getState().jPlayers.TestPlayer;
+
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
       expect(testPlayer.fullScreen).toBe(true);
     });

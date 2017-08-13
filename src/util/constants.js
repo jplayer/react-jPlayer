@@ -1,5 +1,4 @@
 export const actionNames = {
-  SET_OPTION: 'SET_JPLAYER_OPTION',
   SET_MEDIA: 'SET_MEDIA',
   CLEAR_MEDIA: 'CLEAR_MEDIA',
   PLAY: 'PLAY',
@@ -8,6 +7,7 @@ export const actionNames = {
   VOLUME: 'VOLUME',
   MUTE: 'MUTE',
   FOCUS: 'FOCUS',
+  SET_OPTION: 'SET_JPLAYER_OPTION',
 };
 
 export const errors = {
@@ -176,7 +176,8 @@ export const defaultOptions = {
   volume: 0.8,
   barDrag: true,
   pauseOthersOnPlay: true,
-  guiFadeHoldTime: 3000,
+  startGuiFadeOut: false,
+  guiFadeHoldTime: 2000,
   media: {
     sources: {},
     title: '',
