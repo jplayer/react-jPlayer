@@ -46,17 +46,20 @@ const motion = (values, onMouseMove, attributes) => (
   />
 );
 
-const Gui = ({ fullScreen, guiFadeOut, onMouseMove, ...attributes }) => (
-  <Motion
-    defaultStyle={{ opacity: 1 }}
-    style={{ opacity: fullScreen ? spring(guiFadeOut ? 0 : 1, [250]) : 1 }}
-  >
-    {values => motion(values, onMouseMove, attributes)}
-  </Motion>
-);
+const Gui = ({ fullScreen, guiFadeOut, onMouseMove, ...attributes }) => {
+  console.log('df');
+  return (
+    <Motion
+      defaultStyle={{ opacity: 1 }}
+      style={{ opacity: fullScreen ? spring(guiFadeOut ? 0 : 1, [250]) : 1 }}
+    >
+      {values => motion(values, onMouseMove, attributes)}
+    </Motion>
+  );
+};
 
 Gui.propTypes = {
-  onMouseMove: PropTypes.func.isRequired,
+ // onMouseMove: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,

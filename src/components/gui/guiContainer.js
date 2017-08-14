@@ -18,7 +18,7 @@ const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
 const handlers = {
   onMouseMove: props => () => {
     if (props.fullScreen) {
-      props.dispatch(setOption(props.id, 'startGuiFadeOut', false));
+      props.setOption(props.id, 'startGuiFadeOut', false);
 
       timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
     }
@@ -27,13 +27,13 @@ const handlers = {
 
 const lifecycleFunctions = {
   fadeOutHandler() {
-    this.props.dispatch(setOption(this.props.id, 'guiFadeOut', true));
+    this.props.setOption(this.props.id, 'guiFadeOut', true);
   },
   startFade() {
     if (this.props.fullScreen && !this.props.paused && this.props.startGuiFadeOut) {
       timeoutIds.push(setTimeout(this.fadeOutHandler, this.props.guiFadeHoldTime));
     } else if (!this.props.startGuiFadeOut) {
-      this.props.dispatch(setOption(this.props.id, 'guiFadeOut', false));
+      this.props.setOption(this.props.id, 'guiFadeOut', false);
     }
   },
   componentDidUpdate(prevProps) {
@@ -44,7 +44,9 @@ const lifecycleFunctions = {
 };
 
 export default compose(
-  connectWithId(mapStateToProps),
+  connectWithId(mapStateToProps, {
+    setOption,
+  }),
   withHandlers(handlers),
   lifecycle(lifecycleFunctions),
   mapProps(props => ({
