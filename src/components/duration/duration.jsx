@@ -8,7 +8,7 @@ const Duration = ({ children, ...attributes }) => (
     <div className={classes.DURATION} {...attributes}>
       {children}
     </div>
-  : null
+    : null
 );
 
 Duration.propTypes = {

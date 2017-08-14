@@ -10,7 +10,7 @@ const Video = ({ require, events, children, ...attributes }) => (
         {children}
       </video>
     </Media>
-  : null
+    : null
 );
 
 Video.defaultProps = {

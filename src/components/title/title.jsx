@@ -8,7 +8,7 @@ const Title = ({ children, attributes }) => (
     <div className={classes.TITLE} {...attributes}>
       {children}
     </div>
-  : null
+    : null
 );
 
 Title.propTypes = {

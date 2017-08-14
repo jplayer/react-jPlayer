@@ -46,7 +46,7 @@ const mergeProps = ({ movePlaybackRate, children, attributes }, { dispatch }) =>
 });
 
 const PlaybackRateBarContainer = ({ onClick, onTouchMove, children,
-attributes }) => (
+  attributes }) => (
   <Bar
     clickMoveBar={onClick}
     touchMoveBar={onTouchMove}

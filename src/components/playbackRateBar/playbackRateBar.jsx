@@ -5,13 +5,16 @@ import { classes } from '../../util/constants';
 
 const PlaybackRateBar = ({ onClick, onMouseDown, onTouchStart,
   setBar, children, ...attributes }) => (
-    <div
-      ref={setBar} className={classes.PLAYBACK_RATE_BAR}
-      onClick={onClick} onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart} {...attributes}
-    >
-      {children}
-    </div>
+  <div
+    ref={setBar}
+    className={classes.PLAYBACK_RATE_BAR}
+    onClick={onClick}
+    onMouseDown={onMouseDown}
+    onTouchStart={onTouchStart}
+    {...attributes}
+  >
+    {children}
+  </div>
 );
 
 PlaybackRateBar.defaultProps = {

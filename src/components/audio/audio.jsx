@@ -10,7 +10,7 @@ const Audio = ({ require, events, children, ...attributes }) => (
         {children}
       </audio>
     </Media>
-  : null
+    : null
 );
 
 Audio.defaultProps = {

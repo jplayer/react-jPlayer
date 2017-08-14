@@ -6,13 +6,16 @@ import { classes } from '../../util/constants';
 const Download = ({ free, url, children, ...attributes }) => (
   free ?
     <a
-      className={classes.DOWNLOAD} href={url}
-      download target="_blank" rel="noopener noreferrer"
+      className={classes.DOWNLOAD}
+      href={url}
+      download
+      target="_blank"
+      rel="noopener noreferrer"
       {...attributes}
     >
       {children}
     </a>
-  : null
+    : null
 );
 
 Download.propTypes = {

@@ -11,14 +11,13 @@ import { setOption } from '../../actions/actions';
 
 proxyquire.noCallThru();
 
+const id = 'TestPlayer';
 const mockGuiAnimation = ({ onMouseMove }) => (
   <div onMouseMove={onMouseMove} />
 );
-
 const GuiContainer = proxyquire('./guiContainer', {
   './animation': mockGuiAnimation,
 }).default;
-const id = 'TestPlayer';
 const setup = (stateProperties, newProps) => {
   const props = {
     ...newProps,
@@ -93,12 +92,15 @@ describe('GuiContainer', () => {
 
       store.dispatch(setOption(id, 'startGuiFadeOut', true));
       store.dispatch(setOption(id, 'startGuiFadeOut', false));
+
+      mockSetTimeout.andReturn(2);
       store.dispatch(setOption(id, 'startGuiFadeOut', true));
 
       wrapper.simulate('mousemove');
 
-      // expect(mockClearTimeout.calls.length).toBe(timeoutIds.length);
+      expect(mockClearTimeout.calls.length).toBe(2);
       expect(mockClearTimeout).toHaveBeenCalledWith(1);
+      expect(mockClearTimeout).toHaveBeenCalledWith(2);
     });
 
     it('doesnt clear any timeouts if fullScreen is not enabled', () => {
@@ -174,7 +176,6 @@ describe('GuiContainer', () => {
   });
 
   afterEach(() => {
-    // timeoutIds.length = 0;
     mockSetTimeout.restore();
     mockClearTimeout.restore();
   });

@@ -1,7 +1,6 @@
 import jsdom from 'jsdom';
 
-const document = jsdom.jsdom();
-const window = document.defaultView;
+const window = new jsdom.JSDOM().window;
 
 Object.keys(window).forEach((property) => {
   if (typeof global[property] === 'undefined') {

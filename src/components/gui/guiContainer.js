@@ -1,4 +1,5 @@
-import { lifecycle, withHandlers, compose, mapProps } from 'recompose';
+import PropTypes from 'prop-types';
+import { lifecycle, withHandlers, compose, mapProps, setPropTypes } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
 
 import { setOption } from '../../actions/actions';
@@ -23,15 +24,25 @@ const handlers = {
       timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
     }
   },
+  fadeOutHandler: props => () => {
+    props.setOption(props.id, 'guiFadeOut', true);
+  },
+};
+
+const propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
+  paused: PropTypes.bool.isRequired,
+  startGuiFadeOut: PropTypes.bool.isRequired,
+  guiFadeOut: PropTypes.bool.isRequired,
+  guiFadeHoldTime: PropTypes.number.isRequired,
+  setOption: PropTypes.func.isRequired,
+  attributes: PropTypes.object.isRequired,
 };
 
 const lifecycleFunctions = {
-  fadeOutHandler() {
-    this.props.setOption(this.props.id, 'guiFadeOut', true);
-  },
   startFade() {
     if (this.props.fullScreen && !this.props.paused && this.props.startGuiFadeOut) {
-      timeoutIds.push(setTimeout(this.fadeOutHandler, this.props.guiFadeHoldTime));
+      timeoutIds.push(setTimeout(this.props.fadeOutHandler, this.props.guiFadeHoldTime));
     } else if (!this.props.startGuiFadeOut) {
       this.props.setOption(this.props.id, 'guiFadeOut', false);
     }
@@ -48,6 +59,7 @@ export default compose(
     setOption,
   }),
   withHandlers(handlers),
+  setPropTypes(propTypes),
   lifecycle(lifecycleFunctions),
   mapProps(props => ({
     fullScreen: props.fullScreen,

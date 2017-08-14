@@ -83,8 +83,8 @@ describe('BufferBarContainer', () => {
     ({ wrapper, props, instance } = setup());
 
     const bufferedTimeRanges = [
-       { start: 0, end: 10 },
-       { start: 10, end: 25 },
+      { start: 0, end: 10 },
+      { start: 10, end: 25 },
     ];
 
     expect.spyOn(instance.canvas, 'getContext').andReturn(mockCanvasContext);

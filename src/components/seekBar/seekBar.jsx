@@ -5,12 +5,15 @@ import { classes } from '../../util/constants';
 
 const SeekBar = ({ setBar, onClick, onMouseDown, onTouchStart,
   seekPercent, ...attributes }) => (
-    <div
-      ref={setBar} className={classes.SEEK_BAR}
-      style={{ width: `${seekPercent}%` }} onClick={onClick}
-      onTouchStart={onTouchStart} onMouseDown={onMouseDown}
-      {...attributes}
-    />
+  <div
+    ref={setBar}
+    className={classes.SEEK_BAR}
+    style={{ width: `${seekPercent}%` }}
+    onClick={onClick}
+    onTouchStart={onTouchStart}
+    onMouseDown={onMouseDown}
+    {...attributes}
+  />
 );
 
 SeekBar.defaultProps = {

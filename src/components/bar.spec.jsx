@@ -64,29 +64,29 @@ describe('Bar', () => {
   moveBarData.forEach((moveBarDatum) => {
     it(`${moveBarDatum.eventName} calls moveBar if dragging and 
       barDrag`, () => {
-      const props = getProps();
-      const event = new window.UIEvent(moveBarDatum.eventName);
-      const wrapper = mount(<Bar {...props} />);
-      const instance = wrapper.instance();
+        const props = getProps();
+        const event = new window.UIEvent(moveBarDatum.eventName);
+        const wrapper = mount(<Bar {...props} />);
+        const instance = wrapper.instance();
 
-      instance.dragging = true;
-      document.dispatchEvent(event);
+        instance.dragging = true;
+        document.dispatchEvent(event);
 
-      expect(props[moveBarDatum.moveBarKey]).toHaveBeenCalledWith(instance.bar, event);
-    });
+        expect(props[moveBarDatum.moveBarKey]).toHaveBeenCalledWith(instance.bar, event);
+      });
   });
 
   moveBarData.forEach((moveBarDatum) => {
     it(`${moveBarDatum.eventName} doesn't call moveBar if not dragging 
       and not barDrag`, () => {
-      const props = getProps({ barDrag: false });
-      const event = new window.UIEvent(moveBarDatum.eventName);
-      mount(<Bar {...props} />);
+        const props = getProps({ barDrag: false });
+        const event = new window.UIEvent(moveBarDatum.eventName);
+        mount(<Bar {...props} />);
 
-      document.dispatchEvent(event);
+        document.dispatchEvent(event);
 
-      expect(props[moveBarDatum.moveBarKey]).toNotHaveBeenCalled();
-    });
+        expect(props[moveBarDatum.moveBarKey]).toNotHaveBeenCalled();
+      });
   });
 
   const draggingUnmountData = [
@@ -97,18 +97,18 @@ describe('Bar', () => {
   draggingUnmountData.forEach((draggingUnmountDatum) => {
     it(`doesn't set dragging if unmounted for ${draggingUnmountDatum.eventName}
       event`, () => {
-      const props = getProps();
-      const event = new window.UIEvent(draggingUnmountDatum.eventName);
-      const wrapper = shallow(<Bar {...props} />);
-      const instance = wrapper.instance();
-      instance.dragging = true;
+        const props = getProps();
+        const event = new window.UIEvent(draggingUnmountDatum.eventName);
+        const wrapper = shallow(<Bar {...props} />);
+        const instance = wrapper.instance();
+        instance.dragging = true;
 
-      wrapper.unmount();
+        wrapper.unmount();
 
-      document.dispatchEvent(event);
+        document.dispatchEvent(event);
 
-      expect(instance.dragging).toBe(true);
-    });
+        expect(instance.dragging).toBe(true);
+      });
   });
 
   const moveBarUnmountData = [
@@ -119,18 +119,18 @@ describe('Bar', () => {
   moveBarUnmountData.forEach((moveBarUnmountDatum) => {
     it(`doesn't call moveBar if unmounted for ${moveBarUnmountDatum.eventName}
         event`, () => {
-      const props = getProps({ barDrag: true });
-      const event = new window.UIEvent(moveBarUnmountDatum.eventName);
-      const wrapper = shallow(<Bar {...props} />);
-      const instance = wrapper.instance();
-      instance.dragging = true;
+        const props = getProps({ barDrag: true });
+        const event = new window.UIEvent(moveBarUnmountDatum.eventName);
+        const wrapper = shallow(<Bar {...props} />);
+        const instance = wrapper.instance();
+        instance.dragging = true;
 
-      wrapper.unmount();
+        wrapper.unmount();
 
-      document.dispatchEvent(event);
+        document.dispatchEvent(event);
 
-      expect(props[moveBarUnmountDatum.moveBarKey]).toNotHaveBeenCalled();
-    });
+        expect(props[moveBarUnmountDatum.moveBarKey]).toNotHaveBeenCalled();
+      });
   });
 
   it('onClick moves bar', () => {

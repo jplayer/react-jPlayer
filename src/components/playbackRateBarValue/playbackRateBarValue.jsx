@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { classes } from '../../util/constants';
 
 const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
-    verticalPlaybackRate, attributes }) => {
+  verticalPlaybackRate, attributes }) => {
   const style = () => {
     const ratio = (playbackRate - minPlaybackRate)
                   / (maxPlaybackRate - minPlaybackRate);
@@ -17,7 +17,8 @@ const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
   };
   return (
     <div
-      className={classes.PLAYBACK_RATE_BAR_VALUE} style={style()}
+      className={classes.PLAYBACK_RATE_BAR_VALUE}
+      style={style()}
       {...attributes}
     />
   );
