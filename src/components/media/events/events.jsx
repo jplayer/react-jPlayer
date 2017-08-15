@@ -1,26 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Media from '../media/mediaContainer';
-
-const Audio = ({ require, events, children, ...attributes }) => (
-  require ?
-    <Media events={events}>
-      <audio {...attributes}>
-        {children}
-      </audio>
-    </Media>
-    : null
+const Events = ({ children, events }) => (
+  React.cloneElement(React.Children.only(children),
+    {
+      ...events,
+    })
 );
 
-Audio.defaultProps = {
+Events.defaultProps = {
   events: null,
-  children: null,
 };
 
-Audio.propTypes = {
-  children: PropTypes.node,
-  require: PropTypes.bool.isRequired,
+Events.propTypes = {
+  children: PropTypes.element.isRequired,
   events: PropTypes.shape({
     onAbort: PropTypes.func,
     onCanPlay: PropTypes.func,
@@ -48,4 +41,4 @@ Audio.propTypes = {
   }),
 };
 
-export default Audio;
+export default Events;

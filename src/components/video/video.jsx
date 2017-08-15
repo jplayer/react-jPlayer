@@ -5,7 +5,7 @@ import Media from '../media/mediaContainer';
 
 const Video = ({ require, events, children, ...attributes }) => (
   require ?
-    <Media {...events}>
+    <Media events={events}>
       <video {...attributes}>
         {children}
       </video>

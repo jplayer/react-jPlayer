@@ -24,10 +24,11 @@ const JPlayer = ({ className, keyBindings, setJPlayer, children,
 
 JPlayer.defaultProps = {
   setJPlayer: null,
+  keyBindings: null,
 };
 
 JPlayer.propTypes = {
-  keyBindings: PropTypes.object.isRequired,
+  keyBindings: PropTypes.object,
   onMouseMoveCapture: PropTypes.func.isRequired,
   className: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,

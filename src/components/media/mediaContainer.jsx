@@ -5,7 +5,7 @@ import {
   convertTime, canSetVolume,
 } from 'react-jplayer-utils';
 
-import urlNotSupportedError from '../../util/errorHandlers/urlNotSupportedError';
+import Events from './events/eventsContainer';
 import { setOption, pause } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id, children }) => ({
@@ -36,36 +36,37 @@ const mapDispatchToProps = {
 class MediaContainer extends React.Component {
   static get propTypes() {
     return {
-      onAbort: PropTypes.func,
-      onCanPlay: PropTypes.func,
-      onCanPlayThrough: PropTypes.func,
-      onDurationChange: PropTypes.func,
-      onEmptied: PropTypes.func,
-      onEncrypted: PropTypes.func,
-      onEnded: PropTypes.func,
-      onError: PropTypes.func,
-      onLoadedData: PropTypes.func,
-      onLoadedMetadata: PropTypes.func,
-      onLoadStart: PropTypes.func,
-      onPause: PropTypes.func,
-      onPlay: PropTypes.func,
-      onPlaying: PropTypes.func,
-      onProgress: PropTypes.func,
-      onRateChange: PropTypes.func,
-      onSeeked: PropTypes.func,
-      onSeeking: PropTypes.func,
-      onStalled: PropTypes.func,
-      onSuspend: PropTypes.func,
-      onTimeUpdate: PropTypes.func,
-      onVolumeChange: PropTypes.func,
-      onWaiting: PropTypes.func,
       showRemainingDuration: PropTypes.bool.isRequired,
       src: PropTypes.string.isRequired,
       playHeadPercent: PropTypes.number.isRequired,
       setOption: PropTypes.func.isRequired,
       pause: PropTypes.func.isRequired,
+      events: PropTypes.shape({
+        onAbort: PropTypes.func,
+        onCanPlay: PropTypes.func,
+        onCanPlayThrough: PropTypes.func,
+        onDurationChange: PropTypes.func,
+        onEmptied: PropTypes.func,
+        onEncrypted: PropTypes.func,
+        onEnded: PropTypes.func,
+        onError: PropTypes.func,
+        onLoadedData: PropTypes.func,
+        onLoadedMetadata: PropTypes.func,
+        onLoadStart: PropTypes.func,
+        onPause: PropTypes.func,
+        onPlay: PropTypes.func,
+        onPlaying: PropTypes.func,
+        onProgress: PropTypes.func,
+        onRateChange: PropTypes.func,
+        onSeeked: PropTypes.func,
+        onSeeking: PropTypes.func,
+        onStalled: PropTypes.func,
+        onSuspend: PropTypes.func,
+        onTimeUpdate: PropTypes.func,
+        onVolumeChange: PropTypes.func,
+        onWaiting: PropTypes.func,
+      }),
       id: PropTypes.string.isRequired,
-      pauseOthersOnPlay: PropTypes.bool.isRequired,
       otherJPlayerIds: PropTypes.arrayOf(
         PropTypes.string,
       ).isRequired,
@@ -123,76 +124,13 @@ class MediaContainer extends React.Component {
       onVolumeChange: Function.prototype,
       onWaiting: Function.prototype,
       newTime: null,
+      events: {},
     };
   }
   constructor(props) {
     super(props);
 
     this.state = {};
-
-    this.events = {
-      onAbort: this.props.onAbort,
-      onCanPlay: this.props.onCanPlay,
-      onCanPlayThrough: this.props.onCanPlayThrough,
-      onDurationChange: () => {
-        this.updateMediaStatus();
-        this.props.onDurationChange();
-      },
-      onEmptied: this.props.onEmptied,
-      onEncrypted: this.props.onEncrypted,
-      onEnded: () => {
-        // Pause so that the play/pause button resets and the poster is shown again
-        this.props.pause(this.props.id, 0);
-        this.updateMediaStatus();
-        this.props.onEnded();
-      },
-      onError: () => {
-        this.props.setOption(this.props.id, 'error', urlNotSupportedError(this.props.src));
-        this.props.onError();
-      },
-      onLoadedData: this.props.onLoadedData,
-      onLoadedMetadata: this.props.onLoadedMetadata,
-      onLoadStart: this.props.onLoadStart,
-      onPause: this.props.onPause,
-      onPlay: () => {
-        if (this.props.pauseOthersOnPlay) {
-          this.pauseOthers();
-        }
-        this.props.setOption(this.props.id, 'paused', false);
-        this.props.onPlay();
-      },
-      onPlaying: this.props.onPlaying,
-      onProgress: () => {
-        const bufferedTimeRanges = [];
-
-        for (let i = 0; i < this.currentMedia.buffered.length; i += 1) {
-          bufferedTimeRanges.push({
-            start: this.currentMedia.buffered.start(i),
-            end: this.currentMedia.buffered.end(i),
-          });
-        }
-        this.updateMediaStatus();
-        this.props.setOption(this.props.id, 'bufferedTimeRanges', bufferedTimeRanges);
-        this.props.onProgress();
-      },
-      onRateChange: this.props.onRateChange,
-      onSeeked: () => {
-        this.props.setOption(this.props.id, 'seeking', false);
-        this.props.onSeeked();
-      },
-      onSeeking: () => {
-        this.props.setOption(this.props.id, 'seeking', true);
-        this.props.onSeeking();
-      },
-      onStalled: this.props.onStalled,
-      onSuspend: this.props.onSuspend,
-      onTimeUpdate: () => {
-        this.updateMediaStatus();
-        this.props.onTimeUpdate();
-      },
-      onVolumeChange: this.props.onVolumeChange,
-      onWaiting: this.props.onWaiting,
-    };
   }
   componentDidMount() {
     if (this.props.src !== '') {
@@ -320,12 +258,18 @@ class MediaContainer extends React.Component {
   }
   render() {
     return (
-      React.cloneElement(React.Children.only(this.props.children),
-        {
-          ...this.events,
-          ref: this.setCurrentMedia,
-        },
-      )
+      <Events
+        currentMedia={this.currentMedia}
+        updateMediaStatus={this.updateMediaStatus}
+        pauseOthers={this.pauseOthers}
+        {...this.props.events}
+      >
+        {React.cloneElement(React.Children.only(this.props.children),
+          {
+            ref: this.setCurrentMedia,
+          })
+        }
+      </Events>
     );
   }
 }
