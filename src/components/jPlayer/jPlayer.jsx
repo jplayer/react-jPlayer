@@ -5,12 +5,11 @@ import KeyControl from './keyControl/keyControlContainer';
 import ScreenFull from './screenFull/screenFullContainer';
 import ErrorLogger from './errorLogger/errorLoggerContainer';
 
-const JPlayer = ({ className, keyBindings, setJPlayer, children,
+const JPlayer = ({ className, keyBindings, children,
   onMouseMoveCapture, id, ...attributes }) => (
   <div
     id={id}
     className={className}
-    ref={setJPlayer}
     draggable={false}
     onMouseMoveCapture={onMouseMoveCapture}
     {...attributes}
@@ -23,7 +22,6 @@ const JPlayer = ({ className, keyBindings, setJPlayer, children,
 );
 
 JPlayer.defaultProps = {
-  setJPlayer: null,
   keyBindings: null,
 };
 
@@ -32,7 +30,6 @@ JPlayer.propTypes = {
   onMouseMoveCapture: PropTypes.func.isRequired,
   className: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  setJPlayer: PropTypes.func,
   children: PropTypes.node.isRequired,
 };
 

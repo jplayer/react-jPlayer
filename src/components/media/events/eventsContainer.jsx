@@ -46,7 +46,7 @@ const propTypes = {
   onTimeUpdate: PropTypes.func,
   onVolumeChange: PropTypes.func,
   onWaiting: PropTypes.func,
-  currentMedia: PropTypes.node,
+  currentMedia: PropTypes.object,
   updateMediaStatus: PropTypes.func.isRequired,
 };
 
