@@ -4,7 +4,7 @@ import { connectWithId } from 'react-jplayer-utils';
 
 import Events from './events';
 import urlNotSupportedError from '../../../util/errorHandlers/urlNotSupportedError';
-import { setOption, pause } from '../../../actions/actions';
+import { setOption, pause, play } from '../../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   src: jPlayers[id].src,
@@ -48,6 +48,7 @@ const propTypes = {
   onWaiting: PropTypes.func,
   currentMedia: PropTypes.object,
   updateMediaStatus: PropTypes.func.isRequired,
+  pauseOthers: PropTypes.func.isRequired,
 };
 
 const handlers = {
@@ -68,7 +69,7 @@ const handlers = {
     if (props.pauseOthersOnPlay) {
       props.pauseOthers();
     }
-    props.setOption(props.id, 'paused', false);
+    props.play(props.id);
     props.onPlay();
   },
   onProgress: props => () => {
@@ -129,6 +130,7 @@ export default compose(
   connectWithId(mapStateToProps, {
     setOption,
     pause,
+    play,
   }),
   setDefaultProps(defaultProps),
   setPropTypes(propTypes),

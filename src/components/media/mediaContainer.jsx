@@ -124,7 +124,7 @@ class MediaContainer extends React.Component {
       onVolumeChange: Function.prototype,
       onWaiting: Function.prototype,
       newTime: null,
-      events: {},
+      events: null,
     };
   }
   constructor(props) {
