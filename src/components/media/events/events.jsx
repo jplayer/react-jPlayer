@@ -8,10 +8,6 @@ const Events = ({ children, events }) => (
     })
 );
 
-Events.defaultProps = {
-  events: null,
-};
-
 Events.propTypes = {
   children: PropTypes.element.isRequired,
   events: PropTypes.shape({
@@ -38,7 +34,7 @@ Events.propTypes = {
     onTimeUpdate: PropTypes.func,
     onVolumeChange: PropTypes.func,
     onWaiting: PropTypes.func,
-  }),
+  }).isRequired,
 };
 
 export default Events;
