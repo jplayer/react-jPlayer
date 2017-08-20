@@ -13,7 +13,7 @@ proxyquire.noCallThru();
 
 let jPlayers;
 const id = 'TestPlayer';
-const mockEvents = ({ ...props }) => <div {...props} />;
+const mockEvents = ({ events }) => <div {...events} />;
 const EventsContainer = proxyquire('./eventsContainer', {
   './events': mockEvents,
 }).default;

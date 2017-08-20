@@ -5,12 +5,10 @@ import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Audio = ({ require, events }) => (
-  require ?
-    <Media events={events}>
-      <audio />
-    </Media>
-    : null
+const Audio = ({ events }) => (
+  <Media events={events}>
+    <audio />
+  </Media>
 );
 
 Audio.defaultProps = {
@@ -18,7 +16,6 @@ Audio.defaultProps = {
 };
 
 Audio.propTypes = {
-  require: PropTypes.bool.isRequired,
   events: PropTypes.shape({
     onAbort: PropTypes.func,
     onCanPlay: PropTypes.func,

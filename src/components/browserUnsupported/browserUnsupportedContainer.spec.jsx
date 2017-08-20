@@ -1,26 +1,41 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import { defaultStatus } from '../../util/constants';
-import { __get__ } from './browserUnsupportedContainer';
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const mockBrowserUnsupported = () => <div className="@@unsupported" />;
+const BrowserUnsupportedContainer = proxyquire('./browserUnsupportedContainer', {
+  './browserUnsupported': mockBrowserUnsupported,
+}).default;
+const setup = (jPlayers, props) => containerSetup(BrowserUnsupportedContainer, jPlayers, props);
 
 describe('BrowserUnsupportedContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      TestPlayer: {
+        mediaSettings: {},
+      },
     };
   });
 
-  it('maps state', () => {
-    const expected = mapStateToProps({ jPlayers }, { id });
+  it('renders BrowserUnsupported when the media is not supported', () => {
+    jPlayers.TestPlayer.mediaSettings.nonSupported = true;
 
-    expect(expected).toEqual({
-      nonSupported: defaultStatus.mediaSettings.nonSupported,
-    });
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@unsupported').exists()).toBe(true);
+  });
+
+  it('does not render BrowserUnsupported when the media is supported', () => {
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@unsupported').exists()).toBe(false);
   });
 });
