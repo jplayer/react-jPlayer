@@ -180,6 +180,7 @@ export const defaultOptions = {
   guiFadeHoldTime: 2000,
   media: {
     sources: {},
+    tracks: [],
     title: '',
     artist: '',
     poster: '',

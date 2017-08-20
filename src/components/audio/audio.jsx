@@ -1,25 +1,23 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Audio = ({ require, events, children, ...attributes }) => (
+const Audio = ({ require, events }) => (
   require ?
     <Media events={events}>
-      <audio {...attributes}>
-        {children}
-      </audio>
+      <audio />
     </Media>
     : null
 );
 
 Audio.defaultProps = {
   events: null,
-  children: null,
 };
 
 Audio.propTypes = {
-  children: PropTypes.node,
   require: PropTypes.bool.isRequired,
   events: PropTypes.shape({
     onAbort: PropTypes.func,

@@ -1,25 +1,23 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Video = ({ require, events, children, ...attributes }) => (
+const Video = ({ require, events }) => (
   require ?
     <Media events={events}>
-      <video {...attributes}>
-        {children}
-      </video>
+      <video />
     </Media>
     : null
 );
 
 Video.defaultProps = {
   events: null,
-  children: null,
 };
 
 Video.propTypes = {
-  children: PropTypes.node,
   require: PropTypes.bool.isRequired,
   events: PropTypes.shape({
     onAbort: PropTypes.func,

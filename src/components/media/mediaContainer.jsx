@@ -4,6 +4,7 @@ import { connectWithId, toPercentage, toRelativePercentage } from 'react-jplayer
 
 import Events from './events/eventsContainer';
 import { setOption } from '../../actions/actions';
+import Track from './track/track';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   loop: jPlayers[id].loop,
@@ -17,6 +18,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   muted: jPlayers[id].muted,
   autoplay: jPlayers[id].autoplay,
   newTime: jPlayers[id].newTime,
+  tracks: jPlayers[id].media.tracks,
 });
 
 class MediaContainer extends React.Component {
@@ -128,11 +130,9 @@ class MediaContainer extends React.Component {
         pauseOthers={this.pauseOthers}
         {...this.props.events}
       >
-        {React.cloneElement(React.Children.only(this.props.children),
-          {
-            ref: this.setCurrentMedia,
-          })
-        }
+        {React.cloneElement(React.Children.only(this.props.children), {
+          ref: this.setCurrentMedia,
+        }, this.props.tracks.map(track => <Track key={track.src} {...track} />))}
       </Events>
     );
   }
@@ -186,6 +186,15 @@ MediaContainer.propTypes = {
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
   ]).isRequired,
+  tracks: PropTypes.arrayOf(
+    PropTypes.shape({
+      default: PropTypes.bool,
+      kind: PropTypes.string,
+      src: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      srclang: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default connectWithId(mapStateToProps, {

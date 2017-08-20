@@ -21,6 +21,9 @@ const defaultProps = {
   onSeeked: Function.prototype,
   onSeeking: Function.prototype,
   onTimeUpdate: Function.prototype,
+  currentMedia: {
+    buffered: {},
+  },
 };
 
 const propTypes = {
