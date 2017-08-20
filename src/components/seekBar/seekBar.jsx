@@ -3,18 +3,22 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const SeekBar = ({ setBar, onClick, onMouseDown, onTouchStart,
-  seekPercent, ...attributes }) => (
-  <div
-    ref={setBar}
-    className={classes.SEEK_BAR}
-    style={{ width: `${seekPercent}%` }}
-    onClick={onClick}
-    onTouchStart={onTouchStart}
-    onMouseDown={onMouseDown}
-    {...attributes}
-  />
-);
+const SeekBar = (props) => {
+  const { setBar, onClick, onMouseDown, onTouchStart,
+    seekPercent, ...attributes } = props;
+
+  return (
+    <div
+      ref={setBar}
+      className={classes.SEEK_BAR}
+      style={{ width: `${seekPercent}%` }}
+      onClick={onClick}
+      onTouchStart={onTouchStart}
+      onMouseDown={onMouseDown}
+      {...attributes}
+    />
+  );
+};
 
 SeekBar.defaultProps = {
   setBar: null,

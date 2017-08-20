@@ -9,6 +9,7 @@ import { setOption, pause, play } from '../../../actions/actions';
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   src: jPlayers[id].src,
   pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
+  otherJPlayerIds: Object.keys(jPlayers).filter(key => key !== id),
 });
 
 const defaultProps = {
@@ -48,10 +49,18 @@ const propTypes = {
   onWaiting: PropTypes.func,
   currentMedia: PropTypes.object,
   updateMediaStatus: PropTypes.func.isRequired,
-  pauseOthers: PropTypes.func.isRequired,
+  otherJPlayerIds: PropTypes.arrayOf(
+    PropTypes.string,
+  ).isRequired,
 };
 
-const handlers = {
+const firstHandlers = {
+  pauseOthers: props => () => {
+    props.otherJPlayerIds.forEach(id => props.pause(id));
+  },
+};
+
+const secondHandlers = {
   onDurationChange: props => () => {
     props.updateMediaStatus();
     props.onDurationChange();
@@ -134,6 +143,7 @@ export default compose(
   }),
   setDefaultProps(defaultProps),
   setPropTypes(propTypes),
-  withHandlers(handlers),
+  withHandlers(firstHandlers),
+  withHandlers(secondHandlers),
   mapProps(propsMapper),
 )(Events);

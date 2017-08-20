@@ -9,6 +9,8 @@ import proxyquire from 'proxyquire';
 import jPlayers from '../../reducer/reducer';
 import { defaultOptions } from '../../util/constants';
 
+proxyquire.noCallThru();
+
 const id = 'TestPlayer';
 const mockJPlayer = ({ onMouseMoveCapture }) => (
   <div onMouseMoveCapture={onMouseMoveCapture} />
@@ -72,6 +74,14 @@ describe('JPlayerContainer', () => {
     const testPlayer = store.getState().jPlayers.TestPlayer;
 
     expect(testPlayer.media).toBe(media);
+  });
+
+  it('sets volumeSupported on load', () => {
+    ({ store } = setup());
+
+    const testPlayer = store.getState().jPlayers.TestPlayer;
+
+    expect(testPlayer.volumeSupported).toBe(true);
   });
 
   describe('onMouseMoveCapture', () => {

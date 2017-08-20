@@ -25,7 +25,7 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
     }
 
     const playbackRateValue = (ratio * (maxPlaybackRate - minPlaybackRate))
-                              + minPlaybackRate;
+      + minPlaybackRate;
 
     dispatch(setOption(id, 'playbackRate', playbackRateValue));
   },
@@ -45,14 +45,13 @@ const mergeProps = ({ movePlaybackRate, children, attributes }, { dispatch }) =>
   attributes,
 });
 
-const PlaybackRateBarContainer = ({ onClick, onTouchMove, children,
-  attributes }) => (
+const PlaybackRateBarContainer = props => (
   <Bar
-    clickMoveBar={onClick}
-    touchMoveBar={onTouchMove}
+    clickMoveBar={props.onClick}
+    touchMoveBar={props.onTouchMove}
   >
-    <PlaybackRateBar {...attributes}>
-      {children}
+    <PlaybackRateBar {...props.attributes}>
+      {props.children}
     </PlaybackRateBar>
   </Bar>
 );

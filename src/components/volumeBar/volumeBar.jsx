@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const VolumeBar = ({ setBar, onClick, onMouseDown,
-  onTouchStart, ...attributes }) => (
-  <div
-    ref={setBar}
-    className={classes.VOLUME_BAR}
-    onClick={onClick}
-    onMouseDown={onMouseDown}
-    onTouchStart={onTouchStart}
-    {...attributes}
-  />
-);
+const VolumeBar = (props) => {
+  const { setBar, onClick, onMouseDown,
+    onTouchStart, ...attributes } = props;
+
+  return (
+    <div
+      ref={setBar}
+      className={classes.VOLUME_BAR}
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      {...attributes}
+    />
+  );
+};
 
 VolumeBar.defaultProps = {
   onClick: null,

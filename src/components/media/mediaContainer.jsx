@@ -1,18 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  connectWithId, toPercentage, toRelativePercentage,
-  convertTime, canSetVolume,
-} from 'react-jplayer-utils';
+import { connectWithId, toPercentage, toRelativePercentage } from 'react-jplayer-utils';
 
 import Events from './events/eventsContainer';
-import { setOption, pause } from '../../actions/actions';
+import { setOption } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlayers }, { id, children }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   loop: jPlayers[id].loop,
-  showRemainingDuration: jPlayers[id].showRemainingDuration,
   src: jPlayers[id].src,
-  currentTime: jPlayers[id].currentTime,
   playHeadPercent: jPlayers[id].playHeadPercent,
   paused: jPlayers[id].paused,
   defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
@@ -22,173 +17,33 @@ const mapStateToProps = ({ jPlayers }, { id, children }) => ({
   muted: jPlayers[id].muted,
   autoplay: jPlayers[id].autoplay,
   newTime: jPlayers[id].newTime,
-  timeFormats: jPlayers[id].timeFormats,
-  otherJPlayerIds: Object.keys(jPlayers).filter(key => key !== id),
-  pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
-  children,
 });
 
-const mapDispatchToProps = {
-  setOption,
-  pause,
-};
-
 class MediaContainer extends React.Component {
-  static get propTypes() {
-    return {
-      showRemainingDuration: PropTypes.bool.isRequired,
-      src: PropTypes.string.isRequired,
-      playHeadPercent: PropTypes.number.isRequired,
-      setOption: PropTypes.func.isRequired,
-      pause: PropTypes.func.isRequired,
-      events: PropTypes.shape({
-        onAbort: PropTypes.func,
-        onCanPlay: PropTypes.func,
-        onCanPlayThrough: PropTypes.func,
-        onDurationChange: PropTypes.func,
-        onEmptied: PropTypes.func,
-        onEncrypted: PropTypes.func,
-        onEnded: PropTypes.func,
-        onError: PropTypes.func,
-        onLoadedData: PropTypes.func,
-        onLoadedMetadata: PropTypes.func,
-        onLoadStart: PropTypes.func,
-        onPause: PropTypes.func,
-        onPlay: PropTypes.func,
-        onPlaying: PropTypes.func,
-        onProgress: PropTypes.func,
-        onRateChange: PropTypes.func,
-        onSeeked: PropTypes.func,
-        onSeeking: PropTypes.func,
-        onStalled: PropTypes.func,
-        onSuspend: PropTypes.func,
-        onTimeUpdate: PropTypes.func,
-        onVolumeChange: PropTypes.func,
-        onWaiting: PropTypes.func,
-      }),
-      id: PropTypes.string.isRequired,
-      otherJPlayerIds: PropTypes.arrayOf(
-        PropTypes.string,
-      ).isRequired,
-      timeFormats: PropTypes.shape({
-        showHour: PropTypes.bool.isRequired,
-        showMin: PropTypes.bool.isRequired,
-        showSec: PropTypes.bool.isRequired,
-        padHour: PropTypes.bool.isRequired,
-        padMin: PropTypes.bool.isRequired,
-        padSec: PropTypes.bool.isRequired,
-        sepHour: PropTypes.string.isRequired,
-        sepMin: PropTypes.string.isRequired,
-        sepSec: PropTypes.string.isRequired,
-      }).isRequired,
-      /* eslint-disable react/no-unused-prop-types */
-      paused: PropTypes.bool.isRequired,
-      newTime: PropTypes.number,
-      loop: PropTypes.bool.isRequired,
-      autoplay: PropTypes.bool.isRequired,
-      defaultPlaybackRate: PropTypes.number.isRequired,
-      muted: PropTypes.bool.isRequired,
-      playbackRate: PropTypes.number.isRequired,
-      preload: PropTypes.string.isRequired,
-      volume: PropTypes.number.isRequired,
-      /* eslint-enable react/no-unused-prop-types */
-      children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.element),
-        PropTypes.element,
-      ]).isRequired,
-    };
-  }
-  static get defaultProps() {
-    return {
-      onAbort: Function.prototype,
-      onCanPlay: Function.prototype,
-      onCanPlayThrough: Function.prototype,
-      onDurationChange: Function.prototype,
-      onEmptied: Function.prototype,
-      onEncrypted: Function.prototype,
-      onEnded: Function.prototype,
-      onError: Function.prototype,
-      onLoadedData: Function.prototype,
-      onLoadedMetadata: Function.prototype,
-      onLoadStart: Function.prototype,
-      onPause: Function.prototype,
-      onPlay: Function.prototype,
-      onPlaying: Function.prototype,
-      onProgress: Function.prototype,
-      onRateChange: Function.prototype,
-      onSeeked: Function.prototype,
-      onSeeking: Function.prototype,
-      onStalled: Function.prototype,
-      onSuspend: Function.prototype,
-      onTimeUpdate: Function.prototype,
-      onVolumeChange: Function.prototype,
-      onWaiting: Function.prototype,
-      newTime: null,
-      events: null,
-    };
-  }
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
   componentDidMount() {
     if (this.props.src !== '') {
       this.currentMedia.src = this.props.src;
     }
 
-    this.props.setOption(this.props.id, 'volumeSupported', canSetVolume());
-
-    this.updateCurrentMedia(this.props);
-  }
-  componentWillReceiveProps(nextProps) {
-    this.updateCurrentMedia(nextProps);
-
-    if (nextProps.src !== this.props.src) {
-      this.currentMedia.src = nextProps.src;
-    }
-
-    if (nextProps.newTime !== null) {
-      this.currentMedia.currentTime = nextProps.newTime;
-      this.props.setOption(this.props.id, 'newTime', null);
-    }
-
-    if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
-      // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
-      // Hasn't fully loaded the song????
-      if (this.currentMedia.seekable.length > 0) {
-        const seekableEnd = this.getSeekableEnd();
-
-        if (isFinite(seekableEnd)) {
-          this.currentMedia.currentTime = toRelativePercentage(
-            nextProps.playHeadPercent,
-            seekableEnd,
-          );
-          /* Media events don't fire fast enough to give a smooth animation
-            when dragging so we update it here as well, same problem as above? */
-          this.props.setOption(
-            this.props.id,
-            'currentPercentRelative',
-            this.getCurrentPercentRelative(),
-          );
-        }
-      }
-    }
-
-    if (nextProps.paused !== this.props.paused) {
-      if (nextProps.paused) {
-        this.currentMedia.pause();
-      } else {
-        this.currentMedia.play();
-      }
-    }
+    this.updateOtherMediaValues();
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.showRemainingDuration !== this.props.showRemainingDuration) {
-      this.setDurationText();
+    this.updateOtherMediaValues();
+
+    if (prevProps.src !== this.props.src) {
+      this.updateMediaSrc();
     }
-    if (prevProps.timeFormats !== this.props.timeFormats) {
-      this.setCurrentTimeText();
+
+    if (prevProps.newTime !== null) {
+      this.updateMediaTime();
+    }
+
+    if (prevProps.playHeadPercent !== this.props.playHeadPercent) {
+      this.updateMediaTimeAfterSeeking();
+    }
+
+    if (prevProps.paused !== this.props.paused) {
+      this.updateMediaPlayState();
     }
   }
   getCurrentPercentRelative = () => {
@@ -204,28 +59,6 @@ class MediaContainer extends React.Component {
     this.currentMedia = ref;
   }
   getSeekableEnd = () => this.currentMedia.seekable.end(this.currentMedia.seekable.length - 1)
-  setDurationText = () => {
-    let durationText = '';
-
-    if (this.props.showRemainingDuration) {
-      const timeRemaining = this.currentMedia.duration - this.currentMedia.currentTime;
-
-      durationText = (timeRemaining > 0 ? '-' : '') +
-        convertTime(timeRemaining, this.props.timeFormats);
-    } else {
-      durationText = convertTime(this.currentMedia.duration, this.props.timeFormats);
-    }
-
-    this.props.setOption(this.props.id, 'durationText', durationText);
-  }
-  setCurrentTimeText = () => {
-    const currentTimeText = convertTime(this.currentMedia.currentTime, this.props.timeFormats);
-
-    this.props.setOption(this.props.id, 'currentTimeText', currentTimeText);
-  }
-  pauseOthers = () => {
-    this.props.otherJPlayerIds.forEach(id => this.props.pause(id));
-  }
   updateMediaStatus = () => {
     let seekPercent = 0;
 
@@ -236,9 +69,6 @@ class MediaContainer extends React.Component {
       seekPercent = toPercentage(this.getSeekableEnd(), this.currentMedia.duration);
     }
 
-    this.setDurationText();
-    this.setCurrentTimeText();
-
     this.props.setOption(this.props.id, 'seekPercent', seekPercent);
     this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
     this.props.setOption(this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
@@ -246,15 +76,49 @@ class MediaContainer extends React.Component {
     this.props.setOption(this.props.id, 'duration', this.currentMedia.duration);
     this.props.setOption(this.props.id, 'playbackRate', this.currentMedia.playbackRate);
   }
-  updateCurrentMedia = ({ defaultPlaybackRate, playbackRate, preload, volume,
-    muted, autoplay, loop }) => {
-    this.currentMedia.defaultPlaybackRate = defaultPlaybackRate;
-    this.currentMedia.playbackRate = playbackRate;
-    this.currentMedia.preload = preload;
-    this.currentMedia.volume = volume;
-    this.currentMedia.muted = muted;
-    this.currentMedia.autoplay = autoplay;
-    this.currentMedia.loop = loop;
+  updateMediaSrc = () => {
+    this.currentMedia.src = this.props.src;
+  }
+  updateMediaTime = () => {
+    this.currentMedia.currentTime = this.props.newTime;
+    this.props.setOption(this.props.id, 'newTime', null);
+  }
+  updateMediaTimeAfterSeeking = () => {
+    // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
+    // Hasn't fully loaded the song????
+    if (this.currentMedia.seekable.length > 0) {
+      const seekableEnd = this.getSeekableEnd();
+
+      if (isFinite(seekableEnd)) {
+        this.currentMedia.currentTime = toRelativePercentage(
+          this.props.playHeadPercent,
+          seekableEnd,
+        );
+        /* Media events don't fire fast enough to give a smooth animation
+          when dragging so we update it here as well, same problem as above? */
+        this.props.setOption(
+          this.props.id,
+          'currentPercentRelative',
+          this.getCurrentPercentRelative(),
+        );
+      }
+    }
+  }
+  updateMediaPlayState = () => {
+    if (this.props.paused) {
+      this.currentMedia.pause();
+    } else {
+      this.currentMedia.play();
+    }
+  }
+  updateOtherMediaValues = () => {
+    this.currentMedia.defaultPlaybackRate = this.props.defaultPlaybackRate;
+    this.currentMedia.playbackRate = this.props.playbackRate;
+    this.currentMedia.preload = this.props.preload;
+    this.currentMedia.volume = this.props.volume;
+    this.currentMedia.muted = this.props.muted;
+    this.currentMedia.autoplay = this.props.autoplay;
+    this.currentMedia.loop = this.props.loop;
   }
   render() {
     return (
@@ -274,4 +138,56 @@ class MediaContainer extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps, mapDispatchToProps)(MediaContainer);
+MediaContainer.defaultProps = {
+  newTime: null,
+  events: null,
+};
+
+MediaContainer.propTypes = {
+  src: PropTypes.string.isRequired,
+  playHeadPercent: PropTypes.number.isRequired,
+  setOption: PropTypes.func.isRequired,
+  events: PropTypes.shape({
+    onAbort: PropTypes.func,
+    onCanPlay: PropTypes.func,
+    onCanPlayThrough: PropTypes.func,
+    onDurationChange: PropTypes.func,
+    onEmptied: PropTypes.func,
+    onEncrypted: PropTypes.func,
+    onEnded: PropTypes.func,
+    onError: PropTypes.func,
+    onLoadedData: PropTypes.func,
+    onLoadedMetadata: PropTypes.func,
+    onLoadStart: PropTypes.func,
+    onPause: PropTypes.func,
+    onPlay: PropTypes.func,
+    onPlaying: PropTypes.func,
+    onProgress: PropTypes.func,
+    onRateChange: PropTypes.func,
+    onSeeked: PropTypes.func,
+    onSeeking: PropTypes.func,
+    onStalled: PropTypes.func,
+    onSuspend: PropTypes.func,
+    onTimeUpdate: PropTypes.func,
+    onVolumeChange: PropTypes.func,
+    onWaiting: PropTypes.func,
+  }),
+  id: PropTypes.string.isRequired,
+  paused: PropTypes.bool.isRequired,
+  newTime: PropTypes.number,
+  loop: PropTypes.bool.isRequired,
+  autoplay: PropTypes.bool.isRequired,
+  defaultPlaybackRate: PropTypes.number.isRequired,
+  muted: PropTypes.bool.isRequired,
+  playbackRate: PropTypes.number.isRequired,
+  preload: PropTypes.string.isRequired,
+  volume: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]).isRequired,
+};
+
+export default connectWithId(mapStateToProps, {
+  setOption,
+})(MediaContainer);
