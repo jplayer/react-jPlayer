@@ -3,9 +3,9 @@ import { isSpy, createSpy } from 'expect';
 const mockCanvasContext = {
   fillRect: createSpy(),
   clearRect: createSpy(),
-  getImageData: [],
+  getImageData: createSpy().andReturn([]),
   putImageData: createSpy(),
-  createImageData: [],
+  createImageData: createSpy().andReturn([]),
   setTransform: createSpy(),
   drawImage: createSpy(),
   save: createSpy(),

@@ -1,36 +1,24 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../util/constants';
 import BufferBar from './bufferBar';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = () => {
-  const props = {
-    setCanvas: Function.prototype,
-    attributes: {
-      'data-test': 'test',
-    },
-  };
+const setup = props => componentSetup(BufferBar, {
+  setCanvas: Function.prototype,
+  ...props,
+});
 
-  const wrapper = shallow(<BufferBar {...props} />);
+describe('Audio', () => {
+  it('renders bufferBar class', () => {
+    const { wrapper } = setup();
 
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('BufferBar', () => {
-  let wrapper;
-  let props;
-
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.BUFFER_BAR)).toBe(true);
   });
 
-  it('renders self and subcomponents', () => {
-    expect(wrapper.hasClass(classes.BUFFER_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+  it('renders canvas', () => {
+    const { wrapper } = setup();
+
+    expect(wrapper.type()).toBe('canvas');
   });
 });
