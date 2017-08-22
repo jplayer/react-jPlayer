@@ -1,11 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import proxyquire from 'proxyquire';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { createStore, combineReducers } from 'redux';
-import jPlayers from '../../reducer/reducer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
 import { setOption } from '../../actions/actions';
 
@@ -18,75 +14,50 @@ const mockGuiAnimation = ({ onMouseMove }) => (
 const GuiContainer = proxyquire('./guiContainer', {
   './animation': mockGuiAnimation,
 }).default;
-const setup = (stateProperties, newProps) => {
-  const props = {
-    ...newProps,
-  };
 
-  const state = {
-    jPlayers: {
-      [id]: {
-        ...stateProperties,
-      },
-    },
-  };
-
-  const store = createStore(combineReducers({ jPlayers }), state);
-
-  const wrapper = mount(
-    <Provider store={store}>
-      <GuiContainer {...props} />
-    </Provider>, {
-      context: {
-        id,
-      },
-      childContextTypes: {
-        id: PropTypes.string,
-      },
-    },
-  );
-
-  return {
-    wrapper,
-    props,
-    store,
-  };
-};
+const setup = (jPlayers, props) => containerSetup(GuiContainer, jPlayers, props);
 
 describe('GuiContainer', () => {
-  let store;
-  let wrapper;
+  let jPlayers;
   let mockSetTimeout;
   let mockClearTimeout;
 
   beforeEach(() => {
+    jPlayers = {
+      [id]: {},
+    };
     mockSetTimeout = expect.spyOn(global, 'setTimeout');
     mockClearTimeout = expect.spyOn(global, 'clearTimeout');
   });
 
   describe('onMouseMove', () => {
     it('dispatches startGuiFadeOut to false if fullScreen is enabled', () => {
-      ({ wrapper, store } = setup({ fullScreen: true, startGuiFadeOut: true }));
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].startGuiFadeOut = true;
+
+      const { wrapper, store } = setup(jPlayers);
 
       wrapper.simulate('mousemove');
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers[id];
 
-      expect(testPlayer.startGuiFadeOut).toBe(false);
+      expect(jPlayer.startGuiFadeOut).toBe(false);
     });
 
     it('doesnt dispatch startGuiFadeOut to false if fullScreen is not enabled', () => {
-      ({ wrapper, store } = setup({ fullScreen: false }));
+      const { wrapper, store } = setup(jPlayers);
 
       wrapper.simulate('mousemove');
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers[id];
 
-      expect(testPlayer.startGuiFadeOut).toNotBe(false);
+      expect(jPlayer.startGuiFadeOut).toNotBe(false);
     });
 
     it('clears all timeouts if fullScreen is enabled', () => {
-      ({ wrapper, store } = setup({ fullScreen: true }));
+      jPlayers[id].fullScreen = true;
+
+      const { wrapper, store } = setup(jPlayers);
 
       mockSetTimeout.andReturn(1);
 
@@ -104,7 +75,9 @@ describe('GuiContainer', () => {
     });
 
     it('doesnt clear any timeouts if fullScreen is not enabled', () => {
-      ({ wrapper, store } = setup({ fullScreen: true }));
+      jPlayers[id].fullScreen = true;
+
+      const { wrapper, store } = setup(jPlayers);
 
       mockSetTimeout.andReturn(1);
 
@@ -119,7 +92,9 @@ describe('GuiContainer', () => {
 
   describe('startFade', () => {
     it('dispatches guiFadeOut to true if fullScreen, !paused and startGuiFadeOut', () => {
-      ({ wrapper, store } = setup({ fullScreen: true }));
+      jPlayers[id].fullScreen = true;
+
+      const { store } = setup(jPlayers);
 
       mockSetTimeout.andCall((fn) => {
         fn();
@@ -127,13 +102,13 @@ describe('GuiContainer', () => {
 
       store.dispatch(setOption(id, 'startGuiFadeOut', true));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers[id];
 
-      expect(testPlayer.guiFadeOut).toBe(true);
+      expect(jPlayer.guiFadeOut).toBe(true);
     });
 
     it('doesnt dispatch guiFadeOut to true if !fullScreen', () => {
-      ({ wrapper, store } = setup());
+      const { store } = setup(jPlayers);
 
       mockSetTimeout.andCall((fn) => {
         fn();
@@ -141,13 +116,16 @@ describe('GuiContainer', () => {
 
       store.dispatch(setOption(id, 'startGuiFadeOut', true));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers[id];
 
-      expect(testPlayer.guiFadeOut).toNotBe(true);
+      expect(jPlayer.guiFadeOut).toNotBe(true);
     });
 
     it('doesnt dispatch guiFadeOut to true if paused', () => {
-      ({ wrapper, store } = setup({ fullScreen: true, paused: true }));
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].paused = true;
+
+      const { store } = setup(jPlayers);
 
       mockSetTimeout.andCall((fn) => {
         fn();
@@ -155,13 +133,16 @@ describe('GuiContainer', () => {
 
       store.dispatch(setOption(id, 'startGuiFadeOut', true));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers[id];
 
-      expect(testPlayer.guiFadeOut).toNotBe(true);
+      expect(jPlayer.guiFadeOut).toNotBe(true);
     });
 
     it('dispatchs guiFadeOut to false if !startGuiFadeOut', () => {
-      ({ wrapper, store } = setup({ fullScreen: true, startGuiFadeOut: true }));
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].startGuiFadeOut = true;
+
+      const { store } = setup(jPlayers);
 
       mockSetTimeout.andCall((fn) => {
         fn();
@@ -169,9 +150,9 @@ describe('GuiContainer', () => {
 
       store.dispatch(setOption(id, 'startGuiFadeOut', false));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers[id];
 
-      expect(testPlayer.guiFadeOut).toBe(false);
+      expect(jPlayer.guiFadeOut).toBe(false);
     });
   });
 

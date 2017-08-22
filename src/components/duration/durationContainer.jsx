@@ -1,8 +1,17 @@
 import { connectWithId } from 'react-jplayer-utils';
-import Duration from './duration';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
-const mapStateToProps = ({ jPlayers }, { id, children }) => ({
-  children: children || jPlayers[id].durationText,
+import Duration from './duration';
+import { defaultStatus } from '../../util/constants';
+
+const mapStateToProps = ({ jPlayers }, { id }) => ({
+  durationText: jPlayers[id].durationText,
 });
 
-export default connectWithId(mapStateToProps)(Duration);
+export default compose(
+  connectWithId(mapStateToProps),
+  branch(
+    props => props.durationText !== defaultStatus.durationText,
+    renderComponent(Duration),
+  ),
+)(renderNothing(null));

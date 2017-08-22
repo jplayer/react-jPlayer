@@ -8,6 +8,7 @@ import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
 proxyquire.noCallThru();
 
+const id = 'TestPlayer';
 const mockAudio = () => <audio />;
 const AudioContainer = proxyquire('./audioContainer', {
   './audio': mockAudio,
@@ -19,7 +20,7 @@ describe('AudioContainer', () => {
 
   beforeEach(() => {
     jPlayers = {
-      TestPlayer: {
+      [id]: {
         mediaSettings: {},
       },
     };
@@ -32,7 +33,7 @@ describe('AudioContainer', () => {
   });
 
   it('does not render Audio when the media is video', () => {
-    jPlayers.TestPlayer.mediaSettings.video = true;
+    jPlayers[id].mediaSettings.video = true;
 
     const { wrapper } = setup(jPlayers);
 

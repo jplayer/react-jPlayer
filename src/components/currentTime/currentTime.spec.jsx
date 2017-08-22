@@ -1,33 +1,24 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../util/constants';
 import CurrentTime from './currentTime';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = () => {
-  const props = {
-    children: '0:00',
-    'data-test': 'test',
-  };
+const setup = props => componentSetup(CurrentTime, {
+  currentTimeText: '00:20',
+  ...props,
+});
 
-  const wrapper = shallow(<CurrentTime {...props} />);
+describe('Audio', () => {
+  it('has currentTime class', () => {
+    const { wrapper } = setup();
 
-  return {
-    props,
-    wrapper,
-  };
-};
+    expect(wrapper.hasClass(classes.CURRENT_TIME)).toBe(true);
+  });
 
-describe('CurrentTime', () => {
-  let wrapper;
-  let props;
+  it('currentTimeText is rendered as a child', () => {
+    const { wrapper, props } = setup();
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.CURRENT_TIME)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.prop('children')).toBe(props.currentTimeText);
   });
 });

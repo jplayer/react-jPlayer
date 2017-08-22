@@ -1,61 +1,28 @@
-import React from 'react';
 import expect from 'expect';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { createStore, combineReducers } from 'redux';
 
-import jPlayers from '../../../reducer/reducer';
 import { setOption } from '../../../actions/actions';
 import ErrorLoggerContainer from './errorLoggerContainer';
+import containerSetup from '../../../util/specHelpers/containerSetup.spec';
 
 const id = 'TestPlayer';
-const setup = (stateProperties, newProps) => {
-  const props = {
-    ...newProps,
-  };
 
-  const state = {
-    jPlayers: {
-      [id]: {
-        ...stateProperties,
-      },
-    },
-  };
-
-  const store = createStore(combineReducers({ jPlayers }), state);
-
-  const wrapper = mount(
-    <Provider store={store}>
-      <ErrorLoggerContainer {...props} />
-    </Provider>, {
-      context: {
-        id,
-      },
-      childContextTypes: {
-        id: PropTypes.string,
-      },
-    },
-  );
-
-  return {
-    wrapper,
-    props,
-    store,
-  };
-};
+const setup = (jPlayers, props) => containerSetup(ErrorLoggerContainer, jPlayers, props);
 
 describe('ErrorLoggerContainer', () => {
-  let store;
+  let jPlayers;
   let mockConsoleError;
 
   beforeEach(() => {
     mockConsoleError = expect.spyOn(console, 'error');
+    jPlayers = {
+      [id]: {
+        mediaSettings: {},
+      },
+    };
   });
 
   it('logs error to console', () => {
-    ({ store } = setup());
-
+    const { store } = setup(jPlayers);
     const error = {
       context: 'testContext',
       message: 'testMessage',

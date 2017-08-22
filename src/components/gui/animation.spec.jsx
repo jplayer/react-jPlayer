@@ -1,45 +1,24 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
 import GuiAnimation from './animation';
+import Gui from './gui';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = (newProps) => {
-  const props = {
-    onMouseMove: createSpy(),
-    children: (<div className="@@jPlayer-test" />),
-    fullScreen: false,
-    guiFadeOut: false,
-    'data-test': 'test',
-    ...newProps,
-  };
-
-  const wrapper = shallow(<GuiAnimation {...props} />);
-  const gui = wrapper.dive();
-
-  return {
-    props,
-    wrapper,
-    gui,
-  };
-};
+const setup = props => componentSetup(GuiAnimation, {
+  durationText: '2:20',
+  ...props,
+});
 
 describe('GuiAnimation', () => {
-  let wrapper;
-  let props;
-  let gui;
+  it('renders GUI as a child', () => {
+    const { wrapper } = setup();
 
-  describe('GUI as child', () => {
-    it('renders additional properties', () => {
-      ({ gui, props } = setup());
-
-      expect(gui.prop('data-test')).toBe(props['data-test']);
-    });
+    expect(wrapper.dive().type()).toBe(Gui);
   });
 
   describe('Motion', () => {
     it('default opacity for motion is 1', () => {
-      ({ wrapper } = setup());
+      const { wrapper } = setup();
 
       expect(wrapper.prop('defaultStyle')).toEqual({
         opacity: 1,
@@ -47,7 +26,7 @@ describe('GuiAnimation', () => {
     });
 
     it('opacity for motion is 1 when fullScreen false', () => {
-      ({ wrapper } = setup());
+      const { wrapper } = setup();
 
       expect(wrapper.prop('style')).toEqual({
         opacity: 1,
@@ -55,13 +34,13 @@ describe('GuiAnimation', () => {
     });
 
     it('opacity value is 1 when fullScreen true and guiFadeOut false', () => {
-      ({ wrapper } = setup({ fullScreen: true }));
+      const { wrapper } = setup({ fullScreen: true });
 
       expect(wrapper.prop('style').opacity.val).toBe(1);
     });
 
     it('opacity value is 0 when fullScreen true and guiFadeOut true', () => {
-      ({ wrapper } = setup({ fullScreen: true, guiFadeOut: true }));
+      const { wrapper } = setup({ fullScreen: true, guiFadeOut: true });
 
       expect(wrapper.prop('style').opacity.val).toBe(0);
     });

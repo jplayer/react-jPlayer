@@ -1,45 +1,35 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
-import { __get__, __Rewire__, __ResetDependency__ } from './fullScreenContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mapDispatchToProps = __get__('mapDispatchToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockFullScreen = ({ setFullScreen }) =>
+  <div onClick={() => setFullScreen(id, true)} />;
+const FullScreenContainer = proxyquire('./fullScreenContainer', {
+  './fullScreen': mockFullScreen,
+}).default;
+const setup = (jPlayers, props) => containerSetup(FullScreenContainer, jPlayers, props);
 
 describe('FullScreenContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {},
     };
   });
 
-  afterEach(() => {
-    __ResetDependency__('setOption');
-  });
+  it('sets fullScreen', () => {
+    const { wrapper, store } = setup(jPlayers);
 
-  it('maps state', () => {
-    const stateProps = mapStateToProps({ jPlayers }, { id });
+    wrapper.simulate('click');
 
-    expect(stateProps).toEqual({
-      fullScreen: false,
-    });
-  });
+    const jPlayer = store.getState().jPlayers[id];
 
-
-  it('mapDispatchToProps setFullScreen sets fullScreen', () => {
-    const setOptionSpy = expect.createSpy();
-
-    __Rewire__('setOption', setOptionSpy);
-
-    mapDispatchToProps.setFullScreen(id, false);
-
-    expect(setOptionSpy).toHaveBeenCalledWith(
-      id,
-      'fullScreen',
-      false,
-    );
+    expect(jPlayer.fullScreen).toBe(true);
   });
 });

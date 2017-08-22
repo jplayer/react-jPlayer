@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import screenfull from 'screenfull';
 import { connectWithId } from 'react-jplayer-utils';
-import { compose, lifecycle, withHandlers, setPropTypes } from 'recompose';
+import { compose, lifecycle, withHandlers, setPropTypes, renderNothing } from 'recompose';
 
 import { setOption } from '../../../actions/actions';
 
@@ -70,4 +70,4 @@ export default compose(
   withHandlers(handlers),
   setPropTypes(propTypes),
   lifecycle(lifecycleFunctions),
-)(() => null);
+)(renderNothing(null));

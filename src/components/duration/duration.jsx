@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Duration = ({ children, ...attributes }) => (
-  children !== '' ?
-    <div className={classes.DURATION} {...attributes}>
-      {children}
-    </div>
-    : null
+const Duration = ({ durationText }) => (
+  <div className={classes.DURATION}>
+    {durationText}
+  </div>
 );
 
 Duration.propTypes = {
-  children: PropTypes.string.isRequired,
+  durationText: PropTypes.string.isRequired,
 };
 
 export default Duration;

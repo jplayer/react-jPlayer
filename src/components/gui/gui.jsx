@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Gui = ({ opacity, children, onMouseMove, ...attributes }) => (
+const Gui = ({ opacity, children, onMouseMove }) => (
   <div
     className={classes.GUI}
     onMouseMove={onMouseMove}
     style={{ opacity }}
-    {...attributes}
   >
     {children}
   </div>

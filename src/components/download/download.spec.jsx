@@ -1,44 +1,37 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../../src/util/constants';
 import Download from './download';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    url: 'http://www.test.mp3',
-    free: true,
-    children: 'test',
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<Download {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(Download, {
+  children: 'download',
+  url: 'www.test.com',
+  ...props,
+});
 
 describe('Download', () => {
-  let wrapper;
-  let props;
+  it('has download class', () => {
+    const { wrapper } = setup();
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.prop('download')).toBeTruthy();
-    expect(wrapper.prop('url')).toBe(props.href);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.hasClass(classes.DOWNLOAD)).toBe(true);
   });
 
-  it('renders null when audio is not free', () => {
-    ({ wrapper, props } = setup());
+  it('has download attribute', () => {
+    const { wrapper } = setup();
 
-    wrapper.setProps({ free: false });
-    expect(wrapper.node).toBe(null);
+    expect(wrapper.prop('download')).toBe(true);
+  });
+
+  it('href is set to url', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('href')).toBe(props.url);
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });

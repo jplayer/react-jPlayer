@@ -10,7 +10,7 @@ const setup = props => componentSetup(BufferBar, {
 });
 
 describe('Audio', () => {
-  it('renders bufferBar class', () => {
+  it('has bufferBar class', () => {
     const { wrapper } = setup();
 
     expect(wrapper.hasClass(classes.BUFFER_BAR)).toBe(true);

@@ -7,13 +7,12 @@ import GuiAnimation from './animation';
 
 const timeoutIds = [];
 
-const mapStateToProps = ({ jPlayers }, { id, ...attributes }) => ({
+const mapStateToProps = ({ jPlayers }, { id }) => ({
   fullScreen: jPlayers[id].fullScreen,
   paused: jPlayers[id].paused,
   startGuiFadeOut: jPlayers[id].startGuiFadeOut,
   guiFadeOut: jPlayers[id].guiFadeOut,
   guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
-  attributes,
 });
 
 const handlers = {
@@ -36,7 +35,6 @@ const propTypes = {
   guiFadeOut: PropTypes.bool.isRequired,
   guiFadeHoldTime: PropTypes.number.isRequired,
   setOption: PropTypes.func.isRequired,
-  attributes: PropTypes.object.isRequired,
 };
 
 const lifecycleFunctions = {
@@ -65,6 +63,5 @@ export default compose(
     fullScreen: props.fullScreen,
     guiFadeOut: props.guiFadeOut,
     onMouseMove: props.onMouseMove,
-    ...props.attributes,
   })),
 )(GuiAnimation);

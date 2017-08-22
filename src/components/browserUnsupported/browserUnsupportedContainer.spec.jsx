@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
-
 import React from 'react';
 import expect from 'expect';
 import proxyquire from 'proxyquire';
@@ -8,6 +6,7 @@ import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
 proxyquire.noCallThru();
 
+const id = 'TestPlayer';
 const mockBrowserUnsupported = () => <div className="@@unsupported" />;
 const BrowserUnsupportedContainer = proxyquire('./browserUnsupportedContainer', {
   './browserUnsupported': mockBrowserUnsupported,
@@ -19,14 +18,14 @@ describe('BrowserUnsupportedContainer', () => {
 
   beforeEach(() => {
     jPlayers = {
-      TestPlayer: {
+      [id]: {
         mediaSettings: {},
       },
     };
   });
 
   it('renders BrowserUnsupported when the media is not supported', () => {
-    jPlayers.TestPlayer.mediaSettings.nonSupported = true;
+    jPlayers[id].mediaSettings.nonSupported = true;
 
     const { wrapper } = setup(jPlayers);
 

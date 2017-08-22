@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const CurrentTime = ({ children, ...attributes }) => (
-  <div className={classes.CURRENT_TIME} {...attributes}>
-    {children}
+const CurrentTime = ({ currentTimeText }) => (
+  <div className={classes.CURRENT_TIME}>
+    {currentTimeText}
   </div>
 );
 
 CurrentTime.propTypes = {
-  children: PropTypes.string.isRequired,
+  currentTimeText: PropTypes.string.isRequired,
 };
 
 export default CurrentTime;

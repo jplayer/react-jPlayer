@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { connectWithId, convertTime } from 'react-jplayer-utils';
-import { compose, setPropTypes, lifecycle as setLifecycle, withHandlers } from 'recompose';
+import { compose, setPropTypes, lifecycle as setLifecycle, withHandlers, renderNothing } from 'recompose';
 
 import { setOption } from '../../../actions/actions';
 
@@ -73,5 +73,5 @@ export default compose(
   setPropTypes(propTypes),
   withHandlers(handlers),
   setLifecycle(lifecycle),
-)(() => null);
+)(renderNothing(null));
 

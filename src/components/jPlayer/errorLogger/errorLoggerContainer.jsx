@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import { connectWithId } from 'react-jplayer-utils';
-import { compose, lifecycle, setPropTypes } from 'recompose';
+import { compose, lifecycle, setPropTypes, renderNothing } from 'recompose';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   error: jPlayers[id].error,
@@ -30,4 +30,4 @@ export default compose(
   connectWithId(mapStateToProps),
   setPropTypes(propTypes),
   lifecycle(lifecycleFunctions),
-)(() => null);
+)(renderNothing(null));

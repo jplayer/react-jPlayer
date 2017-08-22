@@ -1,27 +1,40 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import { defaultOptions, defaultStatus } from '../../util/constants';
-import { __get__ } from './downloadContainer';
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockDownload = () => <div className="@@download" />;
+const DownloadContainer = proxyquire('./downloadContainer', {
+  './download': mockDownload,
+}).default;
+const setup = (jPlayers, props) => containerSetup(DownloadContainer, jPlayers, props);
 
 describe('DownloadContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {
+        media: {},
+      },
     };
   });
 
-  it('maps state', () => {
-    const stateProps = mapStateToProps({ jPlayers }, { id });
+  it('renders Download when the media is free', () => {
+    jPlayers[id].media.free = true;
 
-    expect(stateProps).toEqual({
-      free: defaultOptions.media.free,
-      url: defaultStatus.src,
-    });
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@download').exists()).toBe(true);
+  });
+
+  it('does not render Download when the media is not free', () => {
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@download').exists()).toBe(false);
   });
 });

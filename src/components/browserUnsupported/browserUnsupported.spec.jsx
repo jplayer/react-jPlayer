@@ -13,7 +13,7 @@ describe('BrowserUnsupported', () => {
     expect(wrapper.find('h4').exists()).toBeTruthy();
   });
 
-  it('renders browserUnsupported class', () => {
+  it('has browserUnsupported class', () => {
     const { wrapper } = setup();
 
     expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBe(true);

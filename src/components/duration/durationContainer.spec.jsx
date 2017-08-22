@@ -1,33 +1,41 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
 import { defaultStatus } from '../../util/constants';
-import { __get__ } from './durationContainer';
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockDuration = () => <div className="@@duration" />;
+const DurationContainer = proxyquire('./durationContainer', {
+  './duration': mockDuration,
+}).default;
+const setup = (jPlayers, props) => containerSetup(DurationContainer, jPlayers, props);
 
 describe('DurationContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {
+        durationText: defaultStatus.durationText,
+      },
     };
   });
 
-  it('maps state', () => {
-    const stateProps = mapStateToProps({ jPlayers }, { id });
+  it('renders Duration when the durationText is not the default value', () => {
+    jPlayers[id].durationText = '2:20';
 
-    expect(stateProps).toEqual({
-      children: defaultStatus.durationText,
-    });
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@duration').exists()).toBe(true);
   });
 
-  it('maps custom children if specified', () => {
-    const children = '2:35';
-    const stateProps = mapStateToProps({ jPlayers }, { id, children });
+  it('does not render Duration when the durationText is the default value', () => {
+    const { wrapper } = setup(jPlayers);
 
-    expect(stateProps.children).toBe(children);
+    expect(wrapper.find('.@@duration').exists()).toBe(false);
   });
 });

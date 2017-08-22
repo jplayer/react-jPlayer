@@ -9,6 +9,11 @@ import { setOption } from '../../actions/actions';
 proxyquire.noCallThru();
 
 let canvas;
+const id = 'TestPlayer';
+const bufferedTimeRanges = [
+  { start: 0, end: 2 },
+  { start: 2, end: 4 },
+];
 const mockBufferBar = ({ setCanvas }) => {
   const mockSetCanvas = (ref) => {
     if (ref !== null) {
@@ -29,11 +34,6 @@ const setup = (jPlayers, props) => containerSetup(BufferBarContainer, jPlayers, 
 
 describe('BufferBarContainer', () => {
   let jPlayers;
-  const id = 'TestPlayer';
-  const bufferedTimeRanges = [
-    { start: 0, end: 2 },
-    { start: 2, end: 4 },
-  ];
 
   beforeEach(() => {
     jPlayers = {

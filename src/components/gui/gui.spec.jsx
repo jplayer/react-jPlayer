@@ -1,59 +1,41 @@
 import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
 import Gui from './gui';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 import { classes } from '../../util/constants';
 
-const setup = () => {
-  const props = {
-    opacity: 0.33,
-    onMouseMove: expect.createSpy(),
-    children: (<div className="@@jPlayer-test" />),
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<Gui {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(Gui, {
+  opacity: 0.7,
+  onMouseMove: expect.createSpy(),
+  children: <div />,
+  ...props,
+});
 
 describe('Gui', () => {
-  let wrapper;
-  let props;
-
-  it('renders children', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-  });
-
-  it('renders additional properties', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
-  });
-
-  it('renders gui class', () => {
-    ({ wrapper, props } = setup());
+  it('has gui class', () => {
+    const { wrapper } = setup();
 
     expect(wrapper.hasClass(classes.GUI)).toBe(true);
   });
 
-  it('handles onMouseMove', () => {
-    ({ wrapper, props } = setup());
+  it('calls onMouseMove', () => {
+    const { wrapper, props } = setup();
 
     wrapper.simulate('mousemove');
 
     expect(props.onMouseMove).toHaveBeenCalled();
   });
 
-  it('sets opacity to the style', () => {
-    ({ wrapper, props } = setup());
+  it('opacity is set on the style', () => {
+    const { wrapper, props } = setup();
 
     expect(wrapper.prop('style').opacity).toBe(props.opacity);
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });

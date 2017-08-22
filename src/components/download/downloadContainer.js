@@ -1,4 +1,6 @@
 import { connectWithId } from 'react-jplayer-utils';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
+
 import Download from './download';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
@@ -6,4 +8,10 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   url: jPlayers[id].src,
 });
 
-export default connectWithId(mapStateToProps)(Download);
+export default compose(
+  connectWithId(mapStateToProps),
+  branch(
+    props => props.free,
+    renderComponent(Download),
+  ),
+)(renderNothing(null));
