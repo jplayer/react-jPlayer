@@ -11,7 +11,7 @@ import { setOption, setMedia } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, ownProps) => {
   const { id, customStates, keyBindings, children,
-    className, ...attributes } = ownProps;
+    className } = ownProps;
 
   return {
     media: jPlayers[id].media,
@@ -20,7 +20,6 @@ const mapStateToProps = ({ jPlayers }, ownProps) => {
     startGuiFadeOut: jPlayers[id].startGuiFadeOut,
     keyBindings,
     id,
-    attributes,
     children,
     className: states(jPlayers[id], customStates, className),
   };
@@ -29,7 +28,6 @@ const mapStateToProps = ({ jPlayers }, ownProps) => {
 const propTypes = {
   className: PropTypes.string.isRequired,
   keyBindings: PropTypes.object,
-  attributes: PropTypes.object,
   media: PropTypes.shape({
     title: PropTypes.string,
     artist: PropTypes.string,
@@ -41,8 +39,9 @@ const propTypes = {
   id: PropTypes.string.isRequired,
   fullScreen: PropTypes.bool.isRequired,
   paused: PropTypes.bool.isRequired,
-  setMedia: PropTypes.func.isRequired,
   startGuiFadeOut: PropTypes.bool.isRequired,
+  setMedia: PropTypes.func.isRequired,
+  setOption: PropTypes.func.isRequired,
 };
 
 const handlers = {
@@ -73,7 +72,6 @@ const propsMapper = props => ({
   children: props.children,
   id: props.id,
   onMouseMoveCapture: props.onMouseMoveCapture,
-  ...props.attributes,
 });
 
 export default compose(

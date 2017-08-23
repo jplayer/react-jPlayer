@@ -1,118 +1,96 @@
 import React from 'react';
 import expect from 'expect';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { createStore, combineReducers } from 'redux';
 import proxyquire from 'proxyquire';
 
-import jPlayers from '../../reducer/reducer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 import { defaultOptions } from '../../util/constants';
 
 proxyquire.noCallThru();
 
 const id = 'TestPlayer';
-const mockJPlayer = ({ onMouseMoveCapture }) => (
-  <div onMouseMoveCapture={onMouseMoveCapture} />
-);
+const mockJPlayer = ({ onMouseMoveCapture }) =>
+  <div onMouseMoveCapture={onMouseMoveCapture} />;
 const JPlayerContainer = proxyquire('./jPlayerContainer', {
   './jPlayer': mockJPlayer,
+  './states/states': () => 'jp-test',
 }).default;
-const setup = (stateProperties, newProps) => {
-  const props = {
-    id,
-    ...newProps,
-  };
-
-  const state = {
-    jPlayers: {
-      [id]: {
-        media: defaultOptions.media,
-        startGuiFadeOut: false,
-        mediaSettings: {},
-        fullScreen: false,
-        paused: true,
-        ...stateProperties,
-      },
-    },
-  };
-
-  const store = createStore(combineReducers({ jPlayers }), state);
-
-  const wrapper = mount(
-    <Provider store={store}>
-      <JPlayerContainer {...props} />
-    </Provider>, {
-      context: {
-        id,
-      },
-      childContextTypes: {
-        id: PropTypes.string,
-      },
-    },
-  );
-
-  return {
-    wrapper,
-    props,
-    store,
-  };
-};
+const setup = (jPlayers, props) => containerSetup(JPlayerContainer, jPlayers, {
+  id,
+  children: <div />,
+  ...props,
+});
 
 describe('JPlayerContainer', () => {
-  let store;
-  let wrapper;
+  let jPlayers;
+
+  beforeEach(() => {
+    jPlayers = {
+      [id]: {
+        fullScreen: false,
+        paused: false,
+        startGuiFadeOut: false,
+        media: defaultOptions.media,
+      },
+    };
+  });
 
   it('sets media on load', () => {
-    const media = {
+    jPlayers[id].media = {
       title: 'testTitle',
       sources: [{ mp3: 'www.test.com' }],
     };
 
-    ({ store } = setup({ media }));
+    const { store } = setup(jPlayers);
+    const jPlayer = store.getState().jPlayers.TestPlayer;
 
-    const testPlayer = store.getState().jPlayers.TestPlayer;
-
-    expect(testPlayer.media).toBe(media);
+    expect(jPlayer.media).toBe(jPlayers[id].media);
   });
 
   it('sets volumeSupported on load', () => {
-    ({ store } = setup());
+    const { store } = setup(jPlayers);
 
-    const testPlayer = store.getState().jPlayers.TestPlayer;
+    const jPlayer = store.getState().jPlayers.TestPlayer;
 
-    expect(testPlayer.volumeSupported).toBe(true);
+    expect(jPlayer.volumeSupported).toBe(true);
   });
 
   describe('onMouseMoveCapture', () => {
-    it('dispatches startGuiFadeOut to false if fullScreen and paused', () => {
-      ({ store, wrapper } = setup({ fullScreen: true }));
+    it('sets startGuiFadeOut to false if fullScreen and paused', () => {
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].paused = true;
+
+      const { store, wrapper } = setup(jPlayers);
 
       wrapper.simulate('mousemove');
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.startGuiFadeOut).toBe(false);
+      expect(jPlayer.startGuiFadeOut).toBe(false);
     });
 
-    it('dispatches startGuiFadeOut to false if fullScreen, !paused and startGuiFadeOut', () => {
-      ({ store, wrapper } = setup({ fullScreen: true, paused: false, startGuiFadeOut: true }));
+    it('sets startGuiFadeOut to false if fullScreen, !paused and startGuiFadeOut', () => {
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].startGuiFadeOut = true;
+
+      const { store, wrapper } = setup(jPlayers);
 
       wrapper.simulate('mousemove');
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.startGuiFadeOut).toBe(false);
+      expect(jPlayer.startGuiFadeOut).toBe(false);
     });
 
-    it('dispatches startGuiFadeOut to true if fullScreen, !paused and !startGuiFadeOut', () => {
-      ({ store, wrapper } = setup({ fullScreen: true, paused: false, startGuiFadeOut: false }));
+    it('sets startGuiFadeOut to true if fullScreen, !paused and !startGuiFadeOut', () => {
+      jPlayers[id].fullScreen = true;
+
+      const { store, wrapper } = setup(jPlayers);
 
       wrapper.simulate('mousemove');
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.startGuiFadeOut).toBe(true);
+      expect(jPlayer.startGuiFadeOut).toBe(true);
     });
   });
 });

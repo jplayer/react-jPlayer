@@ -8,7 +8,7 @@ import TimeDisplay from './timeDisplay/timeDisplayContainer';
 
 const JPlayer = (props) => {
   const { className, keyBindings, children,
-    onMouseMoveCapture, id, ...attributes } = props;
+    onMouseMoveCapture, id } = props;
 
   return (
     <div
@@ -16,7 +16,6 @@ const JPlayer = (props) => {
       className={className}
       draggable={false}
       onMouseMoveCapture={onMouseMoveCapture}
-      {...attributes}
     >
       <KeyControl keyBindings={keyBindings} />
       <TimeDisplay />
@@ -36,7 +35,7 @@ JPlayer.propTypes = {
   onMouseMoveCapture: PropTypes.func.isRequired,
   className: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default JPlayer;

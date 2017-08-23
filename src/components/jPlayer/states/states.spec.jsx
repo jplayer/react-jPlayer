@@ -162,6 +162,7 @@ describe('States', () => {
 
   it('does not apply no_volume_support class if nonSupported is true', () => {
     jPlayer.volumeSupported = true;
+
     const className = states(jPlayer);
 
     expect(className).toNotContain(classes.states.NO_VOLUME_SUPPORT);

@@ -1,150 +1,143 @@
-import React from 'react';
 import expect from 'expect';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { createStore, combineReducers } from 'redux';
-import jPlayers from '../../../reducer/reducer';
+import proxyquire from 'proxyquire';
 
-import ScreenFullContainer from './screenFullContainer';
+import containerSetup from '../../../util/specHelpers/containerSetup.spec';
 import { setOption } from '../../../actions/actions';
 
-const fullscreenchange = 'fullscreenchange';
+let ScreenFullContainer;
 const id = 'TestPlayer';
-const request = expect.createSpy();
-const exit = expect.createSpy();
-const setup = (stateProperties, screenFullProperties, newProps) => {
-  const props = {
-    ...newProps,
-  };
+const fullscreenchange = 'fullscreenchange';
 
-  const state = {
-    jPlayers: {
-      [id]: {
-        ...stateProperties,
-      },
-    },
-  };
+const setup = (jPlayers, screenfull, props) => {
+  ScreenFullContainer = proxyquire('./screenFullContainer', {
+    screenfull,
+  }).default;
 
-  ScreenFullContainer.__Rewire__('screenfull', {
-    enabled: true,
-    isFullscreen: true,
-    raw: {
-      fullscreenchange,
-    },
-    request,
-    exit,
-    ...screenFullProperties,
-  });
-
-  const store = createStore(combineReducers({ jPlayers }), state);
-
-  const wrapper = mount(
-    <Provider store={store}>
-      <ScreenFullContainer {...props} />
-    </Provider>, {
-      context: {
-        id,
-      },
-      childContextTypes: {
-        id: PropTypes.string,
-      },
-    },
-  );
-
-  return {
-    wrapper,
-    props,
-    store,
-  };
+  return containerSetup(ScreenFullContainer, jPlayers, props);
 };
 
 describe('ScreenFullContainer', () => {
-  let store;
-  let wrapper;
+  let jPlayers;
+  let screenfull;
+  let request;
+  let exit;
 
   beforeEach(() => {
-    request.reset();
-    exit.reset();
+    request = expect.createSpy();
+    exit = expect.createSpy();
+    jPlayers = {
+      [id]: {},
+    };
+    screenfull = {
+      enabled: false,
+      isFullscreen: false,
+      raw: {
+        fullscreenchange,
+      },
+      request,
+      exit,
+    };
   });
 
   describe('closeFullScreenListener', () => {
-    it('dispatches fullScreen to false if screenFull is enabled', () => {
-      ({ store } = setup({ fullScreen: true }, { isFullscreen: false }));
+    it('sets fullScreen to false if screenFull is enabled', () => {
+      jPlayers[id].fullScreen = true;
+      screenfull.enabled = true;
+
+      const { store } = setup(jPlayers, screenfull);
 
       document.dispatchEvent(new window.Event(fullscreenchange));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.fullScreen).toBe(false);
+      expect(jPlayer.fullScreen).toBe(false);
     });
 
-    it('doesnt dispatch fullScreen to false if screenFull is full screen', () => {
-      ({ store } = setup({ fullScreen: true }));
+    it('doesnt set fullScreen to false if screenFull is full screen', () => {
+      jPlayers[id].fullScreen = true;
+      screenfull.enabled = true;
+      screenfull.isFullscreen = true;
+
+      const { store } = setup(jPlayers, screenfull);
 
       document.dispatchEvent(new window.Event(fullscreenchange));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.fullScreen).toNotBe(false);
+      expect(jPlayer.fullScreen).toNotBe(false);
     });
 
-    it('doesnt dispatch full screen to false if fullScreen is false', () => {
-      ({ store } = setup(null, { isFullscreen: false }));
+    it('doesnt set full screen to false if fullScreen is false', () => {
+      screenfull.enabled = true;
+
+      const { store } = setup(jPlayers, screenfull);
 
       document.dispatchEvent(new window.Event(fullscreenchange));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.fullScreen).toNotBe(false);
+      expect(jPlayer.fullScreen).toNotBe(false);
     });
 
-    it('doesnt dispatch full screen to false if screenFull is enabled when unmounted', () => {
-      ({ wrapper, store } = setup({ fullScreen: true }));
+    it('doesnt sets full screen to false if screenFull is enabled when unmounted', () => {
+      jPlayers[id].fullScreen = true;
+      screenfull.enabled = true;
+
+      const { wrapper, store } = setup(jPlayers, screenfull);
 
       wrapper.unmount();
 
       document.dispatchEvent(new window.Event(fullscreenchange));
 
-      const testPlayer = store.getState().jPlayers.TestPlayer;
+      const jPlayer = store.getState().jPlayers.TestPlayer;
 
-      expect(testPlayer.fullScreen).toBe(true);
+      expect(jPlayer.fullScreen).toBe(true);
     });
   });
 
   describe('requestFullScreen', () => {
-    it('requests screenfull', () => {
-      setup({ fullScreen: true });
+    it('requests screenfull when fullScreen and screenfull is enabled', () => {
+      jPlayers[id].fullScreen = true;
+      screenfull.enabled = true;
+
+      setup(jPlayers, screenfull);
 
       expect(request).toHaveBeenCalled();
       expect(document.body.style.visibility).toBe('hidden');
     });
 
-    it('sets document visibility to hidden if screenfull not enabled', () => {
-      setup({ fullScreen: true }, { enabled: false });
+    it('sets document visibility to hidden if fullScreen and screenfull not enabled', () => {
+      jPlayers[id].fullScreen = true;
+
+      setup(jPlayers, screenfull);
 
       expect(request).toNotHaveBeenCalled();
       expect(document.body.style.visibility).toBe('hidden');
     });
 
-    it('doesnt set document visibility when fullScreen not true', () => {
-      setup();
+    it('visibility stays as visible when fullScreen not true', () => {
+      setup(jPlayers, screenfull);
 
-      expect(document.body.style.visibility).toNotBe('hidden');
+      expect(document.body.style.visibility).toBe('visible');
     });
   });
 
   describe('exitFullScreen', () => {
     it('exits full screen if fullScreen not true and screenFull is enabled', () => {
-      ({ store } = setup({ fullScreen: true }));
+      jPlayers[id].fullScreen = true;
+      screenfull.enabled = true;
+
+      const { store } = setup(jPlayers, screenfull);
 
       store.dispatch(setOption(id, 'fullScreen', false));
 
       expect(exit).toHaveBeenCalled();
     });
 
-    it('sets document visibility to visible if screenfull not enabled', () => {
-      ({ store } = setup({ fullScreen: true }, { enabled: false }));
+    it('sets document visibility to visible if fullScreen not true and screenfull not enabled', () => {
+      jPlayers[id].fullScreen = true;
+
+      const { store } = setup(jPlayers, screenfull);
 
       store.dispatch(setOption(id, 'fullScreen', false));
 
