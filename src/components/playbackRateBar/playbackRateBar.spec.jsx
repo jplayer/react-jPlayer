@@ -1,45 +1,52 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
-import { classes } from '../../../src/util/constants';
 import PlaybackRateBar from './playbackRateBar';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    onClick: createSpy(),
-    onMouseDown: createSpy(),
-    onTouchStart: createSpy(),
-    children: (<div className="@@jPlayer-test" />),
-    'data-test': 'test',
-  };
+const id = 'TestPlayer';
+const setup = props => componentSetup(PlaybackRateBar, {
+  children: 'playbackRate',
+  ...props,
+});
 
-  const wrapper = shallow(<PlaybackRateBar {...props} />);
+describe('PlaybackRateBar', () => {
+  it('has playbackRateBar class', () => {
+    const { wrapper } = setup();
 
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<PlaybackRateBar />', () => {
-  let wrapper;
-  let props;
-
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR)).toBe(true);
   });
 
-  it('renders self and subcomponents', () => {
+  it('calls onClick', () => {
+    const onClick = expect.createSpy();
+    const { wrapper } = setup({ onClick });
+
     wrapper.simulate('click');
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('calls onMouseDown', () => {
+    const onMouseDown = expect.createSpy();
+    const { wrapper } = setup({ onMouseDown });
+
     wrapper.simulate('mousedown');
+
+    expect(onMouseDown).toHaveBeenCalled();
+  });
+
+  it('calls onTouchStart', () => {
+    const onTouchStart = expect.createSpy();
+    const { wrapper } = setup({ onTouchStart });
+
     wrapper.simulate('touchstart');
 
-    expect(props.onClick).toHaveBeenCalled();
-    expect(props.onMouseDown).toHaveBeenCalled();
-    expect(props.onTouchStart).toHaveBeenCalled();
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(onTouchStart).toHaveBeenCalled();
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });

@@ -205,6 +205,6 @@ export const defaultOptions = {
     padSec: true,
     sepHour: ':',
     sepMin: ':',
-    sepSec: null,
+    sepSec: '',
   },
 };

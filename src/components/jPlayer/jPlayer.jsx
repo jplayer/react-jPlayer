@@ -35,7 +35,10 @@ JPlayer.propTypes = {
   onMouseMoveCapture: PropTypes.func.isRequired,
   className: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]).isRequired,
 };
 
 export default JPlayer;

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connectWithId, toPercentage, toRelativePercentage } from 'react-jplayer-utils';
 
 import Events from './events/eventsContainer';
-import { setOption } from '../../actions/actions';
 import Track from './track/track';
+import { setOption } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   loop: jPlayers[id].loop,
@@ -23,7 +23,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 
 class MediaContainer extends React.Component {
   componentDidMount() {
-    if (this.props.src !== '') {
+    if (this.props.src !== null) {
       this.currentMedia.src = this.props.src;
     }
 
@@ -131,7 +131,7 @@ class MediaContainer extends React.Component {
         {...this.props.events}
       >
         {React.cloneElement(React.Children.only(this.props.children), {
-          ref: this.setCurrentMedia,
+          setMedia: this.setCurrentMedia,
         }, this.props.tracks.map(track => <Track key={track.src} {...track} />))}
       </Events>
     );

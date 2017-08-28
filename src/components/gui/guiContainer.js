@@ -60,6 +60,7 @@ export default compose(
   setPropTypes(propTypes),
   lifecycle(lifecycleFunctions),
   mapProps(props => ({
+    children: props.children,
     fullScreen: props.fullScreen,
     guiFadeOut: props.guiFadeOut,
     onMouseMove: props.onMouseMove,

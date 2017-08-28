@@ -1,46 +1,48 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
-import { play, pause } from '../../actions/actions';
-import { __get__ } from './playContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mapDispatchToProps = __get__('mapDispatchToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockPlay = ({ play, paused }) =>
+  <div onClick={() => play(id, paused)} />;
+const PlayContainer = proxyquire('./playContainer', {
+  './play': mockPlay,
+}).default;
+const setup = (jPlayers, props) => containerSetup(PlayContainer, jPlayers, props);
 
 describe('PlayContainer', () => {
-  let dispatch;
   let jPlayers;
 
   beforeEach(() => {
-    dispatch = expect.createSpy();
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {
+        src: 'test.mp3',
+      },
     };
   });
 
-  it('maps state', () => {
-    const stateProps = mapStateToProps({ jPlayers }, { id });
+  it('plays media when paused onClick', () => {
+    jPlayers[id].paused = true;
+    const { wrapper, store } = setup(jPlayers);
 
-    expect(stateProps).toEqual({
-      paused: true,
-    });
+    wrapper.simulate('click');
+
+    const jPlayer = store.getState().jPlayers[id];
+
+    expect(jPlayer.paused).toBe(false);
   });
 
-  it('mapDispatchToProps play when paused will play', () => {
-    const dispatchProps = mapDispatchToProps(dispatch);
+  it('pauses media when playing onClick', () => {
+    const { wrapper, store } = setup(jPlayers);
 
-    dispatchProps.play(id, true);
+    wrapper.simulate('click');
 
-    expect(dispatch).toHaveBeenCalledWith(play(id));
-  });
+    const jPlayer = store.getState().jPlayers[id];
 
-  it('mapDispatchToProps play when playing will pause', () => {
-    const dispatchProps = mapDispatchToProps(dispatch);
-
-    dispatchProps.play(id, false);
-
-    expect(dispatch).toHaveBeenCalledWith(pause(id));
+    expect(jPlayer.paused).toBe(true);
   });
 });
-

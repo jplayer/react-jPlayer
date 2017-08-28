@@ -1,55 +1,25 @@
 import React from 'react';
 import expect from 'expect';
-import PropTypes from 'prop-types';
 import proxyquire from 'proxyquire';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { createStore, combineReducers } from 'redux';
 
-import reducer from '../../../reducer/reducer';
 import urlNotSupportedError from '../../../util/errorHandlers/urlNotSupportedError';
+import containerSetup from '../../../util/specHelpers/containerSetup.spec';
 
 proxyquire.noCallThru();
 
-let jPlayers;
 const id = 'TestPlayer';
 const mockEvents = ({ events }) => <div {...events} />;
 const EventsContainer = proxyquire('./eventsContainer', {
   './events': mockEvents,
 }).default;
-const setup = (newProps) => {
-  const props = {
-    updateMediaStatus: expect.createSpy(),
-    ...newProps,
-  };
 
-  const state = {
-    jPlayers,
-  };
-
-  const store = createStore(combineReducers({ jPlayers: reducer }), state);
-
-  const wrapper = mount(
-    <Provider store={store}>
-      <EventsContainer {...props} />
-    </Provider>, {
-      context: {
-        id,
-      },
-      childContextTypes: {
-        id: PropTypes.string,
-      },
-    },
-  );
-
-  return {
-    wrapper,
-    props,
-    store,
-  };
-};
+const setup = (jPlayers, props) => containerSetup(EventsContainer, jPlayers, {
+  updateMediaStatus: expect.createSpy(),
+  ...props,
+});
 
 describe('EventsContainer', () => {
+  let jPlayers;
   beforeEach(() => {
     jPlayers = {
       [id]: {},
@@ -58,7 +28,7 @@ describe('EventsContainer', () => {
 
   describe('onDurationChange', () => {
     it('updates the media status', () => {
-      const { wrapper, props } = setup();
+      const { wrapper, props } = setup(jPlayers);
 
       wrapper.simulate('durationchange');
 
@@ -68,7 +38,7 @@ describe('EventsContainer', () => {
     it('calls the users onDurationChange', () => {
       const onDurationChange = expect.createSpy();
 
-      const { wrapper } = setup({ onDurationChange });
+      const { wrapper } = setup(jPlayers, { onDurationChange });
 
       wrapper.simulate('durationchange');
 
@@ -80,7 +50,7 @@ describe('EventsContainer', () => {
     it('pauses the media', () => {
       jPlayers[id].src = 'test.com';
 
-      const { store, wrapper } = setup();
+      const { store, wrapper } = setup(jPlayers);
 
       wrapper.simulate('ended');
 
@@ -90,7 +60,7 @@ describe('EventsContainer', () => {
     });
 
     it('updates the media status', () => {
-      const { wrapper, props } = setup();
+      const { wrapper, props } = setup(jPlayers);
 
       wrapper.simulate('ended');
 
@@ -99,7 +69,7 @@ describe('EventsContainer', () => {
 
     it('calls the users onEnded', () => {
       const onEnded = expect.createSpy();
-      const { wrapper } = setup({ onEnded });
+      const { wrapper } = setup(jPlayers, { onEnded });
 
       wrapper.simulate('ended');
 
@@ -110,7 +80,7 @@ describe('EventsContainer', () => {
   describe('onError', () => {
     it('sets the error to urlNotSupported', () => {
       jPlayers[id].src = 'test.com';
-      const { store, wrapper } = setup();
+      const { store, wrapper } = setup(jPlayers);
 
       wrapper.simulate('error');
 
@@ -121,7 +91,7 @@ describe('EventsContainer', () => {
 
     it('calls the users onError', () => {
       const onError = expect.createSpy();
-      const { wrapper } = setup({ onError });
+      const { wrapper } = setup(jPlayers, { onError });
 
       wrapper.simulate('error');
 
@@ -132,7 +102,7 @@ describe('EventsContainer', () => {
   describe('onPlay', () => {
     it('plays the media', () => {
       jPlayers[id].src = 'test.com';
-      const { store, wrapper } = setup();
+      const { store, wrapper } = setup(jPlayers);
 
       wrapper.simulate('play');
 
@@ -143,7 +113,7 @@ describe('EventsContainer', () => {
 
     it('calls the users onPlay', () => {
       const onPlay = expect.createSpy();
-      const { wrapper } = setup({ onPlay });
+      const { wrapper } = setup(jPlayers, { onPlay });
 
       wrapper.simulate('play');
 
@@ -156,7 +126,7 @@ describe('EventsContainer', () => {
         paused: false,
         src: 'test2.com',
       };
-      const { wrapper, store } = setup();
+      const { wrapper, store } = setup(jPlayers);
 
       wrapper.simulate('play');
 
@@ -170,7 +140,7 @@ describe('EventsContainer', () => {
         paused: false,
         src: 'test2.com',
       };
-      const { wrapper, store } = setup();
+      const { wrapper, store } = setup(jPlayers);
 
       wrapper.simulate('play');
 
@@ -190,7 +160,7 @@ describe('EventsContainer', () => {
     };
 
     it('updates the media status', () => {
-      const { wrapper, props } = setup({ currentMedia });
+      const { wrapper, props } = setup(jPlayers, { currentMedia });
 
       wrapper.simulate('progress');
 
@@ -198,7 +168,7 @@ describe('EventsContainer', () => {
     });
 
     it('updates the bufferedTimeRanges to the medias buffer', () => {
-      const { wrapper, store } = setup({ currentMedia });
+      const { wrapper, store } = setup(jPlayers, { currentMedia });
 
       wrapper.simulate('progress');
 
@@ -212,7 +182,7 @@ describe('EventsContainer', () => {
 
     it('calls the users onProgress', () => {
       const onProgress = expect.createSpy();
-      const { wrapper } = setup({ onProgress, currentMedia });
+      const { wrapper } = setup(jPlayers, { onProgress, currentMedia });
 
       wrapper.simulate('progress');
 
@@ -222,7 +192,7 @@ describe('EventsContainer', () => {
 
   describe('onSeeked', () => {
     it('sets the seeking to false', () => {
-      const { wrapper, store } = setup();
+      const { wrapper, store } = setup(jPlayers);
 
       wrapper.simulate('seeked');
 
@@ -233,7 +203,7 @@ describe('EventsContainer', () => {
 
     it('calls the users onSeeked', () => {
       const onSeeked = expect.createSpy();
-      const { wrapper } = setup({ onSeeked });
+      const { wrapper } = setup(jPlayers, { onSeeked });
 
       wrapper.simulate('seeked');
 
@@ -243,7 +213,7 @@ describe('EventsContainer', () => {
 
   describe('onSeeking', () => {
     it('sets the seeking to true', () => {
-      const { wrapper, store } = setup();
+      const { wrapper, store } = setup(jPlayers);
 
       wrapper.simulate('seeking');
 
@@ -254,7 +224,7 @@ describe('EventsContainer', () => {
 
     it('calls the users onSeeking', () => {
       const onSeeking = expect.createSpy();
-      const { wrapper } = setup({ onSeeking });
+      const { wrapper } = setup(jPlayers, { onSeeking });
 
       wrapper.simulate('seeking');
 
@@ -264,7 +234,7 @@ describe('EventsContainer', () => {
 
   describe('onTimeUpdate', () => {
     it('updates the media status', () => {
-      const { wrapper, props } = setup();
+      const { wrapper, props } = setup(jPlayers);
 
       wrapper.simulate('timeupdate');
 
@@ -274,7 +244,7 @@ describe('EventsContainer', () => {
     it('calls the users onTimeUpdate', () => {
       const onTimeUpdate = expect.createSpy();
 
-      const { wrapper } = setup({ onTimeUpdate });
+      const { wrapper } = setup(jPlayers, { onTimeUpdate });
 
       wrapper.simulate('timeupdate');
 

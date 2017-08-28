@@ -1,36 +1,35 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
-import { __get__ } from './muteContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mapDispatchToProps = __get__('mapDispatchToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockMute = ({ setMute }) =>
+  <div onClick={() => setMute(id, true)} />;
+const MuteContainer = proxyquire('./muteContainer', {
+  './mute': mockMute,
+}).default;
+const setup = (jPlayers, props) => containerSetup(MuteContainer, jPlayers, props);
 
 describe('MuteContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {},
     };
   });
 
-  it('maps state', () => {
-    const stateProps = mapStateToProps({ jPlayers }, { id });
+  it('sets muted', () => {
+    const { wrapper, store } = setup(jPlayers);
 
-    expect(stateProps).toEqual({
-      muted: false,
-    });
-  });
+    wrapper.simulate('click');
 
-  it('mapDispatchToProps maps setMute', () => {
-    const dispatchProps = mapDispatchToProps;
+    const jPlayer = store.getState().jPlayers[id];
 
-    expect.spyOn(dispatchProps, 'setMute');
-
-    dispatchProps.setMute(id, false);
-
-    expect(dispatchProps.setMute).toHaveBeenCalledWith(id, false);
+    expect(jPlayer.muted).toBe(true);
   });
 });

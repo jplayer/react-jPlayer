@@ -1,41 +1,36 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
-import { classes } from '../../../src/util/constants';
 import Mute from './mute';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    setMute: createSpy(),
-    muted: false,
-    children: (<i className="@@jPlayer-test" />),
-    id: 'jPlayer-1',
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<Mute {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const id = 'TestPlayer';
+const setup = props => componentSetup(Mute, {
+  children: 'mute',
+  setMute: expect.createSpy(),
+  muted: false,
+  id,
+  ...props,
+});
 
 describe('Mute', () => {
-  let wrapper;
-  let props;
+  it('has mute class', () => {
+    const { wrapper } = setup();
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.MUTE)).toBe(true);
   });
 
-  it('renders self and subcomponents', () => {
+  it('toggles mute on click', () => {
+    const { wrapper, props } = setup();
+
     wrapper.simulate('click');
 
-    expect(props.setMute).toHaveBeenCalledWith(props.id, !props.muted);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.hasClass(classes.MUTE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(props.setMute).toHaveBeenCalledWith(id, !props.muted);
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });

@@ -1,39 +1,36 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
-import { classes } from '../../../src/util/constants';
 import Play from './play';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    play: createSpy(),
-    paused: true,
-    children: (<i className="@@jPlayer-test" />),
-    id: 'jPlayer-1',
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<Play {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const id = 'TestPlayer';
+const setup = props => componentSetup(Play, {
+  children: 'play',
+  play: expect.createSpy(),
+  paused: false,
+  id,
+  ...props,
+});
 
 describe('Play', () => {
-  let wrapper;
-  let props;
+  it('has play class', () => {
+    const { wrapper } = setup();
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.PLAY)).toBe(true);
+  });
+
+  it('plays media on click', () => {
+    const { wrapper, props } = setup();
 
     wrapper.simulate('click');
 
-    expect(props.play).toHaveBeenCalledWith(props.id, props.paused);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.hasClass(classes.PLAY)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(props.play).toHaveBeenCalledWith(id, props.paused);
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });
