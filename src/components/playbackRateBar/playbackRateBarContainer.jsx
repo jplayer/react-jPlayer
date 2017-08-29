@@ -25,10 +25,10 @@ const handlers = {
       ratio = x / w;
     }
 
-    const playbackRateValue = (ratio * (props.maxPlaybackRate - props.minPlaybackRate))
+    const playbackRate = (ratio * (props.maxPlaybackRate - props.minPlaybackRate))
       + props.minPlaybackRate;
 
-    props.dispatch(setOption(props.id, 'playbackRate', playbackRateValue));
+    props.setOption(props.id, 'playbackRate', playbackRate);
   },
 };
 
@@ -42,7 +42,9 @@ const secondHandlers = {
 };
 
 export default compose(
-  connectWithId(mapStateToProps),
+  connectWithId(mapStateToProps, {
+    setOption,
+  }),
   withHandlers(handlers),
   withHandlers(secondHandlers),
 )(PlaybackRateBar);

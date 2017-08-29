@@ -5,15 +5,9 @@ import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Audio = ({ setMedia, children }) => (
-  <audio ref={setMedia}>
-    {children}
-  </audio>
-);
-
 const AudioWrapper = ({ events }) => (
   <Media events={events}>
-    <Audio />
+    <audio />
   </Media>
 );
 

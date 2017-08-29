@@ -131,7 +131,7 @@ class MediaContainer extends React.Component {
         {...this.props.events}
       >
         {React.cloneElement(React.Children.only(this.props.children), {
-          setMedia: this.setCurrentMedia,
+          ref: this.setCurrentMedia,
         }, this.props.tracks.map(track => <Track key={track.src} {...track} />))}
       </Events>
     );
