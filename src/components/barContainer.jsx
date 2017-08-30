@@ -6,7 +6,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   barDrag: jPlayers[id].barDrag,
 });
 
-class Bar extends React.Component {
+class BarContainer extends React.Component {
   static get propTypes() {
     return {
       clickMoveBar: PropTypes.func.isRequired,
@@ -57,4 +57,4 @@ class Bar extends React.Component {
   }
 }
 
-export default connectWithId(mapStateToProps)(Bar);
+export default connectWithId(mapStateToProps)(BarContainer);

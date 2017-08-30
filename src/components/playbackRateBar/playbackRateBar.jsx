@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Bar from '../bar';
+import Bar from '../barContainer';
 import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 import { classes } from '../../util/constants';
 
