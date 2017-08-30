@@ -1,41 +1,18 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../util/constants';
 import Title from './title';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = (newProps) => {
-  const props = {
-    attributes: {
-      'data-test': 'test',
-    },
-    children: 'Fade - Alan Walker',
-    ...newProps,
-  };
-
-  const wrapper = shallow(<Title {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(Title, {
+  title: 'dj tiesto - adagio for strings',
+  ...props,
+});
 
 describe('Title', () => {
-  let wrapper;
-  let props;
+  it('has title class', () => {
+    const { wrapper } = setup();
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.TITLE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
-  });
-
-  it('renders null if children is empty string', () => {
-    ({ wrapper, props } = setup({ children: '' }));
-    expect(wrapper.type()).toBe(null);
+    expect(wrapper.hasClass(classes.TITLE)).toBe(true);
   });
 });

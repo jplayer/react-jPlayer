@@ -32,7 +32,7 @@ describe('AudioContainer', () => {
     expect(wrapper.find('audio').exists()).toBe(true);
   });
 
-  it('does not render Audio when the media is video', () => {
+  it('does not render Audio when the media is not audio', () => {
     jPlayers[id].mediaSettings.video = true;
 
     const { wrapper } = setup(jPlayers);

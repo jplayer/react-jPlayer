@@ -5,12 +5,10 @@ import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const Video = ({ require, events }) => (
-  require ?
-    <Media events={events}>
-      <video />
-    </Media>
-    : null
+const Video = ({ events }) => (
+  <Media events={events}>
+    <video />
+  </Media>
 );
 
 Video.defaultProps = {
@@ -18,7 +16,6 @@ Video.defaultProps = {
 };
 
 Video.propTypes = {
-  require: PropTypes.bool.isRequired,
   events: PropTypes.shape({
     onAbort: PropTypes.func,
     onCanPlay: PropTypes.func,

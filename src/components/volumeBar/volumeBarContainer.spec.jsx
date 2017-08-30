@@ -1,177 +1,85 @@
 import React from 'react';
-import expect, { createSpy, spyOn, restoreSpies } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import { getJPlayers } from '../../util/common.spec';
-import { setVolume } from '../../actions/actions';
-import { __get__ } from './volumeBarContainer';
-import Bar from '../bar';
-import VolumeBar from './volumeBar';
-import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
-const VolumeBarContainer = __get__('VolumeBarContainer');
-const id = 'jPlayer-1';
-const getBoundingClientRect = () => ({
-  top: 10,
-  left: 30,
-  width: 100,
-  height: 10,
-});
-const getProps = props => ({
-  onClick: Function.prototype,
-  onTouchMove: Function.prototype,
-  ...props,
-});
-const attributes = {
-  'data-test': 'test',
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockBar = {
+  getBoundingClientRect: () => ({
+    width: 20,
+    height: 200,
+    top: 20,
+    left: 0,
+  }),
 };
-const children = <div />;
+const mockClickEvent = {
+  pageX: 20,
+  pageY: 100,
+  preventDefault: Function.prototype,
+};
+const mockTouchEvent = {
+  touches: [
+    {
+      pageX: 20,
+      pageY: 100,
+    },
+  ],
+  preventDefault: Function.prototype,
+};
+const mockVolumeBar = props => (
+  <div
+    onClick={() => props.clickMoveBar(mockBar, mockClickEvent)}
+    onTouchStart={() => props.touchMoveBar(mockBar, mockTouchEvent)}
+  />
+);
+const VolumeBarContainer = proxyquire('./volumeBarContainer', {
+  './volumeBar': mockVolumeBar,
+}).default;
+const setup = (jPlayers, props) => containerSetup(VolumeBarContainer, jPlayers, props);
 
 describe('VolumeBarContainer', () => {
-  let dispatch;
+  let jPlayers;
 
   beforeEach(() => {
-    dispatch = createSpy();
-  });
-
-  it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id, children, ...attributes });
-
-    delete expected.moveVolumeBar;
-
-    expect(expected).toEqual({
-      children,
-      attributes,
-    });
-  });
-
-  it('merges props', () => {
-    const stateProps = getJPlayers();
-    const expected = mergeProps({ ...stateProps, children, attributes }, dispatch, { id });
-
-    delete expected.onClick;
-    delete expected.onTouchMove;
-
-    expect(expected).toEqual({
-      children,
-      attributes,
-    });
-  });
-
-  it('onClick moves volume bar', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
-    });
-    const mappedProps = mapStateToProps(getJPlayers(), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-
-    mergedProps.onClick(mockBar, { pageX: 33 });
-
-    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 0.03));
-  });
-
-  it('onClick moves volume bar when verticalVolume', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
-    });
-    const mappedProps = mapStateToProps(getJPlayers({
-      verticalVolume: true,
-    }), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-
-    mergedProps.onClick(mockBar, { pageY: 7 });
-
-    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 1.3));
-  });
-
-  it('onTouchMove moves volume bar', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
-    });
-    const mappedProps = mapStateToProps(getJPlayers(), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-    const event = {
-      preventDefault: createSpy(),
-      touches: [
-        { pageX: 33 },
-      ],
+    jPlayers = {
+      [id]: {},
     };
-
-    mergedProps.onTouchMove(mockBar, event);
-
-    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 0.03));
-    expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('onTouchMove moves volume bar when verticalVolume', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
+  describe('moveVolumeBar', () => {
+    it('verticalVolume when true gives expected output', () => {
+      jPlayers[id].verticalVolume = true;
+
+      const { wrapper, store } = setup(jPlayers);
+
+      wrapper.simulate('click');
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.volume).toBe(0.6);
     });
-    const mappedProps = mapStateToProps(getJPlayers({
-      verticalVolume: true,
-    }), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-    const event = {
-      preventDefault: createSpy(),
-      touches: [
-        { pageY: 7 },
-      ],
-    };
 
-    mergedProps.onTouchMove(mockBar, event);
+    it('onClick moves moveVolumeBar', () => {
+      const { wrapper, store } = setup(jPlayers);
 
-    expect(dispatch).toHaveBeenCalledWith(setVolume(id, 1.3));
-    expect(event.preventDefault).toHaveBeenCalled();
-  });
+      wrapper.simulate('click');
 
-  it('render passes move bar functions into bar', () => {
-    const props = getProps();
-    const wrapper = shallow(<VolumeBarContainer {...props} />);
+      const jPlayer = store.getState().jPlayers[id];
 
-    expect(wrapper.type()).toBe(Bar);
-    expect(wrapper.prop('clickMoveBar')).toBe(props.onClick);
-    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouchMove);
-  });
+      expect(jPlayer.volume).toBe(1);
+    });
 
-  it('renders VolumeBar', () => {
-    const props = {
-      ...getProps(),
-      attributes,
-    };
-    const wrapper = shallow(<VolumeBarContainer {...props} />)
-      .find(VolumeBar);
+    it('onTouch moves moveVolumeBar', () => {
+      const { wrapper, store } = setup(jPlayers);
 
-    expect(wrapper.type()).toBe(VolumeBar);
-    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
-  });
+      wrapper.simulate('touchstart');
 
-  it('children is VolumeBarValue as default', () => {
-    const props = getProps();
-    const wrapper = shallow(<VolumeBarContainer {...props} />)
-      .find(VolumeBar);
+      const jPlayer = store.getState().jPlayers[id];
 
-    expect(wrapper.children().type()).toBe(VolumeBarValue);
-  });
-
-  it('renders custom children', () => {
-    const props = getProps();
-    const wrapper = shallow(
-      <VolumeBarContainer {...props}>
-        <div className="@@jPlayer-test" />
-      </VolumeBarContainer>,
-    ).find(VolumeBar);
-
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.children().type()).toNotBe(VolumeBarValue);
-  });
-
-  afterEach(() => {
-    restoreSpies();
+      expect(jPlayer.volume).toBe(1);
+    });
   });
 });

@@ -7,8 +7,8 @@ import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
 const setup = (props) => {
   const testProps = componentSetup(PlaybackRateBar, {
-    clickMoveBar: expect.createSpy(),
-    touchMoveBar: expect.createSpy(),
+    clickMoveBar: Function.prototype,
+    touchMoveBar: Function.prototype,
     ...props,
   });
 
@@ -18,33 +18,6 @@ const setup = (props) => {
 };
 
 describe('PlaybackRateBar', () => {
-  it('calls onClick', () => {
-    const onClick = expect.createSpy();
-    const { playbackRateBar } = setup({ onClick });
-
-    playbackRateBar.simulate('click');
-
-    expect(onClick).toHaveBeenCalled();
-  });
-
-  it('calls onMouseDown', () => {
-    const onMouseDown = expect.createSpy();
-    const { playbackRateBar } = setup({ onMouseDown });
-
-    playbackRateBar.simulate('mousedown');
-
-    expect(onMouseDown).toHaveBeenCalled();
-  });
-
-  it('calls onTouchStart', () => {
-    const onTouchStart = expect.createSpy();
-    const { playbackRateBar } = setup({ onTouchStart });
-
-    playbackRateBar.simulate('touchstart');
-
-    expect(onTouchStart).toHaveBeenCalled();
-  });
-
   describe('children', () => {
     it('overwrite default', () => {
       const children = 'playbackRate';

@@ -141,10 +141,11 @@ class MediaContainer extends React.Component {
 MediaContainer.defaultProps = {
   newTime: null,
   events: null,
+  src: null,
 };
 
 MediaContainer.propTypes = {
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   playHeadPercent: PropTypes.number.isRequired,
   setOption: PropTypes.func.isRequired,
   events: PropTypes.shape({

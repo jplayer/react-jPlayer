@@ -1,34 +1,24 @@
 import React from 'react';
-import { Motion, spring } from 'react-motion';
 import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
 const PlayBar = (props) => {
-  const { currentPercentAbsolute, currentPercentRelative,
-    smoothPlayBar, ...attributes } = props;
+  const width = props.smoothPlayBar ? `${props.smoothWidth}%`
+    : `${props.currentPercentRelative}%`;
 
   return (
-    <Motion style={{ smoothWidth: spring(currentPercentAbsolute, [250]) }}>
-      {values => (
-        <div
-          className={classes.PLAY_BAR}
-          style={{
-            width: smoothPlayBar ? `${values.smoothWidth}%`
-              : `${currentPercentRelative}%`,
-          }}
-          {...attributes}
-        />
-      )
-      }
-    </Motion>
+    <div
+      className={classes.PLAY_BAR}
+      style={{ width }}
+    />
   );
 };
 
 PlayBar.propTypes = {
-  currentPercentRelative: PropTypes.number.isRequired,
-  currentPercentAbsolute: PropTypes.number.isRequired,
   smoothPlayBar: PropTypes.bool.isRequired,
+  smoothWidth: PropTypes.number.isRequired,
+  currentPercentRelative: PropTypes.number.isRequired,
 };
 
 export default PlayBar;

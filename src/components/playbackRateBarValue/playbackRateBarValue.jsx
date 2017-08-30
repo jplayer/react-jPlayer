@@ -3,29 +3,24 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const PlaybackRateBarValue = ({ playbackRate, minPlaybackRate, maxPlaybackRate,
-  verticalPlaybackRate, attributes }) => {
-  const style = () => {
-    const ratio = (playbackRate - minPlaybackRate)
-                  / (maxPlaybackRate - minPlaybackRate);
-    const playbackRateBarPercentage = `${ratio * 100}%`;
-
-    return {
-      width: !verticalPlaybackRate ? playbackRateBarPercentage : null,
-      height: verticalPlaybackRate ? playbackRateBarPercentage : null,
-    };
+const PlaybackRateBarValue = (props) => {
+  const ratio = (props.playbackRate - props.minPlaybackRate)
+    / (props.maxPlaybackRate - props.minPlaybackRate);
+  const playbackRateBarPercentage = `${ratio * 100}%`;
+  const style = {
+    width: !props.verticalPlaybackRate ? playbackRateBarPercentage : null,
+    height: props.verticalPlaybackRate ? playbackRateBarPercentage : null,
   };
+
   return (
     <div
       className={classes.PLAYBACK_RATE_BAR_VALUE}
-      style={style()}
-      {...attributes}
+      style={style}
     />
   );
 };
 
 PlaybackRateBarValue.propTypes = {
-  attributes: PropTypes.object.isRequired,
   verticalPlaybackRate: PropTypes.bool.isRequired,
   minPlaybackRate: PropTypes.number.isRequired,
   maxPlaybackRate: PropTypes.number.isRequired,

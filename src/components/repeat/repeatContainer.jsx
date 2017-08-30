@@ -7,7 +7,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 });
 
 const mapDispatchToProps = {
-  setLoop: (id, loop) => setOption(id, 'loop', !loop),
+  setLoop: (id, loop) => setOption(id, 'loop', loop),
 };
 
 export default connectWithId(mapStateToProps, mapDispatchToProps)(Repeat);

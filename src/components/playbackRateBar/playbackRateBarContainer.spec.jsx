@@ -15,15 +15,24 @@ const mockBar = {
     left: 0,
   }),
 };
-const mockEvent = {
+const mockClickEvent = {
   pageX: 20,
   pageY: 100,
   preventDefault: Function.prototype,
 };
+const mockTouchEvent = {
+  touches: [
+    {
+      pageX: 20,
+      pageY: 100,
+    },
+  ],
+  preventDefault: Function.prototype,
+};
 const mockPlaybackRateBar = props => (
   <div
-    onClick={() => props.clickMoveBar(mockBar, mockEvent)}
-    onTouchStart={() => props.touchMoveBar(mockBar, mockEvent)}
+    onClick={() => props.clickMoveBar(mockBar, mockClickEvent)}
+    onTouchStart={() => props.touchMoveBar(mockBar, mockTouchEvent)}
   />
 );
 const PlaybackRateBarContainer = proxyquire('./playbackRateBarContainer', {
@@ -44,7 +53,7 @@ describe('PlaybackRateBarContainer', () => {
   });
 
   describe('movePlaybackRate', () => {
-    it('verticalPlaybackRate gives expected output', () => {
+    it('verticalPlaybackRate when true gives expected output', () => {
       jPlayers[id].verticalPlaybackRate = true;
 
       const { wrapper, store } = setup(jPlayers);
@@ -65,6 +74,7 @@ describe('PlaybackRateBarContainer', () => {
 
       expect(jPlayer.playbackRate).toBe(1);
     });
+
     it('onTouch moves playbackRate', () => {
       const { wrapper, store } = setup(jPlayers);
 

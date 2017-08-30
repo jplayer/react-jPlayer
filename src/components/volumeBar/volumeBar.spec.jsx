@@ -1,43 +1,35 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
-import { classes } from '../../../src/util/constants';
 import VolumeBar from './volumeBar';
+import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    onClick: createSpy(),
-    onMouseDown: createSpy(),
-    setVolumeBar: Function.prototype,
-    children: (<div className="@@jPlayer-test" />),
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<VolumeBar {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<VolumeBar />', () => {
-  let wrapper;
-  let props;
-
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+const setup = (props) => {
+  const testProps = componentSetup(VolumeBar, {
+    clickMoveBar: Function.prototype,
+    touchMoveBar: Function.prototype,
+    ...props,
   });
 
-  it('renders self and subcomponents', () => {
-    wrapper.simulate('click');
-    wrapper.simulate('mousedown');
+  testProps.volumeBar = testProps.wrapper.find(`.${classes.VOLUME_BAR}`);
 
-    expect(props.onClick).toHaveBeenCalled();
-    expect(props.onMouseDown).toHaveBeenCalled();
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.hasClass(classes.VOLUME_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+  return testProps;
+};
+
+describe('VolumeBar', () => {
+  describe('children', () => {
+    it('overwrite default', () => {
+      const children = 'volume';
+      const { volumeBar } = setup({ children });
+
+      expect(volumeBar.prop('children')).toBe(children);
+    });
+
+    it('renders volumeBarValue as default', () => {
+      const { volumeBar } = setup();
+
+      expect(volumeBar.find(VolumeBarValue).exists()).toBe(true);
+    });
   });
 });

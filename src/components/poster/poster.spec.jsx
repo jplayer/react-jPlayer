@@ -1,42 +1,22 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes, defaultStatus } from '../../util/constants';
-import Poster from './poster';
+import PlayBar from './poster';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = (newProps) => {
-  const props = {
-    src: 'http://www.test.jpg',
-    alt: 'test-poster',
-    'data-test': 'test',
-    ...newProps,
-  };
+const setup = props => componentSetup(PlayBar, props);
 
-  const wrapper = shallow(<Poster {...props} />);
+describe('Poster', () => {
+  it('has poster class', () => {
+    const { wrapper } = setup();
 
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<Poster />', () => {
-  let wrapper;
-  let props;
-
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.hasClass(classes.POSTER)).toBeTruthy();
-    expect(wrapper.prop('alt')).toBe(props.alt);
-    expect(wrapper.prop('src')).toBe(props.src);
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(wrapper.hasClass(classes.POSTER)).toBe(true);
   });
 
-  it('renders null if src is not set', () => {
-    ({ wrapper, props } = setup({ src: defaultStatus.src }));
+  it('has src', () => {
+    const src = 'test.jpg';
+    const { wrapper } = setup({ src });
 
-    expect(wrapper.type()).toBe(null);
+    expect(wrapper.prop('src')).toBe(src);
   });
 });

@@ -5,17 +5,17 @@ import PropTypes from 'prop-types';
 
 import Media from '../media/mediaContainer';
 
-const AudioWrapper = ({ events }) => (
+const Audio = ({ events }) => (
   <Media events={events}>
     <audio />
   </Media>
 );
 
-AudioWrapper.defaultProps = {
+Audio.defaultProps = {
   events: null,
 };
 
-AudioWrapper.propTypes = {
+Audio.propTypes = {
   events: PropTypes.shape({
     onAbort: PropTypes.func,
     onCanPlay: PropTypes.func,
@@ -43,4 +43,4 @@ AudioWrapper.propTypes = {
   }),
 };
 
-export default AudioWrapper;
+export default Audio;

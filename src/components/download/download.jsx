@@ -15,9 +15,13 @@ const Download = ({ url, children }) => (
   </a>
 );
 
+Download.defaultProps = {
+  url: null,
+};
+
 Download.propTypes = {
   children: PropTypes.node.isRequired,
-  url: PropTypes.string.isRequired,
+  url: PropTypes.string,
 };
 
 export default Download;

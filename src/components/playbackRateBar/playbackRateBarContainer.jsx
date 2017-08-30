@@ -35,9 +35,10 @@ const handlers = {
 const secondHandlers = {
   clickMoveBar: props => (bar, e) => props.movePlaybackRate(bar, e),
   touchMoveBar: props => (bar, e) => {
+    // Stop page scrolling
     e.preventDefault();
 
-    props.movePlaybackRate(bar, e);
+    props.movePlaybackRate(bar, e.touches[0]);
   },
 };
 

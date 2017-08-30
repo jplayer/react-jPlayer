@@ -1,42 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Bar from '../bar';
 import { classes } from '../../util/constants';
 
-const SeekBar = (props) => {
-  const { setBar, onClick, onMouseDown, onTouchStart,
-    seekPercent, ...attributes } = props;
-
-  return (
+const SeekBar = props => (
+  <Bar
+    clickMoveBar={props.clickMoveBar}
+    touchMoveBar={props.touchMoveBar}
+  >
     <div
-      ref={setBar}
       className={classes.SEEK_BAR}
-      style={{ width: `${seekPercent}%` }}
-      onClick={onClick}
-      onTouchStart={onTouchStart}
-      onMouseDown={onMouseDown}
-      {...attributes}
-    />
-  );
-};
+      style={{ width: `${props.seekPercent}%` }}
+    >
+      {props.children}
+    </div>
+  </Bar>
+);
 
 SeekBar.defaultProps = {
-  setBar: null,
-  onClick: null,
-  onMouseDown: null,
-  onTouchStart: null,
+  children: null,
 };
 
 SeekBar.propTypes = {
   seekPercent: PropTypes.number.isRequired,
-  setBar: PropTypes.func,
-  onClick: PropTypes.func,
-  onMouseDown: PropTypes.func,
-  onTouchStart: PropTypes.func,
+  clickMoveBar: PropTypes.func.isRequired,
+  touchMoveBar: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
-  ]).isRequired,
+  ]),
 };
 
 export default SeekBar;

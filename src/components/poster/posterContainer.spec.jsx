@@ -1,25 +1,42 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
-import { __get__ } from './posterContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockPoster = () => <image className="@@poster" />;
+const PosterContainer = proxyquire('./posterContainer', {
+  './poster': mockPoster,
+}).default;
+const setup = (jPlayers, props) => containerSetup(PosterContainer, jPlayers, props);
 
 describe('PosterContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {
+        media: {
+          poster: null,
+        },
+      },
     };
   });
 
-  it('maps state', () => {
-    const expected = mapStateToProps({ jPlayers }, { id });
+  it('renders Poster when the poster is supplied', () => {
+    jPlayers[id].media.poster = 'test.jpg';
 
-    expect(expected).toEqual({
-      src: '',
-    });
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@poster').exists()).toBe(true);
+  });
+
+  it('does not render poster when the poster is not supplied', () => {
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@poster').exists()).toBe(false);
   });
 });

@@ -1,44 +1,35 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlayerOptions from '../../util/mockData/mockJPlayerOptions';
-import { __get__, __Rewire__, __ResetDependency__ } from './repeatContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mapDispatchToProps = __get__('mapDispatchToProps');
-const id = 'jPlayer-1';
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockRepeat = ({ setLoop }) =>
+  <div onClick={() => setLoop(id, true)} />;
+const RepeatContainer = proxyquire('./repeatContainer', {
+  './repeat': mockRepeat,
+}).default;
+const setup = (jPlayers, props) => containerSetup(RepeatContainer, jPlayers, props);
 
 describe('RepeatContainer', () => {
   let jPlayers;
 
   beforeEach(() => {
     jPlayers = {
-      [id]: mockJPlayerOptions,
+      [id]: {},
     };
   });
 
-  afterEach(() => {
-    __ResetDependency__('setOption');
-  });
+  it('sets loop', () => {
+    const { wrapper, store } = setup(jPlayers);
 
-  it('maps state', () => {
-    const expected = mapStateToProps({ jPlayers }, { id });
+    wrapper.simulate('click');
 
-    expect(expected).toEqual({
-      loop: false,
-    });
-  });
+    const jPlayer = store.getState().jPlayers[id];
 
-  it('mapDispatchToProps setLoop sets loop', () => {
-    const setOptionSpy = expect.createSpy();
-
-    __Rewire__('setOption', setOptionSpy);
-
-    mapDispatchToProps.setLoop(id, false);
-
-    expect(setOptionSpy).toHaveBeenCalledWith(
-      id,
-      'loop',
-      true,
-    );
+    expect(jPlayer.loop).toBe(true);
   });
 });

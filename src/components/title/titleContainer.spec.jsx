@@ -1,98 +1,43 @@
 import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import { getJPlayers } from '../../util/common.spec';
-import { __get__ } from './titleContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-};
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockTitleContainer = () => <div className="@@title" />;
+const TitleContainer = proxyquire('./titleContainer', {
+  './title': mockTitleContainer,
+}).default;
+const setup = (jPlayers, props) => containerSetup(TitleContainer, jPlayers, props);
 
 describe('TitleContainer', () => {
-  it('maps state', () => {
-    const title = 'Test Title';
-    const artist = 'Test Artist';
-    const stateprops = mapStateToProps(getJPlayers({
-      media: {
-        title,
-        artist,
-      },
-    }), { id, ...attributes });
-    const children = `${artist} - ${title}`;
+  let jPlayers;
 
-    expect(stateprops).toEqual({
-      children,
-      attributes,
-    });
+  beforeEach(() => {
+    jPlayers = {
+      [id]: {
+        media: {
+          artist: null,
+          title: null,
+        },
+      },
+    };
   });
 
-  it('maps custom children if specified', () => {
-    const title = 'Test Title';
-    const artist = 'Test Artist';
-    const children = <div />;
-    const stateprops = mapStateToProps(getJPlayers({
-      media: {
-        title,
-        artist,
-      },
-    }), { children, id, ...attributes });
+  it('renders Title when the title is not empty', () => {
+    jPlayers[id].media.artist = 'dj tiesto';
 
-    expect(stateprops).toEqual({
-      children,
-      attributes,
-    });
+    const { wrapper } = setup(jPlayers);
+
+    expect(wrapper.find('.@@title').exists()).toBe(true);
   });
 
-  it('formats title properly when artist is empty', () => {
-    const title = 'Test Title';
-    const artist = '';
-    const stateprops = mapStateToProps(getJPlayers({
-      media: {
-        title,
-        artist,
-      },
-    }), { id, ...attributes });
-    const children = `${title}`;
+  it('does not render Title when the title is empty', () => {
+    const { wrapper } = setup(jPlayers);
 
-    expect(stateprops).toEqual({
-      children,
-      attributes,
-    });
-  });
-
-  it('formats title properly when title is empty', () => {
-    const title = '';
-    const artist = 'Test Artist';
-    const stateprops = mapStateToProps(getJPlayers({
-      media: {
-        title,
-        artist,
-      },
-    }), { id, ...attributes });
-    const children = `${artist}`;
-
-    expect(stateprops).toEqual({
-      children,
-      attributes,
-    });
-  });
-
-  it('formats title properly when title and artist are empty', () => {
-    const title = '';
-    const artist = '';
-    const stateprops = mapStateToProps(getJPlayers({
-      media: {
-        title,
-        artist,
-      },
-    }), { id, ...attributes });
-    const children = '';
-
-    expect(stateprops).toEqual({
-      children,
-      attributes,
-    });
+    expect(wrapper.find('.@@title').exists()).toBe(false);
   });
 });

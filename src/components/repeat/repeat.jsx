@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Repeat = ({ setLoop, id, loop, children, ...attributes }) => (
-  <button className={classes.REPEAT} onClick={() => setLoop(id, loop)} {...attributes}>
+const Repeat = ({ setLoop, id, loop, children }) => (
+  <button className={classes.REPEAT} onClick={() => setLoop(id, !loop)}>
     {children}
   </button>
 );

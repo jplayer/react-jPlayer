@@ -6,7 +6,6 @@ import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
 const setup = props => componentSetup(Download, {
   children: 'download',
-  url: 'www.test.com',
   ...props,
 });
 
@@ -24,9 +23,10 @@ describe('Download', () => {
   });
 
   it('href is set to url', () => {
-    const { wrapper, props } = setup();
+    const url = 'www.test.com';
+    const { wrapper } = setup({ url });
 
-    expect(wrapper.prop('href')).toBe(props.url);
+    expect(wrapper.prop('href')).toBe(url);
   });
 
   it('children are rendered', () => {

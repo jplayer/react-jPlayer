@@ -1,37 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Bar from '../bar';
+import VolumeBarValue from '../volumeBarValue/volumeBarValueContainer';
 import { classes } from '../../util/constants';
 
-const VolumeBar = (props) => {
-  const { setBar, onClick, onMouseDown,
-    onTouchStart, ...attributes } = props;
-
-  return (
-    <div
-      ref={setBar}
-      className={classes.VOLUME_BAR}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart}
-      {...attributes}
-    />
-  );
-};
+const VolumeBar = props => (
+  <Bar
+    clickMoveBar={props.clickMoveBar}
+    touchMoveBar={props.touchMoveBar}
+  >
+    <div className={classes.VOLUME_BAR}>
+      {props.children}
+    </div>
+  </Bar>
+);
 
 VolumeBar.defaultProps = {
-  onClick: null,
-  setBar: null,
-  onMouseDown: null,
-  onTouchStart: null,
+  children: <VolumeBarValue />,
 };
 
 VolumeBar.propTypes = {
-  onClick: PropTypes.func,
-  onMouseDown: PropTypes.func,
-  onTouchStart: PropTypes.func,
-  setBar: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  clickMoveBar: PropTypes.func.isRequired,
+  touchMoveBar: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 export default VolumeBar;
