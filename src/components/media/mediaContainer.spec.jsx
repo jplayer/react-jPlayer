@@ -1,67 +1,143 @@
-// /* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable jsx-a11y/media-has-caption */
 
-// import React from 'react';
-// import expect from 'expect';
-// import proxyquire from 'proxyquire';
-// import containerSetup from '../../util/specHelpers/containerSetup.spec';
+import React from 'react';
+import expect from 'expect';
+import proxyquire from 'proxyquire';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-// proxyquire.noCallThru();
+import { setMedia, setOption, setVolume, setMute } from '../../actions/actions';
 
-// const id = 'TestPlayer';
-// const mockEvents = ({ children }) => <div>{children}</div>;
-// const MediaContainer = proxyquire('./mediaContainer', {
-//   './events/eventsContainer': mockEvents,
-// }).default;
-// const mockCurrentMedia = {
-//   seekable: {
-//     end: expect.createSpy(),
-//   },
-//   pause: expect.createSpy(),
-//   play: expect.createSpy(),
-// };
-// const MockChildren = ({ setMedia }) => {
-//   const mockRef = () => {
-//     setMedia(mockCurrentMedia);
-//   };
+proxyquire.noCallThru();
 
-//   return <audio ref={mockRef} />;
-// };
+let mockCurrentMedia;
+const id = 'TestPlayer';
+const mockMedia = ({ setCurrentMedia }) => {
+  const mockRef = () => {
+    setCurrentMedia(mockCurrentMedia);
+  };
 
-// const setup = (jPlayers, props) => containerSetup(MediaContainer, jPlayers, {
-//   children: <MockChildren />,
-//   ...props,
-// });
+  return <audio ref={mockRef} />;
+};
+const MediaContainer = proxyquire('./mediaContainer', {
+  './media': mockMedia,
+}).default;
+const setup = (jPlayers, props) => containerSetup(MediaContainer, jPlayers, {
+  children: <audio />,
+  ...props,
+});
 
-// describe('MediaContainer', () => {
-//   let jPlayers;
+describe('MediaContainer', () => {
+  let jPlayers;
 
-//   beforeEach(() => {
-//     jPlayers = {
-//       [id]: {
-//         src: 'www.test.com',
-//         playHeadPercent: 0,
-//         paused: false,
-//         loop: false,
-//         autoplay: false,
-//         defaultPlaybackRate: 0,
-//         muted: false,
-//         plabackRate: 0,
-//         preload: 'auto',
-//         volume: 0,
-//         media: {
-//           tracks: [
-//             { src: 'www.test.vrt' },
-//           ],
-//         },
-//       },
-//     };
-//   });
+  beforeEach(() => {
+    jPlayers = {
+      [id]: {
+        src: null,
+        playHeadPercent: 0,
+        paused: false,
+        loop: false,
+        autoplay: false,
+        defaultPlaybackRate: 0,
+        muted: false,
+        plabackRate: 0,
+        preload: 'auto',
+        volume: 0,
+        media: {
+          tracks: [
+            { src: 'www.test.vrt' },
+          ],
+        },
+      },
+    };
+    mockCurrentMedia = {
+      seekable: {
+        end: expect.createSpy(),
+      },
+      pause: expect.createSpy(),
+      play: expect.createSpy(),
+    };
+  });
 
-//   describe('onLoad', () => {
-//     it('sets src if src not null', () => {
-//       const { wrapper } = setup(jPlayers);
+  describe('onLoad', () => {
+    it('sets src if src not null', () => {
+      jPlayers[id].src = 'www.test.com';
 
-//       expect(mockCurrentMedia.src).toBe(jPlayers[id].src);
-//     });
-//   });
-// });
+      setup(jPlayers);
+
+      expect(mockCurrentMedia.src).toBe(jPlayers[id].src);
+    });
+
+    it('doesnt set src if src null', () => {
+      setup(jPlayers);
+
+      expect(mockCurrentMedia.src).toBe(undefined);
+    });
+
+    it('sets other media values on load', () => {
+      setup(jPlayers);
+
+      expect(mockCurrentMedia.defaultPlaybackRate).toBe(jPlayers[id].defaultPlaybackRate);
+      expect(mockCurrentMedia.playbackRate).toBe(jPlayers[id].playbackRate);
+      expect(mockCurrentMedia.preload).toBe(jPlayers[id].preload);
+      expect(mockCurrentMedia.volume).toBe(jPlayers[id].volume);
+      expect(mockCurrentMedia.muted).toBe(jPlayers[id].muted);
+      expect(mockCurrentMedia.autoplay).toBe(jPlayers[id].autoplay);
+      expect(mockCurrentMedia.loop).toBe(jPlayers[id].loop);
+    });
+  });
+
+  describe('onUpdate', () => {
+    it('updates media src if src changes', () => {
+      const mediaElement = document.createElement('audio');
+      const media = {
+        sources: {
+          mp3: 'www.test.mp3',
+        },
+      };
+
+      const { store } = setup(jPlayers);
+
+      expect.spyOn(document, 'createElement').andReturn(mediaElement);
+      expect.spyOn(mediaElement, 'canPlayType').andReturn('probably');
+
+      store.dispatch(setMedia(id, media));
+
+      expect(mockCurrentMedia.src).toBe(media.sources.mp3);
+    });
+
+    it('updates other media values on change', () => {
+      const { store } = setup(jPlayers);
+
+      store.dispatch(setOption(id, 'defaultPlaybackRate', 0.3));
+      store.dispatch(setOption(id, 'playbackRate', 0.45));
+      store.dispatch(setOption(id, 'preload', true));
+      store.dispatch(setVolume(id, 0.77));
+      store.dispatch(setMute(id, true));
+      store.dispatch(setOption(id, 'autoplay', true));
+      store.dispatch(setOption(id, 'loop', true));
+
+      expect(mockCurrentMedia.defaultPlaybackRate).toBe(0.3);
+      expect(mockCurrentMedia.playbackRate).toBe(0.45);
+      expect(mockCurrentMedia.preload).toBe(true);
+      expect(mockCurrentMedia.volume).toBe(0.77);
+      expect(mockCurrentMedia.muted).toBe(true);
+      expect(mockCurrentMedia.autoplay).toBe(true);
+      expect(mockCurrentMedia.loop).toBe(true);
+    });
+
+    it('updates media time on time change', () => {
+      const { store } = setup(jPlayers);
+
+      store.dispatch(setOption(id, 'newTime', 222));
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(mockCurrentMedia.currentTime).toBe(222);
+      expect(jPlayer.newTime).toBe(null);
+    });
+  });
+
+  afterEach(() => {
+    expect.restoreSpies();
+  });
+});

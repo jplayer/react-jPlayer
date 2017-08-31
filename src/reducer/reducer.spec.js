@@ -1,4 +1,4 @@
-import expect, { spyOn } from 'expect';
+import expect from 'expect';
 
 import initializeOptions from '../initializeOptions/initializeOptions';
 import reducer from './reducer';
@@ -7,8 +7,8 @@ import { actionNames, defaultOptions, defaultStatus } from '../util/constants';
 const mockMedia = (mediaType) => {
   const media = document.createElement(mediaType);
 
-  spyOn(document, 'createElement').andReturn(media);
-  spyOn(media, 'canPlayType').andReturn('probably');
+  expect.spyOn(document, 'createElement').andReturn(media);
+  expect.spyOn(media, 'canPlayType').andReturn('probably');
 };
 const id = 'TestPlayer';
 

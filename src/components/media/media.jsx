@@ -1,34 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Events from './events/events';
+import Events from './events/eventsContainer';
+import Track from './track/track';
 
 const Media = props => (
   <Events
-    currentMedia={props.currentMedia}
+    currentMedia={props.getCurrentMedia()}
     updateMediaStatus={props.updateMediaStatus}
-    pauseOthers={props.pauseOthers}
     {...props.events}
   >
     {React.cloneElement(React.Children.only(props.children),
       {
         ref: props.setCurrentMedia,
-      })
+      }, props.tracks.map(track => <Track key={track.src} {...track} />))
     }
   </Events>
 );
 
 Media.defaultProps = {
-  currentMedia: null,
   events: null,
 };
 
 Media.propTypes = {
   children: PropTypes.node.isRequired,
-  currentMedia: PropTypes.object,
+  getCurrentMedia: PropTypes.func.isRequired,
   setCurrentMedia: PropTypes.func.isRequired,
   updateMediaStatus: PropTypes.func.isRequired,
-  pauseOthers: PropTypes.func.isRequired,
+  tracks: PropTypes.arrayOf(
+    PropTypes.shape({
+      default: PropTypes.bool,
+      kind: PropTypes.string,
+      src: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      srclang: PropTypes.string,
+    }),
+  ).isRequired,
   events: PropTypes.shape({
     onAbort: Function.prototype,
     onCanPlay: Function.prototype,
