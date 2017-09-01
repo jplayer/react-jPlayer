@@ -39,15 +39,13 @@ const handlers = () => {
       currentMedia = ref;
     },
     updateMediaStatus: props => () => {
-      let seekPercent = 0;
-
       const currentPercentAbsolute = toPercentage(currentMedia.currentTime, currentMedia.duration);
 
       if (currentMedia.seekable.length > 0) {
-        seekPercent = toPercentage(getSeekableEnd(), currentMedia.duration);
+        const seekPercent = toPercentage(getSeekableEnd(), currentMedia.duration);
+        props.setOption(props.id, 'seekPercent', seekPercent);
       }
 
-      props.setOption(props.id, 'seekPercent', seekPercent);
       props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
       props.setOption(props.id, 'currentPercentAbsolute', currentPercentAbsolute);
       props.setOption(props.id, 'currentTime', currentMedia.currentTime);
@@ -62,20 +60,19 @@ const handlers = () => {
       props.setOption(props.id, 'newTime', null);
     },
     updateMediaTimeAfterSeeking: props => () => {
+      const seekableEnd = getSeekableEnd();
+
       // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
       // Hasn't fully loaded the song????
-      if (currentMedia.seekable.length > 0) {
-        const seekableEnd = getSeekableEnd();
+      if (currentMedia.seekable.length > 0 && isFinite(seekableEnd)) {
+        currentMedia.currentTime = toRelativePercentage(
+          props.playHeadPercent,
+          seekableEnd,
+        );
 
-        if (isFinite(seekableEnd)) {
-          currentMedia.currentTime = toRelativePercentage(
-            props.playHeadPercent,
-            seekableEnd,
-          );
-          /* Media events don't fire fast enough to give a smooth animation
-            when dragging so we update it here as well, same problem as above? */
-          props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
-        }
+        /* Media events don't fire fast enough to give a smooth animation
+          when dragging so we update it here as well, same problem as above? */
+        props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
       }
     },
     updateMediaPlayState: props => () => {

@@ -5,7 +5,7 @@ import expect from 'expect';
 import proxyquire from 'proxyquire';
 import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-import { setMedia, setOption, setVolume, setMute } from '../../actions/actions';
+import { setMedia, setOption, setVolume, setMute, setPlayHead, play, pause } from '../../actions/actions';
 
 proxyquire.noCallThru();
 
@@ -32,7 +32,7 @@ describe('MediaContainer', () => {
   beforeEach(() => {
     jPlayers = {
       [id]: {
-        src: null,
+        src: 'www.test.com',
         playHeadPercent: 0,
         paused: false,
         loop: false,
@@ -51,7 +51,8 @@ describe('MediaContainer', () => {
     };
     mockCurrentMedia = {
       seekable: {
-        end: expect.createSpy(),
+        length: 1,
+        end: expect.createSpy().andReturn(100),
       },
       pause: expect.createSpy(),
       play: expect.createSpy(),
@@ -60,14 +61,14 @@ describe('MediaContainer', () => {
 
   describe('onLoad', () => {
     it('sets src if src not null', () => {
-      jPlayers[id].src = 'www.test.com';
-
       setup(jPlayers);
 
       expect(mockCurrentMedia.src).toBe(jPlayers[id].src);
     });
 
     it('doesnt set src if src null', () => {
+      jPlayers[id].src = null;
+
       setup(jPlayers);
 
       expect(mockCurrentMedia.src).toBe(undefined);
@@ -125,7 +126,7 @@ describe('MediaContainer', () => {
       expect(mockCurrentMedia.loop).toBe(true);
     });
 
-    it('updates media time on time change', () => {
+    it('updates the media time on new time change', () => {
       const { store } = setup(jPlayers);
 
       store.dispatch(setOption(id, 'newTime', 222));
@@ -134,6 +135,68 @@ describe('MediaContainer', () => {
 
       expect(mockCurrentMedia.currentTime).toBe(222);
       expect(jPlayer.newTime).toBe(null);
+    });
+
+    describe('updateMediaTimeAfterSeeking', () => {
+      it(`when the media is seekable and the seek end is valid 
+        it updates currentTime and currentPercentRelative`, () => {
+          const { store } = setup(jPlayers);
+
+          store.dispatch(setPlayHead(id, 22));
+
+          const jPlayer = store.getState().jPlayers[id];
+
+          expect(mockCurrentMedia.currentTime).toBe(22);
+          expect(jPlayer.currentPercentRelative).toBe(22);
+        });
+
+      it(`when the media is seekable and the seek end is not valid 
+        it does not update the currentTime and currentPercentRelative`, () => {
+          const { store } = setup(jPlayers);
+
+          mockCurrentMedia.seekable.end = Function.prototype;
+
+          store.dispatch(setPlayHead(id, 22));
+
+          const jPlayer = store.getState().jPlayers[id];
+
+          expect(mockCurrentMedia.currentTime).toNotBe(22);
+          expect(jPlayer.currentPercentRelative).toNotBe(22);
+        });
+
+      it(`when the media is not seekable and the seek end is valid 
+        it does not update the currentTime and currentPercentRelative`, () => {
+          const { store } = setup(jPlayers);
+
+          mockCurrentMedia.seekable.length = 0;
+
+          store.dispatch(setPlayHead(id, 22));
+
+          const jPlayer = store.getState().jPlayers[id];
+
+          expect(mockCurrentMedia.currentTime).toNotBe(22);
+          expect(jPlayer.currentPercentRelative).toNotBe(22);
+        });
+    });
+
+    describe('updateMediaPlayState', () => {
+      it('pauses the media when paused', () => {
+        const { store } = setup(jPlayers);
+
+        store.dispatch(pause(id));
+
+        expect(mockCurrentMedia.pause).toHaveBeenCalled();
+      });
+
+      it('plays the media when paused is not true', () => {
+        jPlayers[id].paused = true;
+
+        const { store } = setup(jPlayers);
+
+        store.dispatch(play(id));
+
+        expect(mockCurrentMedia.play).toHaveBeenCalled();
+      });
     });
   });
 
