@@ -1,60 +1,63 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connectWithId } from 'react-jplayer-utils';
+import { compose, withHandlers, lifecycle as setLifecycle } from 'recompose';
+
+import Bar from './bar';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   barDrag: jPlayers[id].barDrag,
 });
 
-class BarContainer extends React.Component {
-  static get propTypes() {
-    return {
-      clickMoveBar: PropTypes.func.isRequired,
-      touchMoveBar: PropTypes.func.isRequired,
-      barDrag: PropTypes.bool.isRequired,
-      children: PropTypes.node.isRequired,
-    };
-  }
-  componentWillMount() {
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('touchmove', this.onTouchMove, { passive: false });
-    document.addEventListener('touchend', this.onTouchEnd);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('touchmove', this.onTouchMove);
-    document.removeEventListener('touchend', this.onTouchEnd);
-  }
-  onClick = e => this.props.clickMoveBar(this.bar, e)
-  onTouchStart = () => {
-    this.dragging = true;
-  }
-  onTouchMove = e =>
-    (this.props.barDrag && this.dragging ? this.props.touchMoveBar(this.bar, e) : null)
-  onTouchEnd = () => {
-    this.dragging = false;
-  }
-  onMouseMove = e =>
-    (this.props.barDrag && this.dragging ? this.props.clickMoveBar(this.bar, e) : null)
-  onMouseDown = () => {
-    this.dragging = true;
-  }
-  onMouseUp = () => {
-    this.dragging = false;
-  }
-  setBar = (ref) => {
-    this.bar = ref;
-  }
-  render() {
-    return React.cloneElement(React.Children.only(this.props.children), {
-      onClick: this.onClick,
-      onMouseDown: this.onMouseDown,
-      onTouchStart: this.onTouchStart,
-      ref: this.setBar,
-    });
-  }
-}
+const handlers = () => {
+  let bar;
+  let dragging;
 
-export default connectWithId(mapStateToProps)(BarContainer);
+  return {
+    setBar: () => (ref) => {
+      bar = ref;
+    },
+    onClick: props => e => props.clickMoveBar(bar, e),
+    onTouchStart: () => () => {
+      dragging = true;
+    },
+    onTouchMove: props => (e) => {
+      if (props.barDrag && dragging) {
+        props.touchMoveBar(bar, e);
+      }
+    },
+    onTouchEnd: () => () => {
+      dragging = false;
+    },
+    onMouseMove: props => (e) => {
+      if (props.barDrag && dragging) {
+        props.clickMoveBar(bar, e);
+      }
+    },
+    onMouseDown: () => () => {
+      dragging = true;
+    },
+    onMouseUp: () => () => {
+      dragging = false;
+    },
+  };
+};
+
+const lifecycle = {
+  componentWillMount() {
+    document.addEventListener('mouseup', this.props.onMouseUp);
+    document.addEventListener('mousemove', this.props.onMouseMove);
+    document.addEventListener('touchmove', this.props.onTouchMove, { passive: false });
+    document.addEventListener('touchend', this.props.onTouchEnd);
+  },
+  componentWillUnmount() {
+    document.removeEventListener('mouseup', this.props.onMouseUp);
+    document.removeEventListener('mousemove', this.props.onMouseMove);
+    document.removeEventListener('touchmove', this.props.onTouchMove);
+    document.removeEventListener('touchend', this.props.onTouchEnd);
+  },
+};
+
+export default compose(
+  connectWithId(mapStateToProps),
+  withHandlers(handlers),
+  setLifecycle(lifecycle),
+)(Bar);

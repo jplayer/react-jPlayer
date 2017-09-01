@@ -2,14 +2,22 @@ import React from 'react';
 import expect from 'expect';
 import proxyquire from 'proxyquire';
 
-import BarContainer from './barContainer';
 import containerSetup from '../util/specHelpers/containerSetup.spec';
 
 proxyquire.noCallThru();
 
 const id = 'TestPlayer';
+const mockBar = props => (
+  <div
+    onClick={props.onClick}
+    onTouchStart={props.onTouchStart}
+    onMouseDown={props.onMouseDown}
+  />
+);
+const BarContainer = proxyquire('./barContainer', {
+  './bar': mockBar,
+}).default;
 const setup = (jPlayers, props) => containerSetup(BarContainer, jPlayers, {
-  children: <div />,
   clickMoveBar: expect.createSpy(),
   touchMoveBar: expect.createSpy(),
   ...props,
@@ -24,6 +32,16 @@ describe('BarContainer', () => {
         barDrag: false,
       },
     };
+  });
+
+  describe('onClick', () => {
+    it('calls clickMoveBar', () => {
+      const { wrapper, props } = setup(jPlayers);
+
+      wrapper.simulate('click');
+
+      expect(props.clickMoveBar).toHaveBeenCalled();
+    });
   });
 
   describe('onTouchMove', () => {
@@ -68,7 +86,7 @@ describe('BarContainer', () => {
 
       const { wrapper, props } = setup(jPlayers);
 
-      wrapper.simulate('mouseDown');
+      wrapper.simulate('mousedown');
       document.dispatchEvent(event);
 
       expect(props.clickMoveBar).toHaveBeenCalled();
@@ -77,7 +95,7 @@ describe('BarContainer', () => {
     it('doesnt call clickMoveBar when barDrag is false', () => {
       const { wrapper, props } = setup(jPlayers);
 
-      wrapper.simulate('mouseDown');
+      wrapper.simulate('mousedown');
       document.dispatchEvent(event);
 
       expect(props.clickMoveBar).toNotHaveBeenCalled();
