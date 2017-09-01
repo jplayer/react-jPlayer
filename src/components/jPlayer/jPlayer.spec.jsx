@@ -34,7 +34,7 @@ describe('JPlayer', () => {
       const keyBindings = {
         test: {
           key: 44,
-          fn: Function.prototype,
+          fn: expect.createSpy(),
         },
       };
       const { wrapper } = setup({ keyBindings });

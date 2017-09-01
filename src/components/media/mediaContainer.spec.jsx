@@ -154,7 +154,7 @@ describe('MediaContainer', () => {
         it does not update the currentTime and currentPercentRelative`, () => {
           const { store } = setup(jPlayers);
 
-          mockCurrentMedia.seekable.end = Function.prototype;
+          mockCurrentMedia.seekable.end = expect.createSpy();
 
           store.dispatch(setPlayHead(id, 22));
 

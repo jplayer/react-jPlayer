@@ -18,10 +18,6 @@ const SeekBar = props => (
   </Bar>
 );
 
-SeekBar.defaultProps = {
-  children: null,
-};
-
 SeekBar.propTypes = {
   seekPercent: PropTypes.number.isRequired,
   clickMoveBar: PropTypes.func.isRequired,
@@ -29,7 +25,7 @@ SeekBar.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
-  ]),
+  ]).isRequired,
 };
 
 export default SeekBar;

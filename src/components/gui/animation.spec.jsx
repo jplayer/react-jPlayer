@@ -1,3 +1,4 @@
+import React from 'react';
 import expect from 'expect';
 
 import GuiAnimation from './animation';
@@ -5,15 +6,28 @@ import Gui from './gui';
 import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
 const setup = props => componentSetup(GuiAnimation, {
-  durationText: '2:20',
+  guiFadeOut: false,
+  fullScreen: false,
+  children: <div />,
+  onMouseMove: expect.createSpy(),
   ...props,
 });
 
 describe('GuiAnimation', () => {
   it('renders GUI as a child', () => {
     const { wrapper } = setup();
+    const gui = wrapper.dive();
 
-    expect(wrapper.dive().type()).toBe(Gui);
+    expect(gui.type()).toBe(Gui);
+  });
+
+  it('calls onMouseMove', () => {
+    const { wrapper, props } = setup();
+    const gui = wrapper.dive();
+
+    gui.simulate('mousemove');
+
+    expect(props.onMouseMove).toHaveBeenCalled();
   });
 
   describe('Motion', () => {

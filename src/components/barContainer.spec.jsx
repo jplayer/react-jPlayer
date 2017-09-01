@@ -12,7 +12,6 @@ const setup = (jPlayers, props) => containerSetup(BarContainer, jPlayers, {
   children: <div />,
   clickMoveBar: expect.createSpy(),
   touchMoveBar: expect.createSpy(),
-  barDrag: false,
   ...props,
 });
 
@@ -21,7 +20,9 @@ describe('BarContainer', () => {
 
   beforeEach(() => {
     jPlayers = {
-      [id]: {},
+      [id]: {
+        barDrag: false,
+      },
     };
   });
 

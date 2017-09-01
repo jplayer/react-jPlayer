@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { compose, setPropTypes, defaultProps as setDefaultProps, mapProps, withHandlers } from 'recompose';
+import { compose, defaultProps as setDefaultProps, mapProps, withHandlers } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
 
 import Events from './events';
@@ -24,37 +23,6 @@ const defaultProps = {
   currentMedia: {
     buffered: {},
   },
-};
-
-const propTypes = {
-  onAbort: PropTypes.func,
-  onCanPlay: PropTypes.func,
-  onCanPlayThrough: PropTypes.func,
-  onDurationChange: PropTypes.func,
-  onEmptied: PropTypes.func,
-  onEncrypted: PropTypes.func,
-  onEnded: PropTypes.func,
-  onError: PropTypes.func,
-  onLoadedData: PropTypes.func,
-  onLoadedMetadata: PropTypes.func,
-  onLoadStart: PropTypes.func,
-  onPause: PropTypes.func,
-  onPlay: PropTypes.func,
-  onPlaying: PropTypes.func,
-  onProgress: PropTypes.func,
-  onRateChange: PropTypes.func,
-  onSeeked: PropTypes.func,
-  onSeeking: PropTypes.func,
-  onStalled: PropTypes.func,
-  onSuspend: PropTypes.func,
-  onTimeUpdate: PropTypes.func,
-  onVolumeChange: PropTypes.func,
-  onWaiting: PropTypes.func,
-  currentMedia: PropTypes.object,
-  updateMediaStatus: PropTypes.func.isRequired,
-  otherJPlayerIds: PropTypes.arrayOf(
-    PropTypes.string,
-  ).isRequired,
 };
 
 const firstHandlers = {
@@ -147,7 +115,6 @@ export default compose(
     play,
   }),
   setDefaultProps(defaultProps),
-  setPropTypes(propTypes),
   withHandlers(firstHandlers),
   withHandlers(secondHandlers),
   mapProps(propsMapper),

@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { compose, lifecycle as setLifecycle, withHandlers, setPropTypes, withContext, mapProps } from 'recompose';
+import { compose, lifecycle as setLifecycle, withHandlers, withContext, mapProps } from 'recompose';
 import { canSetVolume } from 'react-jplayer-utils';
 
 import states from './states/states';
 import JPlayer from './jPlayer';
-import formatPropTypes from '../../util/formatPropTypes';
 import { defaultOptions } from '../../util/constants';
 import { setOption, setMedia } from '../../actions/actions';
 
@@ -23,25 +22,6 @@ const mapStateToProps = ({ jPlayers }, ownProps) => {
     children,
     className: states(jPlayers[id], customStates, className),
   };
-};
-
-const propTypes = {
-  className: PropTypes.string.isRequired,
-  keyBindings: PropTypes.object,
-  media: PropTypes.shape({
-    title: PropTypes.string,
-    artist: PropTypes.string,
-    sources: PropTypes.shape(formatPropTypes).isRequired,
-    poster: PropTypes.string,
-    free: PropTypes.bool,
-  }),
-  children: PropTypes.node.isRequired,
-  id: PropTypes.string.isRequired,
-  fullScreen: PropTypes.bool.isRequired,
-  paused: PropTypes.bool.isRequired,
-  startGuiFadeOut: PropTypes.bool.isRequired,
-  setMedia: PropTypes.func.isRequired,
-  setOption: PropTypes.func.isRequired,
 };
 
 const handlers = {
@@ -80,7 +60,6 @@ export default compose(
     setMedia,
     setOption,
   }),
-  setPropTypes(propTypes),
   withHandlers(handlers),
   setLifecycle(lifecycle),
   mapProps(propsMapper),

@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import { connectWithId, toPercentage, toRelativePercentage } from 'react-jplayer-utils';
-import { compose, lifecycle as setLifecycle, withHandlers, setPropTypes } from 'recompose';
+import { compose, lifecycle as setLifecycle, withHandlers } from 'recompose';
 
 import Media from './media';
 import { setOption } from '../../actions/actions';
@@ -123,56 +122,10 @@ const lifecycle = {
   },
 };
 
-const propTypes = {
-  src: PropTypes.string,
-  playHeadPercent: PropTypes.number.isRequired,
-  setOption: PropTypes.func.isRequired,
-  events: PropTypes.shape({
-    onAbort: PropTypes.func,
-    onCanPlay: PropTypes.func,
-    onCanPlayThrough: PropTypes.func,
-    onDurationChange: PropTypes.func,
-    onEmptied: PropTypes.func,
-    onEncrypted: PropTypes.func,
-    onEnded: PropTypes.func,
-    onError: PropTypes.func,
-    onLoadedData: PropTypes.func,
-    onLoadedMetadata: PropTypes.func,
-    onLoadStart: PropTypes.func,
-    onPause: PropTypes.func,
-    onPlay: PropTypes.func,
-    onPlaying: PropTypes.func,
-    onProgress: PropTypes.func,
-    onRateChange: PropTypes.func,
-    onSeeked: PropTypes.func,
-    onSeeking: PropTypes.func,
-    onStalled: PropTypes.func,
-    onSuspend: PropTypes.func,
-    onTimeUpdate: PropTypes.func,
-    onVolumeChange: PropTypes.func,
-    onWaiting: PropTypes.func,
-  }),
-  id: PropTypes.string.isRequired,
-  paused: PropTypes.bool.isRequired,
-  newTime: PropTypes.number,
-  loop: PropTypes.bool.isRequired,
-  autoplay: PropTypes.bool.isRequired,
-  defaultPlaybackRate: PropTypes.number.isRequired,
-  muted: PropTypes.bool.isRequired,
-  playbackRate: PropTypes.number.isRequired,
-  preload: PropTypes.string.isRequired,
-  volume: PropTypes.number.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.element,
-  ]).isRequired,
-};
-
 export default compose(
   connectWithId(mapStateToProps, {
     setOption,
   }),
-  setPropTypes(propTypes),
   withHandlers(handlers),
   setLifecycle(lifecycle),
 )(Media);

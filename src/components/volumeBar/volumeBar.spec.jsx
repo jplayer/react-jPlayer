@@ -7,8 +7,8 @@ import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
 const setup = (props) => {
   const testProps = componentSetup(VolumeBar, {
-    clickMoveBar: Function.prototype,
-    touchMoveBar: Function.prototype,
+    clickMoveBar: expect.createSpy(),
+    touchMoveBar: expect.createSpy(),
     ...props,
   });
 

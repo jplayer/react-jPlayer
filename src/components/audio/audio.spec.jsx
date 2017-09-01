@@ -10,12 +10,12 @@ describe('Audio', () => {
   it('renders audio in Media', () => {
     const { wrapper } = setup();
 
-    expect(wrapper.find(Media).find('audio').exists()).toBeTruthy();
+    expect(wrapper.find(Media).find('audio').exists()).toBe(true);
   });
 
   it('passes events to media', () => {
     const events = {
-      onCanPlay: Function.prototype,
+      onCanPlay: expect.createSpy(),
     };
     const { wrapper } = setup({ events });
 

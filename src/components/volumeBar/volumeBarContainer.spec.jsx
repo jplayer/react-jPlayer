@@ -18,7 +18,7 @@ const mockBar = {
 const mockClickEvent = {
   pageX: 20,
   pageY: 100,
-  preventDefault: Function.prototype,
+  preventDefault: expect.createSpy(),
 };
 const mockTouchEvent = {
   touches: [
@@ -27,7 +27,7 @@ const mockTouchEvent = {
       pageY: 100,
     },
   ],
-  preventDefault: Function.prototype,
+  preventDefault: expect.createSpy(),
 };
 const mockVolumeBar = props => (
   <div

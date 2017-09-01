@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import screenfull from 'screenfull';
 import { connectWithId } from 'react-jplayer-utils';
-import { compose, lifecycle, withHandlers, setPropTypes, renderNothing } from 'recompose';
+import { compose, lifecycle, withHandlers, renderNothing } from 'recompose';
 
 import { setOption } from '../../../actions/actions';
 
@@ -15,12 +14,6 @@ const handlers = {
       props.setOption(props.id, 'fullScreen', false);
     }
   },
-};
-
-const propTypes = {
-  fullScreen: PropTypes.bool.isRequired,
-  closeFullScreenListener: PropTypes.func.isRequired,
-  setOption: PropTypes.func.isRequired,
 };
 
 const lifecycleFunctions = {
@@ -68,6 +61,5 @@ export default compose(
     setOption,
   }),
   withHandlers(handlers),
-  setPropTypes(propTypes),
   lifecycle(lifecycleFunctions),
 )(renderNothing(null));

@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { lifecycle as setLifecycle, withHandlers, compose, mapProps, setPropTypes } from 'recompose';
+import { lifecycle as setLifecycle, withHandlers, compose, mapProps } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
 
 import { setOption } from '../../actions/actions';
@@ -28,15 +27,6 @@ const handlers = {
   },
 };
 
-const propTypes = {
-  fullScreen: PropTypes.bool.isRequired,
-  paused: PropTypes.bool.isRequired,
-  startGuiFadeOut: PropTypes.bool.isRequired,
-  guiFadeOut: PropTypes.bool.isRequired,
-  guiFadeHoldTime: PropTypes.number.isRequired,
-  setOption: PropTypes.func.isRequired,
-};
-
 const lifecycle = {
   startFade() {
     if (this.props.fullScreen && !this.props.paused && this.props.startGuiFadeOut) {
@@ -57,7 +47,6 @@ export default compose(
     setOption,
   }),
   withHandlers(handlers),
-  setPropTypes(propTypes),
   setLifecycle(lifecycle),
   mapProps(props => ({
     children: props.children,

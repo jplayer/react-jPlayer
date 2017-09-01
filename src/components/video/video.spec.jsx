@@ -10,12 +10,12 @@ describe('Video', () => {
   it('renders video in Media', () => {
     const { wrapper } = setup();
 
-    expect(wrapper.find(Media).find('video').exists()).toBeTruthy();
+    expect(wrapper.find(Media).find('video').exists()).toBe(true);
   });
 
   it('passes events to media', () => {
     const events = {
-      onCanPlay: Function.prototype,
+      onCanPlay: expect.createSpy(),
     };
     const { wrapper } = setup({ events });
 

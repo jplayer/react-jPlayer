@@ -230,10 +230,26 @@ describe('reducer', () => {
     });
   });
 
+  describe('CLEAR_MEDIA', () => {
+    it('should reset the status', () => {
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.CLEAR_MEDIA,
+        id,
+      });
+
+      expect(newState[id]).toEqual({
+        ...defaultStatus,
+      });
+    });
+  });
+
   describe('PLAY', () => {
     it('should handle with src and no custom time', () => {
       const src = 'test.mp3';
-      state[id].src = 'test.mp3';
+      state[id].src = src;
 
       const newState = reducer(state, {
         type: actionNames.PLAY,
@@ -248,9 +264,9 @@ describe('reducer', () => {
     });
 
     it('should handle with src and custom time', () => {
-      const src = 'test.mp3';
       const time = 23;
-      state[id].src = 'test.mp3';
+      const src = 'test.mp3';
+      state[id].src = src;
 
       const newState = reducer(state, {
         type: actionNames.PLAY,
@@ -278,7 +294,7 @@ describe('reducer', () => {
   describe('PAUSE', () => {
     it('should handle with src and no custom time', () => {
       const src = 'test.mp3';
-      state[id].src = 'test.mp3';
+      state[id].src = src;
 
       const newState = reducer(state, {
         type: actionNames.PAUSE,
@@ -293,9 +309,9 @@ describe('reducer', () => {
     });
 
     it('should handle with src and custom time', () => {
-      const src = 'test.mp3';
       const time = 23;
-      state[id].src = 'test.mp3';
+      const src = 'test.mp3';
+      state[id].src = src;
 
       const newState = reducer(state, {
         type: actionNames.PAUSE,
@@ -324,7 +340,7 @@ describe('reducer', () => {
     it('should handle with src', () => {
       const percent = 22;
       const src = 'test.mp3';
-      state[id].src = 'test.mp3';
+      state[id].src = src;
 
       const newState = reducer(state, {
         type: actionNames.PLAY_HEAD,

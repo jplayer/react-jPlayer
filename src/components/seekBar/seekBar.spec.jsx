@@ -1,3 +1,4 @@
+import React from 'react';
 import expect from 'expect';
 
 import SeekBar from './seekBar';
@@ -7,8 +8,9 @@ import componentSetup from '../../util/specHelpers/componentSetup.spec';
 const setup = (props) => {
   const testProps = componentSetup(SeekBar, {
     seekPercent: 22,
-    clickMoveBar: Function.prototype,
-    touchMoveBar: Function.prototype,
+    clickMoveBar: expect.createSpy(),
+    touchMoveBar: expect.createSpy(),
+    children: <div />,
     ...props,
   });
 
@@ -19,10 +21,9 @@ const setup = (props) => {
 
 describe('Seekbar', () => {
   it('renders children', () => {
-    const children = 'seekBar';
-    const { seekBar } = setup({ children });
+    const { seekBar, props } = setup();
 
-    expect(seekBar.prop('children')).toBe(children);
+    expect(seekBar.prop('children')).toBe(props.children);
   });
 
   it('renders seekPercent as style width', () => {

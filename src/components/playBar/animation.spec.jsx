@@ -5,6 +5,7 @@ import PlayBar from './playBar';
 import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
 const setup = props => componentSetup(PlayBarAnimation, {
+  smoothPlayBar: false,
   currentPercentRelative: 33,
   currentPercentAbsolute: 22,
   ...props,

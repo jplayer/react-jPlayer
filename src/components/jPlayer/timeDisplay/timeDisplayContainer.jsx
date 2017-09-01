@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import { connectWithId, convertTime } from 'react-jplayer-utils';
-import { compose, setPropTypes, lifecycle as setLifecycle, withHandlers, renderNothing } from 'recompose';
+import { compose, lifecycle as setLifecycle, withHandlers, renderNothing } from 'recompose';
 
 import { setOption } from '../../../actions/actions';
 
@@ -10,23 +9,6 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   duration: jPlayers[id].duration,
   showRemainingDuration: jPlayers[id].showRemainingDuration,
 });
-
-const propTypes = {
-  currentTime: PropTypes.number.isRequired,
-  duration: PropTypes.number.isRequired,
-  showRemainingDuration: PropTypes.bool.isRequired,
-  timeFormats: PropTypes.shape({
-    showHour: PropTypes.bool.isRequired,
-    showMin: PropTypes.bool.isRequired,
-    showSec: PropTypes.bool.isRequired,
-    padHour: PropTypes.bool.isRequired,
-    padMin: PropTypes.bool.isRequired,
-    padSec: PropTypes.bool.isRequired,
-    sepHour: PropTypes.string.isRequired,
-    sepMin: PropTypes.string.isRequired,
-    sepSec: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 const handlers = {
   setDurationText: props => () => {
@@ -70,7 +52,6 @@ export default compose(
   connectWithId(mapStateToProps, {
     setOption,
   }),
-  setPropTypes(propTypes),
   withHandlers(handlers),
   setLifecycle(lifecycle),
 )(renderNothing(null));

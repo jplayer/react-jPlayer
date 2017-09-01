@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { compose, setPropTypes, withHandlers, lifecycle as setLifecycle } from 'recompose';
+import { compose, withHandlers, lifecycle as setLifecycle } from 'recompose';
 
 import { connectWithId } from 'react-jplayer-utils';
 import BufferBar from './bufferBar';
@@ -36,18 +35,6 @@ const handlers = () => {
   };
 };
 
-const propTypes = {
-  bufferedTimeRanges: PropTypes.arrayOf(PropTypes.shape({
-    start: PropTypes.number.isRequired,
-    end: PropTypes.number.isRequired,
-  })).isRequired,
-  bufferColour: PropTypes.string.isRequired,
-  duration: PropTypes.number.isRequired,
-  setCanvas: PropTypes.func.isRequired,
-  clearBuffer: PropTypes.func.isRequired,
-  fillBufferPartially: PropTypes.func.isRequired,
-};
-
 const lifecycle = {
   componentDidUpdate(prevProps) {
     if (prevProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
@@ -62,6 +49,5 @@ const lifecycle = {
 export default compose(
   connectWithId(mapStateToProps),
   withHandlers(handlers),
-  setPropTypes(propTypes),
   setLifecycle(lifecycle),
 )(BufferBar);
