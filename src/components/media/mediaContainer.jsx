@@ -45,10 +45,14 @@ const handlers = () => {
         props.setOption(props.id, 'seekPercent', seekPercent);
       }
 
+      // Is infinite when live streaming
+      if (isFinite(currentMedia.duration)) {
+        props.setOption(props.id, 'duration', currentMedia.duration);
+      }
+
       props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
       props.setOption(props.id, 'currentPercentAbsolute', currentPercentAbsolute);
       props.setOption(props.id, 'currentTime', currentMedia.currentTime);
-      props.setOption(props.id, 'duration', currentMedia.duration);
       props.setOption(props.id, 'playbackRate', currentMedia.playbackRate);
     },
     updateMediaSrc: props => () => {

@@ -2,7 +2,6 @@ import React from 'react';
 import expect from 'expect';
 import proxyquire from 'proxyquire';
 
-import { defaultStatus } from '../../util/constants';
 import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
 proxyquire.noCallThru();
@@ -20,7 +19,7 @@ describe('DurationContainer', () => {
   beforeEach(() => {
     jPlayers = {
       [id]: {
-        durationText: defaultStatus.durationText,
+        durationText: null,
       },
     };
   });
