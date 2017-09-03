@@ -5,6 +5,7 @@ import Media from './media';
 import Events from './events/eventsContainer';
 import Track from './track/track';
 import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
 const mockCurrentMedia = {
   src: 'www.test.com',
@@ -14,7 +15,7 @@ const setup = props => componentSetup(Media, {
   setCurrentMedia: expect.createSpy(),
   updateMediaStatus: expect.createSpy(),
   tracks: [],
-  children: <div className="@@media" />,
+  children: <div />,
   ...props,
 });
 
@@ -45,7 +46,7 @@ describe('Media', () => {
   it('renders children as a child of Events', () => {
     const { wrapper } = setup();
 
-    expect(wrapper.find(Events).find('.@@media').exists()).toBe(true);
+    expect(wrapper.find(Events).find(`.${classes.MEDIA}`).exists()).toBe(true);
   });
 
   it('renders tracks as childrens child', () => {
@@ -59,7 +60,7 @@ describe('Media', () => {
       },
     ];
     const { wrapper } = setup({ tracks });
-    const mediaChildren = wrapper.find('.@@media').children();
+    const mediaChildren = wrapper.find(`.${classes.MEDIA}`).children();
 
     expect(mediaChildren.length).toBe(1);
     expect(mediaChildren.type()).toBe(Track);

@@ -12,7 +12,6 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 });
 
 const mergeProps = (stateProps, { dispatch }, { keyBindings, id }) => ({
-  ...stateProps,
   keyBindings: merge({}, {
     play: {
       key: 80, // p

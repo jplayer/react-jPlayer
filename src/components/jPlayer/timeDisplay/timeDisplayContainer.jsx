@@ -33,7 +33,7 @@ const handlers = {
 };
 
 const lifecycle = {
-  componentWillReceiveProps(prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.timeFormats !== this.props.timeFormats ||
       prevProps.currentTime !== this.props.currentTime) {
       this.props.setCurrentTimeText();

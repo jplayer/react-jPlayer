@@ -190,25 +190,27 @@ const updateJPlayer = (state, action, value) => {
 };
 
 const reducer = (state = initialState, action) => {
+  const updateValue = value => updateJPlayer(state, action, value);
+
   switch (action.type) {
     case actionNames.SET_MEDIA:
-      return updateJPlayer(state, action, setMedia(action.media));
+      return updateValue(setMedia(action.media));
     case actionNames.CLEAR_MEDIA:
-      return updateJPlayer(state, action, resetStatus());
+      return updateValue(resetStatus());
     case actionNames.PLAY:
-      return updateJPlayer(state, action, play(state[action.id].src, action.time));
+      return updateValue(play(state[action.id].src, action.time));
     case actionNames.PAUSE:
-      return updateJPlayer(state, action, pause(state[action.id].src, action.time));
+      return updateValue(pause(state[action.id].src, action.time));
     case actionNames.PLAY_HEAD:
-      return updateJPlayer(state, action, setPlayHead(state[action.id].src, action.percent));
+      return updateValue(setPlayHead(state[action.id].src, action.percent));
     case actionNames.VOLUME:
-      return updateJPlayer(state, action, setVolume(action.volume));
+      return updateValue(setVolume(action.volume));
     case actionNames.MUTE:
-      return updateJPlayer(state, action, setMute(action.mute));
+      return updateValue(setMute(action.mute));
     case actionNames.FOCUS:
       return focus(state, action.id);
     case actionNames.SET_OPTION:
-      return updateJPlayer(state, action, setOption(state, action.id, action.key, action.value));
+      return updateValue(setOption(state, action.id, action.key, action.value));
     default:
       return state;
   }

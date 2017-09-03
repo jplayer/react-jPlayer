@@ -1,7 +1,6 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { compose, lifecycle as setLifecycle, withHandlers, withContext, mapProps } from 'recompose';
-import { canSetVolume } from 'react-jplayer-utils';
+import { canSetVolume, connectWithId } from 'react-jplayer-utils';
 
 import states from './states/states';
 import JPlayer from './jPlayer';
@@ -9,7 +8,7 @@ import { defaultOptions } from '../../util/constants';
 import { setOption, setMedia } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, ownProps) => {
-  const { id, customStates, keyBindings, children,
+  const { id, newStates, keyBindings, children,
     className } = ownProps;
 
   return {
@@ -20,7 +19,7 @@ const mapStateToProps = ({ jPlayers }, ownProps) => {
     keyBindings,
     id,
     children,
-    className: states(jPlayers[id], customStates, className),
+    className: states(jPlayers[id], newStates, className),
   };
 };
 
@@ -56,7 +55,7 @@ const propsMapper = props => ({
 
 export default compose(
   withContext({ id: PropTypes.string }, ({ id }) => ({ id })),
-  connect(mapStateToProps, {
+  connectWithId(mapStateToProps, {
     setMedia,
     setOption,
   }),
