@@ -4,7 +4,6 @@ import { canSetVolume, connectWithId } from 'react-jplayer-utils';
 
 import states from './states/states';
 import JPlayer from './jPlayer';
-import { defaultOptions } from '../../util/constants';
 import { setOption, setMedia } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, ownProps) => {
@@ -37,7 +36,7 @@ const handlers = {
 
 const lifecycle = {
   componentDidMount() {
-    if (this.props.media !== defaultOptions.media) {
+    if (Object.keys(this.props.media.sources).length > 0) {
       this.props.setMedia(this.props.id, this.props.media);
     }
 

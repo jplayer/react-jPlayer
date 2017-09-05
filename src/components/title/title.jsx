@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
 import { classes } from '../../util/constants';
 
@@ -13,4 +14,9 @@ Title.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default Title;
+export default compose(
+  branch(
+    props => props.title,
+    renderComponent(Title),
+  ),
+)(renderNothing(null));

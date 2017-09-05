@@ -4,12 +4,9 @@ import Repeat from './repeat';
 import { classes } from '../../util/constants';
 import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const id = 'TestPlayer';
 const setup = props => componentSetup(Repeat, {
-  loop: false,
   children: 'loop',
-  setLoop: expect.createSpy(),
-  id,
+  loop: expect.createSpy(),
   ...props,
 });
 
@@ -25,7 +22,7 @@ describe('Loop', () => {
 
     wrapper.simulate('click');
 
-    expect(props.setLoop).toHaveBeenCalledWith(id, !props.loop);
+    expect(props.loop).toHaveBeenCalled();
   });
 
   it('children are rendered', () => {
