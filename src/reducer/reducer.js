@@ -1,7 +1,7 @@
 import { limitValue } from 'react-jplayer-utils';
 
 import { initialState } from '../initializeOptions/initializeOptions';
-import { actionNames, formats as supportedFormats, defaultStatus } from '../util/constants';
+import { actionNames, formats as supportedFormats, defaultStatus, defaultOptions } from '../util/constants';
 import urlNotSetError from '../util/errorHandlers/urlNotSetError';
 import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
 
@@ -28,8 +28,9 @@ const updateFormats = (sources) => {
   return formats;
 };
 
-const resetStatus = () => ({
+const clearMedia = () => ({
   ...defaultStatus,
+  media: defaultOptions.media,
 });
 
 const setMedia = (media) => {
@@ -55,7 +56,7 @@ const setMedia = (media) => {
   }
 
   return {
-    ...resetStatus(),
+    ...clearMedia(),
     mediaSettings: {
       formats,
       video,
@@ -160,7 +161,7 @@ const setOption = (state, id, key, value) => {
       if (Object.keys(value).some(v => v)) {
         return setMedia(value);
       }
-      return resetStatus();
+      return clearMedia();
     }
     case 'playHeadPercent':
       return setPlayHead(state[id].src, value);
@@ -196,7 +197,7 @@ const reducer = (state = initialState, action) => {
     case actionNames.SET_MEDIA:
       return updateValue(setMedia(action.media));
     case actionNames.CLEAR_MEDIA:
-      return updateValue(resetStatus());
+      return updateValue(clearMedia());
     case actionNames.PLAY:
       return updateValue(play(state[action.id].src, action.time));
     case actionNames.PAUSE:

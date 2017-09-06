@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
 import { classes } from '../../util/constants';
 
@@ -24,4 +25,10 @@ Download.propTypes = {
   url: PropTypes.string,
 };
 
-export default Download;
+export default compose(
+  branch(
+    props => props.free,
+    renderComponent(Download),
+  ),
+)(renderNothing(null));
+

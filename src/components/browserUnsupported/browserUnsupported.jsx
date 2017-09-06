@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
 import { classes } from '../../util/constants';
 
@@ -25,4 +26,10 @@ BrowserUnsupported.propTypes = {
   children: PropTypes.node,
 };
 
-export default BrowserUnsupported;
+export default compose(
+  branch(
+    props => props.nonSupported,
+    renderComponent(BrowserUnsupported),
+  ),
+)(renderNothing(null));
+

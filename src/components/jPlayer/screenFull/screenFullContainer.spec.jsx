@@ -147,7 +147,6 @@ describe('ScreenFullContainer', () => {
   });
 
   afterEach(() => {
-    ScreenFullContainer.__ResetDependency__('screenfull');
     document.body.style.visibility = 'visible';
   });
 });

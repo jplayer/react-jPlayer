@@ -22,15 +22,15 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 const handlers = () => {
   let currentMedia;
 
-  const getSeekableEnd = () => currentMedia.seekable.end(currentMedia.seekable.length - 1);
-  const getCurrentPercentRelative = () => {
-    let currentPercentRelative = 0;
-
+  const getSeekableEnd = () => {
     if (currentMedia.seekable.length > 0) {
-      currentPercentRelative = toPercentage(currentMedia.currentTime, getSeekableEnd());
+      return currentMedia.seekable.end(currentMedia.seekable.length - 1);
     }
-    return currentPercentRelative;
+
+    return NaN;
   };
+  const getCurrentPercentRelative = () => toPercentage(currentMedia.currentTime, getSeekableEnd());
+  const getSeekPercent = () => toPercentage(getSeekableEnd(), currentMedia.duration);
 
   return {
     getCurrentMedia: () => () => currentMedia,
@@ -40,23 +40,21 @@ const handlers = () => {
     updateMediaStatus: props => () => {
       const currentPercentAbsolute = toPercentage(currentMedia.currentTime, currentMedia.duration);
 
-      if (currentMedia.seekable.length > 0) {
-        const seekPercent = toPercentage(getSeekableEnd(), currentMedia.duration);
-        props.setOption(props.id, 'seekPercent', seekPercent);
-      }
-
       // Is infinite when live streaming
       if (isFinite(currentMedia.duration)) {
         props.setOption(props.id, 'duration', currentMedia.duration);
       }
 
       props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
+      props.setOption(props.id, 'seekPercent', getSeekPercent());
       props.setOption(props.id, 'currentPercentAbsolute', currentPercentAbsolute);
       props.setOption(props.id, 'currentTime', currentMedia.currentTime);
       props.setOption(props.id, 'playbackRate', currentMedia.playbackRate);
     },
     updateMediaSrc: props => () => {
-      currentMedia.src = props.src;
+      if (props.src !== null) {
+        currentMedia.src = props.src;
+      }
     },
     updateMediaTime: props => () => {
       currentMedia.currentTime = props.newTime;
@@ -67,7 +65,7 @@ const handlers = () => {
 
       // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
       // Hasn't fully loaded the song????
-      if (currentMedia.seekable.length > 0 && isFinite(seekableEnd)) {
+      if (isFinite(seekableEnd)) {
         currentMedia.currentTime = toRelativePercentage(
           props.playHeadPercent,
           seekableEnd,
@@ -106,23 +104,20 @@ const lifecycle = {
     this.props.updateOtherMediaValues();
   },
   componentDidUpdate(prevProps) {
-    this.props.updateOtherMediaValues();
+    if (prevProps.src !== this.props.src) {
+      this.props.updateMediaSrc();
+    }
 
     if (this.props.newTime !== null) {
       this.props.updateMediaTime();
-    }
-
-    if (prevProps.src !== this.props.src) {
-      this.props.updateMediaSrc();
     }
 
     if (prevProps.playHeadPercent !== this.props.playHeadPercent) {
       this.props.updateMediaTimeAfterSeeking();
     }
 
-    if (prevProps.paused !== this.props.paused) {
-      this.props.updateMediaPlayState();
-    }
+    this.props.updateMediaPlayState();
+    this.props.updateOtherMediaValues();
   },
 };
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { compose, lifecycle as setLifecycle, withHandlers, withContext, mapProps } from 'recompose';
+import { compose, lifecycle as setLifecycle, withHandlers, withContext } from 'recompose';
 import { canSetVolume, connectWithId } from 'react-jplayer-utils';
 
 import states from './states/states';
@@ -7,7 +7,7 @@ import JPlayer from './jPlayer';
 import { setOption, setMedia } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, ownProps) => {
-  const { id, newStates, keyBindings, children,
+  const { id, keyBindings, children,
     className } = ownProps;
 
   return {
@@ -18,7 +18,7 @@ const mapStateToProps = ({ jPlayers }, ownProps) => {
     keyBindings,
     id,
     children,
-    className: states(jPlayers[id], newStates, className),
+    className: states(jPlayers[id], ownProps.states, className),
   };
 };
 
@@ -44,14 +44,6 @@ const lifecycle = {
   },
 };
 
-const propsMapper = props => ({
-  className: props.className,
-  keyBindings: props.keyBindings,
-  children: props.children,
-  id: props.id,
-  onMouseMoveCapture: props.onMouseMoveCapture,
-});
-
 export default compose(
   withContext({ id: PropTypes.string }, ({ id }) => ({ id })),
   connectWithId(mapStateToProps, {
@@ -60,5 +52,4 @@ export default compose(
   }),
   withHandlers(handlers),
   setLifecycle(lifecycle),
-  mapProps(propsMapper),
 )(JPlayer);

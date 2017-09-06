@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
 import Media from '../media/mediaContainer';
 
@@ -43,4 +44,9 @@ Audio.propTypes = {
   }),
 };
 
-export default Audio;
+export default compose(
+  branch(
+    props => props.require,
+    renderComponent(Audio),
+  ),
+)(renderNothing(null));

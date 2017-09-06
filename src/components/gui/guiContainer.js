@@ -1,4 +1,4 @@
-import { lifecycle as setLifecycle, withHandlers, compose, mapProps } from 'recompose';
+import { lifecycle as setLifecycle, withHandlers, compose } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
 
 import { setOption } from '../../actions/actions';
@@ -48,10 +48,4 @@ export default compose(
   }),
   withHandlers(handlers),
   setLifecycle(lifecycle),
-  mapProps(props => ({
-    children: props.children,
-    fullScreen: props.fullScreen,
-    guiFadeOut: props.guiFadeOut,
-    onMouseMove: props.onMouseMove,
-  })),
 )(GuiAnimation);
