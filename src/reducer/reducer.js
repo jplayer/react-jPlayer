@@ -33,7 +33,7 @@ const clearMedia = () => ({
   media: defaultOptions.media,
 });
 
-const setMedia = (media) => {
+const setMedia = (_, { media }) => {
   let video;
   let src;
   let nonSupported = true;
@@ -70,8 +70,8 @@ const setMedia = (media) => {
   };
 };
 
-const play = (src, time) => {
-  if (src) {
+const play = (jPlayer, { time }) => {
+  if (jPlayer.src) {
     return {
       paused: false,
       newTime: !isNaN(time) ? time : null,
@@ -83,8 +83,8 @@ const play = (src, time) => {
   };
 };
 
-const pause = (src, time) => {
-  if (src) {
+const pause = (jPlayer, { time }) => {
+  if (jPlayer.src) {
     return {
       paused: true,
       newTime: !isNaN(time) ? time : null,
@@ -96,10 +96,10 @@ const pause = (src, time) => {
   };
 };
 
-const setPlayHead = (src, percent) => {
+const setPlayHead = (jPlayer, { percent }) => {
   const limitedPercent = limitValue(percent, 0, 100);
 
-  if (src) {
+  if (jPlayer.src) {
     return {
       playHeadPercent: limitedPercent,
     };
@@ -110,14 +110,35 @@ const setPlayHead = (src, percent) => {
   };
 };
 
-const setVolume = volume => ({
+const setVolume = (_, { volume }) => ({
   volume: limitValue(volume, 0, 1),
   muted: volume <= 0,
 });
 
-const setMute = mute => ({
+const setMute = (_, { mute }) => ({
   muted: mute,
 });
+
+const setOption = (jPlayer, { key, value }) => {
+  switch (key) {
+    case 'media': {
+      if (Object.keys(value).some(v => v)) {
+        return setMedia(jPlayer, { media: value });
+      }
+      return clearMedia();
+    }
+    case 'playHeadPercent':
+      return setPlayHead(jPlayer, { percent: value });
+    case 'volume':
+      return setVolume(jPlayer, { volume: value });
+    case 'muted':
+      return setMute(jPlayer, { mute: value });
+    default:
+      return {
+        [key]: value,
+      };
+  }
+};
 
 const focus = (state, id) => {
   const newState = { ...state };
@@ -155,28 +176,8 @@ const focusOnFirstKeyEnabledPlayer = (state) => {
   return state;
 };
 
-const setOption = (state, id, key, value) => {
-  switch (key) {
-    case 'media': {
-      if (Object.keys(value).some(v => v)) {
-        return setMedia(value);
-      }
-      return clearMedia();
-    }
-    case 'playHeadPercent':
-      return setPlayHead(state[id].src, value);
-    case 'volume':
-      return setVolume(value);
-    case 'muted':
-      return setMute(value);
-    default:
-      return {
-        [key]: value,
-      };
-  }
-};
-
-const updateJPlayer = (state, action, value) => {
+const updateJPlayer = (state, action, fn) => {
+  const value = fn(state[action.id], action);
   const newState = state[action.id].keyEnabled ? focus(state, action.id) :
     focusOnFirstKeyEnabledPlayer(state);
   const jPlayer = newState[action.id];
@@ -191,27 +192,27 @@ const updateJPlayer = (state, action, value) => {
 };
 
 const reducer = (state = initialState, action) => {
-  const updateValue = value => updateJPlayer(state, action, value);
+  const updateValue = fn => updateJPlayer(state, action, fn);
 
   switch (action.type) {
     case actionNames.SET_MEDIA:
-      return updateValue(setMedia(action.media));
+      return updateValue(setMedia);
     case actionNames.CLEAR_MEDIA:
-      return updateValue(clearMedia());
+      return updateValue(clearMedia);
     case actionNames.PLAY:
-      return updateValue(play(state[action.id].src, action.time));
+      return updateValue(play);
     case actionNames.PAUSE:
-      return updateValue(pause(state[action.id].src, action.time));
+      return updateValue(pause);
     case actionNames.PLAY_HEAD:
-      return updateValue(setPlayHead(state[action.id].src, action.percent));
+      return updateValue(setPlayHead);
     case actionNames.VOLUME:
-      return updateValue(setVolume(action.volume));
+      return updateValue(setVolume);
     case actionNames.MUTE:
-      return updateValue(setMute(action.mute));
+      return updateValue(setMute);
+    case actionNames.SET_OPTION:
+      return updateValue(setOption);
     case actionNames.FOCUS:
       return focus(state, action.id);
-    case actionNames.SET_OPTION:
-      return updateValue(setOption(state, action.id, action.key, action.value));
     default:
       return state;
   }

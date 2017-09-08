@@ -51,14 +51,11 @@ describe('keyControlContainer', () => {
           fn: customKeySpy,
         },
       };
-      const { wrapper, store } = setup(jPlayers, { keyBindings: customKeyBindings });
+      const { wrapper } = setup(jPlayers, { keyBindings: customKeyBindings });
 
       wrapper.simulate('keydown');
 
-      const jPlayer = store.getState().jPlayers[id];
-
       expect(customKeySpy).toHaveBeenCalled();
-      expect(jPlayer.paused).toNotBe(true);
     });
   });
 
