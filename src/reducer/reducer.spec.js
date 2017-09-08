@@ -123,6 +123,7 @@ describe('reducer', () => {
 
       expect(newState[id]).toEqual({
         ...defaultStatus,
+        media: defaultOptions.media,
       });
     });
 
@@ -242,6 +243,7 @@ describe('reducer', () => {
 
       expect(newState[id]).toEqual({
         ...defaultStatus,
+        media: defaultOptions.media,
       });
     });
   });

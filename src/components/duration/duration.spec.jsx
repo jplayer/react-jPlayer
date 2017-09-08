@@ -4,21 +4,36 @@ import Duration from './duration';
 import componentSetup from '../../util/specHelpers/componentSetup.spec';
 import { classes } from '../../util/constants';
 
-const setup = props => componentSetup(Duration, {
-  durationText: '2:20',
-  ...props,
-});
-
-describe('Duration', () => {
-  it('has duration class', () => {
-    const { wrapper } = setup();
-
-    expect(wrapper.hasClass(classes.DURATION)).toBe(true);
+const setup = (props) => {
+  const values = componentSetup(Duration, {
+    ...props,
   });
 
-  it('durationText is rendered as a child', () => {
-    const { wrapper, props } = setup();
+  values.duration = values.wrapper.dive();
 
-    expect(wrapper.prop('children')).toBe(props.durationText);
+  return values;
+};
+
+describe('Duration', () => {
+  describe('when durationText is supplied', () => {
+    const durationText = '2:20';
+
+    it('has duration class', () => {
+      const { duration } = setup({ durationText });
+
+      expect(duration.hasClass(classes.DURATION)).toBe(true);
+    });
+
+    it('durationText is rendered as a child', () => {
+      const { duration, props } = setup({ durationText });
+
+      expect(duration.prop('children')).toBe(props.durationText);
+    });
+  });
+
+  it('renders nothing if durationText is not supplied', () => {
+    const { duration } = setup();
+
+    expect(duration.type()).toBe(null);
   });
 });

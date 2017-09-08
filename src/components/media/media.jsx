@@ -22,7 +22,6 @@ const Media = props => (
 
 Media.defaultProps = {
   events: null,
-  className: null,
   tracks: [],
 };
 
@@ -31,7 +30,6 @@ Media.propTypes = {
   getCurrentMedia: PropTypes.func.isRequired,
   setCurrentMedia: PropTypes.func.isRequired,
   updateMediaStatus: PropTypes.func.isRequired,
-  className: PropTypes.string,
   tracks: PropTypes.arrayOf(
     PropTypes.shape({
       default: PropTypes.bool,

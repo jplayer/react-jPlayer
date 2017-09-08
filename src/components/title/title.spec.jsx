@@ -15,7 +15,7 @@ const setup = (props) => {
 };
 
 describe('Title', () => {
-  describe('when title is specified', () => {
+  describe('when title is supplied', () => {
     const title = 'test';
 
     it('has title class', () => {
@@ -31,7 +31,7 @@ describe('Title', () => {
     });
   });
 
-  it('renders nothing if no title is specified', () => {
+  it('renders nothing if no title is supplied', () => {
     const { title } = setup();
 
     expect(title.type()).toBe(null);

@@ -4,26 +4,43 @@ import { classes } from '../../util/constants';
 import BrowserUnsupported from './browserUnsupported';
 import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = props => componentSetup(BrowserUnsupported, props);
+const setup = (props) => {
+  const values = componentSetup(BrowserUnsupported, {
+    ...props,
+  });
 
+  values.browserUnsupported = values.wrapper.dive();
+
+  return values;
+};
 describe('BrowserUnsupported', () => {
-  it('renders default children', () => {
-    const { wrapper } = setup();
+  describe('when media is not supported', () => {
+    const nonSupported = true;
 
-    expect(wrapper.find('h4').exists()).toBeTruthy();
+    it('renders default children', () => {
+      const { browserUnsupported } = setup({ nonSupported });
+
+      expect(browserUnsupported.find('h4').exists()).toBeTruthy();
+    });
+
+    it('has browserUnsupported class', () => {
+      const { browserUnsupported } = setup({ nonSupported });
+
+      expect(browserUnsupported.hasClass(classes.NO_BROWSER_SUPPORT)).toBe(true);
+    });
+
+    it('custom children overwrite default if specified', () => {
+      const children = 'test';
+      const { browserUnsupported } = setup({ nonSupported, children });
+
+      expect(browserUnsupported.prop('children')).toBe(children);
+      expect(browserUnsupported.find('h4').exists()).toBeFalsy();
+    });
   });
 
-  it('has browserUnsupported class', () => {
-    const { wrapper } = setup();
+  it('renders nothing if media is supported', () => {
+    const { browserUnsupported } = setup();
 
-    expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBe(true);
-  });
-
-  it('custom children overwrite default if specified', () => {
-    const children = 'test';
-    const { wrapper } = setup({ children });
-
-    expect(wrapper.prop('children')).toBe(children);
-    expect(wrapper.find('h4').exists()).toBeFalsy();
+    expect(browserUnsupported.type()).toBe(null);
   });
 });
