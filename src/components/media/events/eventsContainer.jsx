@@ -1,4 +1,5 @@
-import { compose, defaultProps as setDefaultProps, mapProps, withHandlers } from 'recompose';
+import PropTypes from 'prop-types';
+import { compose, defaultProps as setDefaultProps, mapProps, withHandlers, getContext } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
 
 import Events from './events';
@@ -11,18 +12,52 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   otherJPlayerIds: Object.keys(jPlayers).filter(key => key !== id),
 });
 
+const contextTypes = {
+  internalEvents: PropTypes.shape({
+    onAbort: PropTypes.func,
+    onCanPlay: PropTypes.func,
+    onCanPlayThrough: PropTypes.func,
+    onDurationChange: PropTypes.func,
+    onEmptied: PropTypes.func,
+    onEncrypted: PropTypes.func,
+    onEnded: PropTypes.func,
+    onError: PropTypes.func,
+    onLoadedData: PropTypes.func,
+    onLoadedMetadata: PropTypes.func,
+    onLoadStart: PropTypes.func,
+    onPause: PropTypes.func,
+    onPlay: PropTypes.func,
+    onPlaying: PropTypes.func,
+    onProgress: PropTypes.func,
+    onRateChange: PropTypes.func,
+    onSeeked: PropTypes.func,
+    onSeeking: PropTypes.func,
+    onStalled: PropTypes.func,
+    onSuspend: PropTypes.func,
+    onTimeUpdate: PropTypes.func,
+    onVolumeChange: PropTypes.func,
+    onWaiting: PropTypes.func,
+  }),
+};
+
 const defaultProps = {
-  onDurationChange: Function.prototype,
-  onEnded: Function.prototype,
-  onError: Function.prototype,
-  onPlay: Function.prototype,
-  onProgress: Function.prototype,
-  onSeeked: Function.prototype,
-  onSeeking: Function.prototype,
-  onTimeUpdate: Function.prototype,
-  currentMedia: {
-    buffered: {},
-  },
+  internalEvents: {},
+};
+
+const mapEvents = (ownerProps) => {
+  const events = {};
+
+  Object.keys(ownerProps.internalEvents).forEach((key) => {
+    events[key] = (e) => {
+      ownerProps.internalEvents[key](e);
+      ownerProps[key](e);
+    };
+  });
+
+  return {
+    ...ownerProps,
+    ...events,
+  };
 };
 
 const firstHandlers = {
@@ -32,81 +67,52 @@ const firstHandlers = {
 };
 
 const secondHandlers = {
-  onDurationChange: props => () => {
+  onDurationChange: props => (e) => {
     props.updateMediaStatus();
-    props.onDurationChange();
+    props.onDurationChange(e);
   },
-  onEnded: props => () => {
+  onEnded: props => (e) => {
     props.pause(props.id, 0);
     props.updateMediaStatus();
-    props.onEnded();
+    props.onEnded(e);
   },
-  onError: props => () => {
+  onError: props => (e) => {
     props.setOption(props.id, 'error', urlNotSupportedError(props.src));
-    props.onError();
+    props.onError(e);
   },
-  onPlay: props => () => {
+  onPlay: props => (e) => {
     if (props.pauseOthersOnPlay) {
       props.pauseOthers();
     }
     props.play(props.id);
-    props.onPlay();
+    props.onPlay(e);
   },
-  onProgress: props => () => {
+  onProgress: props => (e) => {
     const bufferedTimeRanges = [];
 
-    for (let i = 0; i < props.currentMedia.buffered.length; i += 1) {
+    for (let i = 0; i < e.currentTarget.buffered.length; i += 1) {
       bufferedTimeRanges.push({
-        start: props.currentMedia.buffered.start(i),
-        end: props.currentMedia.buffered.end(i),
+        start: e.currentTarget.buffered.start(i),
+        end: e.currentTarget.buffered.end(i),
       });
     }
     props.updateMediaStatus();
     props.setOption(props.id, 'bufferedTimeRanges', bufferedTimeRanges);
-    props.onProgress();
+    props.onProgress(e);
   },
-  onSeeked: props => () => {
+  onSeeked: props => (e) => {
     props.setOption(props.id, 'seeking', false);
-    props.onSeeked();
+    props.onSeeked(e);
   },
-  onSeeking: props => () => {
+  onSeeking: props => (e) => {
     props.setOption(props.id, 'seeking', true);
-    props.onSeeking();
+    props.onSeeking(e);
   },
-  onTimeUpdate: props => () => {
+  onTimeUpdate: props => (e) => {
     props.updateMediaStatus();
-    props.onTimeUpdate();
+    props.onTimeUpdate(e);
   },
 };
-
-const propsMapper = ownerProps => ({
-  children: ownerProps.children,
-  events: {
-    onAbort: ownerProps.onAbort,
-    onCanPlay: ownerProps.onCanPlay,
-    onCanPlayThrough: ownerProps.onCanPlayThrough,
-    onDurationChange: ownerProps.onDurationChange,
-    onEmptied: ownerProps.onEmptied,
-    onEncrypted: ownerProps.onEncrypted,
-    onEnded: ownerProps.onEnded,
-    onError: ownerProps.onError,
-    onLoadedData: ownerProps.onLoadedData,
-    onLoadedMetadata: ownerProps.onLoadedMetadata,
-    onLoadStart: ownerProps.onLoadStart,
-    onPause: ownerProps.onPause,
-    onPlay: ownerProps.onPlay,
-    onPlaying: ownerProps.onPlaying,
-    onProgress: ownerProps.onProgress,
-    onRateChange: ownerProps.onRateChange,
-    onSeeked: ownerProps.onSeeked,
-    onSeeking: ownerProps.onSeeking,
-    onStalled: ownerProps.onStalled,
-    onSuspend: ownerProps.onSuspend,
-    onTimeUpdate: ownerProps.onTimeUpdate,
-    onVolumeChange: ownerProps.onVolumeChange,
-    onWaiting: ownerProps.onWaiting,
-  },
-});
 
 export default compose(
   connectWithId(mapStateToProps, {
@@ -114,8 +120,9 @@ export default compose(
     pause,
     play,
   }),
+  getContext(contextTypes),
   setDefaultProps(defaultProps),
+  mapProps(mapEvents),
   withHandlers(firstHandlers),
   withHandlers(secondHandlers),
-  mapProps(propsMapper),
 )(Events);

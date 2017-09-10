@@ -33,7 +33,6 @@ const handlers = () => {
   const getSeekPercent = () => toPercentage(getSeekableEnd(), currentMedia.duration);
 
   return {
-    getCurrentMedia: () => () => currentMedia,
     setCurrentMedia: () => (ref) => {
       currentMedia = ref;
     },
