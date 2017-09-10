@@ -1,5 +1,5 @@
 import { connectWithId } from 'react-jplayer-utils';
-import PlayBar from './playBar';
+import PlayBarAnimation from './animation';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   smoothPlayBar: jPlayers[id].smoothPlayBar,
@@ -7,4 +7,4 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   currentPercentRelative: jPlayers[id].currentPercentRelative,
 });
 
-export default connectWithId(mapStateToProps, {})(PlayBar);
+export default connectWithId(mapStateToProps)(PlayBarAnimation);

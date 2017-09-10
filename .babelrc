@@ -7,8 +7,7 @@
   "env": {
     "test": {
       "plugins": [
-        "istanbul",
-        "babel-plugin-rewire"
+        "istanbul"
       ]
     }
   },

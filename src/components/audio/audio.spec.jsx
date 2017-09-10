@@ -1,72 +1,42 @@
-import React from 'react';
-import expect from 'expect';
-import { shallow } from 'enzyme';
+// import expect from 'expect';
 
-import Audio from './audio';
+// import Audio from './audio';
+// import Media from '../media/mediaContainer';
+// import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const events = {
-  onAbort: null,
-  onCanPlay: null,
-  onCanPlayThrough: null,
-  onDurationChange: null,
-  onEmptied: null,
-  onEncrypted: null,
-  onEnded: null,
-  onError: null,
-  onLoadedData: null,
-  onLoadedMetadata: null,
-  onLoadStart: null,
-  onPause: null,
-  onPlay: null,
-  onPlaying: null,
-  onProgress: null,
-  onRateChange: null,
-  onSeeked: null,
-  onSeeking: null,
-  onStalled: null,
-  onSuspend: null,
-  onTimeUpdate: null,
-  onVolumeChange: null,
-  onWaiting: null,
-};
+// const setup = (props) => {
+//   const values = componentSetup(Audio, {
+//     ...props,
+//   });
 
-const setup = () => {
-  const props = {
-    events,
-    require: true,
-    children: 'test',
-    'data-test': 'test',
-  };
+//   values.audio = values.wrapper.dive();
 
-  const wrapper = shallow(<Audio {...props} />);
+//   return values;
+// };
 
-  return {
-    props,
-    wrapper,
-  };
-};
+// describe('Audio', () => {
+//   describe('when audio is required', () => {
+//     const require = true;
 
-describe('Audio', () => {
-  let wrapper;
-  let props;
+//     it('renders audio in Media', () => {
+//       const { audio } = setup({ require });
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
+//       expect(audio.find(Media).find('audio').exists()).toBe(true);
+//     });
 
-    const audio = wrapper.find('audio');
+//     it('passes events to media', () => {
+//       const events = {
+//         onCanPlay: expect.createSpy(),
+//       };
+//       const { audio } = setup({ events, require });
 
-    Object.keys(events).forEach((key) => {
-      expect(wrapper.prop(key)).toBe(events[key]);
-    });
+//       expect(audio.find(Media).prop('events')).toBe(events);
+//     });
+//   });
 
-    expect(audio.prop('children')).toBe(props.children);
-    expect(audio.prop('data-test')).toBe(props['data-test']);
-  });
+//   it('renders nothing if audio is not required', () => {
+//     const { audio } = setup();
 
-  it('renders null when not required', () => {
-    ({ wrapper } = setup());
-
-    wrapper.setProps({ require: false });
-    expect(wrapper.type()).toBe(null);
-  });
-});
+//     expect(audio.type()).toBe(null);
+//   });
+// });

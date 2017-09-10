@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const FullScreen = ({ setFullScreen, id, fullScreen, children, ...attributes }) => (
+const FullScreen = ({ setFullScreen, id, fullScreen, children }) => (
   <button
     className={classes.FULL_SCREEN}
     onClick={() => setFullScreen(id, !fullScreen)}
-    {...attributes}
   >
     {children}
   </button>

@@ -1,41 +1,33 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
-import { classes } from '../../../src/util/constants';
 import Repeat from './repeat';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    setLoop: createSpy(),
-    children: (<i className="@@jPlayer-test" />),
-    id: 'jPlayer-1',
-    loop: false,
-    'data-test': 'test',
-  };
+const setup = props => componentSetup(Repeat, {
+  children: 'loop',
+  loop: expect.createSpy(),
+  ...props,
+});
 
-  const wrapper = shallow(<Repeat {...props} />);
+describe('Loop', () => {
+  it('has repeat class', () => {
+    const { wrapper } = setup();
 
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<Repeat />', () => {
-  let wrapper;
-  let props;
-
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.REPEAT)).toBe(true);
   });
 
-  it('renders self and subcomponents', () => {
+  it('toggles loop on click', () => {
+    const { wrapper, props } = setup();
+
     wrapper.simulate('click');
 
-    expect(props.setLoop).toHaveBeenCalledWith(props.id, props.loop);
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.hasClass(classes.REPEAT)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+    expect(props.loop).toHaveBeenCalled();
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });

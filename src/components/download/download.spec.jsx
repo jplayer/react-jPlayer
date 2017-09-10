@@ -1,44 +1,53 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../../src/util/constants';
 import Download from './download';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    url: 'http://www.test.mp3',
-    free: true,
-    children: 'test',
-    'data-test': 'test',
-  };
+const setup = (props) => {
+  const values = componentSetup(Download, {
+    children: 'download',
+    ...props,
+  });
 
-  const wrapper = shallow(<Download {...props} />);
+  values.download = values.wrapper.dive();
 
-  return {
-    props,
-    wrapper,
-  };
+  return values;
 };
 
 describe('Download', () => {
-  let wrapper;
-  let props;
+  describe('when media is free', () => {
+    const free = true;
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
+    it('has download class', () => {
+      const { download } = setup({ free });
 
-    expect(wrapper.prop('download')).toBeTruthy();
-    expect(wrapper.prop('url')).toBe(props.href);
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.DOWNLOAD)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+      expect(download.hasClass(classes.DOWNLOAD)).toBe(true);
+    });
+
+    it('has download attribute', () => {
+      const { download } = setup({ free });
+
+      expect(download.prop('download')).toBe(true);
+    });
+
+    it('href is set to url', () => {
+      const url = 'www.test.com';
+      const { download } = setup({ url, free });
+
+      expect(download.prop('href')).toBe(url);
+    });
+
+    it('children are rendered', () => {
+      const { download, props } = setup({ free });
+
+      expect(download.prop('children')).toBe(props.children);
+    });
   });
 
-  it('renders null when audio is not free', () => {
-    ({ wrapper, props } = setup());
+  it('renders nothing if media is not free', () => {
+    const { download } = setup();
 
-    wrapper.setProps({ free: false });
-    expect(wrapper.node).toBe(null);
+    expect(download.type()).toBe(null);
   });
 });

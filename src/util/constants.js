@@ -1,13 +1,13 @@
 export const actionNames = {
-  SET_OPTION: 'SET_JPLAYER_OPTION',
-  SET_MEDIA: 'SET_MEDIA',
-  CLEAR_MEDIA: 'CLEAR_MEDIA',
-  PLAY: 'PLAY',
-  PAUSE: 'PAUSE',
-  PLAY_HEAD: 'PLAY_HEAD',
-  VOLUME: 'VOLUME',
-  MUTE: 'MUTE',
-  FOCUS: 'FOCUS',
+  SET_MEDIA: 'JPLAYER_SET_MEDIA',
+  CLEAR_MEDIA: 'JPLAYER_CLEAR_MEDIA',
+  PLAY: 'JPLAYER_PLAY',
+  PAUSE: 'JPLAYER_PAUSE',
+  PLAY_HEAD: 'JPLAYER_PLAY_HEAD',
+  VOLUME: 'JPLAYER_VOLUME',
+  MUTE: 'JPLAYER_MUTE',
+  FOCUS: 'JPLAYER_FOCUS',
+  SET_OPTION: 'JPLAYER_SET_JPLAYER_OPTION',
 };
 
 export const errors = {
@@ -21,7 +21,7 @@ export const errors = {
 export const hints = {
   FORMAT_NO_SUPPORT: 'The browser may not support these file types.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
-  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia()' +
+  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia() ' +
   'action that is passed into the component props.',
   INVALID_GLOBAL_METHOD: 'Remove the invalid method from the "global" option',
 };
@@ -149,14 +149,14 @@ export const defaultStatus = {
   playHeadPercent: 0,
   mediaSettings: {
     video: false,
-    foundSupported: false,
+    nonSupported: false,
     formats: [],
   },
   paused: true,
   seeking: false,
-  src: '',
+  src: null,
   currentTimeText: '0:00',
-  durationText: '',
+  durationText: null,
   seekPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
@@ -176,12 +176,14 @@ export const defaultOptions = {
   volume: 0.8,
   barDrag: true,
   pauseOthersOnPlay: true,
-  guiFadeHoldTime: 3000,
+  startGuiFadeOut: false,
+  guiFadeHoldTime: 2000,
   media: {
     sources: {},
-    title: '',
-    artist: '',
-    poster: '',
+    tracks: [],
+    title: null,
+    artist: null,
+    poster: null,
     free: false,
   },
   keyBindings: {},

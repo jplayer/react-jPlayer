@@ -1,75 +1,41 @@
-import React from 'react';
-import expect from 'expect';
-import { shallow } from 'enzyme';
+// import expect from 'expect';
 
-import Video from './video';
-import Media from '../media/mediaContainer';
+// import Video from './video';
+// import Media from '../media/mediaContainer';
+// import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const events = {
-  onProgress: null,
-  onTimeUpdate: null,
-  onDurationChange: null,
-  onRateChange: null,
-  onSeeking: null,
-  onSeeked: null,
-  onPlay: null,
-  onRepeat: null,
-  onEnded: null,
-  onError: null,
-  onPlaying: null,
-  onPause: null,
-  onWaiting: null,
-  onSuspend: null,
-  onVolumeChange: null,
-  onLoadStart: null,
-  onLoadedMetadata: null,
-  onAbort: null,
-  onEmptied: null,
-  onStalled: null,
-  onLoadedData: null,
-  onCanPlay: null,
-  onCanPlayThrough: null,
-};
+// const setup = (props) => {
+//   const values = componentSetup(Video, {
+//     ...props,
+//   });
 
-const setup = () => {
-  const props = {
-    events,
-    require: true,
-    children: 'test',
-    'data-test': 'test',
-  };
+//   values.video = values.wrapper.dive();
 
-  const wrapper = shallow(<Video {...props} />);
+//   return values;
+// };
+// describe('Video', () => {
+//   describe('when video is required', () => {
+//     const require = true;
 
-  return {
-    props,
-    wrapper,
-  };
-};
+//     it('renders video in Media', () => {
+//       const { video } = setup({ require });
 
-describe('<Video />', () => {
-  let wrapper;
-  let props;
+//       expect(video.find(Media).find('video').exists()).toBe(true);
+//     });
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
-  });
+//     it('passes events to media', () => {
+//       const events = {
+//         onCanPlay: expect.createSpy(),
+//       };
+//       const { video } = setup({ require, events });
 
-  it('renders self and subcomponents', () => {
-    const video = wrapper.find('video');
+//       expect(video.find(Media).prop('events')).toBe(events);
+//     });
+//   });
 
-    Object.entries(events).forEach((val) => {
-      expect(wrapper.prop(val[0])).toBe(val[1]);
-    });
+//   it('renders nothing if video is not required', () => {
+//     const { video } = setup();
 
-    expect(video.parent().type()).toBe(Media);
-    expect(video.prop('children')).toBe(props.children);
-    expect(video.prop('data-test')).toBe(props['data-test']);
-  });
-
-  it('renders null when not required', () => {
-    wrapper.setProps({ require: false });
-
-    expect(wrapper.type()).toBe(null);
-  });
-});
+//     expect(video.type()).toBe(null);
+//   });
+// });

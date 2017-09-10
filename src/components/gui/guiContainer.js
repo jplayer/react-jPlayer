@@ -1,24 +1,51 @@
+import { lifecycle as setLifecycle, withHandlers, compose } from 'recompose';
 import { connectWithId } from 'react-jplayer-utils';
+
 import { setOption } from '../../actions/actions';
-import Gui from './gui';
+import GuiAnimation from './animation';
+
+const timeoutIds = [];
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   fullScreen: jPlayers[id].fullScreen,
   paused: jPlayers[id].paused,
+  startGuiFadeOut: jPlayers[id].startGuiFadeOut,
   guiFadeOut: jPlayers[id].guiFadeOut,
-  guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
+  guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
 });
 
-const mergeProps = (stateProps, { dispatch }, { id, ...attributes }) => ({
-  onMouseMove: () => {
-    if (stateProps.fullScreen && !stateProps.paused) {
-      dispatch(setOption(id, 'guiFadeOut', false));
-      clearTimeout(stateProps.guiFadeHoldTimeout);
+const handlers = {
+  onMouseMove: props => () => {
+    if (props.fullScreen) {
+      props.setOption(props.id, 'startGuiFadeOut', false);
+
+      timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
     }
   },
-  fullScreen: stateProps.fullScreen,
-  guiFadeOut: stateProps.guiFadeOut,
-  ...attributes,
-});
+  fadeOutHandler: props => () => {
+    props.setOption(props.id, 'guiFadeOut', true);
+  },
+};
 
-export default connectWithId(mapStateToProps, null, mergeProps)(Gui);
+const lifecycle = {
+  startFade() {
+    if (this.props.fullScreen && !this.props.paused && this.props.startGuiFadeOut) {
+      timeoutIds.push(setTimeout(this.props.fadeOutHandler, this.props.guiFadeHoldTime));
+    } else if (!this.props.startGuiFadeOut) {
+      this.props.setOption(this.props.id, 'guiFadeOut', false);
+    }
+  },
+  componentDidUpdate(prevProps) {
+    if (prevProps.startGuiFadeOut !== this.props.startGuiFadeOut) {
+      this.startFade();
+    }
+  },
+};
+
+export default compose(
+  connectWithId(mapStateToProps, {
+    setOption,
+  }),
+  withHandlers(handlers),
+  setLifecycle(lifecycle),
+)(GuiAnimation);

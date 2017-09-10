@@ -1,67 +1,41 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../../src/util/constants';
 import PlaybackRateBarValue from './playbackRateBarValue';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const styleTests = [
-  { props: {
-    playbackRate: 1,
-    minPlaybackRate: 0.5,
-    maxPlaybackRate: 4,
-  },
-    expected: { width: '14.285714285714285%', height: null } },
-  { props: {
-    playbackRate: 1,
-    verticalPlaybackRate: true,
-    minPlaybackRate: 0.5,
-    maxPlaybackRate: 4,
-  },
-    expected: { width: null, height: '14.285714285714285%' } },
-  { props: {
-    playbackRate: 3,
-    minPlaybackRate: 2,
-    maxPlaybackRate: 4,
-  },
-    expected: { width: '50%', height: null } },
-];
+const setup = props => componentSetup(PlaybackRateBarValue, {
+  verticalPlaybackRate: false,
+  minPlaybackRate: 0,
+  maxPlaybackRate: 1,
+  playbackRate: 0.5,
+  ...props,
+});
 
-const setup = () => {
-  const props = {
-    playbackRate: 1.0,
-    attributes: {
-      'data-test': 'test',
-    },
-  };
+describe('PlaybackRateBarValue', () => {
+  it('has playbackRateBarValue class', () => {
+    const { wrapper } = setup();
 
-  const wrapper = shallow(<PlaybackRateBarValue {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<PlaybackRateBarValue />', () => {
-  let wrapper;
-  let props;
-
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR_VALUE)).toBe(true);
   });
 
-  it('renders self and subcomponents', () => {
-    expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR_VALUE)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
-  });
+  describe('styles', () => {
+    it('map correctly when verticalPlaybackRate is false', () => {
+      const { wrapper } = setup();
 
-  styleTests.forEach((test) => {
-    it(`props (${Object.entries(test.props).join(' & ')}) match styles`,
-    () => {
-      wrapper.setProps(test.props);
+      expect(wrapper.prop('style')).toEqual({
+        width: '50%',
+        height: null,
+      });
+    });
 
-      expect(wrapper.prop('style')).toEqual(test.expected);
+    it('map correctly when verticalPlaybackRate is true', () => {
+      const { wrapper } = setup({ verticalPlaybackRate: true });
+
+      expect(wrapper.prop('style')).toEqual({
+        width: null,
+        height: '50%',
+      });
     });
   });
 });

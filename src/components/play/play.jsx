@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const Play = ({ play, id, paused, children, ...attributes }) => (
-  <button className={classes.PLAY} onClick={() => play(id, paused)} {...attributes}>
+const Play = ({ play, id, paused, children }) => (
+  <button className={classes.PLAY} onClick={() => play(id, paused)}>
     {children}
   </button>
 );

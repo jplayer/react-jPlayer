@@ -1,169 +1,46 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow, mount } from 'enzyme';
-import PropTypes from 'prop-types';
+import expect from 'expect';
 
-import { getJPlayers } from '../util/common.spec';
-import { __get__ } from './bar';
+import Bar from './bar';
+import componentSetup from '../util/specHelpers/componentSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const Bar = __get__('Bar');
-const id = 'jPlayer-1';
-const getProps = props => ({
-  clickMoveBar: createSpy(),
-  touchMoveBar: createSpy(),
-  barDrag: true,
-  children: <MockChildren className="test" />,
+const setup = props => componentSetup(Bar, {
+  children: <div className="@@bar" />,
+  onClick: expect.createSpy(),
+  onMouseDown: expect.createSpy(),
+  onTouchStart: expect.createSpy(),
+  setBar: expect.createSpy(),
   ...props,
 });
 
-const MockChildren = ({ setBar }) => <div ref={setBar} />;
-
-MockChildren.defaultProps = {
-  setBar: null,
-};
-
-MockChildren.propTypes = {
-  setBar: PropTypes.func,
-};
-
 describe('Bar', () => {
-  it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers(), { id });
-
-    expect(expected).toEqual({
-      barDrag: true,
-    });
-  });
-
-  const draggingData = [
-    { eventName: 'mouseup' },
-    { eventName: 'touchend' },
-  ];
-
-  draggingData.forEach((draggingDatum) => {
-    it(`${draggingDatum.eventName} sets dragging to false`, () => {
-      const props = getProps();
-      const event = new window.UIEvent(draggingDatum.eventName);
-      const wrapper = shallow(<Bar {...props} />);
-      const instance = wrapper.instance();
-
-      instance.dragging = true;
-
-      document.dispatchEvent(event);
-
-      expect(instance.dragging).toBe(false);
-    });
-  });
-
-  const moveBarData = [
-    { eventName: 'mousemove', moveBarKey: 'clickMoveBar' },
-    { eventName: 'touchmove', moveBarKey: 'touchMoveBar' },
-  ];
-
-  moveBarData.forEach((moveBarDatum) => {
-    it(`${moveBarDatum.eventName} calls moveBar if dragging and 
-      barDrag`, () => {
-      const props = getProps();
-      const event = new window.UIEvent(moveBarDatum.eventName);
-      const wrapper = mount(<Bar {...props} />);
-      const instance = wrapper.instance();
-
-      instance.dragging = true;
-      document.dispatchEvent(event);
-
-      expect(props[moveBarDatum.moveBarKey]).toHaveBeenCalledWith(instance.bar, event);
-    });
-  });
-
-  moveBarData.forEach((moveBarDatum) => {
-    it(`${moveBarDatum.eventName} doesn't call moveBar if not dragging 
-      and not barDrag`, () => {
-      const props = getProps({ barDrag: false });
-      const event = new window.UIEvent(moveBarDatum.eventName);
-      mount(<Bar {...props} />);
-
-      document.dispatchEvent(event);
-
-      expect(props[moveBarDatum.moveBarKey]).toNotHaveBeenCalled();
-    });
-  });
-
-  const draggingUnmountData = [
-    { eventName: 'mouseup' },
-    { eventName: 'touchend' },
-  ];
-
-  draggingUnmountData.forEach((draggingUnmountDatum) => {
-    it(`doesn't set dragging if unmounted for ${draggingUnmountDatum.eventName}
-      event`, () => {
-      const props = getProps();
-      const event = new window.UIEvent(draggingUnmountDatum.eventName);
-      const wrapper = shallow(<Bar {...props} />);
-      const instance = wrapper.instance();
-      instance.dragging = true;
-
-      wrapper.unmount();
-
-      document.dispatchEvent(event);
-
-      expect(instance.dragging).toBe(true);
-    });
-  });
-
-  const moveBarUnmountData = [
-    { eventName: 'mousemove', moveBarKey: 'clickMoveBar' },
-    { eventName: 'touchmove', moveBarKey: 'touchMoveBar' },
-  ];
-
-  moveBarUnmountData.forEach((moveBarUnmountDatum) => {
-    it(`doesn't call moveBar if unmounted for ${moveBarUnmountDatum.eventName}
-        event`, () => {
-      const props = getProps({ barDrag: true });
-      const event = new window.UIEvent(moveBarUnmountDatum.eventName);
-      const wrapper = shallow(<Bar {...props} />);
-      const instance = wrapper.instance();
-      instance.dragging = true;
-
-      wrapper.unmount();
-
-      document.dispatchEvent(event);
-
-      expect(props[moveBarUnmountDatum.moveBarKey]).toNotHaveBeenCalled();
-    });
-  });
-
-  it('onClick moves bar', () => {
-    const props = getProps();
-    const wrapper = shallow(<Bar {...props} />);
+  it('calls onClick', () => {
+    const { wrapper, props } = setup();
 
     wrapper.simulate('click');
 
-    expect(props.clickMoveBar).toHaveBeenCalled();
+    expect(props.onClick).toHaveBeenCalled();
   });
 
-  const renderDraggingData = [
-    { eventName: 'mouseDown' },
-    { eventName: 'touchStart' },
-  ];
+  it('calls onMouseDown', () => {
+    const { wrapper, props } = setup();
 
-  renderDraggingData.forEach((renderDraggingDatum) => {
-    it(`${renderDraggingDatum.eventName} sets dragging to true`, () => {
-      const props = getProps();
-      const wrapper = shallow(<Bar {...props} />);
-      const instance = wrapper.instance();
+    wrapper.simulate('mousedown');
 
-      wrapper.simulate(renderDraggingDatum.eventName);
-
-      expect(instance.dragging).toBe(true);
-    });
+    expect(props.onMouseDown).toHaveBeenCalled();
   });
 
-  it('sets ref', () => {
-    const props = getProps();
-    const wrapper = mount(<Bar {...props} />);
-    const instance = wrapper.instance();
+  it('calls onTouchStart', () => {
+    const { wrapper, props } = setup();
 
-    expect(instance.bar).toNotBe(undefined);
+    wrapper.simulate('touchstart');
+
+    expect(props.onTouchStart).toHaveBeenCalled();
+  });
+
+  it('children are rendered', () => {
+    const { wrapper } = setup();
+
+    expect(wrapper.find('.@@bar').exists()).toBe(true);
   });
 });

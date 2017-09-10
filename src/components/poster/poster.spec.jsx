@@ -1,42 +1,38 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes, defaultStatus } from '../../util/constants';
 import Poster from './poster';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = (newProps) => {
-  const props = {
-    src: 'http://www.test.jpg',
-    alt: 'test-poster',
-    'data-test': 'test',
-    ...newProps,
-  };
-
-  const wrapper = shallow(<Poster {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<Poster />', () => {
-  let wrapper;
-  let props;
-
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
-
-    expect(wrapper.hasClass(classes.POSTER)).toBeTruthy();
-    expect(wrapper.prop('alt')).toBe(props.alt);
-    expect(wrapper.prop('src')).toBe(props.src);
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+const setup = (props) => {
+  const values = componentSetup(Poster, {
+    ...props,
   });
 
-  it('renders null if src is not set', () => {
-    ({ wrapper, props } = setup({ src: defaultStatus.src }));
+  values.poster = values.wrapper.dive();
 
-    expect(wrapper.type()).toBe(null);
+  return values;
+};
+describe('Poster', () => {
+  describe('when src is supplied', () => {
+    const src = 'test.mp3';
+
+    it('has poster class', () => {
+      const { poster } = setup({ src });
+
+      expect(poster.hasClass(classes.POSTER)).toBe(true);
+    });
+
+    it('has src', () => {
+      const { poster } = setup({ src });
+
+      expect(poster.prop('src')).toBe(src);
+    });
+  });
+
+  it('renders nothing if no src is supplied', () => {
+    const { poster } = setup();
+
+    expect(poster.type()).toBe(null);
   });
 });

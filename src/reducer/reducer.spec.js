@@ -1,290 +1,468 @@
-import expect, { createSpy, spyOn } from 'expect';
+import expect from 'expect';
 
+import initializeOptions from '../initializeOptions/initializeOptions';
 import reducer from './reducer';
-import * as reducerData from '../util/mockData/mockReducerData';
-import { actionNames, defaultOptions, formats } from '../util/constants';
-import { getDefaultJPlayers, getJPlayers } from '../util/common.spec';
-
-const jPlayerOneId = 'jPlayer-1';
+import { actionNames, defaultOptions, defaultStatus } from '../util/constants';
 
 const mockMedia = (mediaType) => {
   const media = document.createElement(mediaType);
 
-  spyOn(document, 'createElement').andReturn(media);
-  spyOn(media, 'canPlayType').andReturn('probably');
+  expect.spyOn(document, 'createElement').andReturn(media);
+  expect.spyOn(media, 'canPlayType').andReturn('probably');
 };
+const id = 'TestPlayer';
 
-describe('jPlayer reducer', () => {
+describe('reducer', () => {
   let state;
 
   beforeEach(() => {
-    state = getDefaultJPlayers().jPlayers;
-    reducer.__Rewire__('shortid', {
-      generate: () => 'testId',
-    });
+    state = {
+      [id]: {},
+    };
   });
 
   afterEach(() => {
     expect.restoreSpies();
-    reducer.__ResetDependency__('shortid');
   });
 
   it('should return the state if action is invalid', () => {
     expect(reducer(state, '@@jPlayer-test')).toEqual(state);
   });
 
-  it('should return empty state if the state is not specified', () => {
-    expect(reducer(undefined, '@@jPlayer-test')).toEqual({});
-  });
-
-  it('should handle generic SET_OPTION value', () => {
-    const jPlayer = reducer(state, {
-      type: actionNames.SET_OPTION,
-      id: jPlayerOneId,
-      key: 'preload',
-      value: 'test',
-    })[jPlayerOneId];
-
-    expect(jPlayer).toEqual({
-      preload: 'test',
-    });
-  });
-
-  it('setOption handles media', () => {
-    const setMediaSpy = createSpy();
-
-    reducer.__Rewire__('setMedia', (...args) => {
-      setMediaSpy(...args);
-      return getJPlayers(1);
-    });
-
-    const media = {
-      sources: {
-        mp3: 'test.mp3',
+  it('should return initial state if the state is not specified', () => {
+    const jPlayerOptions = {
+      id,
+    };
+    initializeOptions(jPlayerOptions);
+    expect(reducer(undefined, '@@jPlayer-test')).toEqual({
+      [id]: {
+        ...defaultStatus,
+        ...defaultOptions,
+        ...jPlayerOptions,
       },
+    });
+  });
+
+  it('does focus on current player if keyEnabled true', () => {
+    state[id].keyEnabled = true;
+    state.SecondPlayer = {
+      focused: true,
     };
 
-    reducer(state, {
+    const newState = reducer(state, {
       type: actionNames.SET_OPTION,
-      id: jPlayerOneId,
-      key: 'media',
-      value: media,
+      id,
+      key: 'preload',
+      value: 'auto',
     });
 
-    expect(setMediaSpy).toHaveBeenCalledWith(state[jPlayerOneId], { media });
-    reducer.__ResetDependency__('setMedia');
+    expect(newState[id].focused).toBe(true);
+    expect(newState.SecondPlayer.focused).toNotBe(true);
   });
 
-  it('setOption handles no media', () => {
-    const clearMediaSpy = createSpy();
+  it('focuses on first keyEnabled player if current keyEnabled is false', () => {
+    state[id].keyEnabled = false;
+    state.SecondPlayer = {
+      keyEnabled: true,
+    };
 
-    reducer.__Rewire__('clearMedia', (...args) => {
-      clearMediaSpy(...args);
-      return getJPlayers(1);
-    });
-
-    const media = {};
-
-    reducer(state, {
+    const newState = reducer(state, {
       type: actionNames.SET_OPTION,
-      id: jPlayerOneId,
-      key: 'media',
-      value: media,
+      id,
+      key: 'preload',
+      value: 'auto',
     });
 
-    expect(clearMediaSpy).toHaveBeenCalledWith(state[jPlayerOneId]);
-    reducer.__ResetDependency__('clearMedia');
+    expect(newState[id].focused).toNotBe(true);
+    expect(newState.SecondPlayer.focused).toBe(true);
   });
 
-  it('setOption handles playHeadPercent', () => {
-    const percent = 22.3;
-    const setPlayHeadSpy = createSpy();
+  describe('SET_OPTION', () => {
+    it('should handle generic value', () => {
+      const newState = reducer(state, {
+        type: actionNames.SET_OPTION,
+        id,
+        key: 'preload',
+        value: 'auto',
+      });
 
-    reducer.__Rewire__('setPlayHead', (...args) => {
-      setPlayHeadSpy(...args);
-      return getJPlayers(1);
+      expect(newState[id]).toEqual({
+        preload: 'auto',
+      });
     });
 
-    reducer(state, {
-      type: actionNames.SET_OPTION,
-      id: jPlayerOneId,
-      key: 'playHeadPercent',
-      value: percent,
+    it('should handle media', () => {
+      mockMedia('audio');
+      const src = 'test.mp3';
+
+      const media = {
+        sources: {
+          mp3: src,
+        },
+      };
+
+      const newState = reducer(state, {
+        type: actionNames.SET_OPTION,
+        id,
+        key: 'media',
+        value: media,
+      });
+
+      expect(newState[id].media).toBe(media);
     });
 
-    expect(setPlayHeadSpy).toHaveBeenCalledWith(state[jPlayerOneId], { percent });
-    reducer.__ResetDependency__('setPlayHead');
+    it('should handle no media', () => {
+      const media = {};
+
+      const newState = reducer(state, {
+        type: actionNames.SET_OPTION,
+        id,
+        key: 'media',
+        value: media,
+      });
+
+      expect(newState[id]).toEqual({
+        ...defaultStatus,
+        media: defaultOptions.media,
+      });
+    });
+
+    it('should handle playHeadPercent', () => {
+      const percent = 22.3;
+      const src = 'test.mp3';
+
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.SET_OPTION,
+        id,
+        key: 'playHeadPercent',
+        value: percent,
+      });
+
+      expect(newState[id]).toEqual({
+        playHeadPercent: percent,
+        src,
+      });
+    });
+
+    it('should handle volume', () => {
+      const volume = 0.23;
+
+      const newState = reducer(state, {
+        type: actionNames.SET_OPTION,
+        id,
+        key: 'volume',
+        value: volume,
+      });
+
+      expect(newState[id]).toEqual({
+        volume,
+        muted: false,
+      });
+    });
+
+    it('should handle muted', () => {
+      const mute = true;
+
+      const newState = reducer(state, {
+        type: actionNames.SET_OPTION,
+        id,
+        key: 'muted',
+        value: mute,
+      });
+
+      expect(newState[id]).toEqual({
+        muted: mute,
+      });
+    });
   });
 
-  it('setOption handles volume', () => {
-    const volume = 0.23;
-    const setVolume = createSpy();
+  describe('SET_MEDIA', () => {
+    it('should handle media', () => {
+      mockMedia('audio');
 
-    reducer.__Rewire__('setVolume', (...args) => {
-      setVolume(...args);
-      return getJPlayers(1);
-    });
+      const src = 'test.mp3';
+      const media = {
+        sources: {
+          mp3: src,
+        },
+      };
 
-    reducer(state, {
-      type: actionNames.SET_OPTION,
-      id: jPlayerOneId,
-      key: 'volume',
-      value: volume,
-    });
-
-    expect(setVolume).toHaveBeenCalledWith(state[jPlayerOneId], { volume });
-    reducer.__ResetDependency__('setVolume');
-  });
-
-  it('setOption handles muted', () => {
-    const mute = true;
-    const setMute = createSpy();
-
-    reducer.__Rewire__('setMute', (...args) => {
-      setMute(...args);
-      return getJPlayers(1);
-    });
-
-    reducer(state, {
-      type: actionNames.SET_OPTION,
-      id: jPlayerOneId,
-      key: 'muted',
-      value: mute,
-    });
-
-    expect(setMute).toHaveBeenCalledWith(state[jPlayerOneId], { mute });
-    reducer.__ResetDependency__('setMute');
-  });
-
-  it('SET_MEDIA should handle all possible formats', () => {
-    Object.keys(formats).forEach((key) => {
-      mockMedia(formats[key].MEDIA);
-
-      const jPlayer = reducer(state, {
+      const newState = reducer(state, {
         type: actionNames.SET_MEDIA,
-        id: jPlayerOneId,
-        media: {
-          sources: {
-            [key]: `test.${key}`,
-          },
-        },
-      })[jPlayerOneId];
+        id,
+        media,
+      });
 
-      expect(jPlayer).toContain({
+      expect(newState[id]).toEqual({
+        ...defaultStatus,
         mediaSettings: {
-          video: formats[key].MEDIA === 'video',
-          formats: [
-            {
-              supplied: key,
-              supported: 'probably',
-            },
-          ],
+          formats: [{
+            supplied: 'mp3',
+            supported: 'probably',
+          }],
+          video: false,
+          nonSupported: false,
         },
-        src: `test.${key}`,
+        media,
+        video: false,
+        src,
+        error: undefined,
+      });
+    });
+
+    it('should handle non supported format', () => {
+      mockMedia('audio');
+
+      const media = {
+        sources: {
+          xxx: 'test.xxx',
+        },
+      };
+
+      const newState = reducer(state, {
+        type: actionNames.SET_MEDIA,
+        id,
+        media,
+      });
+
+      expect(newState[id].error).toExist();
+    });
+  });
+
+  describe('CLEAR_MEDIA', () => {
+    it('should reset the status', () => {
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.CLEAR_MEDIA,
+        id,
+      });
+
+      expect(newState[id]).toEqual({
+        ...defaultStatus,
+        media: defaultOptions.media,
+      });
+    });
+  });
+
+  describe('PLAY', () => {
+    it('should handle with src and no custom time', () => {
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.PLAY,
+        id,
+      });
+
+      expect(newState[id]).toEqual({
+        paused: false,
+        src,
+        newTime: null,
+      });
+    });
+
+    it('should handle with src and custom time', () => {
+      const time = 23;
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.PLAY,
+        id,
+        time,
+      });
+
+      expect(newState[id]).toEqual({
+        paused: false,
+        src,
+        newTime: time,
+      });
+    });
+
+    it('should handle with no src', () => {
+      const newState = reducer(state, {
+        type: actionNames.PLAY,
+        id,
+      });
+
+      expect(newState[id].error).toExist();
+    });
+  });
+
+  describe('PAUSE', () => {
+    it('should handle with src and no custom time', () => {
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.PAUSE,
+        id,
+      });
+
+      expect(newState[id]).toEqual({
         paused: true,
-        media: {
-          ...{ ...defaultOptions.media, ...{ sources: { [key]: `test.${key}` } } },
-        },
+        src,
+        newTime: null,
+      });
+    });
+
+    it('should handle with src and custom time', () => {
+      const time = 23;
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.PAUSE,
+        id,
+        time,
+      });
+
+      expect(newState[id]).toEqual({
+        paused: true,
+        src,
+        newTime: time,
+      });
+    });
+
+    it('should handle PAUSE with no src', () => {
+      const newState = reducer(state, {
+        type: actionNames.PAUSE,
+        id,
+      });
+
+      expect(newState[id].error).toExist();
+    });
+  });
+
+  describe('PLAY_HEAD', () => {
+    it('should handle with src', () => {
+      const percent = 22;
+      const src = 'test.mp3';
+      state[id].src = src;
+
+      const newState = reducer(state, {
+        type: actionNames.PLAY_HEAD,
+        id,
+        percent,
+      });
+
+      expect(newState[id]).toEqual({
+        playHeadPercent: percent,
+        src,
+      });
+    });
+
+    it('should handle with no src', () => {
+      const newState = reducer(state, {
+        type: actionNames.PLAY_HEAD,
+        id,
+      });
+
+      expect(newState[id].error).toExist();
+    });
+  });
+
+  describe('VOLUME', () => {
+    it('muted should be true when volume <= 0', () => {
+      const newState = reducer(state, {
+        type: actionNames.VOLUME,
+        id,
+        volume: -10,
+      });
+
+      expect(newState[id]).toEqual({
+        volume: 0,
+        muted: true,
+      });
+    });
+
+    it('muted should be false when volume >= 0', () => {
+      const newState = reducer(state, {
+        type: actionNames.VOLUME,
+        id,
+        volume: 10,
+      });
+
+      expect(newState[id]).toEqual({
+        volume: 1,
+        muted: false,
       });
     });
   });
 
-  it('should handle SET_MEDIA', () => {
-    mockMedia('audio');
-    reducerData.setMediaData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[jPlayerOneId];
+  describe('MUTE', () => {
+    it('should set muted', () => {
+      const newState = reducer(state, {
+        type: actionNames.MUTE,
+        id,
+        mute: true,
+      });
 
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
+      expect(newState[id]).toEqual({
+        muted: true,
       });
     });
   });
 
-  it('should handle PLAY', () => {
-    reducerData.playData.forEach((test) => {
-      const newState = {
-        ...state,
-        [jPlayerOneId]: {
-          ...state[jPlayerOneId],
-          ...test.state,
-        },
+  describe('FOCUS', () => {
+    it('does not focus if keyEnabled not true', () => {
+      const newState = reducer(state, {
+        type: actionNames.FOCUS,
+        id,
+      });
+
+      expect(newState[id]).toEqual({});
+    });
+
+    it('other player keeps focused if keyEnabled not true', () => {
+      state.SecondPlayer = {
+        keyEnabled: true,
+        focused: true,
       };
-      const jPlayer = reducer(newState, test.action)[jPlayerOneId];
 
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
+      const newState = reducer(state, {
+        type: actionNames.FOCUS,
+        id,
+      });
+
+      expect(newState.SecondPlayer).toEqual({
+        keyEnabled: true,
+        focused: true,
       });
     });
-  });
 
-  it('should handle PAUSE', () => {
-    reducerData.pauseData.forEach((test) => {
-      const newState = {
-        ...state,
-        [jPlayerOneId]: {
-          ...state[jPlayerOneId],
-          ...test.state,
-        },
+    it('does focus if keyEnabled true', () => {
+      state[id].keyEnabled = true;
+
+      const newState = reducer(state, {
+        type: actionNames.FOCUS,
+        id,
+      });
+
+      expect(newState[id]).toEqual({
+        focused: true,
+        keyEnabled: true,
+      });
+    });
+
+    it('sets all other jPlayers focused to false if keyEnabled true', () => {
+      state.SecondPlayer = {
+        keyEnabled: true,
       };
-      const jPlayer = reducer(newState, test.action)[jPlayerOneId];
+      state[id].keyEnabled = true;
 
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
+      const newState = reducer(state, {
+        type: actionNames.FOCUS,
+        id,
       });
-    });
-  });
 
-  it('should handle PLAY_HEAD', () => {
-    reducerData.playHeadData.forEach((test) => {
-      const newState = {
-        ...state,
-        [jPlayerOneId]: {
-          ...state[jPlayerOneId],
-          ...test.state,
-        },
-      };
-      const jPlayer = reducer(newState, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle VOLUME', () => {
-    reducerData.volumeData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle MUTE', () => {
-    reducerData.muteData.forEach((test) => {
-      const jPlayer = reducer(state, test.action)[jPlayerOneId];
-
-      Object.keys(test.expected).forEach((key) => {
-        expect(jPlayer[key]).toEqual(test.expected[key]);
-      });
-    });
-  });
-
-  it('should handle FOCUS', () => {
-    state = getDefaultJPlayers(3).jPlayers;
-
-    reducerData.focusData.forEach((test) => {
-      state[test.id] = test.state;
-
-      const jPlayers = reducer(state, test.action);
-
-      Object.keys(jPlayers).forEach((key) => {
-        if (test.id !== key) {
-          expect(jPlayers[key].focused).toBeFalsy();
-        } else {
-          expect(jPlayers[key].focused).toBeTruthy();
-        }
+      expect(newState.SecondPlayer).toEqual({
+        keyEnabled: true,
+        focused: false,
       });
     });
   });

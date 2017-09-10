@@ -1,165 +1,88 @@
 import React from 'react';
-import expect, { createSpy, spyOn, restoreSpies } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import { getJPlayers } from '../../util/common.spec';
-import { setOption } from '../../actions/actions';
-import { __get__ } from './playbackRateBarContainer';
-import Bar from '../bar';
-import PlaybackRateBar from './playbackRateBar';
-import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
-const PlaybackRateBarContainer = __get__('PlaybackRateBarContainer');
-const id = 'jPlayer-1';
-const getBoundingClientRect = () => ({
-  top: 10,
-  left: 30,
-  width: 100,
-  height: 10,
-});
-const getProps = props => ({
-  onClick: Function.prototype,
-  onTouchMove: Function.prototype,
-  ...props,
-});
-const attributes = {
-  'data-test': 'test',
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockBar = {
+  getBoundingClientRect: () => ({
+    width: 20,
+    height: 200,
+    top: 20,
+    left: 0,
+  }),
 };
-const children = <div />;
+const mockClickEvent = {
+  pageX: 20,
+  pageY: 100,
+  preventDefault: expect.createSpy(),
+};
+const mockTouchEvent = {
+  touches: [
+    {
+      pageX: 20,
+      pageY: 100,
+    },
+  ],
+  preventDefault: expect.createSpy(),
+};
+const mockPlaybackRateBar = props => (
+  <div
+    onClick={() => props.clickMoveBar(mockBar, mockClickEvent)}
+    onTouchStart={() => props.touchMoveBar(mockBar, mockTouchEvent)}
+  />
+);
+const PlaybackRateBarContainer = proxyquire('./playbackRateBarContainer', {
+  './playbackRateBar': mockPlaybackRateBar,
+}).default;
+const setup = (jPlayers, props) => containerSetup(PlaybackRateBarContainer, jPlayers, props);
 
 describe('PlaybackRateBarContainer', () => {
-  let dispatch;
+  let jPlayers;
 
   beforeEach(() => {
-    dispatch = createSpy();
-  });
-
-  it('merges props', () => {
-    const expected = mergeProps({ children, attributes }, { dispatch });
-
-    delete expected.onClick;
-    delete expected.onTouchMove;
-
-    expect(expected).toEqual({
-      children,
-      attributes,
-    });
-  });
-
-  it('onClick moves playback rate', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
-    });
-    const mappedProps = mapStateToProps(getJPlayers(), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-
-    mergedProps.onClick(mockBar, { pageX: 33 });
-
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 0.605));
-  });
-
-  it('onClick moves playback rate when verticalPlaybackRate', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
-    });
-    const mappedProps = mapStateToProps(getJPlayers({
-      verticalPlaybackRate: true,
-    }), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-
-    mergedProps.onClick(mockBar, { pageY: 7 });
-
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 5.05));
-  });
-
-  it('onTouchMove moves playback rate', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
-    });
-    const mappedProps = mapStateToProps(getJPlayers(), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-    const event = {
-      preventDefault: createSpy(),
-      touches: [
-        { pageX: 33 },
-      ],
+    jPlayers = {
+      [id]: {
+        maxPlaybackRate: 1,
+        minPlaybackRate: 0,
+      },
     };
-
-    mergedProps.onTouchMove(mockBar, event);
-
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 0.605));
-    expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('onTouchMove moves playback rate when verticalPlaybackRate', () => {
-    spyOn(document, 'createElement').andReturn({
-      getBoundingClientRect,
+  describe('movePlaybackRate', () => {
+    it('verticalPlaybackRate when true gives expected output', () => {
+      jPlayers[id].verticalPlaybackRate = true;
+
+      const { wrapper, store } = setup(jPlayers);
+
+      wrapper.simulate('click');
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.playbackRate).toBe(0.6);
     });
-    const mappedProps = mapStateToProps(getJPlayers({
-      verticalPlaybackRate: true,
-    }), { id });
-    const mergedProps = mergeProps(mappedProps, { dispatch });
-    const mockBar = document.createElement('div');
-    const event = {
-      preventDefault: createSpy(),
-      touches: [
-        { pageY: 7 },
-      ],
-    };
 
-    mergedProps.onTouchMove(mockBar, event);
+    it('onClick moves playbackRate', () => {
+      const { wrapper, store } = setup(jPlayers);
 
-    expect(dispatch).toHaveBeenCalledWith(setOption(id, 'playbackRate', 5.05));
-    expect(event.preventDefault).toHaveBeenCalled();
-  });
+      wrapper.simulate('click');
 
-  it('render passes move bar functions into bar', () => {
-    const props = getProps();
-    const wrapper = shallow(<PlaybackRateBarContainer {...props} />);
+      const jPlayer = store.getState().jPlayers[id];
 
-    expect(wrapper.type()).toBe(Bar);
-    expect(wrapper.prop('clickMoveBar')).toBe(props.onClick);
-    expect(wrapper.prop('touchMoveBar')).toBe(props.onTouchMove);
-  });
+      expect(jPlayer.playbackRate).toBe(1);
+    });
 
-  it('renders PlaybackRateBar', () => {
-    const props = {
-      ...getProps(),
-      attributes,
-    };
-    const wrapper = shallow(<PlaybackRateBarContainer {...props} />)
-      .find(PlaybackRateBar);
+    it('onTouch moves playbackRate', () => {
+      const { wrapper, store } = setup(jPlayers);
 
-    expect(wrapper.type()).toBe(PlaybackRateBar);
-    expect(wrapper.prop('data-test')).toBe(attributes['data-test']);
-  });
+      wrapper.simulate('touchstart');
 
-  it('children is PlaybackRateBarValue as default', () => {
-    const props = getProps();
-    const wrapper = shallow(<PlaybackRateBarContainer {...props} />)
-      .find(PlaybackRateBar);
+      const jPlayer = store.getState().jPlayers[id];
 
-    expect(wrapper.children().type()).toBe(PlaybackRateBarValue);
-  });
-
-  it('renders custom children', () => {
-    const props = getProps();
-    const wrapper = shallow(
-      <PlaybackRateBarContainer {...props}>
-        <div className="@@jPlayer-test" />
-      </PlaybackRateBarContainer>,
-    ).find(PlaybackRateBar);
-
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.children().type()).toNotBe(PlaybackRateBarValue);
-  });
-
-  afterEach(() => {
-    restoreSpies();
+      expect(jPlayer.playbackRate).toBe(1);
+    });
   });
 });

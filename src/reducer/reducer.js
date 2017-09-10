@@ -1,198 +1,221 @@
-import shortid from 'shortid';
-import { updateObject, limitValue } from 'react-jplayer-utils';
+import { limitValue } from 'react-jplayer-utils';
 
-import { actionNames, formats, defaultStatus, defaultOptions } from '../util/constants';
+import { initialState } from '../initializeOptions/initializeOptions';
+import { actionNames, formats as supportedFormats, defaultStatus, defaultOptions } from '../util/constants';
 import urlNotSetError from '../util/errorHandlers/urlNotSetError';
 import noFormatSupportedError from '../util/errorHandlers/noFormatSupportedError';
 
-const updateFormats = (jPlayer, media) => {
-  const newMediaSettings = { ...jPlayer.mediaSettings };
-  const newFormats = [];
+const updateFormats = (sources) => {
+  const formats = [];
 
-  Object.keys(media.sources).forEach((supplied) => {
+  Object.keys(sources).forEach((supplied) => {
     let canPlayType;
 
     try {
       // Some legacy browsers don't have canPlayType property
-      canPlayType = document.createElement(formats[supplied].MEDIA)
-        .canPlayType(formats[supplied].CODEC);
+      canPlayType = document.createElement(supportedFormats[supplied].MEDIA)
+        .canPlayType(supportedFormats[supplied].CODEC);
     } catch (error) {
       canPlayType = '';
     }
 
-    newFormats.push({
+    formats.push({
       supplied,
       supported: canPlayType,
     });
   });
 
-  newMediaSettings.formats = newFormats;
-
-  return updateObject(jPlayer, {
-    mediaSettings: newMediaSettings,
-  });
+  return formats;
 };
 
-const clearMedia = jPlayer => updateObject(jPlayer, {
+const clearMedia = () => ({
   ...defaultStatus,
   media: defaultOptions.media,
 });
 
-const setMedia = (jPlayer, { media = { sources: [] } }) => {
-  let newJPlayer = {
-    ...clearMedia(jPlayer),
-    mediaSettings: defaultStatus.mediaSettings,
-  };
+const setMedia = (_, { media }) => {
+  let video;
+  let src;
+  let nonSupported = true;
+  let error;
 
-  newJPlayer = updateFormats(newJPlayer, media);
+  const formats = updateFormats(media.sources);
 
-  newJPlayer.mediaSettings.formats.forEach((format) => {
-    if (format.supported && !newJPlayer.mediaSettings.foundSupported) {
-      newJPlayer.mediaSettings.video = formats[format.supplied].MEDIA === 'video';
-      newJPlayer.src = media.sources[format.supplied];
-      newJPlayer.paused = true;
-      newJPlayer.mediaSettings.foundSupported = true;
+  formats.forEach((format) => {
+    if (format.supported && nonSupported) {
+      video = supportedFormats[format.supplied].MEDIA === 'video';
+      src = media.sources[format.supplied];
+      nonSupported = false;
     }
   });
 
-  if (!newJPlayer.mediaSettings.foundSupported) {
-    newJPlayer.error = noFormatSupportedError(
-      `{ media.sources: '${Object.keys(media.sources).join(', ')}' }`,
+  if (nonSupported) {
+    error = noFormatSupportedError(
+      `media.sources: '${Object.keys(media.sources).join(', ')}'`,
     );
   }
-  newJPlayer.media = updateObject(defaultOptions.media, {
-    ...media,
-    id: shortid.generate(),
-  });
 
-  return newJPlayer;
+  return {
+    ...clearMedia(),
+    mediaSettings: {
+      formats,
+      video,
+      nonSupported,
+    },
+    media,
+    video,
+    src,
+    paused: true,
+    error,
+  };
 };
 
 const play = (jPlayer, { time }) => {
   if (jPlayer.src) {
-    return updateObject(jPlayer, {
+    return {
       paused: false,
-      newTime: !isNaN(time) ? time : jPlayer.newTime,
-    });
+      newTime: !isNaN(time) ? time : null,
+    };
   }
-  return updateObject(jPlayer, {
+
+  return {
     error: urlNotSetError(play.name),
-  });
+  };
 };
 
 const pause = (jPlayer, { time }) => {
   if (jPlayer.src) {
-    return updateObject(jPlayer, {
+    return {
       paused: true,
-      newTime: !isNaN(time) ? time : jPlayer.newTime,
-    });
+      newTime: !isNaN(time) ? time : null,
+    };
   }
-  return updateObject(jPlayer, {
+
+  return {
     error: urlNotSetError(pause.name),
-  });
+  };
 };
 
 const setPlayHead = (jPlayer, { percent }) => {
   const limitedPercent = limitValue(percent, 0, 100);
 
   if (jPlayer.src) {
-    return updateObject(jPlayer, {
+    return {
       playHeadPercent: limitedPercent,
-    });
+    };
   }
-  return updateObject(jPlayer, {
+
+  return {
     error: urlNotSetError(setPlayHead.name),
-  });
+  };
 };
 
-const setVolume = (jPlayer, { volume }) => updateObject(jPlayer, {
+const setVolume = (_, { volume }) => ({
   volume: limitValue(volume, 0, 1),
   muted: volume <= 0,
 });
 
-const setMute = (jPlayer, { mute }) => updateObject(jPlayer, {
+const setMute = (_, { mute }) => ({
   muted: mute,
 });
 
-const focus = (jPlayer, { id }) => {
-  const newJPlayer = { ...jPlayer };
-  const firstKeyEnabledPlayer = Object.keys(newJPlayer).filter(key =>
-    newJPlayer[key].keyEnabled,
-  ).shift();
-
-  if (newJPlayer[id].keyEnabled) {
-    Object.keys(newJPlayer).forEach((key) => {
-      if (key === id) {
-        newJPlayer[key] = updateObject(newJPlayer[key], { focused: true });
-      } else {
-        newJPlayer[key] = updateObject(newJPlayer[key], { focused: false });
+const setOption = (jPlayer, { key, value }) => {
+  switch (key) {
+    case 'media': {
+      if (Object.keys(value).some(v => v)) {
+        return setMedia(jPlayer, { media: value });
       }
-    });
-  } else if (newJPlayer[firstKeyEnabledPlayer] !== undefined) {
-    const focusedPlayer = updateObject(newJPlayer[firstKeyEnabledPlayer], { focused: true });
-    return updateObject(newJPlayer, { [firstKeyEnabledPlayer]: focusedPlayer });
-  }
-  return newJPlayer;
-};
-
-const updatePlayer = (jPlayer, action) => {
-  switch (action.type) {
-    case actionNames.SET_OPTION:
-      switch (action.key) {
-        case 'media': {
-          const media = action.value;
-          if (Object.keys(media).some(v => v)) {
-            return setMedia(jPlayer, { media });
-          }
-          return clearMedia(jPlayer);
-        }
-        case 'playHeadPercent':
-          return setPlayHead(jPlayer, { percent: action.value });
-        case 'volume':
-          return setVolume(jPlayer, { volume: action.value });
-        case 'muted':
-          return setMute(jPlayer, { mute: action.value });
-        default:
-          return updateObject(jPlayer, { [action.key]: action.value });
-      }
-    case actionNames.SET_MEDIA:
-      return setMedia(jPlayer, action);
-    case actionNames.CLEAR_MEDIA:
-      return clearMedia(jPlayer);
-    case actionNames.PLAY:
-      return play(jPlayer, action);
-    case actionNames.PAUSE:
-      return pause(jPlayer, action);
-    case actionNames.PLAY_HEAD:
-      return setPlayHead(jPlayer, action);
-    case actionNames.VOLUME:
-      return setVolume(jPlayer, action);
-    case actionNames.MUTE:
-      return setMute(jPlayer, action);
+      return clearMedia();
+    }
+    case 'playHeadPercent':
+      return setPlayHead(jPlayer, { percent: value });
+    case 'volume':
+      return setVolume(jPlayer, { volume: value });
+    case 'muted':
+      return setMute(jPlayer, { mute: value });
     default:
-      return null;
+      return {
+        [key]: value,
+      };
   }
 };
 
-const jPlayerReducer = (state, action) => {
-  let newState = { ...state };
-  const jPlayer = updatePlayer(newState[action.id], action);
+const focus = (state, id) => {
+  const newState = { ...state };
 
-  if (jPlayer !== null) {
-    newState = updateObject(newState, {
-      [action.id]: jPlayer,
-    });
-
-    return jPlayerReducer(newState, {
-      type: actionNames.FOCUS,
-      id: action.id,
+  if (newState[id].keyEnabled) {
+    Object.keys(newState).forEach((key) => {
+      if (key === id) {
+        newState[key].focused = true;
+      } else {
+        newState[key].focused = false;
+      }
     });
   }
 
-  if (action.type === actionNames.FOCUS) {
-    return updateObject(newState, focus(newState, action));
-  }
   return newState;
 };
 
-export default jPlayerReducer;
+const focusOnFirstKeyEnabledPlayer = (state) => {
+  const firstKeyEnabledPlayer = Object.keys(state).filter(key =>
+    state[key].keyEnabled,
+  ).shift();
+
+  if (state[firstKeyEnabledPlayer] !== undefined) {
+    const focusedPlayer = {
+      ...state[firstKeyEnabledPlayer],
+      focused: true,
+    };
+
+    return {
+      ...state,
+      [firstKeyEnabledPlayer]: focusedPlayer,
+    };
+  }
+
+  return state;
+};
+
+const updateJPlayer = (state, action, fn) => {
+  const value = fn(state[action.id], action);
+  const newState = state[action.id].keyEnabled ? focus(state, action.id) :
+    focusOnFirstKeyEnabledPlayer(state);
+  const jPlayer = newState[action.id];
+
+  return {
+    ...newState,
+    [action.id]: {
+      ...jPlayer,
+      ...value,
+    },
+  };
+};
+
+const reducer = (state = initialState, action) => {
+  const updateValue = fn => updateJPlayer(state, action, fn);
+
+  switch (action.type) {
+    case actionNames.SET_MEDIA:
+      return updateValue(setMedia);
+    case actionNames.CLEAR_MEDIA:
+      return updateValue(clearMedia);
+    case actionNames.PLAY:
+      return updateValue(play);
+    case actionNames.PAUSE:
+      return updateValue(pause);
+    case actionNames.PLAY_HEAD:
+      return updateValue(setPlayHead);
+    case actionNames.VOLUME:
+      return updateValue(setVolume);
+    case actionNames.MUTE:
+      return updateValue(setMute);
+    case actionNames.SET_OPTION:
+      return updateValue(setOption);
+    case actionNames.FOCUS:
+      return focus(state, action.id);
+    default:
+      return state;
+  }
+};
+
+export default reducer;

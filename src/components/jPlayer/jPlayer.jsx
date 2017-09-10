@@ -1,19 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const JPlayer = ({ setJPlayer, children, ...attributes }) => (
-  <div ref={setJPlayer} draggable={false} {...attributes}>
-    {children}
-  </div>
-);
+import KeyControl from './keyControl/keyControlContainer';
+import ScreenFull from './screenFull/screenFullContainer';
+import ErrorLogger from './errorLogger/errorLoggerContainer';
+import TimeDisplay from './timeDisplay/timeDisplayContainer';
+
+const JPlayer = (props) => {
+  const { className, keyBindings, children,
+    onMouseMoveCapture, id } = props;
+
+  return (
+    <div
+      id={id}
+      className={className}
+      draggable={false}
+      onMouseMoveCapture={onMouseMoveCapture}
+    >
+      <KeyControl keyBindings={keyBindings} />
+      <TimeDisplay />
+      <ScreenFull />
+      <ErrorLogger />
+      {children}
+    </div>
+  );
+};
 
 JPlayer.defaultProps = {
-  setJPlayer: null,
+  keyBindings: null,
 };
 
 JPlayer.propTypes = {
-  setJPlayer: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  keyBindings: PropTypes.object,
+  onMouseMoveCapture: PropTypes.func.isRequired,
+  className: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]).isRequired,
 };
 
 export default JPlayer;

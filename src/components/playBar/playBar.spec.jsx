@@ -1,43 +1,34 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../util/constants';
 import PlayBar from './playBar';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = () => {
-  const props = {
-    currentPercentAbsolute: 20,
-    currentPercentRelative: 30,
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<PlayBar {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(PlayBar, {
+  smoothPlayBar: false,
+  smoothWidth: 22,
+  currentPercentRelative: 33,
+  ...props,
+});
 
 describe('PlayBar', () => {
-  let wrapper;
-  let props;
+  it('has gui class', () => {
+    const { wrapper } = setup();
 
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.PLAY_BAR)).toBe(true);
   });
 
-  it('renders self and subcomponents', () => {
-    const playBar = wrapper.dive();
+  describe('width', () => {
+    it('is smoothWidth when smoothPlayBar is true', () => {
+      const { wrapper, props } = setup({ smoothPlayBar: true });
 
-    expect(playBar.prop('style').width).toBe(`${props.currentPercentRelative}%`);
-    expect(playBar.hasClass(classes.PLAY_BAR)).toBeTruthy();
-    expect(playBar.prop('data-test')).toBe(props['data-test']);
-  });
+      expect(wrapper.prop('style').width).toBe(`${props.smoothWidth}%`);
+    });
 
-  it('width is currentPercentAbsolute when smoothPlayBar', () => {
-    wrapper.setProps({ smoothPlayBar: true });
-    expect(wrapper.dive().prop('style').width).toBe(`${props.currentPercentAbsolute}%`);
+    it('is smoothWidth when smoothPlayBar is true', () => {
+      const { wrapper, props } = setup();
+
+      expect(wrapper.prop('style').width).toBe(`${props.currentPercentRelative}%`);
+    });
   });
 });

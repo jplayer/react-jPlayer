@@ -1,16 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connectWithId, getElementOffset } from 'react-jplayer-utils';
+import { compose, withHandlers } from 'recompose';
 
 import { setOption } from '../../actions/actions';
-import Bar from '../bar';
 import PlaybackRateBar from './playbackRateBar';
-import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 
-const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
-  movePlaybackRate: (bar, dispatch, e) => {
-    const { verticalPlaybackRate, minPlaybackRate,
-      maxPlaybackRate } = jPlayers[id];
+const mapStateToProps = ({ jPlayers }, { id }) => ({
+  verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
+  minPlaybackRate: jPlayers[id].minPlaybackRate,
+  maxPlaybackRate: jPlayers[id].maxPlaybackRate,
+});
+
+const handlers = {
+  movePlaybackRate: props => (bar, e) => {
     const offset = getElementOffset(bar);
     const w = bar.getBoundingClientRect().width;
     const h = bar.getBoundingClientRect().height;
@@ -18,54 +19,33 @@ const mapStateToProps = ({ jPlayers }, { id, children, ...attributes }) => ({
     const y = (h - e.pageY) + offset.top;
     let ratio;
 
-    if (verticalPlaybackRate) {
+    if (props.verticalPlaybackRate) {
       ratio = y / h;
     } else {
       ratio = x / w;
     }
 
-    const playbackRateValue = (ratio * (maxPlaybackRate - minPlaybackRate))
-                              + minPlaybackRate;
+    const playbackRate = (ratio * (props.maxPlaybackRate - props.minPlaybackRate))
+      + props.minPlaybackRate;
 
-    dispatch(setOption(id, 'playbackRate', playbackRateValue));
+    props.setOption(props.id, 'playbackRate', playbackRate);
   },
-  children,
-  attributes,
-});
+};
 
-const mergeProps = ({ movePlaybackRate, children, attributes }, { dispatch }) => ({
-  onClick: (bar, e) => movePlaybackRate(bar, dispatch, e),
-  onTouchMove: (bar, e) => {
+const secondHandlers = {
+  clickMoveBar: props => (bar, e) => props.movePlaybackRate(bar, e),
+  touchMoveBar: props => (bar, e) => {
     // Stop page scrolling
     e.preventDefault();
 
-    movePlaybackRate(bar, dispatch, e.touches[0]);
+    props.movePlaybackRate(bar, e.touches[0]);
   },
-  children,
-  attributes,
-});
-
-const PlaybackRateBarContainer = ({ onClick, onTouchMove, children,
-attributes }) => (
-  <Bar
-    clickMoveBar={onClick}
-    touchMoveBar={onTouchMove}
-  >
-    <PlaybackRateBar {...attributes}>
-      {children}
-    </PlaybackRateBar>
-  </Bar>
-);
-
-PlaybackRateBarContainer.defaultProps = {
-  children: (<PlaybackRateBarValue />),
 };
 
-PlaybackRateBarContainer.propTypes = {
-  attributes: PropTypes.object.isRequired,
-  children: PropTypes.node,
-  onClick: PropTypes.func.isRequired,
-  onTouchMove: PropTypes.func.isRequired,
-};
-
-export default connectWithId(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);
+export default compose(
+  connectWithId(mapStateToProps, {
+    setOption,
+  }),
+  withHandlers(handlers),
+  withHandlers(secondHandlers),
+)(PlaybackRateBar);

@@ -1,86 +1,41 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
+import Gui from './gui';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 import { classes } from '../../util/constants';
-import Gui, { __get__ } from './gui';
 
-const setup = (newProps) => {
-  const props = {
-    onMouseMove: createSpy(),
-    children: (<div className="@@jPlayer-test" />),
-    fullScreen: false,
-    guiFadeOut: false,
-    'data-test': 'test',
-    ...newProps,
-  };
-
-  const wrapper = shallow(<Gui {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
-const motion = __get__('motion');
+const setup = props => componentSetup(Gui, {
+  opacity: 0.7,
+  onMouseMove: expect.createSpy(),
+  children: <div />,
+  ...props,
+});
 
 describe('Gui', () => {
-  let wrapper;
-  let props;
+  it('has gui class', () => {
+    const { wrapper } = setup();
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
-    const gui = wrapper.dive();
+    expect(wrapper.hasClass(classes.GUI)).toBe(true);
+  });
 
-    gui.simulate('mousemove');
+  it('calls onMouseMove', () => {
+    const { wrapper, props } = setup();
+
+    wrapper.simulate('mousemove');
 
     expect(props.onMouseMove).toHaveBeenCalled();
-    expect(gui.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(gui.hasClass(classes.GUI)).toBeTruthy();
-    expect(gui.prop('data-test')).toBe(props['data-test']);
   });
 
-  it('default opacity for motion is 1', () => {
-    ({ wrapper, props } = setup());
-    expect(wrapper.prop('defaultStyle')).toEqual({
-      opacity: 1,
-    });
+  it('opacity is set on the style', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.prop('style').opacity).toBe(props.opacity);
   });
 
-  it('opacity for motion is 1 when fullScreen false', () => {
-    ({ wrapper, props } = setup());
-    expect(wrapper.prop('style')).toEqual({
-      opacity: 1,
-    });
-  });
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
 
-  it('opacity value is 1 when fullScreen true and guiFadeOut false', () => {
-    ({ wrapper, props } = setup({ fullScreen: true }));
-    expect(wrapper.prop('style').opacity.val).toBe(1);
-  });
-
-  it('opacity value is 0 when fullScreen true and guiFadeOut true', () => {
-    ({ wrapper, props } = setup({ fullScreen: true, guiFadeOut: true }));
-    expect(wrapper.prop('style').opacity.val).toBe(0);
-  });
-
-  it('opacity gets set to parameter opacity', () => {
-    const opacity = 0.2;
-    const motionWrapper = shallow(motion({ opacity }));
-    expect(motionWrapper.prop('style').opacity).toBe(opacity);
-  });
-
-  it('display is none when opacity is', () => {
-    const motionWrapper = shallow(motion({ opacity: 0 }));
-    expect(motionWrapper.prop('style').display).toBe('none');
-  });
-
-  it('display is not none when opacity is not 0', () => {
-    const motionWrapper = shallow(motion({ opacity: 0.1 }));
-    expect(motionWrapper.prop('style').display).toBe('');
-  });
-
-  afterEach(() => {
-    props.onMouseMove.reset();
+    expect(wrapper.prop('children')).toBe(props.children);
   });
 });

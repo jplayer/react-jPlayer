@@ -1,9 +1,11 @@
 /* eslint-disable max-len */
 
-import initialState from './initialState/initialState';
+import initializeOptions from './initializeOptions/initializeOptions';
 import reducer from './reducer/reducer';
 import * as actions from './actions/actions';
-import connect from './connect/connect';
+import * as constants from './util/constants';
+
+// Containers
 import Gui from './components/gui/guiContainer';
 import Video from './components/video/videoContainer';
 import Audio from './components/audio/audioContainer';
@@ -25,11 +27,79 @@ import Download from './components/download/downloadContainer';
 import Duration from './components/duration/durationContainer';
 import CurrentTime from './components/currentTime/currentTimeContainer';
 import BrowserUnsupported from './components/browserUnsupported/browserUnsupportedContainer';
-import * as constants from './util/constants';
+
+// Components
+import GuiComponent from './components/gui/gui';
+import VideoComponent from './components/video/video';
+import AudioComponent from './components/audio/audio';
+import JPlayerComponent from './components/jPlayer/jPlayer';
+import PlayBarComponent from './components/playBar/playBar';
+import BufferBarComponent from './components/bufferBar/bufferBar';
+import PosterComponent from './components/poster/poster';
+import TitleComponent from './components/title/title';
+import FullScreenComponent from './components/fullScreen/fullScreen';
+import MuteComponent from './components/mute/mute';
+import PlayComponent from './components/play/play';
+import RepeatComponent from './components/repeat/repeat';
+import SeekBarComponent from './components/seekBar/seekBar';
+import PlaybackRateBarComponent from './components/playbackRateBar/playbackRateBar';
+import PlaybackRateBarValueComponent from './components/playbackRateBarValue/playbackRateBarValue';
+import VolumeBarComponent from './components/volumeBar/volumeBar';
+import VolumeBarValueComponent from './components/volumeBarValue/volumeBarValue';
+import DownloadComponent from './components/download/download';
+import DurationComponent from './components/duration/duration';
+import CurrentTimeComponent from './components/currentTime/currentTime';
+import BrowserUnsupportedComponent from './components/browserUnsupported/browserUnsupported';
 
 export default JPlayer;
 
-export { constants, initialState, reducer, actions, connect, Gui, SeekBar, PlayBar,
-  BufferBar, Poster, Video, Audio, Title, FullScreen,
-  Mute, Play, Repeat, PlaybackRateBar, PlaybackRateBarValue,
-  VolumeBar, VolumeBarValue, Download, Duration, CurrentTime, BrowserUnsupported };
+export {
+  initializeOptions,
+  constants,
+  reducer,
+  actions,
+  Gui,
+  SeekBar,
+  PlayBar,
+  BufferBar,
+  Poster,
+  Video,
+  Audio,
+  Title,
+  FullScreen,
+  Mute,
+  Play,
+  Repeat,
+  PlaybackRateBar,
+  PlaybackRateBarValue,
+  VolumeBar,
+  VolumeBarValue,
+  Download,
+  Duration,
+  CurrentTime,
+  BrowserUnsupported,
+};
+
+export {
+  GuiComponent,
+  VideoComponent,
+  AudioComponent,
+  JPlayerComponent,
+  PlayBarComponent,
+  BufferBarComponent,
+  PosterComponent,
+  TitleComponent,
+  FullScreenComponent,
+  MuteComponent,
+  PlayComponent,
+  RepeatComponent,
+  SeekBarComponent,
+  PlaybackRateBarComponent,
+  PlaybackRateBarValueComponent,
+  VolumeBarComponent,
+  VolumeBarValueComponent,
+  DownloadComponent,
+  DurationComponent,
+  CurrentTimeComponent,
+  BrowserUnsupportedComponent,
+};

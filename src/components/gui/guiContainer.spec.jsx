@@ -1,98 +1,163 @@
 import React from 'react';
-import expect, { createSpy, spyOn, restoreSpies } from 'expect';
+import expect from 'expect';
+import proxyquire from 'proxyquire';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-import { getJPlayers } from '../../util/common.spec';
 import { setOption } from '../../actions/actions';
-import { __get__ } from './guiContainer';
 
-const mapStateToProps = __get__('mapStateToProps');
-const mergeProps = __get__('mergeProps');
-const id = 'jPlayer-1';
-const attributes = {
-  'data-test': 'test',
-  children: <div />,
-};
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const mockGuiAnimation = ({ onMouseMove }) => (
+  <div onMouseMove={onMouseMove} />
+);
+const GuiContainer = proxyquire('./guiContainer', {
+  './animation': mockGuiAnimation,
+}).default;
+
+const setup = (jPlayers, props) => containerSetup(GuiContainer, jPlayers, props);
 
 describe('GuiContainer', () => {
-  let dispatch;
+  let jPlayers;
+  let mockSetTimeout;
+  let mockClearTimeout;
 
   beforeEach(() => {
-    dispatch = createSpy();
-    spyOn(global, 'clearTimeout');
+    jPlayers = {
+      [id]: {},
+    };
+    mockSetTimeout = expect.spyOn(global, 'setTimeout');
+    mockClearTimeout = expect.spyOn(global, 'clearTimeout');
   });
 
-  it('maps state', () => {
-    const expected = mapStateToProps(getJPlayers({
-      guiFadeHoldTimeout: 0,
-    }), { id });
+  describe('onMouseMove', () => {
+    it('dispatches startGuiFadeOut to false if fullScreen is enabled', () => {
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].startGuiFadeOut = true;
 
-    expect(expected).toEqual({
-      fullScreen: false,
-      paused: true,
-      guiFadeOut: false,
-      guiFadeHoldTimeout: 0,
+      const { wrapper, store } = setup(jPlayers);
+
+      wrapper.simulate('mousemove');
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.startGuiFadeOut).toBe(false);
+    });
+
+    it('doesnt dispatch startGuiFadeOut to false if fullScreen is not enabled', () => {
+      const { wrapper, store } = setup(jPlayers);
+
+      wrapper.simulate('mousemove');
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.startGuiFadeOut).toNotBe(false);
+    });
+
+    it('clears all timeouts if fullScreen is enabled', () => {
+      jPlayers[id].fullScreen = true;
+
+      const { wrapper, store } = setup(jPlayers);
+
+      mockSetTimeout.andReturn(1);
+
+      store.dispatch(setOption(id, 'startGuiFadeOut', true));
+      store.dispatch(setOption(id, 'startGuiFadeOut', false));
+
+      mockSetTimeout.andReturn(2);
+      store.dispatch(setOption(id, 'startGuiFadeOut', true));
+
+      wrapper.simulate('mousemove');
+
+      expect(mockClearTimeout.calls.length).toBe(2);
+      expect(mockClearTimeout).toHaveBeenCalledWith(1);
+      expect(mockClearTimeout).toHaveBeenCalledWith(2);
+    });
+
+    it('doesnt clear any timeouts if fullScreen is not enabled', () => {
+      jPlayers[id].fullScreen = true;
+
+      const { wrapper, store } = setup(jPlayers);
+
+      mockSetTimeout.andReturn(1);
+
+      store.dispatch(setOption(id, 'startGuiFadeOut', true));
+      store.dispatch(setOption(id, 'fullScreen', false));
+
+      wrapper.simulate('mousemove');
+
+      expect(mockClearTimeout).toNotHaveBeenCalled();
     });
   });
 
-  it('merges props', () => {
-    const expected = mergeProps({
-      fullScreen: true,
-      guiFadeOut: false,
-    }, { dispatch }, { id, ...attributes });
+  describe('startFade', () => {
+    it('dispatches guiFadeOut to true if fullScreen, !paused and startGuiFadeOut', () => {
+      jPlayers[id].fullScreen = true;
 
-    delete expected.onMouseMove;
+      const { store } = setup(jPlayers);
 
-    expect(expected).toEqual({
-      fullScreen: true,
-      guiFadeOut: false,
-      ...attributes,
+      mockSetTimeout.andCall((fn) => {
+        fn();
+      });
+
+      store.dispatch(setOption(id, 'startGuiFadeOut', true));
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.guiFadeOut).toBe(true);
     });
-  });
 
-  it('onMouseMove fades gui out if fullScreen and not paused', () => {
-    const guiFadeHoldTimeout = 0;
-    const expected = mergeProps({
-      fullScreen: true,
-      paused: false,
-      guiFadeHoldTimeout,
-    },
-    { dispatch }, { id });
+    it('doesnt dispatch guiFadeOut to true if !fullScreen', () => {
+      const { store } = setup(jPlayers);
 
-    expected.onMouseMove();
+      mockSetTimeout.andCall((fn) => {
+        fn();
+      });
 
-    expect(dispatch).toHaveBeenCalledWith(setOption(
-      id,
-      'guiFadeOut',
-      false,
-    ));
-    expect(clearTimeout).toHaveBeenCalledWith(guiFadeHoldTimeout);
-  });
+      store.dispatch(setOption(id, 'startGuiFadeOut', true));
 
-  it('does not fade out if not fullScreen and not paused', () => {
-    const expected = mergeProps({
-      fullScreen: false,
-      paused: false,
-    }, { dispatch }, { id });
+      const jPlayer = store.getState().jPlayers[id];
 
-    expected.onMouseMove();
+      expect(jPlayer.guiFadeOut).toNotBe(true);
+    });
 
-    expect(dispatch).toNotHaveBeenCalled();
-    expect(clearTimeout).toNotHaveBeenCalled();
-  });
+    it('doesnt dispatch guiFadeOut to true if paused', () => {
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].paused = true;
 
-  it('does not fade out if fullScreen and paused', () => {
-    const expected = mergeProps({
-      fullScreen: true,
-      paused: true,
-    }, { dispatch }, { id });
+      const { store } = setup(jPlayers);
 
-    expected.onMouseMove();
+      mockSetTimeout.andCall((fn) => {
+        fn();
+      });
 
-    expect(dispatch).toNotHaveBeenCalled();
-    expect(clearTimeout).toNotHaveBeenCalled();
+      store.dispatch(setOption(id, 'startGuiFadeOut', true));
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.guiFadeOut).toNotBe(true);
+    });
+
+    it('dispatchs guiFadeOut to false if !startGuiFadeOut', () => {
+      jPlayers[id].fullScreen = true;
+      jPlayers[id].startGuiFadeOut = true;
+
+      const { store } = setup(jPlayers);
+
+      mockSetTimeout.andCall((fn) => {
+        fn();
+      });
+
+      store.dispatch(setOption(id, 'startGuiFadeOut', false));
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.guiFadeOut).toBe(false);
+    });
   });
 
   afterEach(() => {
-    restoreSpies();
+    mockSetTimeout.restore();
+    mockClearTimeout.restore();
   });
 });

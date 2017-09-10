@@ -1,45 +1,35 @@
-import React from 'react';
-import expect, { createSpy } from 'expect';
-import { shallow } from 'enzyme';
+import expect from 'expect';
 
-import { classes } from '../../../src/util/constants';
 import PlaybackRateBar from './playbackRateBar';
+import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    onClick: createSpy(),
-    onMouseDown: createSpy(),
-    onTouchStart: createSpy(),
-    children: (<div className="@@jPlayer-test" />),
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<PlaybackRateBar {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('<PlaybackRateBar />', () => {
-  let wrapper;
-  let props;
-
-  beforeEach(() => {
-    ({ wrapper, props } = setup());
+const setup = (props) => {
+  const testProps = componentSetup(PlaybackRateBar, {
+    clickMoveBar: expect.createSpy(),
+    touchMoveBar: expect.createSpy(),
+    ...props,
   });
 
-  it('renders self and subcomponents', () => {
-    wrapper.simulate('click');
-    wrapper.simulate('mousedown');
-    wrapper.simulate('touchstart');
+  testProps.playbackRateBar = testProps.wrapper.find(`.${classes.PLAYBACK_RATE_BAR}`);
 
-    expect(props.onClick).toHaveBeenCalled();
-    expect(props.onMouseDown).toHaveBeenCalled();
-    expect(props.onTouchStart).toHaveBeenCalled();
-    expect(wrapper.children('.@@jPlayer-test').exists()).toBeTruthy();
-    expect(wrapper.hasClass(classes.PLAYBACK_RATE_BAR)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+  return testProps;
+};
+
+describe('PlaybackRateBar', () => {
+  describe('children', () => {
+    it('overwrite default', () => {
+      const children = 'playbackRate';
+      const { playbackRateBar } = setup({ children });
+
+      expect(playbackRateBar.prop('children')).toBe(children);
+    });
+
+    it('renders playbackRateBarValue as default', () => {
+      const { playbackRateBar } = setup();
+
+      expect(playbackRateBar.find(PlaybackRateBarValue).exists()).toBe(true);
+    });
   });
 });

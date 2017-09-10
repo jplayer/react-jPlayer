@@ -1,4 +1,5 @@
 import { connectWithId } from 'react-jplayer-utils';
+
 import Download from './download';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
@@ -6,4 +7,4 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
   url: jPlayers[id].src,
 });
 
-export default connectWithId(mapStateToProps, {})(Download);
+export default connectWithId(mapStateToProps)(Download);

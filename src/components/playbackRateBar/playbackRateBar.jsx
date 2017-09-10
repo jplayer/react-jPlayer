@@ -1,32 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Bar from '../barContainer';
+import PlaybackRateBarValue from '../playbackRateBarValue/playbackRateBarValueContainer';
 import { classes } from '../../util/constants';
 
-const PlaybackRateBar = ({ onClick, onMouseDown, onTouchStart,
-  setBar, children, ...attributes }) => (
-    <div
-      ref={setBar} className={classes.PLAYBACK_RATE_BAR}
-      onClick={onClick} onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart} {...attributes}
-    >
-      {children}
+const PlaybackRateBar = props => (
+  <Bar
+    clickMoveBar={props.clickMoveBar}
+    touchMoveBar={props.touchMoveBar}
+  >
+    <div className={classes.PLAYBACK_RATE_BAR}>
+      {props.children}
     </div>
+  </Bar>
 );
 
 PlaybackRateBar.defaultProps = {
-  onClick: null,
-  onMouseDown: null,
-  onTouchStart: null,
-  setBar: null,
+  children: <PlaybackRateBarValue />,
 };
 
 PlaybackRateBar.propTypes = {
-  onClick: PropTypes.func,
-  onMouseDown: PropTypes.func,
-  onTouchStart: PropTypes.func,
-  setBar: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  clickMoveBar: PropTypes.func.isRequired,
+  touchMoveBar: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 export default PlaybackRateBar;

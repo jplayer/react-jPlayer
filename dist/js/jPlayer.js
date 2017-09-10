@@ -34,9 +34,6 @@ var ReactJPlayer =
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -64,7 +61,7 @@ var ReactJPlayer =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 73);
+/******/ 	return __webpack_require__(__webpack_require__.s = 36);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -75,12 +72,97 @@ module.exports = PropTypes;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.convertTime = exports.canSetVolume = exports.limitValue = exports.getElementOffset = exports.traverseParentsUntilClassName = exports.toRelativePercentage = exports.toPercentage = exports.KeyControl = exports.classes = exports.formatArtistAndTitle = exports.initialState = exports.connectWithIndex = exports.connectWithId = exports.connect = undefined;
+
+var _connect = __webpack_require__(38);
+
+var _connect2 = _interopRequireDefault(_connect);
+
+var _connectWithId = __webpack_require__(9);
+
+var _connectWithId2 = _interopRequireDefault(_connectWithId);
+
+var _connectWithIndex = __webpack_require__(39);
+
+var _connectWithIndex2 = _interopRequireDefault(_connectWithIndex);
+
+var _initialState = __webpack_require__(40);
+
+var _initialState2 = _interopRequireDefault(_initialState);
+
+var _formatArtistAndTitle = __webpack_require__(41);
+
+var _formatArtistAndTitle2 = _interopRequireDefault(_formatArtistAndTitle);
+
+var _classes = __webpack_require__(42);
+
+var _classes2 = _interopRequireDefault(_classes);
+
+var _keyControl = __webpack_require__(43);
+
+var _keyControl2 = _interopRequireDefault(_keyControl);
+
+var _toPercentage = __webpack_require__(45);
+
+var _toPercentage2 = _interopRequireDefault(_toPercentage);
+
+var _toRelativePercentage = __webpack_require__(46);
+
+var _toRelativePercentage2 = _interopRequireDefault(_toRelativePercentage);
+
+var _traverseParentsUntilClassName = __webpack_require__(47);
+
+var _traverseParentsUntilClassName2 = _interopRequireDefault(_traverseParentsUntilClassName);
+
+var _getElementOffset = __webpack_require__(48);
+
+var _getElementOffset2 = _interopRequireDefault(_getElementOffset);
+
+var _limitValue = __webpack_require__(49);
+
+var _limitValue2 = _interopRequireDefault(_limitValue);
+
+var _canSetVolume = __webpack_require__(50);
+
+var _canSetVolume2 = _interopRequireDefault(_canSetVolume);
+
+var _convertTime = __webpack_require__(51);
+
+var _convertTime2 = _interopRequireDefault(_convertTime);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.connect = _connect2.default;
+exports.connectWithId = _connectWithId2.default;
+exports.connectWithIndex = _connectWithIndex2.default;
+exports.initialState = _initialState2.default;
+exports.formatArtistAndTitle = _formatArtistAndTitle2.default;
+exports.classes = _classes2.default;
+exports.KeyControl = _keyControl2.default;
+exports.toPercentage = _toPercentage2.default;
+exports.toRelativePercentage = _toRelativePercentage2.default;
+exports.traverseParentsUntilClassName = _traverseParentsUntilClassName2.default;
+exports.getElementOffset = _getElementOffset2.default;
+exports.limitValue = _limitValue2.default;
+exports.canSetVolume = _canSetVolume2.default;
+exports.convertTime = _convertTime2.default;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 module.exports = React;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90,15 +172,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var actionNames = exports.actionNames = {
-  SET_OPTION: 'SET_JPLAYER_OPTION',
-  SET_MEDIA: 'SET_MEDIA',
-  CLEAR_MEDIA: 'CLEAR_MEDIA',
-  PLAY: 'PLAY',
-  PAUSE: 'PAUSE',
-  PLAY_HEAD: 'PLAY_HEAD',
-  VOLUME: 'VOLUME',
-  MUTE: 'MUTE',
-  FOCUS: 'FOCUS'
+  SET_MEDIA: 'JPLAYER_SET_MEDIA',
+  CLEAR_MEDIA: 'JPLAYER_CLEAR_MEDIA',
+  PLAY: 'JPLAYER_PLAY',
+  PAUSE: 'JPLAYER_PAUSE',
+  PLAY_HEAD: 'JPLAYER_PLAY_HEAD',
+  VOLUME: 'JPLAYER_VOLUME',
+  MUTE: 'JPLAYER_MUTE',
+  FOCUS: 'JPLAYER_FOCUS',
+  SET_OPTION: 'JPLAYER_SET_JPLAYER_OPTION'
 };
 
 var errors = exports.errors = {
@@ -111,7 +193,7 @@ var errors = exports.errors = {
 var hints = exports.hints = {
   FORMAT_NO_SUPPORT: 'The browser may not support these file types.',
   URL_NO_SUPPORT: 'Check the media URL is valid.',
-  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia()' + 'action that is passed into the component props.',
+  URL_NOT_SET: 'Pass the media through the defaultOptions or use the setMedia() ' + 'action that is passed into the component props.',
   INVALID_GLOBAL_METHOD: 'Remove the invalid method from the "global" option'
 };
 
@@ -238,14 +320,14 @@ var defaultStatus = exports.defaultStatus = {
   playHeadPercent: 0,
   mediaSettings: {
     video: false,
-    foundSupported: false,
+    nonSupported: false,
     formats: []
   },
   paused: true,
   seeking: false,
-  src: '',
+  src: null,
   currentTimeText: '0:00',
-  durationText: '',
+  durationText: null,
   seekPercent: 0,
   currentPercentRelative: 0,
   currentPercentAbsolute: 0,
@@ -265,12 +347,14 @@ var defaultOptions = exports.defaultOptions = {
   volume: 0.8,
   barDrag: true,
   pauseOthersOnPlay: true,
-  guiFadeHoldTime: 3000,
+  startGuiFadeOut: false,
+  guiFadeHoldTime: 2000,
   media: {
     sources: {},
-    title: '',
-    artist: '',
-    poster: '',
+    tracks: [],
+    title: null,
+    artist: null,
+    poster: null,
     free: false
   },
   keyBindings: {},
@@ -297,102 +381,13 @@ var defaultOptions = exports.defaultOptions = {
 };
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 4 */
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.convertTime = exports.canSetVolume = exports.limitValue = exports.getElementOffset = exports.traverseParentsUntilClassName = exports.toRelativePercentage = exports.toPercentage = exports.KeyControl = exports.classes = exports.formatArtistAndTitle = exports.updateObject = exports.initialState = exports.passWithIndex = exports.connectWithIndex = exports.connectWithId = exports.connect = undefined;
-
-var _connect = __webpack_require__(39);
-
-var _connect2 = _interopRequireDefault(_connect);
-
-var _connectWithId = __webpack_require__(10);
-
-var _connectWithId2 = _interopRequireDefault(_connectWithId);
-
-var _connectWithIndex = __webpack_require__(40);
-
-var _connectWithIndex2 = _interopRequireDefault(_connectWithIndex);
-
-var _passWithIndex = __webpack_require__(47);
-
-var _passWithIndex2 = _interopRequireDefault(_passWithIndex);
-
-var _initialState = __webpack_require__(44);
-
-var _initialState2 = _interopRequireDefault(_initialState);
-
-var _updateObject = __webpack_require__(51);
-
-var _updateObject2 = _interopRequireDefault(_updateObject);
-
-var _formatArtistAndTitle = __webpack_require__(42);
-
-var _formatArtistAndTitle2 = _interopRequireDefault(_formatArtistAndTitle);
-
-var _classes = __webpack_require__(37);
-
-var _classes2 = _interopRequireDefault(_classes);
-
-var _keyControl = __webpack_require__(38);
-
-var _keyControl2 = _interopRequireDefault(_keyControl);
-
-var _toPercentage = __webpack_require__(48);
-
-var _toPercentage2 = _interopRequireDefault(_toPercentage);
-
-var _toRelativePercentage = __webpack_require__(49);
-
-var _toRelativePercentage2 = _interopRequireDefault(_toRelativePercentage);
-
-var _traverseParentsUntilClassName = __webpack_require__(50);
-
-var _traverseParentsUntilClassName2 = _interopRequireDefault(_traverseParentsUntilClassName);
-
-var _getElementOffset = __webpack_require__(43);
-
-var _getElementOffset2 = _interopRequireDefault(_getElementOffset);
-
-var _limitValue = __webpack_require__(46);
-
-var _limitValue2 = _interopRequireDefault(_limitValue);
-
-var _canSetVolume = __webpack_require__(36);
-
-var _canSetVolume2 = _interopRequireDefault(_canSetVolume);
-
-var _convertTime = __webpack_require__(41);
-
-var _convertTime2 = _interopRequireDefault(_convertTime);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.connect = _connect2.default;
-exports.connectWithId = _connectWithId2.default;
-exports.connectWithIndex = _connectWithIndex2.default;
-exports.passWithIndex = _passWithIndex2.default;
-exports.initialState = _initialState2.default;
-exports.updateObject = _updateObject2.default;
-exports.formatArtistAndTitle = _formatArtistAndTitle2.default;
-exports.classes = _classes2.default;
-exports.KeyControl = _keyControl2.default;
-exports.toPercentage = _toPercentage2.default;
-exports.toRelativePercentage = _toRelativePercentage2.default;
-exports.traverseParentsUntilClassName = _traverseParentsUntilClassName2.default;
-exports.getElementOffset = _getElementOffset2.default;
-exports.limitValue = _limitValue2.default;
-exports.canSetVolume = _canSetVolume2.default;
-exports.convertTime = _convertTime2.default;
+module.exports = Recompose;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -401,18 +396,10 @@ exports.convertTime = _convertTime2.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.focus = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = exports.setOption = undefined;
+exports.setOption = exports.focus = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = undefined;
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(3);
 
-var setOption = exports.setOption = function setOption(id, key, value) {
-  return {
-    type: _constants.actionNames.SET_OPTION,
-    id: id,
-    key: key,
-    value: value
-  };
-};
 var setMedia = exports.setMedia = function setMedia(id, media) {
   return {
     type: _constants.actionNames.SET_MEDIA,
@@ -467,9 +454,23 @@ var focus = exports.focus = function focus(id) {
     id: id
   };
 };
+var setOption = exports.setOption = function setOption(id, key, value) {
+  return {
+    type: _constants.actionNames.SET_OPTION,
+    id: id,
+    key: key,
+    value: value
+  };
+};
 
 /***/ }),
-/* 5 */
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = _.merge;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -479,25 +480,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _react = __webpack_require__(1);
+var _recompose = __webpack_require__(4);
 
-var _react2 = _interopRequireDefault(_react);
+var _bar = __webpack_require__(81);
 
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactJplayerUtils = __webpack_require__(3);
+var _bar2 = _interopRequireDefault(_bar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   var jPlayers = _ref.jPlayers;
@@ -507,93 +498,74 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   };
 };
 
-var Bar = function (_React$Component) {
-  _inherits(Bar, _React$Component);
+var handlers = function handlers() {
+  var bar = void 0;
+  var dragging = void 0;
 
-  function Bar() {
-    var _ref3;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Bar);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = Bar.__proto__ || Object.getPrototypeOf(Bar)).call.apply(_ref3, [this].concat(args))), _this), _this.onClick = function (e) {
-      return _this.props.clickMoveBar(_this.bar, e);
-    }, _this.onTouchStart = function () {
-      _this.dragging = true;
-    }, _this.onTouchMove = function (e) {
-      return _this.props.barDrag && _this.dragging ? _this.props.touchMoveBar(_this.bar, e) : null;
-    }, _this.onTouchEnd = function () {
-      _this.dragging = false;
-    }, _this.onMouseMove = function (e) {
-      return _this.props.barDrag && _this.dragging ? _this.props.clickMoveBar(_this.bar, e) : null;
-    }, _this.onMouseDown = function () {
-      _this.dragging = true;
-    }, _this.onMouseUp = function () {
-      _this.dragging = false;
-    }, _this.setBar = function (ref) {
-      _this.bar = ref;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(Bar, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      document.addEventListener('mouseup', this.onMouseUp);
-      document.addEventListener('mousemove', this.onMouseMove);
-      document.addEventListener('touchmove', this.onTouchMove, { passive: false });
-      document.addEventListener('touchend', this.onTouchEnd);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      document.removeEventListener('mouseup', this.onMouseUp);
-      document.removeEventListener('mousemove', this.onMouseMove);
-      document.removeEventListener('touchmove', this.onTouchMove);
-      document.removeEventListener('touchend', this.onTouchEnd);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.cloneElement(_react2.default.Children.only(this.props.children), {
-        onClick: this.onClick,
-        onMouseDown: this.onMouseDown,
-        onTouchStart: this.onTouchStart,
-        setBar: this.setBar
-      });
-    }
-  }], [{
-    key: 'propTypes',
-    get: function get() {
-      return {
-        clickMoveBar: _propTypes2.default.func.isRequired,
-        touchMoveBar: _propTypes2.default.func.isRequired,
-        barDrag: _propTypes2.default.bool.isRequired,
-        children: _propTypes2.default.node.isRequired
+  return {
+    setBar: function setBar() {
+      return function (ref) {
+        bar = ref;
+      };
+    },
+    onClick: function onClick(props) {
+      return function (e) {
+        return props.clickMoveBar(bar, e);
+      };
+    },
+    onTouchStart: function onTouchStart() {
+      return function () {
+        dragging = true;
+      };
+    },
+    onTouchMove: function onTouchMove(props) {
+      return function (e) {
+        if (props.barDrag && dragging) {
+          props.touchMoveBar(bar, e);
+        }
+      };
+    },
+    onTouchEnd: function onTouchEnd() {
+      return function () {
+        dragging = false;
+      };
+    },
+    onMouseMove: function onMouseMove(props) {
+      return function (e) {
+        if (props.barDrag && dragging) {
+          props.clickMoveBar(bar, e);
+        }
+      };
+    },
+    onMouseDown: function onMouseDown() {
+      return function () {
+        dragging = true;
+      };
+    },
+    onMouseUp: function onMouseUp() {
+      return function () {
+        dragging = false;
       };
     }
-  }]);
+  };
+};
 
-  return Bar;
-}(_react2.default.Component);
+var lifecycle = {
+  componentWillMount: function componentWillMount() {
+    document.addEventListener('mouseup', this.props.onMouseUp);
+    document.addEventListener('mousemove', this.props.onMouseMove);
+    document.addEventListener('touchmove', this.props.onTouchMove, { passive: false });
+    document.addEventListener('touchend', this.props.onTouchEnd);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    document.removeEventListener('mouseup', this.props.onMouseUp);
+    document.removeEventListener('mousemove', this.props.onMouseMove);
+    document.removeEventListener('touchmove', this.props.onTouchMove);
+    document.removeEventListener('touchend', this.props.onTouchEnd);
+  }
+};
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(Bar);
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = ReactRedux;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = Recompose;
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_bar2.default);
 
 /***/ }),
 /* 8 */
@@ -605,33 +577,23 @@ module.exports = Recompose;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.initialState = undefined;
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _lodash = __webpack_require__(6);
 
-var _playbackRateBarValue = __webpack_require__(64);
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _playbackRateBarValue2 = _interopRequireDefault(_playbackRateBarValue);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var initialState = exports.initialState = {};
 
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
-
-  return {
-    verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
-    minPlaybackRate: jPlayers[id].minPlaybackRate,
-    maxPlaybackRate: jPlayers[id].maxPlaybackRate,
-    playbackRate: jPlayers[id].playbackRate,
-    attributes: attributes
-  };
+var options = function options(jPlayerOptions) {
+  initialState[jPlayerOptions.id] = (0, _lodash2.default)({}, _constants.defaultStatus, _constants.defaultOptions, jPlayerOptions);
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_playbackRateBarValue2.default);
+exports.default = options;
 
 /***/ }),
 /* 9 */
@@ -644,48 +606,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _reactRedux = __webpack_require__(10);
 
-var _volumeBarValue = __webpack_require__(71);
-
-var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    verticalVolume: jPlayers[id].verticalVolume,
-    muted: jPlayers[id].muted,
-    volume: jPlayers[id].volume,
-    children: children,
-    attributes: attributes
-  };
-};
-
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_volumeBarValue2.default);
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _reactRedux = __webpack_require__(6);
-
-var _recompose = __webpack_require__(7);
+var _recompose = __webpack_require__(4);
 
 var _propTypes = __webpack_require__(0);
 
@@ -698,7 +621,19 @@ exports.default = function () {
 };
 
 /***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = ReactRedux;
+
+/***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+module.exports = ReactMotion;
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -708,11 +643,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -720,386 +651,149 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactJplayerUtils = __webpack_require__(3);
-
-var _urlNotSupportedError = __webpack_require__(76);
-
-var _urlNotSupportedError2 = _interopRequireDefault(_urlNotSupportedError);
-
-var _actions = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id,
-      children = _ref2.children;
-  return {
-    loop: jPlayers[id].loop,
-    showRemainingDuration: jPlayers[id].showRemainingDuration,
-    src: jPlayers[id].src,
-    currentTime: jPlayers[id].currentTime,
-    playHeadPercent: jPlayers[id].playHeadPercent,
-    paused: jPlayers[id].paused,
-    defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
-    playbackRate: jPlayers[id].playbackRate,
-    preload: jPlayers[id].preload,
-    volume: jPlayers[id].volume,
-    muted: jPlayers[id].muted,
-    autoplay: jPlayers[id].autoplay,
-    newTime: jPlayers[id].newTime,
-    timeFormats: jPlayers[id].timeFormats,
-    mediaId: jPlayers[id].media.id,
-    otherJPlayerIds: Object.keys(jPlayers).filter(function (key) {
-      return key !== id;
-    }),
-    pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
-    children: children
-  };
+var Gui = function Gui(_ref) {
+  var opacity = _ref.opacity,
+      children = _ref.children,
+      onMouseMove = _ref.onMouseMove;
+  return _react2.default.createElement(
+    'div',
+    {
+      className: _constants.classes.GUI,
+      onMouseMove: onMouseMove,
+      style: { opacity: opacity }
+    },
+    children
+  );
 };
 
-var mapDispatchToProps = {
-  setOption: _actions.setOption,
-  pause: _actions.pause
+Gui.propTypes = {
+  opacity: _propTypes2.default.number.isRequired,
+  onMouseMove: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired
 };
 
-var MediaContainer = function (_React$Component) {
-  _inherits(MediaContainer, _React$Component);
-
-  _createClass(MediaContainer, null, [{
-    key: 'propTypes',
-    get: function get() {
-      return {
-        onAbort: _propTypes2.default.func,
-        onCanPlay: _propTypes2.default.func,
-        onCanPlayThrough: _propTypes2.default.func,
-        onDurationChange: _propTypes2.default.func,
-        onEmptied: _propTypes2.default.func,
-        onEncrypted: _propTypes2.default.func,
-        onEnded: _propTypes2.default.func,
-        onError: _propTypes2.default.func,
-        onLoadedData: _propTypes2.default.func,
-        onLoadedMetadata: _propTypes2.default.func,
-        onLoadStart: _propTypes2.default.func,
-        onPause: _propTypes2.default.func,
-        onPlay: _propTypes2.default.func,
-        onPlaying: _propTypes2.default.func,
-        onProgress: _propTypes2.default.func,
-        onRateChange: _propTypes2.default.func,
-        onSeeked: _propTypes2.default.func,
-        onSeeking: _propTypes2.default.func,
-        onStalled: _propTypes2.default.func,
-        onSuspend: _propTypes2.default.func,
-        onTimeUpdate: _propTypes2.default.func,
-        onVolumeChange: _propTypes2.default.func,
-        onWaiting: _propTypes2.default.func,
-        showRemainingDuration: _propTypes2.default.bool.isRequired,
-        src: _propTypes2.default.string.isRequired,
-        playHeadPercent: _propTypes2.default.number.isRequired,
-        setOption: _propTypes2.default.func.isRequired,
-        pause: _propTypes2.default.func.isRequired,
-        id: _propTypes2.default.string.isRequired,
-        mediaId: _propTypes2.default.string,
-        pauseOthersOnPlay: _propTypes2.default.bool.isRequired,
-        otherJPlayerIds: _propTypes2.default.arrayOf(_propTypes2.default.string).isRequired,
-        timeFormats: _propTypes2.default.shape({
-          showHour: _propTypes2.default.bool.isRequired,
-          showMin: _propTypes2.default.bool.isRequired,
-          showSec: _propTypes2.default.bool.isRequired,
-          padHour: _propTypes2.default.bool.isRequired,
-          padMin: _propTypes2.default.bool.isRequired,
-          padSec: _propTypes2.default.bool.isRequired,
-          sepHour: _propTypes2.default.string.isRequired,
-          sepMin: _propTypes2.default.string.isRequired,
-          sepSec: _propTypes2.default.string.isRequired
-        }).isRequired,
-        /* eslint-disable react/no-unused-prop-types */
-        paused: _propTypes2.default.bool.isRequired,
-        newTime: _propTypes2.default.number,
-        loop: _propTypes2.default.bool.isRequired,
-        autoplay: _propTypes2.default.bool.isRequired,
-        defaultPlaybackRate: _propTypes2.default.number.isRequired,
-        muted: _propTypes2.default.bool.isRequired,
-        playbackRate: _propTypes2.default.number.isRequired,
-        preload: _propTypes2.default.string.isRequired,
-        volume: _propTypes2.default.number.isRequired,
-        /* eslint-enable react/no-unused-prop-types */
-        children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired
-      };
-    }
-  }, {
-    key: 'defaultProps',
-    get: function get() {
-      return {
-        onAbort: Function.prototype,
-        onCanPlay: Function.prototype,
-        onCanPlayThrough: Function.prototype,
-        onDurationChange: Function.prototype,
-        onEmptied: Function.prototype,
-        onEncrypted: Function.prototype,
-        onEnded: Function.prototype,
-        onError: Function.prototype,
-        onLoadedData: Function.prototype,
-        onLoadedMetadata: Function.prototype,
-        onLoadStart: Function.prototype,
-        onPause: Function.prototype,
-        onPlay: Function.prototype,
-        onPlaying: Function.prototype,
-        onProgress: Function.prototype,
-        onRateChange: Function.prototype,
-        onSeeked: Function.prototype,
-        onSeeking: Function.prototype,
-        onStalled: Function.prototype,
-        onSuspend: Function.prototype,
-        onTimeUpdate: Function.prototype,
-        onVolumeChange: Function.prototype,
-        onWaiting: Function.prototype,
-        newTime: null,
-        mediaId: null
-      };
-    }
-  }]);
-
-  function MediaContainer(props) {
-    _classCallCheck(this, MediaContainer);
-
-    var _this = _possibleConstructorReturn(this, (MediaContainer.__proto__ || Object.getPrototypeOf(MediaContainer)).call(this, props));
-
-    _this.getCurrentPercentRelative = function () {
-      var currentPercentRelative = 0;
-
-      if (_this.currentMedia.seekable.length > 0) {
-        currentPercentRelative = (0, _reactJplayerUtils.toPercentage)(_this.currentMedia.currentTime, _this.getSeekableEnd());
-      }
-      return currentPercentRelative;
-    };
-
-    _this.setCurrentMedia = function (ref) {
-      _this.currentMedia = ref;
-    };
-
-    _this.getSeekableEnd = function () {
-      return _this.currentMedia.seekable.end(_this.currentMedia.seekable.length - 1);
-    };
-
-    _this.setDurationText = function () {
-      var durationText = '';
-
-      if (_this.props.showRemainingDuration) {
-        var timeRemaining = _this.currentMedia.duration - _this.currentMedia.currentTime;
-
-        durationText = (timeRemaining > 0 ? '-' : '') + (0, _reactJplayerUtils.convertTime)(timeRemaining, _this.props.timeFormats);
-      } else {
-        durationText = (0, _reactJplayerUtils.convertTime)(_this.currentMedia.duration, _this.props.timeFormats);
-      }
-
-      _this.props.setOption(_this.props.id, 'durationText', durationText);
-    };
-
-    _this.setCurrentTimeText = function () {
-      var currentTimeText = (0, _reactJplayerUtils.convertTime)(_this.currentMedia.currentTime, _this.props.timeFormats);
-
-      _this.props.setOption(_this.props.id, 'currentTimeText', currentTimeText);
-    };
-
-    _this.pauseOthers = function () {
-      _this.props.otherJPlayerIds.forEach(function (id) {
-        return _this.props.pause(id);
-      });
-    };
-
-    _this.updateMediaStatus = function () {
-      var seekPercent = 0;
-
-      var currentPercentAbsolute = (0, _reactJplayerUtils.toPercentage)(_this.currentMedia.currentTime, _this.currentMedia.duration);
-
-      if (_this.currentMedia.seekable.length > 0) {
-        seekPercent = (0, _reactJplayerUtils.toPercentage)(_this.getSeekableEnd(), _this.currentMedia.duration);
-      }
-
-      _this.setDurationText();
-      _this.setCurrentTimeText();
-
-      _this.props.setOption(_this.props.id, 'seekPercent', seekPercent);
-      _this.props.setOption(_this.props.id, 'currentPercentRelative', _this.getCurrentPercentRelative());
-      _this.props.setOption(_this.props.id, 'currentPercentAbsolute', currentPercentAbsolute);
-      _this.props.setOption(_this.props.id, 'currentTime', _this.currentMedia.currentTime);
-      _this.props.setOption(_this.props.id, 'duration', _this.currentMedia.duration);
-      _this.props.setOption(_this.props.id, 'playbackRate', _this.currentMedia.playbackRate);
-    };
-
-    _this.updateCurrentMedia = function (_ref3) {
-      var defaultPlaybackRate = _ref3.defaultPlaybackRate,
-          playbackRate = _ref3.playbackRate,
-          preload = _ref3.preload,
-          volume = _ref3.volume,
-          muted = _ref3.muted,
-          autoplay = _ref3.autoplay,
-          loop = _ref3.loop;
-
-      _this.currentMedia.defaultPlaybackRate = defaultPlaybackRate;
-      _this.currentMedia.playbackRate = playbackRate;
-      _this.currentMedia.preload = preload;
-      _this.currentMedia.volume = volume;
-      _this.currentMedia.muted = muted;
-      _this.currentMedia.autoplay = autoplay;
-      _this.currentMedia.loop = loop;
-    };
-
-    _this.state = {};
-
-    _this.events = {
-      onAbort: _this.props.onAbort,
-      onCanPlay: _this.props.onCanPlay,
-      onCanPlayThrough: _this.props.onCanPlayThrough,
-      onDurationChange: function onDurationChange() {
-        _this.updateMediaStatus();
-        _this.props.onDurationChange();
-      },
-      onEmptied: _this.props.onEmptied,
-      onEncrypted: _this.props.onEncrypted,
-      onEnded: function onEnded() {
-        // Pause so that the play/pause button resets and the poster is shown again
-        _this.props.pause(_this.props.id, 0);
-        _this.updateMediaStatus();
-        _this.props.onEnded();
-      },
-      onError: function onError() {
-        _this.props.setOption(_this.props.id, 'error', (0, _urlNotSupportedError2.default)(_this.props.src));
-        _this.props.onError();
-      },
-      onLoadedData: _this.props.onLoadedData,
-      onLoadedMetadata: _this.props.onLoadedMetadata,
-      onLoadStart: _this.props.onLoadStart,
-      onPause: _this.props.onPause,
-      onPlay: function onPlay() {
-        _this.props.setOption(_this.props.id, 'paused', false);
-
-        if (_this.props.pauseOthersOnPlay) {
-          _this.pauseOthers();
-        }
-
-        _this.props.onPlay();
-      },
-      onPlaying: _this.props.onPlaying,
-      onProgress: function onProgress() {
-        var bufferedTimeRanges = [];
-
-        for (var i = 0; i < _this.currentMedia.buffered.length; i += 1) {
-          bufferedTimeRanges.push({
-            start: _this.currentMedia.buffered.start(i),
-            end: _this.currentMedia.buffered.end(i)
-          });
-        }
-        _this.updateMediaStatus();
-        _this.props.setOption(_this.props.id, 'bufferedTimeRanges', bufferedTimeRanges);
-        _this.props.onProgress();
-      },
-      onRateChange: _this.props.onRateChange,
-      onSeeked: function onSeeked() {
-        _this.props.setOption(_this.props.id, 'seeking', false);
-        _this.props.onSeeked();
-      },
-      onSeeking: function onSeeking() {
-        _this.props.setOption(_this.props.id, 'seeking', true);
-        _this.props.onSeeking();
-      },
-      onStalled: _this.props.onStalled,
-      onSuspend: _this.props.onSuspend,
-      onTimeUpdate: function onTimeUpdate() {
-        _this.updateMediaStatus();
-        _this.props.onTimeUpdate();
-      },
-      onVolumeChange: _this.props.onVolumeChange,
-      onWaiting: _this.props.onWaiting
-    };
-    return _this;
-  }
-
-  _createClass(MediaContainer, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.currentMedia.src = this.props.src;
-      this.props.setOption(this.props.id, 'volumeSupported', (0, _reactJplayerUtils.canSetVolume)());
-
-      this.updateCurrentMedia(this.props);
-    }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      this.updateCurrentMedia(nextProps);
-
-      if (nextProps.mediaId !== this.props.mediaId && nextProps.src !== '') {
-        this.currentMedia.src = nextProps.src;
-      }
-
-      if (nextProps.newTime !== null) {
-        this.currentMedia.currentTime = nextProps.newTime;
-        this.props.setOption(this.props.id, 'newTime', null);
-      }
-
-      if (nextProps.playHeadPercent !== this.props.playHeadPercent) {
-        // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
-        // Hasn't fully loaded the song????
-        if (this.currentMedia.seekable.length > 0) {
-          var seekableEnd = this.getSeekableEnd();
-
-          if (isFinite(seekableEnd)) {
-            this.currentMedia.currentTime = (0, _reactJplayerUtils.toRelativePercentage)(nextProps.playHeadPercent, seekableEnd);
-            /* Media events don't fire fast enough to give a smooth animation
-              when dragging so we update it here as well, same problem as above? */
-            this.props.setOption(this.props.id, 'currentPercentRelative', this.getCurrentPercentRelative());
-          }
-        }
-      }
-
-      if (nextProps.paused) {
-        this.currentMedia.pause();
-      } else {
-        this.currentMedia.play();
-      }
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.showRemainingDuration !== this.props.showRemainingDuration) {
-        this.setDurationText();
-      }
-      if (prevProps.timeFormats !== this.props.timeFormats) {
-        this.setCurrentTimeText();
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.cloneElement(_react2.default.Children.only(this.props.children), _extends({}, this.events, {
-        ref: this.setCurrentMedia
-      }));
-    }
-  }]);
-
-  return MediaContainer;
-}(_react2.default.Component);
-
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(MediaContainer);
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = ReactMotion;
+exports.default = Gui;
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = _.merge;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _recompose = __webpack_require__(4);
+
+var _mediaContainer = __webpack_require__(14);
+
+var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint-disable jsx-a11y/media-has-caption */
+
+var Video = function Video(props) {
+  return _react2.default.createElement(
+    _mediaContainer2.default,
+    {
+      onAbort: props.onAbort,
+      onCanPlay: props.onCanPlay,
+      onCanPlayThrough: props.onCanPlayThrough,
+      onDurationChange: props.onDurationChange,
+      onEmptied: props.onEmptied,
+      onEncrypted: props.onEncrypted,
+      onEnded: props.onEnded,
+      onError: props.onError,
+      onLoadedData: props.onLoadedData,
+      onLoadedMetadata: props.onLoadedMetadata,
+      onLoadStart: props.onLoadStart,
+      onPause: props.onPause,
+      onPlay: props.onPlay,
+      onPlaying: props.onPlaying,
+      onProgress: props.onProgress,
+      onRateChange: props.onRateChange,
+      onSeeked: props.onSeeked,
+      onSeeking: props.onSeeking,
+      onStalled: props.onStalled,
+      onSuspend: props.onSuspend,
+      onTimeUpdate: props.onTimeUpdate,
+      onVolumeChange: props.onVolumeChange,
+      onWaiting: props.onWaiting
+    },
+    _react2.default.createElement('video', null)
+  );
+};
+
+Video.defaultProps = {
+  onAbort: Function.prototype,
+  onCanPlay: Function.prototype,
+  onCanPlayThrough: Function.prototype,
+  onDurationChange: Function.prototype,
+  onEmptied: Function.prototype,
+  onEncrypted: Function.prototype,
+  onEnded: Function.prototype,
+  onError: Function.prototype,
+  onLoadedData: Function.prototype,
+  onLoadedMetadata: Function.prototype,
+  onLoadStart: Function.prototype,
+  onPause: Function.prototype,
+  onPlay: Function.prototype,
+  onPlaying: Function.prototype,
+  onProgress: Function.prototype,
+  onRateChange: Function.prototype,
+  onSeeked: Function.prototype,
+  onSeeking: Function.prototype,
+  onStalled: Function.prototype,
+  onSuspend: Function.prototype,
+  onTimeUpdate: Function.prototype,
+  onVolumeChange: Function.prototype,
+  onWaiting: Function.prototype
+};
+
+Video.propTypes = {
+  onAbort: _propTypes2.default.func,
+  onCanPlay: _propTypes2.default.func,
+  onCanPlayThrough: _propTypes2.default.func,
+  onDurationChange: _propTypes2.default.func,
+  onEmptied: _propTypes2.default.func,
+  onEncrypted: _propTypes2.default.func,
+  onEnded: _propTypes2.default.func,
+  onError: _propTypes2.default.func,
+  onLoadedData: _propTypes2.default.func,
+  onLoadedMetadata: _propTypes2.default.func,
+  onLoadStart: _propTypes2.default.func,
+  onPause: _propTypes2.default.func,
+  onPlay: _propTypes2.default.func,
+  onPlaying: _propTypes2.default.func,
+  onProgress: _propTypes2.default.func,
+  onRateChange: _propTypes2.default.func,
+  onSeeked: _propTypes2.default.func,
+  onSeeking: _propTypes2.default.func,
+  onStalled: _propTypes2.default.func,
+  onSuspend: _propTypes2.default.func,
+  onTimeUpdate: _propTypes2.default.func,
+  onVolumeChange: _propTypes2.default.func,
+  onWaiting: _propTypes2.default.func
+};
+
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.require;
+}, (0, _recompose.renderComponent)(Video)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 14 */
@@ -1112,11 +806,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _audio = __webpack_require__(52);
+var _recompose = __webpack_require__(4);
 
-var _audio2 = _interopRequireDefault(_audio);
+var _media = __webpack_require__(57);
+
+var _media2 = _interopRequireDefault(_media);
+
+var _actions = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1124,11 +822,140 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   var jPlayers = _ref.jPlayers;
   var id = _ref2.id;
   return {
-    require: !jPlayers[id].mediaSettings.video
+    loop: jPlayers[id].loop,
+    src: jPlayers[id].src,
+    playHeadPercent: jPlayers[id].playHeadPercent,
+    paused: jPlayers[id].paused,
+    defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
+    playbackRate: jPlayers[id].playbackRate,
+    preload: jPlayers[id].preload,
+    volume: jPlayers[id].volume,
+    muted: jPlayers[id].muted,
+    autoplay: jPlayers[id].autoplay,
+    newTime: jPlayers[id].newTime,
+    tracks: jPlayers[id].media.tracks
   };
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_audio2.default);
+var handlers = function handlers() {
+  var currentMedia = void 0;
+
+  var getSeekableEnd = function getSeekableEnd() {
+    if (currentMedia.seekable.length > 0) {
+      return currentMedia.seekable.end(currentMedia.seekable.length - 1);
+    }
+
+    return NaN;
+  };
+  var getCurrentPercentRelative = function getCurrentPercentRelative() {
+    return (0, _reactJplayerUtils.toPercentage)(currentMedia.currentTime, getSeekableEnd());
+  };
+  var getSeekPercent = function getSeekPercent() {
+    return (0, _reactJplayerUtils.toPercentage)(getSeekableEnd(), currentMedia.duration);
+  };
+
+  return {
+    setCurrentMedia: function setCurrentMedia() {
+      return function (ref) {
+        currentMedia = ref;
+      };
+    },
+    updateMediaStatus: function updateMediaStatus(props) {
+      return function () {
+        var currentPercentAbsolute = (0, _reactJplayerUtils.toPercentage)(currentMedia.currentTime, currentMedia.duration);
+
+        // Is infinite when live streaming
+        if (isFinite(currentMedia.duration)) {
+          props.setOption(props.id, 'duration', currentMedia.duration);
+        }
+
+        props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
+        props.setOption(props.id, 'seekPercent', getSeekPercent());
+        props.setOption(props.id, 'currentPercentAbsolute', currentPercentAbsolute);
+        props.setOption(props.id, 'currentTime', currentMedia.currentTime);
+        props.setOption(props.id, 'playbackRate', currentMedia.playbackRate);
+      };
+    },
+    updateMediaSrc: function updateMediaSrc(props) {
+      return function () {
+        if (props.src !== null) {
+          currentMedia.src = props.src;
+        }
+      };
+    },
+    updateMediaTime: function updateMediaTime(props) {
+      return function () {
+        currentMedia.currentTime = props.newTime;
+        props.setOption(props.id, 'newTime', null);
+      };
+    },
+    updateMediaTimeAfterSeeking: function updateMediaTimeAfterSeeking(props) {
+      return function () {
+        var seekableEnd = getSeekableEnd();
+
+        // TODO: Investigate why some .mp3 urls don't fire media events enough (http://www.davidgagne.net/m/song.mp3).
+        // Hasn't fully loaded the song????
+        if (isFinite(seekableEnd)) {
+          currentMedia.currentTime = (0, _reactJplayerUtils.toRelativePercentage)(props.playHeadPercent, seekableEnd);
+
+          /* Media events don't fire fast enough to give a smooth animation
+            when dragging so we update it here as well, same problem as above? */
+          props.setOption(props.id, 'currentPercentRelative', getCurrentPercentRelative());
+        }
+      };
+    },
+    updateMediaPlayState: function updateMediaPlayState(props) {
+      return function () {
+        if (props.paused) {
+          currentMedia.pause();
+        } else {
+          currentMedia.play();
+        }
+      };
+    },
+    updateOtherMediaValues: function updateOtherMediaValues(props) {
+      return function () {
+        currentMedia.defaultPlaybackRate = props.defaultPlaybackRate;
+        currentMedia.playbackRate = props.playbackRate;
+        currentMedia.preload = props.preload;
+        currentMedia.volume = props.volume;
+        currentMedia.muted = props.muted;
+        currentMedia.autoplay = props.autoplay;
+        currentMedia.loop = props.loop;
+      };
+    }
+  };
+};
+
+var lifecycle = {
+  componentDidMount: function componentDidMount() {
+    if (this.props.src !== null) {
+      this.props.updateMediaSrc();
+    }
+
+    this.props.updateOtherMediaValues();
+  },
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    if (prevProps.src !== this.props.src) {
+      this.props.updateMediaSrc();
+    }
+
+    if (this.props.newTime !== null) {
+      this.props.updateMediaTime();
+    }
+
+    if (prevProps.playHeadPercent !== this.props.playHeadPercent) {
+      this.props.updateMediaTimeAfterSeeking();
+    }
+
+    this.props.updateMediaPlayState();
+    this.props.updateOtherMediaValues();
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_media2.default);
 
 /***/ }),
 /* 15 */
@@ -1141,23 +968,111 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _browserUnsupported = __webpack_require__(53);
+var _react2 = _interopRequireDefault(_react);
 
-var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _recompose = __webpack_require__(4);
+
+var _mediaContainer = __webpack_require__(14);
+
+var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    foundSupported: jPlayers[id].mediaSettings.foundSupported
-  };
+/* eslint-disable jsx-a11y/media-has-caption */
+
+var Audio = function Audio(props) {
+  return _react2.default.createElement(
+    _mediaContainer2.default,
+    {
+      onAbort: props.onAbort,
+      onCanPlay: props.onCanPlay,
+      onCanPlayThrough: props.onCanPlayThrough,
+      onDurationChange: props.onDurationChange,
+      onEmptied: props.onEmptied,
+      onEncrypted: props.onEncrypted,
+      onEnded: props.onEnded,
+      onError: props.onError,
+      onLoadedData: props.onLoadedData,
+      onLoadedMetadata: props.onLoadedMetadata,
+      onLoadStart: props.onLoadStart,
+      onPause: props.onPause,
+      onPlay: props.onPlay,
+      onPlaying: props.onPlaying,
+      onProgress: props.onProgress,
+      onRateChange: props.onRateChange,
+      onSeeked: props.onSeeked,
+      onSeeking: props.onSeeking,
+      onStalled: props.onStalled,
+      onSuspend: props.onSuspend,
+      onTimeUpdate: props.onTimeUpdate,
+      onVolumeChange: props.onVolumeChange,
+      onWaiting: props.onWaiting
+    },
+    _react2.default.createElement('audio', null)
+  );
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_browserUnsupported2.default);
+Audio.defaultProps = {
+  onAbort: Function.prototype,
+  onCanPlay: Function.prototype,
+  onCanPlayThrough: Function.prototype,
+  onDurationChange: Function.prototype,
+  onEmptied: Function.prototype,
+  onEncrypted: Function.prototype,
+  onEnded: Function.prototype,
+  onError: Function.prototype,
+  onLoadedData: Function.prototype,
+  onLoadedMetadata: Function.prototype,
+  onLoadStart: Function.prototype,
+  onPause: Function.prototype,
+  onPlay: Function.prototype,
+  onPlaying: Function.prototype,
+  onProgress: Function.prototype,
+  onRateChange: Function.prototype,
+  onSeeked: Function.prototype,
+  onSeeking: Function.prototype,
+  onStalled: Function.prototype,
+  onSuspend: Function.prototype,
+  onTimeUpdate: Function.prototype,
+  onVolumeChange: Function.prototype,
+  onWaiting: Function.prototype
+};
+
+Audio.propTypes = {
+  onAbort: _propTypes2.default.func,
+  onCanPlay: _propTypes2.default.func,
+  onCanPlayThrough: _propTypes2.default.func,
+  onDurationChange: _propTypes2.default.func,
+  onEmptied: _propTypes2.default.func,
+  onEncrypted: _propTypes2.default.func,
+  onEnded: _propTypes2.default.func,
+  onError: _propTypes2.default.func,
+  onLoadedData: _propTypes2.default.func,
+  onLoadedMetadata: _propTypes2.default.func,
+  onLoadStart: _propTypes2.default.func,
+  onPause: _propTypes2.default.func,
+  onPlay: _propTypes2.default.func,
+  onPlaying: _propTypes2.default.func,
+  onProgress: _propTypes2.default.func,
+  onRateChange: _propTypes2.default.func,
+  onSeeked: _propTypes2.default.func,
+  onSeeking: _propTypes2.default.func,
+  onStalled: _propTypes2.default.func,
+  onSuspend: _propTypes2.default.func,
+  onTimeUpdate: _propTypes2.default.func,
+  onVolumeChange: _propTypes2.default.func,
+  onWaiting: _propTypes2.default.func
+};
+
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.require;
+}, (0, _recompose.renderComponent)(Audio)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 16 */
@@ -1170,9 +1085,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1180,103 +1093,61 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _keyControlContainer = __webpack_require__(66);
 
-var _bufferBar = __webpack_require__(54);
+var _keyControlContainer2 = _interopRequireDefault(_keyControlContainer);
 
-var _bufferBar2 = _interopRequireDefault(_bufferBar);
+var _screenFullContainer = __webpack_require__(67);
+
+var _screenFullContainer2 = _interopRequireDefault(_screenFullContainer);
+
+var _errorLoggerContainer = __webpack_require__(69);
+
+var _errorLoggerContainer2 = _interopRequireDefault(_errorLoggerContainer);
+
+var _timeDisplayContainer = __webpack_require__(70);
+
+var _timeDisplayContainer2 = _interopRequireDefault(_timeDisplayContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var JPlayer = function JPlayer(props) {
+  var className = props.className,
+      keyBindings = props.keyBindings,
+      children = props.children,
+      onMouseMoveCapture = props.onMouseMoveCapture,
+      id = props.id;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      attributes = _objectWithoutProperties(_ref, ['id']);
-
-  return {
-    bufferedTimeRanges: jPlayers[id].bufferedTimeRanges,
-    duration: jPlayers[id].duration,
-    bufferColour: jPlayers[id].bufferColour,
-    attributes: attributes
-  };
+  return _react2.default.createElement(
+    'div',
+    {
+      id: id,
+      className: className,
+      draggable: false,
+      onMouseMoveCapture: onMouseMoveCapture
+    },
+    _react2.default.createElement(_keyControlContainer2.default, { keyBindings: keyBindings }),
+    _react2.default.createElement(_timeDisplayContainer2.default, null),
+    _react2.default.createElement(_screenFullContainer2.default, null),
+    _react2.default.createElement(_errorLoggerContainer2.default, null),
+    children
+  );
 };
 
-var BufferBarContainer = function (_React$Component) {
-  _inherits(BufferBarContainer, _React$Component);
+JPlayer.defaultProps = {
+  keyBindings: null
+};
 
-  function BufferBarContainer() {
-    var _ref3;
+JPlayer.propTypes = {
+  keyBindings: _propTypes2.default.object,
+  onMouseMoveCapture: _propTypes2.default.func.isRequired,
+  className: _propTypes2.default.string.isRequired,
+  id: _propTypes2.default.string.isRequired,
+  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired
+};
 
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, BufferBarContainer);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = BufferBarContainer.__proto__ || Object.getPrototypeOf(BufferBarContainer)).call.apply(_ref3, [this].concat(args))), _this), _this.setCanvas = function (ref) {
-      _this.canvas = ref;
-    }, _this.clearBuffer = function () {
-      _this.canvas.getContext('2d').clearRect(0, 0, _this.canvas.width, _this.canvas.height);
-    }, _this.fillBufferPartially = function () {
-      var modifier = _this.canvas.width / _this.props.duration;
-      var context = _this.canvas.getContext('2d');
-
-      _this.props.bufferedTimeRanges.forEach(function (bufferedTimeRange) {
-        var startX = bufferedTimeRange.start * modifier;
-        var endX = bufferedTimeRange.end * modifier;
-        var width = endX - startX;
-
-        context.fillStyle = _this.props.bufferColour;
-        context.fillRect(startX, 0, width, _this.canvas.height);
-      });
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(BufferBarContainer, [{
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
-        if (this.props.bufferedTimeRanges.length === 0) {
-          this.clearBuffer();
-        }
-        this.fillBufferPartially();
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(_bufferBar2.default, { setCanvas: this.setCanvas, attributes: this.props.attributes });
-    }
-  }], [{
-    key: 'propTypes',
-    get: function get() {
-      return {
-        attributes: _propTypes2.default.object.isRequired,
-        bufferedTimeRanges: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-          start: _propTypes2.default.number.isRequired,
-          end: _propTypes2.default.number.isRequired
-        })).isRequired,
-        bufferColour: _propTypes2.default.string.isRequired,
-        duration: _propTypes2.default.number.isRequired
-      };
-    }
-  }]);
-
-  return BufferBarContainer;
-}(_react2.default.Component);
-
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(BufferBarContainer);
+exports.default = JPlayer;
 
 /***/ }),
 /* 17 */
@@ -1289,24 +1160,34 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _currentTime = __webpack_require__(55);
+var _react2 = _interopRequireDefault(_react);
 
-var _currentTime2 = _interopRequireDefault(_currentTime);
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id,
-      children = _ref2.children;
-  return {
-    children: children || jPlayers[id].currentTimeText
-  };
+var PlayBar = function PlayBar(props) {
+  var width = props.smoothPlayBar ? props.smoothWidth + '%' : props.currentPercentRelative + '%';
+
+  return _react2.default.createElement('div', {
+    className: _constants.classes.PLAY_BAR,
+    style: { width: width }
+  });
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_currentTime2.default);
+PlayBar.propTypes = {
+  smoothPlayBar: _propTypes2.default.bool.isRequired,
+  smoothWidth: _propTypes2.default.number.isRequired,
+  currentPercentRelative: _propTypes2.default.number.isRequired
+};
+
+exports.default = PlayBar;
 
 /***/ }),
 /* 18 */
@@ -1319,24 +1200,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _download = __webpack_require__(56);
+var _react2 = _interopRequireDefault(_react);
 
-var _download2 = _interopRequireDefault(_download);
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    free: jPlayers[id].media.free,
-    url: jPlayers[id].src
-  };
+var BufferBar = function BufferBar(_ref) {
+  var setCanvas = _ref.setCanvas;
+  return _react2.default.createElement('canvas', {
+    ref: setCanvas,
+    className: _constants.classes.BUFFER_BAR
+  });
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_download2.default);
+BufferBar.propTypes = {
+  setCanvas: _propTypes2.default.func.isRequired
+};
+
+exports.default = BufferBar;
 
 /***/ }),
 /* 19 */
@@ -1349,24 +1237,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _duration = __webpack_require__(57);
+var _react2 = _interopRequireDefault(_react);
 
-var _duration2 = _interopRequireDefault(_duration);
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _recompose = __webpack_require__(4);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id,
-      children = _ref2.children;
-  return {
-    children: children || jPlayers[id].durationText
-  };
+var Poster = function Poster(_ref) {
+  var src = _ref.src;
+  return _react2.default.createElement('img', { className: _constants.classes.POSTER, alt: '', src: src });
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_duration2.default);
+Poster.defaultProps = {
+  src: null
+};
+
+Poster.propTypes = {
+  src: _propTypes2.default.string
+};
+
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.src;
+}, (0, _recompose.renderComponent)(Poster)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 20 */
@@ -1379,31 +1279,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _actions = __webpack_require__(4);
+var _react2 = _interopRequireDefault(_react);
 
-var _fullScreen = __webpack_require__(58);
+var _propTypes = __webpack_require__(0);
 
-var _fullScreen2 = _interopRequireDefault(_fullScreen);
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _recompose = __webpack_require__(4);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    fullScreen: jPlayers[id].fullScreen
-  };
+var Title = function Title(_ref) {
+  var title = _ref.title;
+  return _react2.default.createElement(
+    'div',
+    { className: _constants.classes.TITLE },
+    title
+  );
 };
 
-var mapDispatchToProps = {
-  setFullScreen: function setFullScreen(id, fullScreen) {
-    return (0, _actions.setOption)(id, 'fullScreen', fullScreen);
-  }
+Title.propTypes = {
+  title: _propTypes2.default.string.isRequired
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_fullScreen2.default);
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.title;
+}, (0, _recompose.renderComponent)(Title)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 21 */
@@ -1416,50 +1321,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _react = __webpack_require__(2);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react2 = _interopRequireDefault(_react);
 
-var _actions = __webpack_require__(4);
+var _propTypes = __webpack_require__(0);
 
-var _gui = __webpack_require__(59);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _gui2 = _interopRequireDefault(_gui);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    fullScreen: jPlayers[id].fullScreen,
-    paused: jPlayers[id].paused,
-    guiFadeOut: jPlayers[id].guiFadeOut,
-    guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout
-  };
-};
-
-var mergeProps = function mergeProps(stateProps, _ref4, _ref3) {
-  var dispatch = _ref4.dispatch;
-
-  var id = _ref3.id,
-      attributes = _objectWithoutProperties(_ref3, ['id']);
-
-  return _extends({
-    onMouseMove: function onMouseMove() {
-      if (stateProps.fullScreen && !stateProps.paused) {
-        dispatch((0, _actions.setOption)(id, 'guiFadeOut', false));
-        clearTimeout(stateProps.guiFadeHoldTimeout);
+var FullScreen = function FullScreen(_ref) {
+  var setFullScreen = _ref.setFullScreen,
+      id = _ref.id,
+      fullScreen = _ref.fullScreen,
+      children = _ref.children;
+  return _react2.default.createElement(
+    'button',
+    {
+      className: _constants.classes.FULL_SCREEN,
+      onClick: function onClick() {
+        return setFullScreen(id, !fullScreen);
       }
     },
-    fullScreen: stateProps.fullScreen,
-    guiFadeOut: stateProps.guiFadeOut
-  }, attributes);
+    children
+  );
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps)(_gui2.default);
+FullScreen.propTypes = {
+  children: _propTypes2.default.node.isRequired,
+  setFullScreen: _propTypes2.default.func.isRequired,
+  id: _propTypes2.default.string.isRequired,
+  fullScreen: _propTypes2.default.bool.isRequired
+};
+
+exports.default = FullScreen;
 
 /***/ }),
 /* 22 */
@@ -1472,284 +1370,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
-
-var _screenfull = __webpack_require__(82);
-
-var _screenfull2 = _interopRequireDefault(_screenfull);
-
-var _classnames = __webpack_require__(81);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _lodash = __webpack_require__(13);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _reactJplayerUtils = __webpack_require__(3);
 
 var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _formatPropTypes = __webpack_require__(77);
-
-var _formatPropTypes2 = _interopRequireDefault(_formatPropTypes);
-
-var _constants = __webpack_require__(2);
-
-var _jPlayer = __webpack_require__(60);
-
-var _jPlayer2 = _interopRequireDefault(_jPlayer);
-
-var _actions = __webpack_require__(4);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var _extends2;
-
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      customStates = _ref.customStates,
-      children = _ref.children,
-      keyBindings = _ref.keyBindings,
-      attributes = _objectWithoutProperties(_ref, ['id', 'customStates', 'children', 'keyBindings']);
-
-  return {
-    media: jPlayers[id].media,
-    error: jPlayers[id].error,
-    fullScreen: jPlayers[id].fullScreen,
-    keyEnabled: jPlayers[id].keyEnabled,
-    paused: jPlayers[id].paused,
-    guiFadeHoldTimeout: jPlayers[id].guiFadeHoldTimeout,
-    guiFadeHoldTime: jPlayers[id].guiFadeHoldTime,
-    muted: jPlayers[id].muted,
-    volume: jPlayers[id].volume,
-    loop: jPlayers[id].loop,
-    keyBindings: keyBindings,
-    id: id,
-    children: children,
-    attributes: _extends({}, attributes, {
-      className: (0, _classnames2.default)(attributes.className, _constants.classes.JPLAYER, _extends((_extends2 = {}, _defineProperty(_extends2, _constants.classes.states.AUDIO, !jPlayers[id].mediaSettings.video), _defineProperty(_extends2, _constants.classes.states.VIDEO, jPlayers[id].mediaSettings.video), _defineProperty(_extends2, _constants.classes.states.PLAYING, !jPlayers[id].paused), _defineProperty(_extends2, _constants.classes.states.IDLE, jPlayers[id].currentTime === 0), _defineProperty(_extends2, _constants.classes.states.FULL_SCREEN, jPlayers[id].fullScreen), _defineProperty(_extends2, _constants.classes.states.MUTED, jPlayers[id].muted), _defineProperty(_extends2, _constants.classes.states.VOLUME_LOW, !jPlayers[id].muted && jPlayers[id].volume < 0.5), _defineProperty(_extends2, _constants.classes.states.VOLUME_HIGH, !jPlayers[id].muted && jPlayers[id].volume >= 0.5), _defineProperty(_extends2, _constants.classes.states.SEEKING, jPlayers[id].seeking), _defineProperty(_extends2, _constants.classes.states.LOOPED, jPlayers[id].loop), _defineProperty(_extends2, _constants.classes.states.NO_BROWSER_SUPPORT, !jPlayers[id].mediaSettings.foundSupported), _defineProperty(_extends2, _constants.classes.states.NO_VOLUME_SUPPORT, !jPlayers[id].volumeSupported), _extends2), customStates))
-    })
-  };
+var Mute = function Mute(_ref) {
+  var setMute = _ref.setMute,
+      id = _ref.id,
+      muted = _ref.muted,
+      children = _ref.children;
+  return _react2.default.createElement(
+    'button',
+    { className: _constants.classes.MUTE, onClick: function onClick() {
+        return setMute(id, !muted);
+      } },
+    children
+  );
 };
 
-var mergeProps = function mergeProps(stateProps, _ref3) {
-  var dispatch = _ref3.dispatch;
-  return _extends({}, stateProps, {
-    dispatch: dispatch,
-    keyBindings: (0, _lodash2.default)({}, {
-      play: {
-        key: 80, // p
-        fn: function fn() {
-          return stateProps.paused ? dispatch((0, _actions.play)(stateProps.id)) : dispatch((0, _actions.pause)(stateProps.id));
-        }
-      },
-      fullScreen: {
-        key: 70, // f
-        fn: function fn() {
-          return dispatch((0, _actions.setOption)(stateProps.id, 'fullScreen', !stateProps.fullScreen));
-        }
-      },
-      mute: {
-        key: 77, // m
-        fn: function fn() {
-          return dispatch((0, _actions.setMute)(stateProps.id, !stateProps.muted));
-        }
-      },
-      volumeUp: {
-        key: 190, // .
-        fn: function fn() {
-          dispatch((0, _actions.setVolume)(stateProps.id, stateProps.volume + 0.1));
-        }
-      },
-      volumeDown: {
-        key: 188, // ,
-        fn: function fn() {
-          return dispatch((0, _actions.setVolume)(stateProps.id, stateProps.volume - 0.1));
-        }
-      },
-      loop: {
-        key: 76, // l
-        fn: function fn() {
-          return dispatch((0, _actions.setOption)(stateProps.id, 'loop', !stateProps.loop));
-        }
-      }
-    }, stateProps.keyBindings)
-  });
+Mute.propTypes = {
+  id: _propTypes2.default.string.isRequired,
+  children: _propTypes2.default.node.isRequired,
+  setMute: _propTypes2.default.func.isRequired,
+  muted: _propTypes2.default.bool.isRequired
 };
 
-var JPlayerContainer = function (_React$Component) {
-  _inherits(JPlayerContainer, _React$Component);
-
-  function JPlayerContainer() {
-    var _ref4;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, JPlayerContainer);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = JPlayerContainer.__proto__ || Object.getPrototypeOf(JPlayerContainer)).call.apply(_ref4, [this].concat(args))), _this), _this.onMouseMove = function (e) {
-      if (_this.props.fullScreen) {
-        if (_this.props.paused) {
-          if ((0, _reactJplayerUtils.traverseParentsUntilClassName)(e.target, _constants.classes.GUI)) {
-            return;
-          }
-        }
-        _this.startGuiFadeOutTimer();
-      }
-    }, _this.setJPlayer = function (ref) {
-      _this.jPlayer = ref;
-    }, _this.requestFullScreen = function () {
-      if (_this.props.fullScreen) {
-        if (_screenfull2.default.enabled) {
-          _screenfull2.default.request(_this.jPlayer);
-        }
-        // Legacy browsers don't implement full screen api
-        // Safari 5.1 doesn't hide the other elements even with fullscreen api
-        document.body.style.visibility = 'hidden';
-      }
-    }, _this.exitFullScreen = function () {
-      if (!_this.props.fullScreen) {
-        if (_screenfull2.default.enabled) {
-          _screenfull2.default.exit();
-        }
-        document.body.style.visibility = 'visible';
-      }
-    }, _this.startGuiFadeOutTimer = function () {
-      if (_this.props.fullScreen && !_this.props.paused) {
-        clearTimeout(_this.props.guiFadeHoldTimeout);
-        _this.props.dispatch((0, _actions.setOption)(_this.props.id, 'guiFadeOut', false));
-        _this.props.dispatch((0, _actions.setOption)(_this.props.id, 'guiFadeHoldTimeout', setTimeout(_this.startGuiFadeOut, _this.props.guiFadeHoldTime)));
-      }
-    }, _this.startGuiFadeOut = function () {
-      if (_this.props.fullScreen && !_this.props.paused) {
-        _this.props.dispatch((0, _actions.setOption)(_this.props.id, 'guiFadeOut', true));
-      }
-    }, _this.closeFullScreen = function () {
-      if (!_screenfull2.default.isFullscreen) {
-        _this.props.dispatch((0, _actions.setOption)(_this.props.id, 'fullScreen', false));
-      }
-    }, _this.logError = function (_ref5) {
-      var error = _ref5.error;
-      return console.error(error);
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(JPlayerContainer, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      if (_screenfull2.default.enabled) {
-        document.addEventListener(_screenfull2.default.raw.fullscreenchange, this.closeFullScreen);
-      }
-      this.props.dispatch((0, _actions.setMedia)(this.props.id, this.props.media));
-      this.requestFullScreen();
-    }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.error !== this.props.error) {
-        this.logError(nextProps);
-      }
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.paused !== this.props.paused) {
-        this.startGuiFadeOutTimer();
-      }
-      if (prevProps.fullScreen !== this.props.fullScreen) {
-        this.requestFullScreen();
-        this.exitFullScreen();
-      }
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (_screenfull2.default.enabled) {
-        document.removeEventListener(_screenfull2.default.raw.fullscreenchange, this.closeFullScreen);
-      }
-    }
-    // eslint-disable-next-line no-console
-
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _jPlayer2.default,
-        _extends({
-          setJPlayer: this.setJPlayer, onMouseMove: this.onMouseMove
-        }, _extends({ id: this.props.id }, this.props.attributes)),
-        _react2.default.createElement(_reactJplayerUtils.KeyControl, { keyBindings: this.props.keyBindings }),
-        this.props.children
-      );
-    }
-  }], [{
-    key: 'propTypes',
-    get: function get() {
-      return {
-        attributes: _propTypes2.default.object,
-        media: _propTypes2.default.shape({
-          title: _propTypes2.default.string,
-          artist: _propTypes2.default.string,
-          sources: _propTypes2.default.shape(_formatPropTypes2.default).isRequired,
-          poster: _propTypes2.default.string,
-          free: _propTypes2.default.bool,
-          id: _propTypes2.default.string
-        }).isRequired,
-        keyBindings: _propTypes2.default.object.isRequired,
-        id: _propTypes2.default.string.isRequired,
-        dispatch: _propTypes2.default.func.isRequired,
-        error: _propTypes2.default.shape({
-          context: _propTypes2.default.string,
-          message: _propTypes2.default.string,
-          hint: _propTypes2.default.string
-        }),
-        fullScreen: _propTypes2.default.bool.isRequired,
-        children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired,
-        paused: _propTypes2.default.bool.isRequired,
-        guiFadeHoldTime: _propTypes2.default.number.isRequired,
-        guiFadeHoldTimeout: _propTypes2.default.number
-      };
-    }
-  }, {
-    key: 'defaultProps',
-    get: function get() {
-      return {
-        attributes: null,
-        guiFadeHoldTimeout: null,
-        error: null
-      };
-    }
-  }]);
-
-  return JPlayerContainer;
-}(_react2.default.Component);
-
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps)(JPlayerContainer);
+exports.default = Mute;
 
 /***/ }),
 /* 23 */
@@ -1762,29 +1416,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _actions = __webpack_require__(4);
+var _react2 = _interopRequireDefault(_react);
 
-var _mute = __webpack_require__(61);
+var _propTypes = __webpack_require__(0);
 
-var _mute2 = _interopRequireDefault(_mute);
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    muted: jPlayers[id].muted
-  };
+var Play = function Play(_ref) {
+  var play = _ref.play,
+      id = _ref.id,
+      paused = _ref.paused,
+      children = _ref.children;
+  return _react2.default.createElement(
+    'button',
+    { className: _constants.classes.PLAY, onClick: function onClick() {
+        return play(id, paused);
+      } },
+    children
+  );
 };
 
-var mapDispatchToProps = {
-  setMute: _actions.setMute
+Play.propTypes = {
+  children: _propTypes2.default.node.isRequired,
+  play: _propTypes2.default.func.isRequired,
+  id: _propTypes2.default.string.isRequired,
+  paused: _propTypes2.default.bool.isRequired
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_mute2.default);
+exports.default = Play;
 
 /***/ }),
 /* 24 */
@@ -1797,25 +1462,34 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _playBar = __webpack_require__(62);
+var _react2 = _interopRequireDefault(_react);
 
-var _playBar2 = _interopRequireDefault(_playBar);
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    smoothPlayBar: jPlayers[id].smoothPlayBar,
-    currentPercentAbsolute: jPlayers[id].currentPercentAbsolute,
-    currentPercentRelative: jPlayers[id].currentPercentRelative
-  };
+var Repeat = function Repeat(_ref) {
+  var loop = _ref.loop,
+      children = _ref.children;
+  return _react2.default.createElement(
+    'button',
+    { className: _constants.classes.REPEAT, onClick: loop },
+    children
+  );
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_playBar2.default);
+Repeat.propTypes = {
+  children: _propTypes2.default.node.isRequired,
+  loop: _propTypes2.default.func.isRequired
+};
+
+exports.default = Repeat;
 
 /***/ }),
 /* 25 */
@@ -1828,33 +1502,48 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _actions = __webpack_require__(4);
+var _react2 = _interopRequireDefault(_react);
 
-var _play2 = __webpack_require__(63);
+var _propTypes = __webpack_require__(0);
 
-var _play3 = _interopRequireDefault(_play2);
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _barContainer = __webpack_require__(7);
+
+var _barContainer2 = _interopRequireDefault(_barContainer);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    paused: jPlayers[id].paused
-  };
+var SeekBar = function SeekBar(props) {
+  return _react2.default.createElement(
+    _barContainer2.default,
+    {
+      clickMoveBar: props.clickMoveBar,
+      touchMoveBar: props.touchMoveBar
+    },
+    _react2.default.createElement(
+      'div',
+      {
+        className: _constants.classes.SEEK_BAR,
+        style: { width: props.seekPercent + '%' }
+      },
+      props.children
+    )
+  );
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    play: function play(id, paused) {
-      return paused ? dispatch((0, _actions.play)(id)) : dispatch((0, _actions.pause)(id));
-    }
-  };
+SeekBar.propTypes = {
+  seekPercent: _propTypes2.default.number.isRequired,
+  clickMoveBar: _propTypes2.default.func.isRequired,
+  touchMoveBar: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_play3.default);
+exports.default = SeekBar;
 
 /***/ }),
 /* 26 */
@@ -1867,7 +1556,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1875,113 +1564,44 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _barContainer = __webpack_require__(7);
 
-var _actions = __webpack_require__(4);
+var _barContainer2 = _interopRequireDefault(_barContainer);
 
-var _bar = __webpack_require__(5);
-
-var _bar2 = _interopRequireDefault(_bar);
-
-var _playbackRateBar = __webpack_require__(65);
-
-var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
-
-var _playbackRateBarValueContainer = __webpack_require__(8);
+var _playbackRateBarValueContainer = __webpack_require__(27);
 
 var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
 
+var _constants = __webpack_require__(3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    movePlaybackRate: function movePlaybackRate(bar, dispatch, e) {
-      var _jPlayers$id = jPlayers[id],
-          verticalPlaybackRate = _jPlayers$id.verticalPlaybackRate,
-          minPlaybackRate = _jPlayers$id.minPlaybackRate,
-          maxPlaybackRate = _jPlayers$id.maxPlaybackRate;
-
-      var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
-      var w = bar.getBoundingClientRect().width;
-      var h = bar.getBoundingClientRect().height;
-      var x = e.pageX - offset.left;
-      var y = h - e.pageY + offset.top;
-      var ratio = void 0;
-
-      if (verticalPlaybackRate) {
-        ratio = y / h;
-      } else {
-        ratio = x / w;
-      }
-
-      var playbackRateValue = ratio * (maxPlaybackRate - minPlaybackRate) + minPlaybackRate;
-
-      dispatch((0, _actions.setOption)(id, 'playbackRate', playbackRateValue));
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var mergeProps = function mergeProps(_ref3, _ref4) {
-  var movePlaybackRate = _ref3.movePlaybackRate,
-      children = _ref3.children,
-      attributes = _ref3.attributes;
-  var dispatch = _ref4.dispatch;
-  return {
-    onClick: function onClick(bar, e) {
-      return movePlaybackRate(bar, dispatch, e);
-    },
-    onTouchMove: function onTouchMove(bar, e) {
-      // Stop page scrolling
-      e.preventDefault();
-
-      movePlaybackRate(bar, dispatch, e.touches[0]);
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var PlaybackRateBarContainer = function PlaybackRateBarContainer(_ref5) {
-  var onClick = _ref5.onClick,
-      onTouchMove = _ref5.onTouchMove,
-      children = _ref5.children,
-      attributes = _ref5.attributes;
+var PlaybackRateBar = function PlaybackRateBar(props) {
   return _react2.default.createElement(
-    _bar2.default,
+    _barContainer2.default,
     {
-      clickMoveBar: onClick,
-      touchMoveBar: onTouchMove
+      clickMoveBar: props.clickMoveBar,
+      touchMoveBar: props.touchMoveBar
     },
     _react2.default.createElement(
-      _playbackRateBar2.default,
-      attributes,
-      children
+      'div',
+      { className: _constants.classes.PLAYBACK_RATE_BAR },
+      props.children
     )
   );
 };
 
-PlaybackRateBarContainer.defaultProps = {
+PlaybackRateBar.defaultProps = {
   children: _react2.default.createElement(_playbackRateBarValueContainer2.default, null)
 };
 
-PlaybackRateBarContainer.propTypes = {
-  attributes: _propTypes2.default.object.isRequired,
-  children: _propTypes2.default.node,
-  onClick: _propTypes2.default.func.isRequired,
-  onTouchMove: _propTypes2.default.func.isRequired
+PlaybackRateBar.propTypes = {
+  clickMoveBar: _propTypes2.default.func.isRequired,
+  touchMoveBar: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.node
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps)(PlaybackRateBarContainer);
+exports.default = PlaybackRateBar;
 
 /***/ }),
 /* 27 */
@@ -1994,11 +1614,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _poster = __webpack_require__(66);
+var _playbackRateBarValue = __webpack_require__(28);
 
-var _poster2 = _interopRequireDefault(_poster);
+var _playbackRateBarValue2 = _interopRequireDefault(_playbackRateBarValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2006,11 +1626,14 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   var jPlayers = _ref.jPlayers;
   var id = _ref2.id;
   return {
-    src: jPlayers[id].media.poster
+    verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
+    minPlaybackRate: jPlayers[id].minPlaybackRate,
+    maxPlaybackRate: jPlayers[id].maxPlaybackRate,
+    playbackRate: jPlayers[id].playbackRate
   };
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_poster2.default);
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_playbackRateBarValue2.default);
 
 /***/ }),
 /* 28 */
@@ -2023,31 +1646,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _actions = __webpack_require__(4);
+var _react2 = _interopRequireDefault(_react);
 
-var _repeat = __webpack_require__(67);
+var _propTypes = __webpack_require__(0);
 
-var _repeat2 = _interopRequireDefault(_repeat);
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    loop: jPlayers[id].loop
+var PlaybackRateBarValue = function PlaybackRateBarValue(props) {
+  var ratio = (props.playbackRate - props.minPlaybackRate) / (props.maxPlaybackRate - props.minPlaybackRate);
+  var playbackRateBarPercentage = ratio * 100 + '%';
+  var style = {
+    width: !props.verticalPlaybackRate ? playbackRateBarPercentage : null,
+    height: props.verticalPlaybackRate ? playbackRateBarPercentage : null
   };
+
+  return _react2.default.createElement('div', {
+    className: _constants.classes.PLAYBACK_RATE_BAR_VALUE,
+    style: style
+  });
 };
 
-var mapDispatchToProps = {
-  setLoop: function setLoop(id, loop) {
-    return (0, _actions.setOption)(id, 'loop', !loop);
-  }
+PlaybackRateBarValue.propTypes = {
+  verticalPlaybackRate: _propTypes2.default.bool.isRequired,
+  minPlaybackRate: _propTypes2.default.number.isRequired,
+  maxPlaybackRate: _propTypes2.default.number.isRequired,
+  playbackRate: _propTypes2.default.number.isRequired
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_repeat2.default);
+exports.default = PlaybackRateBarValue;
 
 /***/ }),
 /* 29 */
@@ -2060,9 +1692,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -2070,96 +1700,44 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _barContainer = __webpack_require__(7);
 
-var _actions = __webpack_require__(4);
+var _barContainer2 = _interopRequireDefault(_barContainer);
 
-var _bar = __webpack_require__(5);
+var _volumeBarValueContainer = __webpack_require__(30);
 
-var _bar2 = _interopRequireDefault(_bar);
+var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
 
-var _seekBar = __webpack_require__(68);
-
-var _seekBar2 = _interopRequireDefault(_seekBar);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    seekPercent: jPlayers[id].seekPercent,
-    movePlayHead: function movePlayHead(bar, dispatch, e) {
-      var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
-      var x = e.pageX - offset.left;
-      var w = bar.getBoundingClientRect().width;
-      var percentage = 100 * (x / w);
-
-      dispatch((0, _actions.setPlayHead)(id, percentage));
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var mergeProps = function mergeProps(_ref3, _ref4) {
-  var movePlayHead = _ref3.movePlayHead,
-      seekPercent = _ref3.seekPercent,
-      children = _ref3.children,
-      attributes = _ref3.attributes;
-  var dispatch = _ref4.dispatch;
-  return {
-    onClick: function onClick(bar, e) {
-      return movePlayHead(bar, dispatch, e);
-    },
-    onTouchMove: function onTouchMove(bar, e) {
-      // Stop page scrolling
-      e.preventDefault();
-
-      movePlayHead(bar, dispatch, e.touches[0]);
-    },
-    seekPercent: seekPercent,
-    children: children,
-    attributes: attributes
-  };
-};
-
-var SeekBarContainer = function SeekBarContainer(_ref5) {
-  var onClick = _ref5.onClick,
-      onTouchMove = _ref5.onTouchMove,
-      seekPercent = _ref5.seekPercent,
-      children = _ref5.children,
-      attributes = _ref5.attributes;
+var VolumeBar = function VolumeBar(props) {
   return _react2.default.createElement(
-    _bar2.default,
-    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
+    _barContainer2.default,
+    {
+      clickMoveBar: props.clickMoveBar,
+      touchMoveBar: props.touchMoveBar
+    },
     _react2.default.createElement(
-      _seekBar2.default,
-      _extends({ seekPercent: seekPercent }, attributes),
-      children
+      'div',
+      { className: _constants.classes.VOLUME_BAR },
+      props.children
     )
   );
 };
 
-SeekBarContainer.defaultProps = {
-  children: null
+VolumeBar.defaultProps = {
+  children: _react2.default.createElement(_volumeBarValueContainer2.default, null)
 };
 
-SeekBarContainer.propTypes = {
-  children: _propTypes2.default.node,
-  attributes: _propTypes2.default.object.isRequired,
-  onClick: _propTypes2.default.func.isRequired,
-  onTouchMove: _propTypes2.default.func.isRequired,
-  seekPercent: _propTypes2.default.number.isRequired
+VolumeBar.propTypes = {
+  clickMoveBar: _propTypes2.default.func.isRequired,
+  touchMoveBar: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.node
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps)(SeekBarContainer);
+exports.default = VolumeBar;
 
 /***/ }),
 /* 30 */
@@ -2172,30 +1750,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _title = __webpack_require__(69);
+var _volumeBarValue = __webpack_require__(31);
 
-var _title2 = _interopRequireDefault(_title);
+var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
   return {
-    children: children || (0, _reactJplayerUtils.formatArtistAndTitle)(jPlayers[id].media.artist, jPlayers[id].media.title),
-    attributes: attributes
+    verticalVolume: jPlayers[id].verticalVolume,
+    muted: jPlayers[id].muted,
+    volume: jPlayers[id].volume
   };
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_title2.default);
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_volumeBarValue2.default);
 
 /***/ }),
 /* 31 */
@@ -2208,23 +1781,39 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react = __webpack_require__(2);
 
-var _video = __webpack_require__(70);
+var _react2 = _interopRequireDefault(_react);
 
-var _video2 = _interopRequireDefault(_video);
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(_ref, _ref2) {
-  var jPlayers = _ref.jPlayers;
-  var id = _ref2.id;
-  return {
-    require: jPlayers[id].mediaSettings.video
+var VolumeBarValue = function VolumeBarValue(_ref) {
+  var muted = _ref.muted,
+      volume = _ref.volume,
+      verticalVolume = _ref.verticalVolume;
+
+  var volumeBarValuePercentage = (muted ? 0 : volume * 100) + '%';
+  var style = {
+    width: !verticalVolume ? volumeBarValuePercentage : null,
+    height: verticalVolume ? volumeBarValuePercentage : null
   };
+
+  return _react2.default.createElement('div', { className: _constants.classes.VOLUME_BAR_VALUE, style: style });
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {})(_video2.default);
+VolumeBarValue.propTypes = {
+  muted: _propTypes2.default.bool.isRequired,
+  volume: _propTypes2.default.number.isRequired,
+  verticalVolume: _propTypes2.default.bool.isRequired
+};
+
+exports.default = VolumeBarValue;
 
 /***/ }),
 /* 32 */
@@ -2237,7 +1826,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -2245,102 +1834,40 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _recompose = __webpack_require__(4);
 
-var _actions = __webpack_require__(4);
-
-var _bar = __webpack_require__(5);
-
-var _bar2 = _interopRequireDefault(_bar);
-
-var _volumeBar = __webpack_require__(72);
-
-var _volumeBar2 = _interopRequireDefault(_volumeBar);
-
-var _volumeBarValueContainer = __webpack_require__(9);
-
-var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var mapStateToProps = function mapStateToProps(_ref2, _ref) {
-  var jPlayers = _ref2.jPlayers;
-
-  var id = _ref.id,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['id', 'children']);
-
-  return {
-    moveVolumeBar: function moveVolumeBar(bar, dispatch, e) {
-      var verticalVolume = jPlayers[id].verticalVolume;
-
-      var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
-      var w = bar.getBoundingClientRect().width;
-      var h = bar.getBoundingClientRect().height;
-      var y = h - e.pageY + offset.top;
-      var x = e.pageX - offset.left;
-
-      if (verticalVolume) {
-        dispatch((0, _actions.setVolume)(id, y / h));
-      } else {
-        dispatch((0, _actions.setVolume)(id, x / w));
-      }
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var mergeProps = function mergeProps(_ref3, _ref4) {
-  var moveVolumeBar = _ref3.moveVolumeBar,
-      children = _ref3.children,
-      attributes = _ref3.attributes;
-  var dispatch = _ref4.dispatch;
-  return {
-    onClick: function onClick(bar, e) {
-      return moveVolumeBar(bar, dispatch, e);
-    },
-    onTouchMove: function onTouchMove(bar, e) {
-      // Stop page scrolling
-      e.preventDefault();
-
-      moveVolumeBar(bar, dispatch, e.touches[0]);
-    },
-    children: children,
-    attributes: attributes
-  };
-};
-
-var VolumeBarContainer = function VolumeBarContainer(_ref5) {
-  var onClick = _ref5.onClick,
-      onTouchMove = _ref5.onTouchMove,
-      children = _ref5.children,
-      attributes = _ref5.attributes;
+var Download = function Download(_ref) {
+  var url = _ref.url,
+      children = _ref.children;
   return _react2.default.createElement(
-    _bar2.default,
-    { clickMoveBar: onClick, touchMoveBar: onTouchMove },
-    _react2.default.createElement(
-      _volumeBar2.default,
-      attributes,
-      children
-    )
+    'a',
+    {
+      className: _constants.classes.DOWNLOAD,
+      href: url,
+      download: true,
+      target: '_blank',
+      rel: 'noopener noreferrer'
+    },
+    children
   );
 };
 
-VolumeBarContainer.defaultProps = {
-  children: _react2.default.createElement(_volumeBarValueContainer2.default, null)
+Download.defaultProps = {
+  url: null
 };
 
-VolumeBarContainer.propTypes = {
-  attributes: _propTypes2.default.object.isRequired,
-  children: _propTypes2.default.node,
-  onClick: _propTypes2.default.func.isRequired,
-  onTouchMove: _propTypes2.default.func.isRequired
+Download.propTypes = {
+  children: _propTypes2.default.node.isRequired,
+  url: _propTypes2.default.string
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps)(VolumeBarContainer);
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.free;
+}, (0, _recompose.renderComponent)(Download)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 33 */
@@ -2353,27 +1880,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _react = __webpack_require__(2);
 
-var _reactRedux = __webpack_require__(6);
+var _react2 = _interopRequireDefault(_react);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _propTypes = __webpack_require__(0);
 
-var _actions = __webpack_require__(4);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var actions = _interopRequireWildcard(_actions);
+var _recompose = __webpack_require__(4);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _constants = __webpack_require__(3);
 
-var Connect = function Connect(jPlayer, options) {
-  var ConnectedPlayer = (0, _reactRedux.connect)(function (state) {
-    return state;
-  }, _extends({}, actions))(jPlayer);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  return (0, _reactJplayerUtils.connect)(jPlayer, { options: options }, ConnectedPlayer);
+var Duration = function Duration(_ref) {
+  var durationText = _ref.durationText;
+  return _react2.default.createElement(
+    'div',
+    { className: _constants.classes.DURATION },
+    durationText
+  );
 };
 
-exports.default = Connect;
+Duration.propTypes = {
+  durationText: _propTypes2.default.string.isRequired
+};
+
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.durationText;
+}, (0, _recompose.renderComponent)(Duration)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 34 */
@@ -2386,17 +1922,32 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _react = __webpack_require__(2);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _react2 = _interopRequireDefault(_react);
 
-var _constants = __webpack_require__(2);
+var _propTypes = __webpack_require__(0);
 
-exports.default = function (connectedJPlayers) {
-  var jPlayers = (0, _reactJplayerUtils.initialState)(connectedJPlayers, _extends({}, _constants.defaultStatus, _constants.defaultOptions), 'options');
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-  return jPlayers;
+var _constants = __webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CurrentTime = function CurrentTime(_ref) {
+  var currentTimeText = _ref.currentTimeText;
+  return _react2.default.createElement(
+    'div',
+    { className: _constants.classes.CURRENT_TIME },
+    currentTimeText
+  );
 };
+
+CurrentTime.propTypes = {
+  currentTimeText: _propTypes2.default.string.isRequired
+};
+
+exports.default = CurrentTime;
 
 /***/ }),
 /* 35 */
@@ -2409,233 +1960,51 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _react = __webpack_require__(2);
 
-var _shortid = __webpack_require__(83);
+var _react2 = _interopRequireDefault(_react);
 
-var _shortid2 = _interopRequireDefault(_shortid);
+var _propTypes = __webpack_require__(0);
 
-var _reactJplayerUtils = __webpack_require__(3);
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _recompose = __webpack_require__(4);
 
-var _urlNotSetError = __webpack_require__(75);
-
-var _urlNotSetError2 = _interopRequireDefault(_urlNotSetError);
-
-var _noFormatSupportedError = __webpack_require__(74);
-
-var _noFormatSupportedError2 = _interopRequireDefault(_noFormatSupportedError);
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var updateFormats = function updateFormats(jPlayer, media) {
-  var newMediaSettings = _extends({}, jPlayer.mediaSettings);
-  var newFormats = [];
-
-  Object.keys(media.sources).forEach(function (supplied) {
-    var canPlayType = void 0;
-
-    try {
-      // Some legacy browsers don't have canPlayType property
-      canPlayType = document.createElement(_constants.formats[supplied].MEDIA).canPlayType(_constants.formats[supplied].CODEC);
-    } catch (error) {
-      canPlayType = '';
-    }
-
-    newFormats.push({
-      supplied: supplied,
-      supported: canPlayType
-    });
-  });
-
-  newMediaSettings.formats = newFormats;
-
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-    mediaSettings: newMediaSettings
-  });
+var BrowserUnsupported = function BrowserUnsupported(_ref) {
+  var children = _ref.children;
+  return _react2.default.createElement(
+    'div',
+    { className: _constants.classes.NO_BROWSER_SUPPORT },
+    children
+  );
 };
 
-var clearMedia = function clearMedia(jPlayer) {
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, _extends({}, _constants.defaultStatus, {
-    media: _constants.defaultOptions.media
-  }));
+var defaultChildren = _react2.default.createElement(
+  'div',
+  null,
+  _react2.default.createElement(
+    'h4',
+    null,
+    'Browser Unsupported'
+  ),
+  'Your browser does not support this media file. To play the media you will need to update your browser to a more recent version.'
+);
+
+BrowserUnsupported.defaultProps = {
+  children: defaultChildren
 };
 
-var setMedia = function setMedia(jPlayer, _ref) {
-  var _ref$media = _ref.media,
-      media = _ref$media === undefined ? { sources: [] } : _ref$media;
-
-  var newJPlayer = _extends({}, clearMedia(jPlayer), {
-    mediaSettings: _constants.defaultStatus.mediaSettings
-  });
-
-  newJPlayer = updateFormats(newJPlayer, media);
-
-  newJPlayer.mediaSettings.formats.forEach(function (format) {
-    if (format.supported && !newJPlayer.mediaSettings.foundSupported) {
-      newJPlayer.mediaSettings.video = _constants.formats[format.supplied].MEDIA === 'video';
-      newJPlayer.src = media.sources[format.supplied];
-      newJPlayer.paused = true;
-      newJPlayer.mediaSettings.foundSupported = true;
-    }
-  });
-
-  if (!newJPlayer.mediaSettings.foundSupported) {
-    newJPlayer.error = (0, _noFormatSupportedError2.default)('{ media.sources: \'' + Object.keys(media.sources).join(', ') + '\' }');
-  }
-  newJPlayer.media = (0, _reactJplayerUtils.updateObject)(_constants.defaultOptions.media, _extends({}, media, {
-    id: _shortid2.default.generate()
-  }));
-
-  return newJPlayer;
+BrowserUnsupported.propTypes = {
+  children: _propTypes2.default.node
 };
 
-var play = function play(jPlayer, _ref2) {
-  var time = _ref2.time;
-
-  if (jPlayer.src) {
-    return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-      paused: false,
-      newTime: !isNaN(time) ? time : jPlayer.newTime
-    });
-  }
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-    error: (0, _urlNotSetError2.default)(play.name)
-  });
-};
-
-var pause = function pause(jPlayer, _ref3) {
-  var time = _ref3.time;
-
-  if (jPlayer.src) {
-    return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-      paused: true,
-      newTime: !isNaN(time) ? time : jPlayer.newTime
-    });
-  }
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-    error: (0, _urlNotSetError2.default)(pause.name)
-  });
-};
-
-var setPlayHead = function setPlayHead(jPlayer, _ref4) {
-  var percent = _ref4.percent;
-
-  var limitedPercent = (0, _reactJplayerUtils.limitValue)(percent, 0, 100);
-
-  if (jPlayer.src) {
-    return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-      playHeadPercent: limitedPercent
-    });
-  }
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-    error: (0, _urlNotSetError2.default)(setPlayHead.name)
-  });
-};
-
-var setVolume = function setVolume(jPlayer, _ref5) {
-  var volume = _ref5.volume;
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-    volume: (0, _reactJplayerUtils.limitValue)(volume, 0, 1),
-    muted: volume <= 0
-  });
-};
-
-var setMute = function setMute(jPlayer, _ref6) {
-  var mute = _ref6.mute;
-  return (0, _reactJplayerUtils.updateObject)(jPlayer, {
-    muted: mute
-  });
-};
-
-var focus = function focus(jPlayer, _ref7) {
-  var id = _ref7.id;
-
-  var newJPlayer = _extends({}, jPlayer);
-  var firstKeyEnabledPlayer = Object.keys(newJPlayer).filter(function (key) {
-    return newJPlayer[key].keyEnabled;
-  }).shift();
-
-  if (newJPlayer[id].keyEnabled) {
-    Object.keys(newJPlayer).forEach(function (key) {
-      if (key === id) {
-        newJPlayer[key] = (0, _reactJplayerUtils.updateObject)(newJPlayer[key], { focused: true });
-      } else {
-        newJPlayer[key] = (0, _reactJplayerUtils.updateObject)(newJPlayer[key], { focused: false });
-      }
-    });
-  } else if (newJPlayer[firstKeyEnabledPlayer] !== undefined) {
-    var focusedPlayer = (0, _reactJplayerUtils.updateObject)(newJPlayer[firstKeyEnabledPlayer], { focused: true });
-    return (0, _reactJplayerUtils.updateObject)(newJPlayer, _defineProperty({}, firstKeyEnabledPlayer, focusedPlayer));
-  }
-  return newJPlayer;
-};
-
-var updatePlayer = function updatePlayer(jPlayer, action) {
-  switch (action.type) {
-    case _constants.actionNames.SET_OPTION:
-      switch (action.key) {
-        case 'media':
-          {
-            var media = action.value;
-            if (Object.keys(media).some(function (v) {
-              return v;
-            })) {
-              return setMedia(jPlayer, { media: media });
-            }
-            return clearMedia(jPlayer);
-          }
-        case 'playHeadPercent':
-          return setPlayHead(jPlayer, { percent: action.value });
-        case 'volume':
-          return setVolume(jPlayer, { volume: action.value });
-        case 'muted':
-          return setMute(jPlayer, { mute: action.value });
-        default:
-          return (0, _reactJplayerUtils.updateObject)(jPlayer, _defineProperty({}, action.key, action.value));
-      }
-    case _constants.actionNames.SET_MEDIA:
-      return setMedia(jPlayer, action);
-    case _constants.actionNames.CLEAR_MEDIA:
-      return clearMedia(jPlayer);
-    case _constants.actionNames.PLAY:
-      return play(jPlayer, action);
-    case _constants.actionNames.PAUSE:
-      return pause(jPlayer, action);
-    case _constants.actionNames.PLAY_HEAD:
-      return setPlayHead(jPlayer, action);
-    case _constants.actionNames.VOLUME:
-      return setVolume(jPlayer, action);
-    case _constants.actionNames.MUTE:
-      return setMute(jPlayer, action);
-    default:
-      return null;
-  }
-};
-
-var jPlayerReducer = function jPlayerReducer(state, action) {
-  var newState = _extends({}, state);
-  var jPlayer = updatePlayer(newState[action.id], action);
-
-  if (jPlayer !== null) {
-    newState = (0, _reactJplayerUtils.updateObject)(newState, _defineProperty({}, action.id, jPlayer));
-
-    return jPlayerReducer(newState, {
-      type: _constants.actionNames.FOCUS,
-      id: action.id
-    });
-  }
-
-  if (action.type === _constants.actionNames.FOCUS) {
-    return (0, _reactJplayerUtils.updateObject)(newState, focus(newState, action));
-  }
-  return newState;
-};
-
-exports.default = jPlayerReducer;
+exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
+  return props.nonSupported;
+}, (0, _recompose.renderComponent)(BrowserUnsupported)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 36 */
@@ -2647,14 +2016,248 @@ exports.default = jPlayerReducer;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.BrowserUnsupportedComponent = exports.CurrentTimeComponent = exports.DurationComponent = exports.DownloadComponent = exports.VolumeBarValueComponent = exports.VolumeBarComponent = exports.PlaybackRateBarValueComponent = exports.PlaybackRateBarComponent = exports.SeekBarComponent = exports.RepeatComponent = exports.PlayComponent = exports.MuteComponent = exports.FullScreenComponent = exports.TitleComponent = exports.PosterComponent = exports.BufferBarComponent = exports.PlayBarComponent = exports.JPlayerComponent = exports.AudioComponent = exports.VideoComponent = exports.GuiComponent = exports.BrowserUnsupported = exports.CurrentTime = exports.Duration = exports.Download = exports.VolumeBarValue = exports.VolumeBar = exports.PlaybackRateBarValue = exports.PlaybackRateBar = exports.Repeat = exports.Play = exports.Mute = exports.FullScreen = exports.Title = exports.Audio = exports.Video = exports.Poster = exports.BufferBar = exports.PlayBar = exports.SeekBar = exports.Gui = exports.actions = exports.reducer = exports.constants = exports.initializeOptions = undefined;
 
-// Some IOS versions don't allow manually changing volume or mute
-exports.default = function () {
-  var audio = new window.Audio();
-  audio.volume = 0.5;
+var _initializeOptions = __webpack_require__(8);
 
-  return audio.volume === 0.5;
-};
+var _initializeOptions2 = _interopRequireDefault(_initializeOptions);
+
+var _reducer = __webpack_require__(37);
+
+var _reducer2 = _interopRequireDefault(_reducer);
+
+var _actions = __webpack_require__(5);
+
+var actions = _interopRequireWildcard(_actions);
+
+var _constants = __webpack_require__(3);
+
+var constants = _interopRequireWildcard(_constants);
+
+var _guiContainer = __webpack_require__(54);
+
+var _guiContainer2 = _interopRequireDefault(_guiContainer);
+
+var _videoContainer = __webpack_require__(56);
+
+var _videoContainer2 = _interopRequireDefault(_videoContainer);
+
+var _audioContainer = __webpack_require__(62);
+
+var _audioContainer2 = _interopRequireDefault(_audioContainer);
+
+var _jPlayerContainer = __webpack_require__(63);
+
+var _jPlayerContainer2 = _interopRequireDefault(_jPlayerContainer);
+
+var _playBarContainer = __webpack_require__(71);
+
+var _playBarContainer2 = _interopRequireDefault(_playBarContainer);
+
+var _bufferBarContainer = __webpack_require__(73);
+
+var _bufferBarContainer2 = _interopRequireDefault(_bufferBarContainer);
+
+var _posterContainer = __webpack_require__(74);
+
+var _posterContainer2 = _interopRequireDefault(_posterContainer);
+
+var _titleContainer = __webpack_require__(75);
+
+var _titleContainer2 = _interopRequireDefault(_titleContainer);
+
+var _fullScreenContainer = __webpack_require__(76);
+
+var _fullScreenContainer2 = _interopRequireDefault(_fullScreenContainer);
+
+var _muteContainer = __webpack_require__(77);
+
+var _muteContainer2 = _interopRequireDefault(_muteContainer);
+
+var _playContainer = __webpack_require__(78);
+
+var _playContainer2 = _interopRequireDefault(_playContainer);
+
+var _repeatContainer = __webpack_require__(79);
+
+var _repeatContainer2 = _interopRequireDefault(_repeatContainer);
+
+var _seekBarContainer = __webpack_require__(80);
+
+var _seekBarContainer2 = _interopRequireDefault(_seekBarContainer);
+
+var _playbackRateBarContainer = __webpack_require__(82);
+
+var _playbackRateBarContainer2 = _interopRequireDefault(_playbackRateBarContainer);
+
+var _playbackRateBarValueContainer = __webpack_require__(27);
+
+var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
+
+var _volumeBarContainer = __webpack_require__(83);
+
+var _volumeBarContainer2 = _interopRequireDefault(_volumeBarContainer);
+
+var _volumeBarValueContainer = __webpack_require__(30);
+
+var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
+
+var _downloadContainer = __webpack_require__(84);
+
+var _downloadContainer2 = _interopRequireDefault(_downloadContainer);
+
+var _durationContainer = __webpack_require__(85);
+
+var _durationContainer2 = _interopRequireDefault(_durationContainer);
+
+var _currentTimeContainer = __webpack_require__(86);
+
+var _currentTimeContainer2 = _interopRequireDefault(_currentTimeContainer);
+
+var _browserUnsupportedContainer = __webpack_require__(87);
+
+var _browserUnsupportedContainer2 = _interopRequireDefault(_browserUnsupportedContainer);
+
+var _gui = __webpack_require__(12);
+
+var _gui2 = _interopRequireDefault(_gui);
+
+var _video = __webpack_require__(13);
+
+var _video2 = _interopRequireDefault(_video);
+
+var _audio = __webpack_require__(15);
+
+var _audio2 = _interopRequireDefault(_audio);
+
+var _jPlayer = __webpack_require__(16);
+
+var _jPlayer2 = _interopRequireDefault(_jPlayer);
+
+var _playBar = __webpack_require__(17);
+
+var _playBar2 = _interopRequireDefault(_playBar);
+
+var _bufferBar = __webpack_require__(18);
+
+var _bufferBar2 = _interopRequireDefault(_bufferBar);
+
+var _poster = __webpack_require__(19);
+
+var _poster2 = _interopRequireDefault(_poster);
+
+var _title = __webpack_require__(20);
+
+var _title2 = _interopRequireDefault(_title);
+
+var _fullScreen = __webpack_require__(21);
+
+var _fullScreen2 = _interopRequireDefault(_fullScreen);
+
+var _mute = __webpack_require__(22);
+
+var _mute2 = _interopRequireDefault(_mute);
+
+var _play = __webpack_require__(23);
+
+var _play2 = _interopRequireDefault(_play);
+
+var _repeat = __webpack_require__(24);
+
+var _repeat2 = _interopRequireDefault(_repeat);
+
+var _seekBar = __webpack_require__(25);
+
+var _seekBar2 = _interopRequireDefault(_seekBar);
+
+var _playbackRateBar = __webpack_require__(26);
+
+var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
+
+var _playbackRateBarValue = __webpack_require__(28);
+
+var _playbackRateBarValue2 = _interopRequireDefault(_playbackRateBarValue);
+
+var _volumeBar = __webpack_require__(29);
+
+var _volumeBar2 = _interopRequireDefault(_volumeBar);
+
+var _volumeBarValue = __webpack_require__(31);
+
+var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
+
+var _download = __webpack_require__(32);
+
+var _download2 = _interopRequireDefault(_download);
+
+var _duration = __webpack_require__(33);
+
+var _duration2 = _interopRequireDefault(_duration);
+
+var _currentTime = __webpack_require__(34);
+
+var _currentTime2 = _interopRequireDefault(_currentTime);
+
+var _browserUnsupported = __webpack_require__(35);
+
+var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Containers
+/* eslint-disable max-len */
+
+exports.default = _jPlayerContainer2.default;
+
+// Components
+
+exports.initializeOptions = _initializeOptions2.default;
+exports.constants = constants;
+exports.reducer = _reducer2.default;
+exports.actions = actions;
+exports.Gui = _guiContainer2.default;
+exports.SeekBar = _seekBarContainer2.default;
+exports.PlayBar = _playBarContainer2.default;
+exports.BufferBar = _bufferBarContainer2.default;
+exports.Poster = _posterContainer2.default;
+exports.Video = _videoContainer2.default;
+exports.Audio = _audioContainer2.default;
+exports.Title = _titleContainer2.default;
+exports.FullScreen = _fullScreenContainer2.default;
+exports.Mute = _muteContainer2.default;
+exports.Play = _playContainer2.default;
+exports.Repeat = _repeatContainer2.default;
+exports.PlaybackRateBar = _playbackRateBarContainer2.default;
+exports.PlaybackRateBarValue = _playbackRateBarValueContainer2.default;
+exports.VolumeBar = _volumeBarContainer2.default;
+exports.VolumeBarValue = _volumeBarValueContainer2.default;
+exports.Download = _downloadContainer2.default;
+exports.Duration = _durationContainer2.default;
+exports.CurrentTime = _currentTimeContainer2.default;
+exports.BrowserUnsupported = _browserUnsupportedContainer2.default;
+exports.GuiComponent = _gui2.default;
+exports.VideoComponent = _video2.default;
+exports.AudioComponent = _audio2.default;
+exports.JPlayerComponent = _jPlayer2.default;
+exports.PlayBarComponent = _playBar2.default;
+exports.BufferBarComponent = _bufferBar2.default;
+exports.PosterComponent = _poster2.default;
+exports.TitleComponent = _title2.default;
+exports.FullScreenComponent = _fullScreen2.default;
+exports.MuteComponent = _mute2.default;
+exports.PlayComponent = _play2.default;
+exports.RepeatComponent = _repeat2.default;
+exports.SeekBarComponent = _seekBar2.default;
+exports.PlaybackRateBarComponent = _playbackRateBar2.default;
+exports.PlaybackRateBarValueComponent = _playbackRateBarValue2.default;
+exports.VolumeBarComponent = _volumeBar2.default;
+exports.VolumeBarValueComponent = _volumeBarValue2.default;
+exports.DownloadComponent = _download2.default;
+exports.DurationComponent = _duration2.default;
+exports.CurrentTimeComponent = _currentTime2.default;
+exports.BrowserUnsupportedComponent = _browserUnsupported2.default;
 
 /***/ }),
 /* 37 */
@@ -2666,9 +2269,250 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = {
-  HIDDEN: 'jp-hidden'
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _initializeOptions = __webpack_require__(8);
+
+var _constants = __webpack_require__(3);
+
+var _urlNotSetError = __webpack_require__(52);
+
+var _urlNotSetError2 = _interopRequireDefault(_urlNotSetError);
+
+var _noFormatSupportedError = __webpack_require__(53);
+
+var _noFormatSupportedError2 = _interopRequireDefault(_noFormatSupportedError);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var updateFormats = function updateFormats(sources) {
+  var formats = [];
+
+  Object.keys(sources).forEach(function (supplied) {
+    var canPlayType = void 0;
+
+    try {
+      // Some legacy browsers don't have canPlayType property
+      canPlayType = document.createElement(_constants.formats[supplied].MEDIA).canPlayType(_constants.formats[supplied].CODEC);
+    } catch (error) {
+      canPlayType = '';
+    }
+
+    formats.push({
+      supplied: supplied,
+      supported: canPlayType
+    });
+  });
+
+  return formats;
 };
+
+var clearMedia = function clearMedia() {
+  return _extends({}, _constants.defaultStatus, {
+    media: _constants.defaultOptions.media
+  });
+};
+
+var setMedia = function setMedia(_, _ref) {
+  var media = _ref.media;
+
+  var video = void 0;
+  var src = void 0;
+  var nonSupported = true;
+  var error = void 0;
+
+  var formats = updateFormats(media.sources);
+
+  formats.forEach(function (format) {
+    if (format.supported && nonSupported) {
+      video = _constants.formats[format.supplied].MEDIA === 'video';
+      src = media.sources[format.supplied];
+      nonSupported = false;
+    }
+  });
+
+  if (nonSupported) {
+    error = (0, _noFormatSupportedError2.default)('media.sources: \'' + Object.keys(media.sources).join(', ') + '\'');
+  }
+
+  return _extends({}, clearMedia(), {
+    mediaSettings: {
+      formats: formats,
+      video: video,
+      nonSupported: nonSupported
+    },
+    media: media,
+    video: video,
+    src: src,
+    paused: true,
+    error: error
+  });
+};
+
+var play = function play(jPlayer, _ref2) {
+  var time = _ref2.time;
+
+  if (jPlayer.src) {
+    return {
+      paused: false,
+      newTime: !isNaN(time) ? time : null
+    };
+  }
+
+  return {
+    error: (0, _urlNotSetError2.default)(play.name)
+  };
+};
+
+var pause = function pause(jPlayer, _ref3) {
+  var time = _ref3.time;
+
+  if (jPlayer.src) {
+    return {
+      paused: true,
+      newTime: !isNaN(time) ? time : null
+    };
+  }
+
+  return {
+    error: (0, _urlNotSetError2.default)(pause.name)
+  };
+};
+
+var setPlayHead = function setPlayHead(jPlayer, _ref4) {
+  var percent = _ref4.percent;
+
+  var limitedPercent = (0, _reactJplayerUtils.limitValue)(percent, 0, 100);
+
+  if (jPlayer.src) {
+    return {
+      playHeadPercent: limitedPercent
+    };
+  }
+
+  return {
+    error: (0, _urlNotSetError2.default)(setPlayHead.name)
+  };
+};
+
+var setVolume = function setVolume(_, _ref5) {
+  var volume = _ref5.volume;
+  return {
+    volume: (0, _reactJplayerUtils.limitValue)(volume, 0, 1),
+    muted: volume <= 0
+  };
+};
+
+var setMute = function setMute(_, _ref6) {
+  var mute = _ref6.mute;
+  return {
+    muted: mute
+  };
+};
+
+var setOption = function setOption(jPlayer, _ref7) {
+  var key = _ref7.key,
+      value = _ref7.value;
+
+  switch (key) {
+    case 'media':
+      {
+        if (Object.keys(value).some(function (v) {
+          return v;
+        })) {
+          return setMedia(jPlayer, { media: value });
+        }
+        return clearMedia();
+      }
+    case 'playHeadPercent':
+      return setPlayHead(jPlayer, { percent: value });
+    case 'volume':
+      return setVolume(jPlayer, { volume: value });
+    case 'muted':
+      return setMute(jPlayer, { mute: value });
+    default:
+      return _defineProperty({}, key, value);
+  }
+};
+
+var focus = function focus(state, id) {
+  var newState = _extends({}, state);
+
+  if (newState[id].keyEnabled) {
+    Object.keys(newState).forEach(function (key) {
+      if (key === id) {
+        newState[key].focused = true;
+      } else {
+        newState[key].focused = false;
+      }
+    });
+  }
+
+  return newState;
+};
+
+var focusOnFirstKeyEnabledPlayer = function focusOnFirstKeyEnabledPlayer(state) {
+  var firstKeyEnabledPlayer = Object.keys(state).filter(function (key) {
+    return state[key].keyEnabled;
+  }).shift();
+
+  if (state[firstKeyEnabledPlayer] !== undefined) {
+    var focusedPlayer = _extends({}, state[firstKeyEnabledPlayer], {
+      focused: true
+    });
+
+    return _extends({}, state, _defineProperty({}, firstKeyEnabledPlayer, focusedPlayer));
+  }
+
+  return state;
+};
+
+var updateJPlayer = function updateJPlayer(state, action, fn) {
+  var value = fn(state[action.id], action);
+  var newState = state[action.id].keyEnabled ? focus(state, action.id) : focusOnFirstKeyEnabledPlayer(state);
+  var jPlayer = newState[action.id];
+
+  return _extends({}, newState, _defineProperty({}, action.id, _extends({}, jPlayer, value)));
+};
+
+var reducer = function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _initializeOptions.initialState;
+  var action = arguments[1];
+
+  var updateValue = function updateValue(fn) {
+    return updateJPlayer(state, action, fn);
+  };
+
+  switch (action.type) {
+    case _constants.actionNames.SET_MEDIA:
+      return updateValue(setMedia);
+    case _constants.actionNames.CLEAR_MEDIA:
+      return updateValue(clearMedia);
+    case _constants.actionNames.PLAY:
+      return updateValue(play);
+    case _constants.actionNames.PAUSE:
+      return updateValue(pause);
+    case _constants.actionNames.PLAY_HEAD:
+      return updateValue(setPlayHead);
+    case _constants.actionNames.VOLUME:
+      return updateValue(setVolume);
+    case _constants.actionNames.MUTE:
+      return updateValue(setMute);
+    case _constants.actionNames.SET_OPTION:
+      return updateValue(setOption);
+    case _constants.actionNames.FOCUS:
+      return focus(state, action.id);
+    default:
+      return state;
+  }
+};
+
+exports.default = reducer;
 
 /***/ }),
 /* 38 */
@@ -2683,7 +2527,166 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Connect = function Connect(jPlayer, ConnectedPlayer) {
+  return function (_React$Component) {
+    _inherits(_class, _React$Component);
+
+    function _class() {
+      _classCallCheck(this, _class);
+
+      return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+    }
+
+    _createClass(_class, [{
+      key: 'render',
+      value: function render() {
+        return _react2.default.createElement(ConnectedPlayer, this.props);
+      }
+    }], [{
+      key: 'jPlayer',
+      get: function get() {
+        return jPlayer;
+      }
+    }]);
+
+    return _class;
+  }(_react2.default.Component);
+};
+
+exports.default = Connect;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(10);
+
+var _recompose = __webpack_require__(4);
+
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  return (0, _recompose.compose)((0, _recompose.getContext)({
+    id: _propTypes2.default.string,
+    index: _propTypes2.default.number
+  }), _reactRedux.connect.apply(undefined, arguments));
+};
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _lodash = __webpack_require__(6);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = function initialState(connectedJPlayers, defaultValues, optionsName) {
+  var jPlayers = {};
+  var newConnectedJPlayers = connectedJPlayers;
+
+  if (!Array.isArray(connectedJPlayers)) {
+    newConnectedJPlayers = [newConnectedJPlayers];
+  }
+
+  newConnectedJPlayers.forEach(function (connectedJPlayer) {
+    jPlayers[connectedJPlayer.options.id] = (0, _lodash2.default)({}, _extends({}, defaultValues), connectedJPlayer[optionsName]);
+  });
+
+  return jPlayers;
+};
+
+exports.default = initialState;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (artist, title) {
+  var titleText = '';
+
+  if (artist !== null) {
+    titleText += '' + artist;
+  }
+
+  if (title !== null) {
+    if (artist !== null) {
+      titleText += ' - ';
+    }
+    titleText += '' + title;
+  }
+
+  return titleText;
+};
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  HIDDEN: 'jp-hidden'
+};
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -2691,11 +2694,11 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _connectWithId = __webpack_require__(10);
+var _connectWithId = __webpack_require__(9);
 
 var _connectWithId2 = _interopRequireDefault(_connectWithId);
 
-var _keyIgnoredElementNames = __webpack_require__(45);
+var _keyIgnoredElementNames = __webpack_require__(44);
 
 var _keyIgnoredElementNames2 = _interopRequireDefault(_keyIgnoredElementNames);
 
@@ -2754,8 +2757,8 @@ var KeyControl = function (_React$Component) {
   }
 
   _createClass(KeyControl, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       document.addEventListener('keydown', this.onKeyDown);
     }
   }, {
@@ -2782,7 +2785,19 @@ KeyControl.propTypes = {
 exports.default = (0, _connectWithId2.default)(mapStateToProps)(KeyControl);
 
 /***/ }),
-/* 39 */
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ['INPUT', 'TEXTAREA', 'SELECT'];
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2792,87 +2807,51 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.default = function (number, max) {
+  return 100 * (number / max);
+};
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var _react = __webpack_require__(1);
+"use strict";
 
-var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
+exports.default = function (number, max) {
+  return number * (max / 100);
+};
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var Connect = function Connect(jPlayer, _ref, ConnectedPlayer) {
-  var options = _ref.options,
-      jPlaylistOptions = _ref.jPlaylistOptions;
-  return function (_React$Component) {
-    _inherits(_class2, _React$Component);
+exports.default = function (currentElement, className) {
+  var element = currentElement;
 
-    function _class2() {
-      var _ref2;
+  while (element.parentNode) {
+    element = element.parentNode;
 
-      var _temp, _this, _ret;
-
-      _classCallCheck(this, _class2);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = _class2.__proto__ || Object.getPrototypeOf(_class2)).call.apply(_ref2, [this].concat(args))), _this), _this.getChildContext = function () {
-        return {
-          id: options.id
-        };
-      }, _temp), _possibleConstructorReturn(_this, _ret);
+    if (element.className !== undefined && element.className.includes(className)) {
+      return element;
     }
-
-    _createClass(_class2, [{
-      key: 'render',
-      value: function render() {
-        return _react2.default.createElement(ConnectedPlayer, _extends({ id: options.id }, this.props));
-      }
-    }], [{
-      key: 'jPlayer',
-      get: function get() {
-        return jPlayer;
-      }
-    }, {
-      key: 'options',
-      get: function get() {
-        return options;
-      }
-    }, {
-      key: 'jPlaylistOptions',
-      get: function get() {
-        return jPlaylistOptions;
-      }
-    }, {
-      key: 'childContextTypes',
-      get: function get() {
-        return {
-          id: _propTypes2.default.string
-        };
-      }
-    }]);
-
-    return _class2;
-  }(_react2.default.Component);
+  }
+  return false;
 };
 
-exports.default = Connect;
-
 /***/ }),
-/* 40 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2882,25 +2861,56 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRedux = __webpack_require__(6);
-
-var _recompose = __webpack_require__(7);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  return (0, _recompose.compose)((0, _recompose.getContext)({
-    id: _propTypes2.default.string,
-    index: _propTypes2.default.number
-  }), _reactRedux.connect.apply(undefined, arguments));
+exports.default = function (el) {
+  return {
+    top: el.getBoundingClientRect().top + document.body.scrollTop,
+    left: el.getBoundingClientRect().left + document.body.scrollLeft
+  };
 };
 
 /***/ }),
-/* 41 */
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (value, min, max) {
+  if (value < min) {
+    return min;
+  }
+
+  if (value > max) {
+    return max;
+  }
+  return value;
+};
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+// Some IOS versions don't allow manually changing volume or mute
+exports.default = function () {
+  var audio = new window.Audio();
+  audio.volume = 0.5;
+
+  return audio.volume === 0.5;
+};
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2932,221 +2942,6 @@ exports.default = function (seconds, timeFormats) {
 };
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (artist, title) {
-  var titleText = '';
-
-  if (artist !== '') {
-    titleText += '' + artist;
-  }
-
-  if (title !== '') {
-    if (artist !== '') {
-      titleText += ' - ';
-    }
-    titleText += '' + title;
-  }
-
-  return titleText;
-};
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (el) {
-  return {
-    top: el.getBoundingClientRect().top + document.body.scrollTop,
-    left: el.getBoundingClientRect().left + document.body.scrollLeft
-  };
-};
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _lodash = __webpack_require__(13);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var initialState = function initialState(connectedJPlayers, defaultValues, optionsName) {
-  var jPlayers = {};
-  var newConnectedJPlayers = connectedJPlayers;
-
-  if (!Array.isArray(connectedJPlayers)) {
-    newConnectedJPlayers = [newConnectedJPlayers];
-  }
-
-  newConnectedJPlayers.forEach(function (connectedJPlayer) {
-    jPlayers[connectedJPlayer.options.id] = (0, _lodash2.default)({}, _extends({}, defaultValues), connectedJPlayer[optionsName]);
-  });
-
-  return jPlayers;
-};
-
-exports.default = initialState;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = ['INPUT', 'TEXTAREA', 'SELECT'];
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (value, min, max) {
-  if (value < min) {
-    return min;
-  }
-
-  if (value > max) {
-    return max;
-  }
-  return value;
-};
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _recompose = __webpack_require__(7);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (component) {
-  return (0, _recompose.compose)((0, _recompose.withContext)({
-    index: _propTypes2.default.number
-  }, function (_ref) {
-    var index = _ref.index;
-    return { index: index };
-  })(component));
-};
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (number, max) {
-  return 100 * (number / max);
-};
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (number, max) {
-  return number * (max / 100);
-};
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (currentElement, className) {
-  var element = currentElement;
-
-  while (element.parentNode) {
-    element = element.parentNode;
-
-    if (element.className !== undefined && element.className.includes(className)) {
-      return element;
-    }
-  }
-  return false;
-};
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-exports.default = function (existingObject, newValues) {
-  return _extends({}, existingObject, newValues);
-};
-
-/***/ }),
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3157,75 +2952,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(1);
+var _constants = __webpack_require__(3);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _mediaContainer = __webpack_require__(11);
-
-var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Audio = function Audio(_ref) {
-  var require = _ref.require,
-      events = _ref.events,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['require', 'events', 'children']);
-
-  return require ? _react2.default.createElement(
-    _mediaContainer2.default,
-    events,
-    _react2.default.createElement(
-      'audio',
-      attributes,
-      children
-    )
-  ) : null;
+exports.default = function (context) {
+  return {
+    context: context,
+    message: _constants.errors.URL_NOT_SET,
+    hint: _constants.hints.URL_NOT_SET
+  };
 };
-
-Audio.defaultProps = {
-  events: null,
-  children: null
-};
-
-Audio.propTypes = {
-  children: _propTypes2.default.node,
-  require: _propTypes2.default.bool.isRequired,
-  events: _propTypes2.default.shape({
-    onAbort: _propTypes2.default.func,
-    onCanPlay: _propTypes2.default.func,
-    onCanPlayThrough: _propTypes2.default.func,
-    onDurationChange: _propTypes2.default.func,
-    onEmptied: _propTypes2.default.func,
-    onEncrypted: _propTypes2.default.func,
-    onEnded: _propTypes2.default.func,
-    onError: _propTypes2.default.func,
-    onLoadedData: _propTypes2.default.func,
-    onLoadedMetadata: _propTypes2.default.func,
-    onLoadStart: _propTypes2.default.func,
-    onPause: _propTypes2.default.func,
-    onPlay: _propTypes2.default.func,
-    onPlaying: _propTypes2.default.func,
-    onProgress: _propTypes2.default.func,
-    onRateChange: _propTypes2.default.func,
-    onSeeked: _propTypes2.default.func,
-    onSeeking: _propTypes2.default.func,
-    onStalled: _propTypes2.default.func,
-    onSuspend: _propTypes2.default.func,
-    onTimeUpdate: _propTypes2.default.func,
-    onVolumeChange: _propTypes2.default.func,
-    onWaiting: _propTypes2.default.func
-  })
-};
-
-exports.default = Audio;
 
 /***/ }),
 /* 53 */
@@ -3238,53 +2973,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _constants = __webpack_require__(3);
 
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var BrowserUnsupported = function BrowserUnsupported(_ref) {
-  var foundSupported = _ref.foundSupported,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['foundSupported', 'children']);
-
-  return foundSupported ? null : _react2.default.createElement(
-    'div',
-    _extends({ className: _constants.classes.NO_BROWSER_SUPPORT }, attributes),
-    children
-  );
+exports.default = function (context) {
+  return {
+    context: context,
+    message: _constants.errors.FORMAT_NO_SUPPORT,
+    hint: _constants.hints.FORMAT_NO_SUPPORT
+  };
 };
-
-BrowserUnsupported.defaultProps = {
-  children: _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'h4',
-      null,
-      'Browser Unsupported'
-    ),
-    'Your browser does not support this media file. To play the media you will need to update your browser to a more recent version.'
-  )
-};
-
-BrowserUnsupported.propTypes = {
-  children: _propTypes2.default.node,
-  foundSupported: _propTypes2.default.bool.isRequired
-};
-
-exports.default = BrowserUnsupported;
 
 /***/ }),
 /* 54 */
@@ -3297,34 +2994,69 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _recompose = __webpack_require__(4);
 
-var _react = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _react2 = _interopRequireDefault(_react);
+var _actions = __webpack_require__(5);
 
-var _propTypes = __webpack_require__(0);
+var _animation = __webpack_require__(55);
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
+var _animation2 = _interopRequireDefault(_animation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var BufferBar = function BufferBar(_ref) {
-  var setCanvas = _ref.setCanvas,
-      attributes = _ref.attributes;
-  return _react2.default.createElement('canvas', _extends({
-    ref: setCanvas, className: _constants.classes.BUFFER_BAR
-  }, attributes));
+var timeoutIds = [];
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    fullScreen: jPlayers[id].fullScreen,
+    paused: jPlayers[id].paused,
+    startGuiFadeOut: jPlayers[id].startGuiFadeOut,
+    guiFadeOut: jPlayers[id].guiFadeOut,
+    guiFadeHoldTime: jPlayers[id].guiFadeHoldTime
+  };
 };
 
-BufferBar.propTypes = {
-  attributes: _propTypes2.default.object.isRequired,
-  setCanvas: _propTypes2.default.func.isRequired
+var handlers = {
+  onMouseMove: function onMouseMove(props) {
+    return function () {
+      if (props.fullScreen) {
+        props.setOption(props.id, 'startGuiFadeOut', false);
+
+        timeoutIds.forEach(function (timeoutId) {
+          return clearTimeout(timeoutId);
+        });
+      }
+    };
+  },
+  fadeOutHandler: function fadeOutHandler(props) {
+    return function () {
+      props.setOption(props.id, 'guiFadeOut', true);
+    };
+  }
 };
 
-exports.default = BufferBar;
+var lifecycle = {
+  startFade: function startFade() {
+    if (this.props.fullScreen && !this.props.paused && this.props.startGuiFadeOut) {
+      timeoutIds.push(setTimeout(this.props.fadeOutHandler, this.props.guiFadeHoldTime));
+    } else if (!this.props.startGuiFadeOut) {
+      this.props.setOption(this.props.id, 'guiFadeOut', false);
+    }
+  },
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    if (prevProps.startGuiFadeOut !== this.props.startGuiFadeOut) {
+      this.startFade();
+    }
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_animation2.default);
 
 /***/ }),
 /* 55 */
@@ -3337,38 +3069,51 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactMotion = __webpack_require__(11);
 
 var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _gui = __webpack_require__(12);
+
+var _gui2 = _interopRequireDefault(_gui);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var CurrentTime = function CurrentTime(_ref) {
-  var children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['children']);
-
+var Animation = function Animation(_ref) {
+  var fullScreen = _ref.fullScreen,
+      guiFadeOut = _ref.guiFadeOut,
+      onMouseMove = _ref.onMouseMove,
+      children = _ref.children;
   return _react2.default.createElement(
-    'div',
-    _extends({ className: _constants.classes.CURRENT_TIME }, attributes),
-    children
+    _reactMotion.Motion,
+    {
+      defaultStyle: { opacity: 1 },
+      style: { opacity: fullScreen ? (0, _reactMotion.spring)(guiFadeOut ? 0 : 1, [250]) : 1 }
+    },
+    function (values) {
+      return _react2.default.createElement(
+        _gui2.default,
+        { opacity: values.opacity, onMouseMove: onMouseMove },
+        children
+      );
+    }
   );
 };
 
-CurrentTime.propTypes = {
-  children: _propTypes2.default.string.isRequired
+Animation.propTypes = {
+  onMouseMove: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired,
+  guiFadeOut: _propTypes2.default.bool.isRequired,
+  fullScreen: _propTypes2.default.bool.isRequired
 };
 
-exports.default = CurrentTime;
+exports.default = Animation;
 
 /***/ }),
 /* 56 */
@@ -3381,45 +3126,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _react = __webpack_require__(1);
+var _video = __webpack_require__(13);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
+var _video2 = _interopRequireDefault(_video);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Download = function Download(_ref) {
-  var free = _ref.free,
-      url = _ref.url,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['free', 'url', 'children']);
-
-  return free ? _react2.default.createElement(
-    'a',
-    _extends({
-      className: _constants.classes.DOWNLOAD, href: url,
-      download: true, target: '_blank', rel: 'noopener noreferrer'
-    }, attributes),
-    children
-  ) : null;
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    require: jPlayers[id].mediaSettings.video
+  };
 };
 
-Download.propTypes = {
-  children: _propTypes2.default.node.isRequired,
-  url: _propTypes2.default.string.isRequired,
-  free: _propTypes2.default.bool.isRequired
-};
-
-exports.default = Download;
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_video2.default);
 
 /***/ }),
 /* 57 */
@@ -3434,7 +3157,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -3442,28 +3165,97 @@ var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _eventsContainer = __webpack_require__(58);
+
+var _eventsContainer2 = _interopRequireDefault(_eventsContainer);
+
+var _track = __webpack_require__(61);
+
+var _track2 = _interopRequireDefault(_track);
+
+var _constants = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Duration = function Duration(_ref) {
-  var children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['children']);
-
-  return children !== '' ? _react2.default.createElement(
-    'div',
-    _extends({ className: _constants.classes.DURATION }, attributes),
-    children
-  ) : null;
+var Media = function Media(props) {
+  return _react2.default.createElement(
+    _eventsContainer2.default,
+    {
+      updateMediaStatus: props.updateMediaStatus,
+      onAbort: props.onAbort,
+      onCanPlay: props.onCanPlay,
+      onCanPlayThrough: props.onCanPlayThrough,
+      onDurationChange: props.onDurationChange,
+      onEmptied: props.onEmptied,
+      onEncrypted: props.onEncrypted,
+      onEnded: props.onEnded,
+      onError: props.onError,
+      onLoadedData: props.onLoadedData,
+      onLoadedMetadata: props.onLoadedMetadata,
+      onLoadStart: props.onLoadStart,
+      onPause: props.onPause,
+      onPlay: props.onPlay,
+      onPlaying: props.onPlaying,
+      onProgress: props.onProgress,
+      onRateChange: props.onRateChange,
+      onSeeked: props.onSeeked,
+      onSeeking: props.onSeeking,
+      onStalled: props.onStalled,
+      onSuspend: props.onSuspend,
+      onTimeUpdate: props.onTimeUpdate,
+      onVolumeChange: props.onVolumeChange,
+      onWaiting: props.onWaiting
+    },
+    _react2.default.cloneElement(_react2.default.Children.only(props.children), {
+      ref: props.setCurrentMedia,
+      className: _constants.classes.MEDIA
+    }, props.tracks.map(function (track) {
+      return _react2.default.createElement(_track2.default, _extends({ key: track.src }, track));
+    }))
+  );
 };
 
-Duration.propTypes = {
-  children: _propTypes2.default.string.isRequired
+Media.defaultProps = {
+  tracks: []
 };
 
-exports.default = Duration;
+Media.propTypes = {
+  children: _propTypes2.default.node.isRequired,
+  setCurrentMedia: _propTypes2.default.func.isRequired,
+  updateMediaStatus: _propTypes2.default.func.isRequired,
+  tracks: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+    default: _propTypes2.default.bool,
+    kind: _propTypes2.default.string,
+    src: _propTypes2.default.string.isRequired,
+    label: _propTypes2.default.string,
+    srclang: _propTypes2.default.string
+  })),
+  onAbort: _propTypes2.default.func.isRequired,
+  onCanPlay: _propTypes2.default.func.isRequired,
+  onCanPlayThrough: _propTypes2.default.func.isRequired,
+  onDurationChange: _propTypes2.default.func.isRequired,
+  onEmptied: _propTypes2.default.func.isRequired,
+  onEncrypted: _propTypes2.default.func.isRequired,
+  onEnded: _propTypes2.default.func.isRequired,
+  onError: _propTypes2.default.func.isRequired,
+  onLoadedData: _propTypes2.default.func.isRequired,
+  onLoadedMetadata: _propTypes2.default.func.isRequired,
+  onLoadStart: _propTypes2.default.func.isRequired,
+  onPause: _propTypes2.default.func.isRequired,
+  onPlay: _propTypes2.default.func.isRequired,
+  onPlaying: _propTypes2.default.func.isRequired,
+  onProgress: _propTypes2.default.func.isRequired,
+  onRateChange: _propTypes2.default.func.isRequired,
+  onSeeked: _propTypes2.default.func.isRequired,
+  onSeeking: _propTypes2.default.func.isRequired,
+  onStalled: _propTypes2.default.func.isRequired,
+  onSuspend: _propTypes2.default.func.isRequired,
+  onTimeUpdate: _propTypes2.default.func.isRequired,
+  onVolumeChange: _propTypes2.default.func.isRequired,
+  onWaiting: _propTypes2.default.func.isRequired
+};
+
+exports.default = Media;
 
 /***/ }),
 /* 58 */
@@ -3478,693 +3270,40 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
 var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _recompose = __webpack_require__(4);
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _events = __webpack_require__(59);
+
+var _events2 = _interopRequireDefault(_events);
+
+var _urlNotSupportedError = __webpack_require__(60);
+
+var _urlNotSupportedError2 = _interopRequireDefault(_urlNotSupportedError);
+
+var _actions = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var FullScreen = function FullScreen(_ref) {
-  var setFullScreen = _ref.setFullScreen,
-      id = _ref.id,
-      fullScreen = _ref.fullScreen,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['setFullScreen', 'id', 'fullScreen', 'children']);
-
-  return _react2.default.createElement(
-    'button',
-    _extends({
-      className: _constants.classes.FULL_SCREEN,
-      onClick: function onClick() {
-        return setFullScreen(id, !fullScreen);
-      }
-    }, attributes),
-    children
-  );
-};
-
-FullScreen.propTypes = {
-  children: _propTypes2.default.node.isRequired,
-  setFullScreen: _propTypes2.default.func.isRequired,
-  id: _propTypes2.default.string.isRequired,
-  fullScreen: _propTypes2.default.bool.isRequired
-};
-
-exports.default = FullScreen;
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactMotion = __webpack_require__(12);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var motion = function motion(values, onMouseMove, attributes) {
-  return _react2.default.createElement('div', _extends({
-    className: _constants.classes.GUI, onMouseMove: onMouseMove,
-    style: {
-      opacity: values.opacity,
-      display: values.opacity === 0 ? 'none' : ''
-    }
-  }, attributes));
-};
-
-var Gui = function Gui(_ref) {
-  var fullScreen = _ref.fullScreen,
-      guiFadeOut = _ref.guiFadeOut,
-      onMouseMove = _ref.onMouseMove,
-      attributes = _objectWithoutProperties(_ref, ['fullScreen', 'guiFadeOut', 'onMouseMove']);
-
-  return _react2.default.createElement(
-    _reactMotion.Motion,
-    {
-      defaultStyle: { opacity: 1 },
-      style: { opacity: fullScreen ? (0, _reactMotion.spring)(guiFadeOut ? 0 : 1, [250]) : 1 }
-    },
-    function (values) {
-      return motion(values, onMouseMove, attributes);
-    }
-  );
-};
-
-Gui.propTypes = {
-  onMouseMove: _propTypes2.default.func.isRequired,
-  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired,
-  guiFadeOut: _propTypes2.default.bool.isRequired,
-  fullScreen: _propTypes2.default.bool.isRequired
-};
-
-exports.default = Gui;
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var JPlayer = function JPlayer(_ref) {
-  var setJPlayer = _ref.setJPlayer,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['setJPlayer', 'children']);
-
-  return _react2.default.createElement(
-    'div',
-    _extends({ ref: setJPlayer, draggable: false }, attributes),
-    children
-  );
-};
-
-JPlayer.defaultProps = {
-  setJPlayer: null
-};
-
-JPlayer.propTypes = {
-  setJPlayer: _propTypes2.default.func,
-  children: _propTypes2.default.node.isRequired
-};
-
-exports.default = JPlayer;
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Mute = function Mute(_ref) {
-  var setMute = _ref.setMute,
-      id = _ref.id,
-      muted = _ref.muted,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['setMute', 'id', 'muted', 'children']);
-
-  return _react2.default.createElement(
-    'button',
-    _extends({ className: _constants.classes.MUTE, onClick: function onClick() {
-        return setMute(id, !muted);
-      } }, attributes),
-    children
-  );
-};
-
-Mute.propTypes = {
-  id: _propTypes2.default.string.isRequired,
-  children: _propTypes2.default.node.isRequired,
-  setMute: _propTypes2.default.func.isRequired,
-  muted: _propTypes2.default.bool.isRequired
-};
-
-exports.default = Mute;
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactMotion = __webpack_require__(12);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var PlayBar = function PlayBar(_ref) {
-  var currentPercentAbsolute = _ref.currentPercentAbsolute,
-      currentPercentRelative = _ref.currentPercentRelative,
-      smoothPlayBar = _ref.smoothPlayBar,
-      attributes = _objectWithoutProperties(_ref, ['currentPercentAbsolute', 'currentPercentRelative', 'smoothPlayBar']);
-
-  return _react2.default.createElement(
-    _reactMotion.Motion,
-    { style: { smoothWidth: (0, _reactMotion.spring)(currentPercentAbsolute, [250]) } },
-    function (values) {
-      return _react2.default.createElement('div', _extends({
-        className: _constants.classes.PLAY_BAR,
-        style: { width: smoothPlayBar ? values.smoothWidth + '%' : currentPercentRelative + '%' }
-      }, attributes));
-    }
-  );
-};
-
-PlayBar.propTypes = {
-  currentPercentRelative: _propTypes2.default.number.isRequired,
-  currentPercentAbsolute: _propTypes2.default.number.isRequired,
-  smoothPlayBar: _propTypes2.default.bool.isRequired
-};
-
-exports.default = PlayBar;
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Play = function Play(_ref) {
-  var play = _ref.play,
-      id = _ref.id,
-      paused = _ref.paused,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['play', 'id', 'paused', 'children']);
-
-  return _react2.default.createElement(
-    'button',
-    _extends({ className: _constants.classes.PLAY, onClick: function onClick() {
-        return play(id, paused);
-      } }, attributes),
-    children
-  );
-};
-
-Play.propTypes = {
-  children: _propTypes2.default.node.isRequired,
-  play: _propTypes2.default.func.isRequired,
-  id: _propTypes2.default.string.isRequired,
-  paused: _propTypes2.default.bool.isRequired
-};
-
-exports.default = Play;
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var PlaybackRateBarValue = function PlaybackRateBarValue(_ref) {
-  var playbackRate = _ref.playbackRate,
-      minPlaybackRate = _ref.minPlaybackRate,
-      maxPlaybackRate = _ref.maxPlaybackRate,
-      verticalPlaybackRate = _ref.verticalPlaybackRate,
-      attributes = _ref.attributes;
-
-  var style = function style() {
-    var ratio = (playbackRate - minPlaybackRate) / (maxPlaybackRate - minPlaybackRate);
-    var playbackRateBarPercentage = ratio * 100 + '%';
-
-    return {
-      width: !verticalPlaybackRate ? playbackRateBarPercentage : null,
-      height: verticalPlaybackRate ? playbackRateBarPercentage : null
-    };
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    src: jPlayers[id].src,
+    pauseOthersOnPlay: jPlayers[id].pauseOthersOnPlay,
+    otherJPlayerIds: Object.keys(jPlayers).filter(function (key) {
+      return key !== id;
+    })
   };
-  return _react2.default.createElement('div', _extends({
-    className: _constants.classes.PLAYBACK_RATE_BAR_VALUE, style: style()
-  }, attributes));
 };
 
-PlaybackRateBarValue.propTypes = {
-  attributes: _propTypes2.default.object.isRequired,
-  verticalPlaybackRate: _propTypes2.default.bool.isRequired,
-  minPlaybackRate: _propTypes2.default.number.isRequired,
-  maxPlaybackRate: _propTypes2.default.number.isRequired,
-  playbackRate: _propTypes2.default.number.isRequired
-};
-
-exports.default = PlaybackRateBarValue;
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var PlaybackRateBar = function PlaybackRateBar(_ref) {
-  var onClick = _ref.onClick,
-      onMouseDown = _ref.onMouseDown,
-      onTouchStart = _ref.onTouchStart,
-      setBar = _ref.setBar,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['onClick', 'onMouseDown', 'onTouchStart', 'setBar', 'children']);
-
-  return _react2.default.createElement(
-    'div',
-    _extends({
-      ref: setBar, className: _constants.classes.PLAYBACK_RATE_BAR,
-      onClick: onClick, onMouseDown: onMouseDown,
-      onTouchStart: onTouchStart }, attributes),
-    children
-  );
-};
-
-PlaybackRateBar.defaultProps = {
-  onClick: null,
-  onMouseDown: null,
-  onTouchStart: null,
-  setBar: null
-};
-
-PlaybackRateBar.propTypes = {
-  onClick: _propTypes2.default.func,
-  onMouseDown: _propTypes2.default.func,
-  onTouchStart: _propTypes2.default.func,
-  setBar: _propTypes2.default.func,
-  children: _propTypes2.default.node.isRequired
-};
-
-exports.default = PlaybackRateBar;
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Poster = function Poster(_ref) {
-  var src = _ref.src,
-      alt = _ref.alt,
-      attributes = _objectWithoutProperties(_ref, ['src', 'alt']);
-
-  return src !== '' ? _react2.default.createElement('img', _extends({ className: _constants.classes.POSTER, alt: alt, src: src }, attributes)) : null;
-};
-
-Poster.defaultProps = {
-  alt: null,
-  src: null
-};
-
-Poster.propTypes = {
-  src: _propTypes2.default.string,
-  alt: _propTypes2.default.string
-};
-
-exports.default = Poster;
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Repeat = function Repeat(_ref) {
-  var setLoop = _ref.setLoop,
-      id = _ref.id,
-      loop = _ref.loop,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['setLoop', 'id', 'loop', 'children']);
-
-  return _react2.default.createElement(
-    'button',
-    _extends({ className: _constants.classes.REPEAT, onClick: function onClick() {
-        return setLoop(id, loop);
-      } }, attributes),
-    children
-  );
-};
-
-Repeat.propTypes = {
-  loop: _propTypes2.default.oneOfType([_propTypes2.default.bool, _propTypes2.default.string]).isRequired,
-  children: _propTypes2.default.node.isRequired,
-  id: _propTypes2.default.string.isRequired,
-  setLoop: _propTypes2.default.func.isRequired
-};
-
-exports.default = Repeat;
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var SeekBar = function SeekBar(_ref) {
-  var setBar = _ref.setBar,
-      onClick = _ref.onClick,
-      onMouseDown = _ref.onMouseDown,
-      onTouchStart = _ref.onTouchStart,
-      seekPercent = _ref.seekPercent,
-      attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart', 'seekPercent']);
-
-  return _react2.default.createElement('div', _extends({
-    ref: setBar, className: _constants.classes.SEEK_BAR,
-    style: { width: seekPercent + '%' }, onClick: onClick,
-    onTouchStart: onTouchStart, onMouseDown: onMouseDown
-  }, attributes));
-};
-
-SeekBar.defaultProps = {
-  setBar: null,
-  onClick: null,
-  onMouseDown: null,
-  onTouchStart: null
-};
-
-SeekBar.propTypes = {
-  seekPercent: _propTypes2.default.number.isRequired,
-  setBar: _propTypes2.default.func,
-  onClick: _propTypes2.default.func,
-  onMouseDown: _propTypes2.default.func,
-  onTouchStart: _propTypes2.default.func,
-  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.element), _propTypes2.default.element]).isRequired
-};
-
-exports.default = SeekBar;
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Title = function Title(_ref) {
-  var children = _ref.children,
-      attributes = _ref.attributes;
-  return children !== '' ? _react2.default.createElement(
-    'div',
-    _extends({ className: _constants.classes.TITLE }, attributes),
-    children
-  ) : null;
-};
-
-Title.propTypes = {
-  attributes: _propTypes2.default.object.isRequired,
-  children: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]).isRequired
-};
-
-exports.default = Title;
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _mediaContainer = __webpack_require__(11);
-
-var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Video = function Video(_ref) {
-  var require = _ref.require,
-      events = _ref.events,
-      children = _ref.children,
-      attributes = _objectWithoutProperties(_ref, ['require', 'events', 'children']);
-
-  return require ? _react2.default.createElement(
-    _mediaContainer2.default,
-    events,
-    _react2.default.createElement(
-      'video',
-      attributes,
-      children
-    )
-  ) : null;
-};
-
-Video.defaultProps = {
-  events: null,
-  children: null
-};
-
-Video.propTypes = {
-  children: _propTypes2.default.node,
-  require: _propTypes2.default.bool.isRequired,
-  events: _propTypes2.default.shape({
+var contextTypes = {
+  internalEvents: _propTypes2.default.shape({
     onAbort: _propTypes2.default.func,
     onCanPlay: _propTypes2.default.func,
     onCanPlayThrough: _propTypes2.default.func,
@@ -4191,7 +3330,676 @@ Video.propTypes = {
   })
 };
 
-exports.default = Video;
+var defaultProps = {
+  internalEvents: {}
+};
+
+var mapEvents = function mapEvents(ownerProps) {
+  var events = {};
+
+  Object.keys(ownerProps.internalEvents).forEach(function (key) {
+    events[key] = function (e) {
+      ownerProps.internalEvents[key](e);
+      ownerProps[key](e);
+    };
+  });
+
+  return _extends({}, ownerProps, events);
+};
+
+var firstHandlers = {
+  pauseOthers: function pauseOthers(props) {
+    return function () {
+      props.otherJPlayerIds.forEach(function (id) {
+        return props.pause(id);
+      });
+    };
+  }
+};
+
+var secondHandlers = {
+  onDurationChange: function onDurationChange(props) {
+    return function (e) {
+      props.updateMediaStatus();
+      props.onDurationChange(e);
+    };
+  },
+  onEnded: function onEnded(props) {
+    return function (e) {
+      props.pause(props.id, 0);
+      props.updateMediaStatus();
+      props.onEnded(e);
+    };
+  },
+  onError: function onError(props) {
+    return function (e) {
+      props.setOption(props.id, 'error', (0, _urlNotSupportedError2.default)(props.src));
+      props.onError(e);
+    };
+  },
+  onPlay: function onPlay(props) {
+    return function (e) {
+      if (props.pauseOthersOnPlay) {
+        props.pauseOthers();
+      }
+      props.play(props.id);
+      props.onPlay(e);
+    };
+  },
+  onProgress: function onProgress(props) {
+    return function (e) {
+      var bufferedTimeRanges = [];
+
+      for (var i = 0; i < e.currentTarget.buffered.length; i += 1) {
+        bufferedTimeRanges.push({
+          start: e.currentTarget.buffered.start(i),
+          end: e.currentTarget.buffered.end(i)
+        });
+      }
+      props.updateMediaStatus();
+      props.setOption(props.id, 'bufferedTimeRanges', bufferedTimeRanges);
+      props.onProgress(e);
+    };
+  },
+  onSeeked: function onSeeked(props) {
+    return function (e) {
+      props.setOption(props.id, 'seeking', false);
+      props.onSeeked(e);
+    };
+  },
+  onSeeking: function onSeeking(props) {
+    return function (e) {
+      props.setOption(props.id, 'seeking', true);
+      props.onSeeking(e);
+    };
+  },
+  onTimeUpdate: function onTimeUpdate(props) {
+    return function (e) {
+      props.updateMediaStatus();
+      props.onTimeUpdate(e);
+    };
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption,
+  pause: _actions.pause,
+  play: _actions.play
+}), (0, _recompose.getContext)(contextTypes), (0, _recompose.defaultProps)(defaultProps), (0, _recompose.mapProps)(mapEvents), (0, _recompose.withHandlers)(firstHandlers), (0, _recompose.withHandlers)(secondHandlers))(_events2.default);
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Events = function Events(props) {
+  return _react2.default.cloneElement(_react2.default.Children.only(props.children), {
+    onAbort: props.onAbort,
+    onCanPlay: props.onCanPlay,
+    onCanPlayThrough: props.onCanPlayThrough,
+    onDurationChange: props.onDurationChange,
+    onEmptied: props.onEmptied,
+    onEncrypted: props.onEncrypted,
+    onEnded: props.onEnded,
+    onError: props.onError,
+    onLoadedData: props.onLoadedData,
+    onLoadedMetadata: props.onLoadedMetadata,
+    onLoadStart: props.onLoadStart,
+    onPause: props.onPause,
+    onPlay: props.onPlay,
+    onPlaying: props.onPlaying,
+    onProgress: props.onProgress,
+    onRateChange: props.onRateChange,
+    onSeeked: props.onSeeked,
+    onSeeking: props.onSeeking,
+    onStalled: props.onStalled,
+    onSuspend: props.onSuspend,
+    onTimeUpdate: props.onTimeUpdate,
+    onVolumeChange: props.onVolumeChange,
+    onWaiting: props.onWaiting
+  });
+};
+
+Events.propTypes = {
+  children: _propTypes2.default.element.isRequired,
+  onAbort: _propTypes2.default.func.isRequired,
+  onCanPlay: _propTypes2.default.func.isRequired,
+  onCanPlayThrough: _propTypes2.default.func.isRequired,
+  onDurationChange: _propTypes2.default.func.isRequired,
+  onEmptied: _propTypes2.default.func.isRequired,
+  onEncrypted: _propTypes2.default.func.isRequired,
+  onEnded: _propTypes2.default.func.isRequired,
+  onError: _propTypes2.default.func.isRequired,
+  onLoadedData: _propTypes2.default.func.isRequired,
+  onLoadedMetadata: _propTypes2.default.func.isRequired,
+  onLoadStart: _propTypes2.default.func.isRequired,
+  onPause: _propTypes2.default.func.isRequired,
+  onPlay: _propTypes2.default.func.isRequired,
+  onPlaying: _propTypes2.default.func.isRequired,
+  onProgress: _propTypes2.default.func.isRequired,
+  onRateChange: _propTypes2.default.func.isRequired,
+  onSeeked: _propTypes2.default.func.isRequired,
+  onSeeking: _propTypes2.default.func.isRequired,
+  onStalled: _propTypes2.default.func.isRequired,
+  onSuspend: _propTypes2.default.func.isRequired,
+  onTimeUpdate: _propTypes2.default.func.isRequired,
+  onVolumeChange: _propTypes2.default.func.isRequired,
+  onWaiting: _propTypes2.default.func.isRequired
+};
+
+exports.default = Events;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(3);
+
+exports.default = function (context) {
+  return {
+    context: context,
+    message: _constants.errors.URL_NO_SUPPORT,
+    hint: _constants.hints.URL_NO_SUPPORT
+  };
+};
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Track = function Track(props) {
+  return _react2.default.createElement('track', {
+    'default': props.default,
+    kind: props.kind,
+    src: props.src,
+    label: props.label,
+    srcLang: props.srclang
+  });
+};
+
+Track.defaultProps = {
+  default: null,
+  kind: null,
+  label: null,
+  srclang: null
+};
+
+Track.propTypes = {
+  default: _propTypes2.default.bool,
+  kind: _propTypes2.default.string,
+  src: _propTypes2.default.string.isRequired,
+  label: _propTypes2.default.string,
+  srclang: _propTypes2.default.string
+};
+
+exports.default = Track;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _audio = __webpack_require__(15);
+
+var _audio2 = _interopRequireDefault(_audio);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    require: !jPlayers[id].mediaSettings.video
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_audio2.default);
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _propTypes = __webpack_require__(0);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _recompose = __webpack_require__(4);
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _states = __webpack_require__(64);
+
+var _states2 = _interopRequireDefault(_states);
+
+var _jPlayer = __webpack_require__(16);
+
+var _jPlayer2 = _interopRequireDefault(_jPlayer);
+
+var _actions = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, ownProps) {
+  var jPlayers = _ref.jPlayers;
+  var id = ownProps.id,
+      keyBindings = ownProps.keyBindings,
+      children = ownProps.children,
+      className = ownProps.className;
+
+
+  return {
+    media: jPlayers[id].media,
+    fullScreen: jPlayers[id].fullScreen,
+    paused: jPlayers[id].paused,
+    startGuiFadeOut: jPlayers[id].startGuiFadeOut,
+    keyBindings: keyBindings,
+    id: id,
+    children: children,
+    className: (0, _states2.default)(jPlayers[id], ownProps.states, className)
+  };
+};
+
+var handlers = {
+  onMouseMoveCapture: function onMouseMoveCapture(props) {
+    return function () {
+      if (props.fullScreen) {
+        if (props.paused || props.startGuiFadeOut) {
+          props.setOption(props.id, 'startGuiFadeOut', false);
+        } else {
+          props.setOption(props.id, 'startGuiFadeOut', true);
+        }
+      }
+    };
+  }
+};
+
+var lifecycle = {
+  componentDidMount: function componentDidMount() {
+    if (Object.keys(this.props.media.sources).length > 0) {
+      this.props.setMedia(this.props.id, this.props.media);
+    }
+
+    this.props.setOption(this.props.id, 'volumeSupported', (0, _reactJplayerUtils.canSetVolume)());
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _recompose.withContext)({ id: _propTypes2.default.string }, function (_ref2) {
+  var id = _ref2.id;
+  return { id: id };
+}), (0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setMedia: _actions.setMedia,
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_jPlayer2.default);
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _classnames = __webpack_require__(65);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _constants = __webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+exports.default = function (jPlayer, additionalStates) {
+  for (var _len = arguments.length, additionalClasses = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    additionalClasses[_key - 2] = arguments[_key];
+  }
+
+  var _extends2;
+
+  return _classnames2.default.apply(undefined, [_constants.classes.JPLAYER].concat(additionalClasses, [_extends((_extends2 = {}, _defineProperty(_extends2, _constants.classes.states.AUDIO, !jPlayer.mediaSettings.video), _defineProperty(_extends2, _constants.classes.states.VIDEO, jPlayer.mediaSettings.video), _defineProperty(_extends2, _constants.classes.states.PLAYING, !jPlayer.paused), _defineProperty(_extends2, _constants.classes.states.IDLE, jPlayer.currentTime === 0), _defineProperty(_extends2, _constants.classes.states.FULL_SCREEN, jPlayer.fullScreen), _defineProperty(_extends2, _constants.classes.states.MUTED, jPlayer.muted), _defineProperty(_extends2, _constants.classes.states.VOLUME_LOW, !jPlayer.muted && jPlayer.volume < 0.5), _defineProperty(_extends2, _constants.classes.states.VOLUME_HIGH, !jPlayer.muted && jPlayer.volume >= 0.5), _defineProperty(_extends2, _constants.classes.states.SEEKING, jPlayer.seeking), _defineProperty(_extends2, _constants.classes.states.LOOPED, jPlayer.loop), _defineProperty(_extends2, _constants.classes.states.NO_BROWSER_SUPPORT, jPlayer.mediaSettings.nonSupported), _defineProperty(_extends2, _constants.classes.states.NO_VOLUME_SUPPORT, !jPlayer.volumeSupported), _extends2), additionalStates)]));
+};
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+module.exports = classNames;
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _lodash = __webpack_require__(6);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _actions = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    paused: jPlayers[id].paused,
+    fullScreen: jPlayers[id].fullScreen,
+    muted: jPlayers[id].muted,
+    volume: jPlayers[id].volume,
+    id: id
+  };
+};
+
+var mergeProps = function mergeProps(stateProps, _ref3, _ref4) {
+  var dispatch = _ref3.dispatch;
+  var keyBindings = _ref4.keyBindings,
+      id = _ref4.id;
+  return {
+    keyBindings: (0, _lodash2.default)({}, {
+      play: {
+        key: 80, // p
+        fn: function fn() {
+          return stateProps.paused ? dispatch((0, _actions.play)(id)) : dispatch((0, _actions.pause)(id));
+        }
+      },
+      fullScreen: {
+        key: 70, // f
+        fn: function fn() {
+          return dispatch((0, _actions.setOption)(id, 'fullScreen', !stateProps.fullScreen));
+        }
+      },
+      mute: {
+        key: 77, // m
+        fn: function fn() {
+          return dispatch((0, _actions.setMute)(id, !stateProps.muted));
+        }
+      },
+      volumeUp: {
+        key: 190, // .
+        fn: function fn() {
+          dispatch((0, _actions.setVolume)(id, stateProps.volume + 0.1));
+        }
+      },
+      volumeDown: {
+        key: 188, // ,
+        fn: function fn() {
+          return dispatch((0, _actions.setVolume)(id, stateProps.volume - 0.1));
+        }
+      },
+      loop: {
+        key: 76, // l
+        fn: function fn() {
+          return dispatch((0, _actions.setOption)(id, 'loop', !stateProps.loop));
+        }
+      }
+    }, keyBindings)
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps)(_reactJplayerUtils.KeyControl);
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _screenfull = __webpack_require__(68);
+
+var _screenfull2 = _interopRequireDefault(_screenfull);
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
+
+var _actions = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    fullScreen: jPlayers[id].fullScreen
+  };
+};
+
+var handlers = {
+  closeFullScreenListener: function closeFullScreenListener(props) {
+    return function () {
+      if (!_screenfull2.default.isFullscreen && props.fullScreen) {
+        props.setOption(props.id, 'fullScreen', false);
+      }
+    };
+  }
+};
+
+var lifecycleFunctions = {
+  requestFullScreen: function requestFullScreen() {
+    if (this.props.fullScreen) {
+      if (_screenfull2.default.enabled) {
+        _screenfull2.default.request(this.props.jPlayer);
+      }
+      // Legacy browsers don't implement full screen api
+      // Safari 5.1 doesn't hide the other elements even with fullscreen api
+      document.body.style.visibility = 'hidden';
+    }
+  },
+  exitFullScreen: function exitFullScreen() {
+    if (!this.props.fullScreen) {
+      if (_screenfull2.default.enabled) {
+        _screenfull2.default.exit();
+      }
+      document.body.style.visibility = 'visible';
+    }
+  },
+  componentDidMount: function componentDidMount() {
+    if (_screenfull2.default.enabled) {
+      document.addEventListener(_screenfull2.default.raw.fullscreenchange, this.props.closeFullScreenListener);
+    }
+    this.requestFullScreen();
+  },
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    this.requestFullScreen();
+    if (prevProps.fullScreen !== this.props.fullScreen) {
+      this.exitFullScreen();
+    }
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    if (_screenfull2.default.enabled) {
+      document.removeEventListener(_screenfull2.default.raw.fullscreenchange, this.props.closeFullScreenListener);
+    }
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycleFunctions))((0, _recompose.renderNothing)(null));
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+module.exports = screenfull;
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
+
+/* eslint-disable no-console */
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    error: jPlayers[id].error
+  };
+};
+
+var lifecycleFunctions = {
+  logError: function logError() {
+    console.error(this.props.error);
+  },
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    if (prevProps.error !== this.props.error) {
+      this.logError();
+    }
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.lifecycle)(lifecycleFunctions))((0, _recompose.renderNothing)(null));
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
+
+var _actions = __webpack_require__(5);
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    timeFormats: jPlayers[id].timeFormats,
+    currentTime: jPlayers[id].currentTime,
+    duration: jPlayers[id].duration,
+    showRemainingDuration: jPlayers[id].showRemainingDuration
+  };
+};
+
+var handlers = {
+  setDurationText: function setDurationText(props) {
+    return function () {
+      var durationText = '';
+
+      if (props.showRemainingDuration) {
+        var timeRemaining = props.duration - props.currentTime;
+
+        durationText = (timeRemaining > 0 ? '-' : '') + (0, _reactJplayerUtils.convertTime)(timeRemaining, props.timeFormats);
+      } else {
+        durationText = (0, _reactJplayerUtils.convertTime)(props.duration, props.timeFormats);
+      }
+
+      props.setOption(props.id, 'durationText', durationText);
+    };
+  },
+  setCurrentTimeText: function setCurrentTimeText(props) {
+    return function () {
+      var currentTimeText = (0, _reactJplayerUtils.convertTime)(props.currentTime, props.timeFormats);
+
+      props.setOption(props.id, 'currentTimeText', currentTimeText);
+    };
+  }
+};
+
+var lifecycle = {
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    if (prevProps.timeFormats !== this.props.timeFormats || prevProps.currentTime !== this.props.currentTime) {
+      this.props.setCurrentTimeText();
+    }
+
+    if (prevProps.timeFormats !== this.props.timeFormats || prevProps.currentTime !== this.props.currentTime || prevProps.duration !== this.props.duration || prevProps.showRemainingDuration !== this.props.showRemainingDuration) {
+      this.props.setDurationText();
+    }
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))((0, _recompose.renderNothing)(null));
 
 /***/ }),
 /* 71 */
@@ -4204,49 +4012,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _react = __webpack_require__(1);
+var _animation = __webpack_require__(72);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _constants = __webpack_require__(2);
+var _animation2 = _interopRequireDefault(_animation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var VolumeBarValue = function VolumeBarValue(_ref) {
-  var muted = _ref.muted,
-      volume = _ref.volume,
-      verticalVolume = _ref.verticalVolume,
-      attributes = _ref.attributes;
-
-  var style = function style() {
-    var volumeBarValuePercentage = (muted ? 0 : volume * 100) + '%';
-
-    return {
-      width: !verticalVolume ? volumeBarValuePercentage : null,
-      height: verticalVolume ? volumeBarValuePercentage : null
-    };
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    smoothPlayBar: jPlayers[id].smoothPlayBar,
+    currentPercentAbsolute: jPlayers[id].currentPercentAbsolute,
+    currentPercentRelative: jPlayers[id].currentPercentRelative
   };
-  return _react2.default.createElement('div', _extends({ className: _constants.classes.VOLUME_BAR_VALUE, style: style() }, attributes));
 };
 
-VolumeBarValue.defaultProps = {
-  verticalVolume: _constants.defaultOptions.verticalVolume
-};
-
-VolumeBarValue.propTypes = {
-  attributes: _propTypes2.default.object.isRequired,
-  muted: _propTypes2.default.bool.isRequired,
-  volume: _propTypes2.default.number.isRequired,
-  verticalVolume: _propTypes2.default.bool
-};
-
-exports.default = VolumeBarValue;
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_animation2.default);
 
 /***/ }),
 /* 72 */
@@ -4259,51 +4043,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactMotion = __webpack_require__(11);
 
 var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _playBar = __webpack_require__(17);
+
+var _playBar2 = _interopRequireDefault(_playBar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var VolumeBar = function VolumeBar(_ref) {
-  var setBar = _ref.setBar,
-      onClick = _ref.onClick,
-      onMouseDown = _ref.onMouseDown,
-      onTouchStart = _ref.onTouchStart,
-      attributes = _objectWithoutProperties(_ref, ['setBar', 'onClick', 'onMouseDown', 'onTouchStart']);
-
-  return _react2.default.createElement('div', _extends({
-    ref: setBar, className: _constants.classes.VOLUME_BAR,
-    onClick: onClick, onMouseDown: onMouseDown, onTouchStart: onTouchStart
-  }, attributes));
+var Animation = function Animation(props) {
+  return _react2.default.createElement(
+    _reactMotion.Motion,
+    { style: { smoothWidth: (0, _reactMotion.spring)(props.currentPercentAbsolute, [250]) } },
+    function (values) {
+      return _react2.default.createElement(_playBar2.default, {
+        smoothWidth: values.smoothWidth,
+        smoothPlayBar: props.smoothPlayBar,
+        currentPercentRelative: props.currentPercentRelative
+      });
+    }
+  );
 };
 
-VolumeBar.defaultProps = {
-  onClick: null,
-  setBar: null,
-  onMouseDown: null,
-  onTouchStart: null
+Animation.propTypes = {
+  currentPercentRelative: _propTypes2.default.number.isRequired,
+  currentPercentAbsolute: _propTypes2.default.number.isRequired,
+  smoothPlayBar: _propTypes2.default.bool.isRequired
 };
 
-VolumeBar.propTypes = {
-  onClick: _propTypes2.default.func,
-  onMouseDown: _propTypes2.default.func,
-  onTouchStart: _propTypes2.default.func,
-  setBar: _propTypes2.default.func,
-  children: _propTypes2.default.node.isRequired
-};
-
-exports.default = VolumeBar;
+exports.default = Animation;
 
 /***/ }),
 /* 73 */
@@ -4315,144 +4091,71 @@ exports.default = VolumeBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BrowserUnsupported = exports.CurrentTime = exports.Duration = exports.Download = exports.VolumeBarValue = exports.VolumeBar = exports.PlaybackRateBarValue = exports.PlaybackRateBar = exports.Repeat = exports.Play = exports.Mute = exports.FullScreen = exports.Title = exports.Audio = exports.Video = exports.Poster = exports.BufferBar = exports.PlayBar = exports.SeekBar = exports.Gui = exports.connect = exports.actions = exports.reducer = exports.initialState = exports.constants = undefined;
 
-var _initialState = __webpack_require__(34);
+var _recompose = __webpack_require__(4);
 
-var _initialState2 = _interopRequireDefault(_initialState);
+var _reactJplayerUtils = __webpack_require__(1);
 
-var _reducer = __webpack_require__(35);
+var _bufferBar = __webpack_require__(18);
 
-var _reducer2 = _interopRequireDefault(_reducer);
-
-var _actions = __webpack_require__(4);
-
-var actions = _interopRequireWildcard(_actions);
-
-var _connect = __webpack_require__(33);
-
-var _connect2 = _interopRequireDefault(_connect);
-
-var _guiContainer = __webpack_require__(21);
-
-var _guiContainer2 = _interopRequireDefault(_guiContainer);
-
-var _videoContainer = __webpack_require__(31);
-
-var _videoContainer2 = _interopRequireDefault(_videoContainer);
-
-var _audioContainer = __webpack_require__(14);
-
-var _audioContainer2 = _interopRequireDefault(_audioContainer);
-
-var _jPlayerContainer = __webpack_require__(22);
-
-var _jPlayerContainer2 = _interopRequireDefault(_jPlayerContainer);
-
-var _playBarContainer = __webpack_require__(24);
-
-var _playBarContainer2 = _interopRequireDefault(_playBarContainer);
-
-var _bufferBarContainer = __webpack_require__(16);
-
-var _bufferBarContainer2 = _interopRequireDefault(_bufferBarContainer);
-
-var _posterContainer = __webpack_require__(27);
-
-var _posterContainer2 = _interopRequireDefault(_posterContainer);
-
-var _titleContainer = __webpack_require__(30);
-
-var _titleContainer2 = _interopRequireDefault(_titleContainer);
-
-var _fullScreenContainer = __webpack_require__(20);
-
-var _fullScreenContainer2 = _interopRequireDefault(_fullScreenContainer);
-
-var _muteContainer = __webpack_require__(23);
-
-var _muteContainer2 = _interopRequireDefault(_muteContainer);
-
-var _playContainer = __webpack_require__(25);
-
-var _playContainer2 = _interopRequireDefault(_playContainer);
-
-var _repeatContainer = __webpack_require__(28);
-
-var _repeatContainer2 = _interopRequireDefault(_repeatContainer);
-
-var _seekBarContainer = __webpack_require__(29);
-
-var _seekBarContainer2 = _interopRequireDefault(_seekBarContainer);
-
-var _playbackRateBarContainer = __webpack_require__(26);
-
-var _playbackRateBarContainer2 = _interopRequireDefault(_playbackRateBarContainer);
-
-var _playbackRateBarValueContainer = __webpack_require__(8);
-
-var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
-
-var _volumeBarContainer = __webpack_require__(32);
-
-var _volumeBarContainer2 = _interopRequireDefault(_volumeBarContainer);
-
-var _volumeBarValueContainer = __webpack_require__(9);
-
-var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
-
-var _downloadContainer = __webpack_require__(18);
-
-var _downloadContainer2 = _interopRequireDefault(_downloadContainer);
-
-var _durationContainer = __webpack_require__(19);
-
-var _durationContainer2 = _interopRequireDefault(_durationContainer);
-
-var _currentTimeContainer = __webpack_require__(17);
-
-var _currentTimeContainer2 = _interopRequireDefault(_currentTimeContainer);
-
-var _browserUnsupportedContainer = __webpack_require__(15);
-
-var _browserUnsupportedContainer2 = _interopRequireDefault(_browserUnsupportedContainer);
-
-var _constants = __webpack_require__(2);
-
-var constants = _interopRequireWildcard(_constants);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _bufferBar2 = _interopRequireDefault(_bufferBar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* eslint-disable max-len */
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    bufferedTimeRanges: jPlayers[id].bufferedTimeRanges,
+    duration: jPlayers[id].duration,
+    bufferColour: jPlayers[id].bufferColour
+  };
+};
 
-exports.default = _jPlayerContainer2.default;
-exports.constants = constants;
-exports.initialState = _initialState2.default;
-exports.reducer = _reducer2.default;
-exports.actions = actions;
-exports.connect = _connect2.default;
-exports.Gui = _guiContainer2.default;
-exports.SeekBar = _seekBarContainer2.default;
-exports.PlayBar = _playBarContainer2.default;
-exports.BufferBar = _bufferBarContainer2.default;
-exports.Poster = _posterContainer2.default;
-exports.Video = _videoContainer2.default;
-exports.Audio = _audioContainer2.default;
-exports.Title = _titleContainer2.default;
-exports.FullScreen = _fullScreenContainer2.default;
-exports.Mute = _muteContainer2.default;
-exports.Play = _playContainer2.default;
-exports.Repeat = _repeatContainer2.default;
-exports.PlaybackRateBar = _playbackRateBarContainer2.default;
-exports.PlaybackRateBarValue = _playbackRateBarValueContainer2.default;
-exports.VolumeBar = _volumeBarContainer2.default;
-exports.VolumeBarValue = _volumeBarValueContainer2.default;
-exports.Download = _downloadContainer2.default;
-exports.Duration = _durationContainer2.default;
-exports.CurrentTime = _currentTimeContainer2.default;
-exports.BrowserUnsupported = _browserUnsupportedContainer2.default;
+var handlers = function handlers() {
+  var canvas = void 0;
+
+  return {
+    setCanvas: function setCanvas() {
+      return function (ref) {
+        canvas = ref;
+      };
+    },
+    clearBuffer: function clearBuffer() {
+      return function () {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+      };
+    },
+    fillBufferPartially: function fillBufferPartially(props) {
+      return function () {
+        var modifier = canvas.width / props.duration;
+        var context = canvas.getContext('2d');
+
+        props.bufferedTimeRanges.forEach(function (bufferedTimeRange) {
+          var startX = bufferedTimeRange.start * modifier;
+          var endX = bufferedTimeRange.end * modifier;
+          var width = endX - startX;
+
+          context.fillStyle = props.bufferColour;
+          context.fillRect(startX, 0, width, canvas.height);
+        });
+      };
+    }
+  };
+};
+
+var lifecycle = {
+  componentDidUpdate: function componentDidUpdate(prevProps) {
+    if (prevProps.bufferedTimeRanges !== this.props.bufferedTimeRanges) {
+      if (this.props.bufferedTimeRanges.length === 0) {
+        this.props.clearBuffer();
+      }
+      this.props.fillBufferPartially();
+    }
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_bufferBar2.default);
 
 /***/ }),
 /* 74 */
@@ -4465,15 +4168,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _reactJplayerUtils = __webpack_require__(1);
 
-exports.default = function (context) {
+var _poster = __webpack_require__(19);
+
+var _poster2 = _interopRequireDefault(_poster);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
   return {
-    context: context,
-    message: _constants.errors.FORMAT_NO_SUPPORT,
-    hint: _constants.hints.FORMAT_NO_SUPPORT
+    src: jPlayers[id].media.poster
   };
 };
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_poster2.default);
 
 /***/ }),
 /* 75 */
@@ -4486,15 +4197,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _reactJplayerUtils = __webpack_require__(1);
 
-exports.default = function (context) {
+var _title = __webpack_require__(20);
+
+var _title2 = _interopRequireDefault(_title);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
   return {
-    context: context,
-    message: _constants.errors.URL_NOT_SET,
-    hint: _constants.hints.URL_NOT_SET
+    title: (0, _reactJplayerUtils.formatArtistAndTitle)(jPlayers[id].media.artist, jPlayers[id].media.title)
   };
 };
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_title2.default);
 
 /***/ }),
 /* 76 */
@@ -4507,15 +4226,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _reactJplayerUtils = __webpack_require__(1);
 
-exports.default = function (context) {
+var _actions = __webpack_require__(5);
+
+var _fullScreen = __webpack_require__(21);
+
+var _fullScreen2 = _interopRequireDefault(_fullScreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
   return {
-    context: context,
-    message: _constants.errors.URL_NO_SUPPORT,
-    hint: _constants.hints.URL_NO_SUPPORT
+    fullScreen: jPlayers[id].fullScreen
   };
 };
+
+var mapDispatchToProps = {
+  setFullScreen: function setFullScreen(id, fullScreen) {
+    return (0, _actions.setOption)(id, 'fullScreen', fullScreen);
+  }
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_fullScreen2.default);
 
 /***/ }),
 /* 77 */
@@ -4528,42 +4263,481 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _actions = __webpack_require__(5);
+
+var _mute = __webpack_require__(22);
+
+var _mute2 = _interopRequireDefault(_mute);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    muted: jPlayers[id].muted
+  };
+};
+
+var mapDispatchToProps = {
+  setMute: _actions.setMute
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_mute2.default);
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _actions = __webpack_require__(5);
+
+var _play2 = __webpack_require__(23);
+
+var _play3 = _interopRequireDefault(_play2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    paused: jPlayers[id].paused
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    play: function play(id, paused) {
+      if (paused) {
+        dispatch((0, _actions.play)(id));
+      } else {
+        dispatch((0, _actions.pause)(id));
+      }
+    }
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_play3.default);
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
+
+var _actions = __webpack_require__(5);
+
+var _repeat = __webpack_require__(24);
+
+var _repeat2 = _interopRequireDefault(_repeat);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    loop: jPlayers[id].loop
+  };
+};
+
+var handlers = {
+  loop: function loop(props) {
+    return function () {
+      return props.setOption(props.id, 'loop', !props.loop);
+    };
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers))(_repeat2.default);
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _recompose = __webpack_require__(4);
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _actions = __webpack_require__(5);
+
+var _seekBar = __webpack_require__(25);
+
+var _seekBar2 = _interopRequireDefault(_seekBar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    seekPercent: jPlayers[id].seekPercent
+  };
+};
+
+var handlers = {
+  movePlayHead: function movePlayHead(props) {
+    return function (bar, e) {
+      var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
+      var x = e.pageX - offset.left;
+      var w = bar.getBoundingClientRect().width;
+      var percentage = 100 * (x / w);
+
+      props.setPlayHead(props.id, percentage);
+    };
+  }
+};
+
+var secondHandlers = {
+  clickMoveBar: function clickMoveBar(props) {
+    return function (bar, e) {
+      return props.movePlayHead(bar, e);
+    };
+  },
+  touchMoveBar: function touchMoveBar(props) {
+    return function (bar, e) {
+      // Stop page scrolling
+      e.preventDefault();
+
+      props.movePlayHead(bar, e.touches[0]);
+    };
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setPlayHead: _actions.setPlayHead
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.withHandlers)(secondHandlers))(_seekBar2.default);
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
 var _propTypes = __webpack_require__(0);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var formatPropTypes = {};
+var Bar = function Bar(props) {
+  return _react2.default.cloneElement(_react2.default.Children.only(props.children), {
+    onClick: props.onClick,
+    onMouseDown: props.onMouseDown,
+    onTouchStart: props.onTouchStart,
+    ref: props.setBar
+  });
+};
 
-Object.keys(_constants.formats).forEach(function (key) {
-  formatPropTypes[key] = _propTypes2.default.string;
-});
+Bar.propTypes = {
+  children: _propTypes2.default.element.isRequired,
+  onClick: _propTypes2.default.func.isRequired,
+  onMouseDown: _propTypes2.default.func.isRequired,
+  onTouchStart: _propTypes2.default.func.isRequired,
+  setBar: _propTypes2.default.func.isRequired
+};
 
-exports.default = formatPropTypes;
-
-/***/ }),
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */
-/***/ (function(module, exports) {
-
-module.exports = classNames;
+exports.default = Bar;
 
 /***/ }),
 /* 82 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = screenfull;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
+
+var _actions = __webpack_require__(5);
+
+var _playbackRateBar = __webpack_require__(26);
+
+var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    verticalPlaybackRate: jPlayers[id].verticalPlaybackRate,
+    minPlaybackRate: jPlayers[id].minPlaybackRate,
+    maxPlaybackRate: jPlayers[id].maxPlaybackRate
+  };
+};
+
+var handlers = {
+  movePlaybackRate: function movePlaybackRate(props) {
+    return function (bar, e) {
+      var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
+      var w = bar.getBoundingClientRect().width;
+      var h = bar.getBoundingClientRect().height;
+      var x = e.pageX - offset.left;
+      var y = h - e.pageY + offset.top;
+      var ratio = void 0;
+
+      if (props.verticalPlaybackRate) {
+        ratio = y / h;
+      } else {
+        ratio = x / w;
+      }
+
+      var playbackRate = ratio * (props.maxPlaybackRate - props.minPlaybackRate) + props.minPlaybackRate;
+
+      props.setOption(props.id, 'playbackRate', playbackRate);
+    };
+  }
+};
+
+var secondHandlers = {
+  clickMoveBar: function clickMoveBar(props) {
+    return function (bar, e) {
+      return props.movePlaybackRate(bar, e);
+    };
+  },
+  touchMoveBar: function touchMoveBar(props) {
+    return function (bar, e) {
+      // Stop page scrolling
+      e.preventDefault();
+
+      props.movePlaybackRate(bar, e.touches[0]);
+    };
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setOption: _actions.setOption
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.withHandlers)(secondHandlers))(_playbackRateBar2.default);
 
 /***/ }),
 /* 83 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = shortid;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
+
+var _actions = __webpack_require__(5);
+
+var _volumeBar = __webpack_require__(29);
+
+var _volumeBar2 = _interopRequireDefault(_volumeBar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    verticalVolume: jPlayers[id].verticalVolume
+  };
+};
+
+var handlers = {
+  moveVolumeBar: function moveVolumeBar(props) {
+    return function (bar, e) {
+      var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
+      var w = bar.getBoundingClientRect().width;
+      var h = bar.getBoundingClientRect().height;
+      var y = h - e.pageY + offset.top;
+      var x = e.pageX - offset.left;
+
+      if (props.verticalVolume) {
+        props.setVolume(props.id, y / h);
+      } else {
+        props.setVolume(props.id, x / w);
+      }
+    };
+  }
+};
+
+var secondHandlers = {
+  clickMoveBar: function clickMoveBar(props) {
+    return function (bar, e) {
+      return props.moveVolumeBar(bar, e);
+    };
+  },
+  touchMoveBar: function touchMoveBar(props) {
+    return function (bar, e) {
+      // Stop page scrolling
+      e.preventDefault();
+
+      props.moveVolumeBar(bar, e.touches[0]);
+    };
+  }
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, {
+  setVolume: _actions.setVolume
+}), (0, _recompose.withHandlers)(handlers), (0, _recompose.withHandlers)(secondHandlers))(_volumeBar2.default);
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _download = __webpack_require__(32);
+
+var _download2 = _interopRequireDefault(_download);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    free: jPlayers[id].media.free,
+    url: jPlayers[id].src
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_download2.default);
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _duration = __webpack_require__(33);
+
+var _duration2 = _interopRequireDefault(_duration);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    durationText: jPlayers[id].durationText
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_duration2.default);
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _currentTime = __webpack_require__(34);
+
+var _currentTime2 = _interopRequireDefault(_currentTime);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    currentTimeText: jPlayers[id].currentTimeText
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_currentTime2.default);
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _browserUnsupported = __webpack_require__(35);
+
+var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var jPlayers = _ref.jPlayers;
+  var id = _ref2.id;
+  return {
+    nonSupported: jPlayers[id].mediaSettings.nonSupported
+  };
+};
+
+exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_browserUnsupported2.default);
 
 /***/ })
 /******/ ]);

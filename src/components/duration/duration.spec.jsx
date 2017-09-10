@@ -1,40 +1,39 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
-import { classes } from '../../util/constants';
 import Duration from './duration';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
+import { classes } from '../../util/constants';
 
-const setup = (newProps) => {
-  const props = {
-    children: '50',
-    'data-test': 'test',
-    ...newProps,
-  };
+const setup = (props) => {
+  const values = componentSetup(Duration, {
+    ...props,
+  });
 
-  const wrapper = shallow(<Duration {...props} />);
+  values.duration = values.wrapper.dive();
 
-  return {
-    props,
-    wrapper,
-  };
+  return values;
 };
 
 describe('Duration', () => {
-  let wrapper;
-  let props;
+  describe('when durationText is supplied', () => {
+    const durationText = '2:20';
 
-  it('renders self and subcomponents', () => {
-    ({ wrapper, props } = setup());
+    it('has duration class', () => {
+      const { duration } = setup({ durationText });
 
-    expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.DURATION)).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+      expect(duration.hasClass(classes.DURATION)).toBe(true);
+    });
+
+    it('durationText is rendered as a child', () => {
+      const { duration, props } = setup({ durationText });
+
+      expect(duration.prop('children')).toBe(props.durationText);
+    });
   });
 
-  it('renders null if children is empty', () => {
-    ({ wrapper, props } = setup({ children: '' }));
+  it('renders nothing if durationText is not supplied', () => {
+    const { duration } = setup();
 
-    expect(wrapper.type()).toBe(null);
+    expect(duration.type()).toBe(null);
   });
 });

@@ -8,7 +8,13 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  play: (id, paused) => (paused ? dispatch(play(id)) : dispatch(pause(id))),
+  play: (id, paused) => {
+    if (paused) {
+      dispatch(play(id));
+    } else {
+      dispatch(pause(id));
+    }
+  },
 });
 
 export default connectWithId(mapStateToProps, mapDispatchToProps)(Play);

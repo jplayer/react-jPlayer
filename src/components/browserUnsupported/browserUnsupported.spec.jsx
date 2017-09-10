@@ -1,49 +1,46 @@
-import React from 'react';
 import expect from 'expect';
-import { shallow } from 'enzyme';
 
 import { classes } from '../../util/constants';
 import BrowserUnsupported from './browserUnsupported';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = (newProps) => {
-  const props = {
-    foundSupported: false,
-    'data-test': 'test',
-    ...newProps,
-  };
-  const wrapper = shallow(<BrowserUnsupported {...props} />);
+const setup = (props) => {
+  const values = componentSetup(BrowserUnsupported, {
+    ...props,
+  });
 
-  return {
-    props,
-    wrapper,
-  };
+  values.browserUnsupported = values.wrapper.dive();
+
+  return values;
 };
-const children = 'test';
-
 describe('BrowserUnsupported', () => {
-  let wrapper;
-  let props;
+  describe('when media is not supported', () => {
+    const nonSupported = true;
 
-  it('renders self and sub components when no supported media types', () => {
-    ({ wrapper, props } = setup());
+    it('renders default children', () => {
+      const { browserUnsupported } = setup({ nonSupported });
 
-    expect(wrapper.prop('children')).toNotBe(children);
-    expect(wrapper.hasClass(classes.NO_BROWSER_SUPPORT)).toBeTruthy();
-    expect(wrapper.find('h4').exists()).toBeTruthy();
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
+      expect(browserUnsupported.find('h4').exists()).toBeTruthy();
+    });
+
+    it('has browserUnsupported class', () => {
+      const { browserUnsupported } = setup({ nonSupported });
+
+      expect(browserUnsupported.hasClass(classes.NO_BROWSER_SUPPORT)).toBe(true);
+    });
+
+    it('custom children overwrite default if specified', () => {
+      const children = 'test';
+      const { browserUnsupported } = setup({ nonSupported, children });
+
+      expect(browserUnsupported.prop('children')).toBe(children);
+      expect(browserUnsupported.find('h4').exists()).toBeFalsy();
+    });
   });
 
-  it('renders null when supported media types', () => {
-    ({ wrapper, props } = setup());
+  it('renders nothing if media is supported', () => {
+    const { browserUnsupported } = setup();
 
-    wrapper.setProps({ foundSupported: true });
-    expect(wrapper.type()).toBe(null);
-  });
-
-  it('custom children overwrite default if specified', () => {
-    ({ wrapper, props } = setup({ children }));
-
-    expect(wrapper.prop('children')).toBe(children);
-    expect(wrapper.find('h4').exists()).toBeFalsy();
+    expect(browserUnsupported.type()).toBe(null);
   });
 });
