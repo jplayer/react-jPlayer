@@ -340,7 +340,7 @@ Set this to true if your volume bar is vertical. Clicks on the volume bar will t
 ##### `keyEnabled` (bool)
 Default: true
 
-Allows key presses to affect the jPlayer. For the [`keyBindings`](https://github.com/jplayer/react-jPlayer#keybindings-object) object to have any affect this will need to be true.
+Allows key presses to affect the jPlayer. For the [`keyBindings`](https://github.com/jplayer/react-jPlayer#jplayer) object to have any affect this will need to be true.
 
 ##### `timeFormats` (object)
 Defines the display format of the currentTime and duration times.
