@@ -1,254 +1,261 @@
-// import React from 'react';
-// import expect from 'expect';
-// import proxyquire from 'proxyquire';
+/* eslint-disable jsx-a11y/media-has-caption */
+
+import React from 'react';
+import expect from 'expect';
+import proxyquire from 'proxyquire';
+
+import EventsContainer from './eventsContainer';
+import urlNotSupportedError from '../../../util/errorHandlers/urlNotSupportedError';
+import containerSetup from '../../../util/specHelpers/containerSetup.spec';
+
+proxyquire.noCallThru();
+
+const id = 'TestPlayer';
+const events = {
+  onAbort: expect.createSpy(),
+  onCanPlay: expect.createSpy(),
+  onCanPlayThrough: expect.createSpy(),
+  onDurationChange: expect.createSpy(),
+  onEmptied: expect.createSpy(),
+  onEncrypted: expect.createSpy(),
+  onEnded: expect.createSpy(),
+  onError: expect.createSpy(),
+  onLoadedData: expect.createSpy(),
+  onLoadedMetadata: expect.createSpy(),
+  onLoadStart: expect.createSpy(),
+  onPause: expect.createSpy(),
+  onPlay: expect.createSpy(),
+  onPlaying: expect.createSpy(),
+  onProgress: expect.createSpy(),
+  onRateChange: expect.createSpy(),
+  onSeeked: expect.createSpy(),
+  onSeeking: expect.createSpy(),
+  onStalled: expect.createSpy(),
+  onSuspend: expect.createSpy(),
+  onTimeUpdate: expect.createSpy(),
+  onVolumeChange: expect.createSpy(),
+  onWaiting: expect.createSpy(),
+};
+const setup = (jPlayers, props) => containerSetup(EventsContainer, jPlayers, {
+  children: <audio />,
+  updateMediaStatus: expect.createSpy(),
+  ...events,
+  ...props,
+});
 
-// import urlNotSupportedError from '../../../util/errorHandlers/urlNotSupportedError';
-// import containerSetup from '../../../util/specHelpers/containerSetup.spec';
+describe('EventsContainer', () => {
+  let jPlayers;
 
-// proxyquire.noCallThru();
+  beforeEach(() => {
+    jPlayers = {
+      [id]: {},
+    };
+  });
+
+  describe('onDurationChange', () => {
+    it('updates the media status', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-// const id = 'TestPlayer';
-// const mockEvents = ({ events }) => <div {...events} />;
-// const EventsContainer = proxyquire('./eventsContainer', {
-//   './events': mockEvents,
-// }).default;
+      wrapper.simulate('durationchange');
 
-// const setup = (jPlayers, props) => containerSetup(EventsContainer, jPlayers, {
-//   updateMediaStatus: expect.createSpy(),
-//   ...props,
-// });
+      expect(props.updateMediaStatus).toHaveBeenCalled();
+    });
 
-// describe('EventsContainer', () => {
-//   let jPlayers;
-//   beforeEach(() => {
-//     jPlayers = {
-//       [id]: {},
-//     };
-//   });
+    it('calls the users onDurationChange', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//   describe('onDurationChange', () => {
-//     it('updates the media status', () => {
-//       const { wrapper, props } = setup(jPlayers);
+      wrapper.simulate('durationchange');
 
-//       wrapper.simulate('durationchange');
+      expect(props.onDurationChange).toHaveBeenCalled();
+      expect(props.onDurationChange.calls[0].arguments[0].type).toBe('durationchange');
+    });
+  });
 
-//       expect(props.updateMediaStatus).toHaveBeenCalled();
-//     });
+  describe('onEnded', () => {
+    it('pauses the media', () => {
+      jPlayers[id].src = 'test.com';
 
-//     it('calls the users onDurationChange', () => {
-//       const onDurationChange = expect.createSpy();
+      const { store, wrapper } = setup(jPlayers);
 
-//       const { wrapper } = setup(jPlayers, { onDurationChange });
+      wrapper.simulate('ended');
 
-//       wrapper.simulate('durationchange');
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
-//       expect(onDurationChange).toHaveBeenCalled();
-//     });
-//   });
+      expect(testPlayer.paused).toBe(true);
+    });
 
-//   describe('onEnded', () => {
-//     it('pauses the media', () => {
-//       jPlayers[id].src = 'test.com';
+    it('updates the media status', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       const { store, wrapper } = setup(jPlayers);
+      wrapper.simulate('ended');
 
-//       wrapper.simulate('ended');
+      expect(props.updateMediaStatus).toHaveBeenCalled();
+    });
 
-//       const testPlayer = store.getState().jPlayers.TestPlayer;
+    it('calls the users onEnded', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       expect(testPlayer.paused).toBe(true);
-//     });
+      wrapper.simulate('ended');
 
-//     it('updates the media status', () => {
-//       const { wrapper, props } = setup(jPlayers);
+      expect(props.onEnded).toHaveBeenCalled();
+      expect(props.onEnded.calls[0].arguments[0].type).toBe('ended');
+    });
+  });
 
-//       wrapper.simulate('ended');
+  describe('onError', () => {
+    it('sets the error to urlNotSupported', () => {
+      jPlayers[id].src = 'test.com';
+      const { store, wrapper } = setup(jPlayers);
 
-//       expect(props.updateMediaStatus).toHaveBeenCalled();
-//     });
+      wrapper.simulate('error');
 
-//     it('calls the users onEnded', () => {
-//       const onEnded = expect.createSpy();
-//       const { wrapper } = setup(jPlayers, { onEnded });
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
-//       wrapper.simulate('ended');
+      expect(testPlayer.error).toEqual(urlNotSupportedError(jPlayers[id].src));
+    });
 
-//       expect(onEnded).toHaveBeenCalled();
-//     });
-//   });
+    it('calls the users onError', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//   describe('onError', () => {
-//     it('sets the error to urlNotSupported', () => {
-//       jPlayers[id].src = 'test.com';
-//       const { store, wrapper } = setup(jPlayers);
+      wrapper.simulate('error');
 
-//       wrapper.simulate('error');
+      expect(props.onError).toHaveBeenCalled();
+      expect(props.onError.calls[0].arguments[0].type).toBe('error');
+    });
+  });
 
-//       const testPlayer = store.getState().jPlayers.TestPlayer;
+  describe('onPlay', () => {
+    it('plays the media', () => {
+      jPlayers[id].src = 'test.com';
+      const { store, wrapper } = setup(jPlayers);
 
-//       expect(testPlayer.error).toEqual(urlNotSupportedError(jPlayers[id].src));
-//     });
+      wrapper.simulate('play');
 
-//     it('calls the users onError', () => {
-//       const onError = expect.createSpy();
-//       const { wrapper } = setup(jPlayers, { onError });
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
-//       wrapper.simulate('error');
+      expect(testPlayer.paused).toBe(false);
+    });
 
-//       expect(onError).toHaveBeenCalled();
-//     });
-//   });
+    it('calls the users onPlay', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//   describe('onPlay', () => {
-//     it('plays the media', () => {
-//       jPlayers[id].src = 'test.com';
-//       const { store, wrapper } = setup(jPlayers);
+      wrapper.simulate('play');
 
-//       wrapper.simulate('play');
+      expect(props.onPlay).toHaveBeenCalled();
+      expect(props.onPlay.calls[0].arguments[0].type).toBe('play');
+    });
 
-//       const testPlayer = store.getState().jPlayers.TestPlayer;
+    it('pauses the other jPlayers if pauseOthersOnPlay is true', () => {
+      jPlayers[id].pauseOthersOnPlay = true;
+      jPlayers.SecondTestPlayer = {
+        paused: false,
+        src: 'test2.com',
+      };
+      const { wrapper, store } = setup(jPlayers);
 
-//       expect(testPlayer.paused).toBe(false);
-//     });
+      wrapper.simulate('play');
 
-//     it('calls the users onPlay', () => {
-//       const onPlay = expect.createSpy();
-//       const { wrapper } = setup(jPlayers, { onPlay });
+      const secondTestPlayer = store.getState().jPlayers.SecondTestPlayer;
 
-//       wrapper.simulate('play');
+      expect(secondTestPlayer.paused).toBe(true);
+    });
 
-//       expect(onPlay).toHaveBeenCalled();
-//     });
+    it('doesnt pause the other jPlayers if pauseOthersOnPlay is not true', () => {
+      jPlayers.SecondTestPlayer = {
+        paused: false,
+        src: 'test2.com',
+      };
+      const { wrapper, store } = setup(jPlayers);
 
-//     it('pauses the other jPlayers if pauseOthersOnPlay is true', () => {
-//       jPlayers[id].pauseOthersOnPlay = true;
-//       jPlayers.SecondTestPlayer = {
-//         paused: false,
-//         src: 'test2.com',
-//       };
-//       const { wrapper, store } = setup(jPlayers);
+      wrapper.simulate('play');
 
-//       wrapper.simulate('play');
+      const secondTestPlayer = store.getState().jPlayers.SecondTestPlayer;
 
-//       const secondTestPlayer = store.getState().jPlayers.SecondTestPlayer;
+      expect(secondTestPlayer.paused).toBe(false);
+    });
+  });
 
-//       expect(secondTestPlayer.paused).toBe(true);
-//     });
+  describe('onProgress', () => {
+    it('updates the media status', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//     it('doesnt pause the other jPlayers if pauseOthersOnPlay is not true', () => {
-//       jPlayers.SecondTestPlayer = {
-//         paused: false,
-//         src: 'test2.com',
-//       };
-//       const { wrapper, store } = setup(jPlayers);
+      wrapper.simulate('progress');
 
-//       wrapper.simulate('play');
+      expect(props.updateMediaStatus).toHaveBeenCalled();
+    });
 
-//       const secondTestPlayer = store.getState().jPlayers.SecondTestPlayer;
+    it('calls the users onProgress', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       expect(secondTestPlayer.paused).toBe(false);
-//     });
-//   });
+      wrapper.simulate('progress');
 
-//   describe('onProgress', () => {
-//     const currentMedia = {
-//       buffered: {
-//         start: i => i,
-//         end: i => i + 1,
-//         length: 2,
-//       },
-//     };
+      expect(props.onProgress).toHaveBeenCalled();
+      expect(props.onProgress.calls[0].arguments[0].type).toBe('progress');
+    });
+  });
 
-//     it('updates the media status', () => {
-//       const { wrapper, props } = setup(jPlayers, { currentMedia });
+  describe('onSeeked', () => {
+    it('sets the seeking to false', () => {
+      const { wrapper, store } = setup(jPlayers);
 
-//       wrapper.simulate('progress');
+      wrapper.simulate('seeked');
 
-//       expect(props.updateMediaStatus).toHaveBeenCalled();
-//     });
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
-//     it('updates the bufferedTimeRanges to the medias buffer', () => {
-//       const { wrapper, store } = setup(jPlayers, { currentMedia });
+      expect(testPlayer.seeking).toBe(false);
+    });
 
-//       wrapper.simulate('progress');
+    it('calls the users onSeeked', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       const testPlayer = store.getState().jPlayers.TestPlayer;
+      wrapper.simulate('seeked');
 
-//       expect(testPlayer.bufferedTimeRanges).toEqual([
-//         { start: 0, end: 1 },
-//         { start: 1, end: 2 },
-//       ]);
-//     });
+      expect(props.onSeeked).toHaveBeenCalled();
+      expect(props.onSeeked.calls[0].arguments[0].type).toBe('seeked');
+    });
+  });
 
-//     it('calls the users onProgress', () => {
-//       const onProgress = expect.createSpy();
-//       const { wrapper } = setup(jPlayers, { onProgress, currentMedia });
+  describe('onSeeking', () => {
+    it('sets the seeking to true', () => {
+      const { wrapper, store } = setup(jPlayers);
 
-//       wrapper.simulate('progress');
+      wrapper.simulate('seeking');
 
-//       expect(onProgress).toHaveBeenCalled();
-//     });
-//   });
+      const testPlayer = store.getState().jPlayers.TestPlayer;
 
-//   describe('onSeeked', () => {
-//     it('sets the seeking to false', () => {
-//       const { wrapper, store } = setup(jPlayers);
+      expect(testPlayer.seeking).toBe(true);
+    });
 
-//       wrapper.simulate('seeked');
+    it('calls the users onSeeking', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       const testPlayer = store.getState().jPlayers.TestPlayer;
+      wrapper.simulate('seeking');
 
-//       expect(testPlayer.seeking).toBe(false);
-//     });
+      expect(props.onSeeking).toHaveBeenCalled();
+      expect(props.onSeeking.calls[0].arguments[0].type).toBe('seeking');
+    });
+  });
 
-//     it('calls the users onSeeked', () => {
-//       const onSeeked = expect.createSpy();
-//       const { wrapper } = setup(jPlayers, { onSeeked });
+  describe('onTimeUpdate', () => {
+    it('updates the media status', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       wrapper.simulate('seeked');
+      wrapper.simulate('timeupdate');
 
-//       expect(onSeeked).toHaveBeenCalled();
-//     });
-//   });
+      expect(props.updateMediaStatus).toHaveBeenCalled();
+    });
 
-//   describe('onSeeking', () => {
-//     it('sets the seeking to true', () => {
-//       const { wrapper, store } = setup(jPlayers);
+    it('calls the users onTimeUpdate', () => {
+      const { wrapper, props } = setup(jPlayers);
 
-//       wrapper.simulate('seeking');
+      wrapper.simulate('timeupdate');
 
-//       const testPlayer = store.getState().jPlayers.TestPlayer;
+      expect(props.onTimeUpdate).toHaveBeenCalled();
+      expect(props.onTimeUpdate.calls[0].arguments[0].type).toBe('timeupdate');
+    });
+  });
 
-//       expect(testPlayer.seeking).toBe(true);
-//     });
-
-//     it('calls the users onSeeking', () => {
-//       const onSeeking = expect.createSpy();
-//       const { wrapper } = setup(jPlayers, { onSeeking });
-
-//       wrapper.simulate('seeking');
-
-//       expect(onSeeking).toHaveBeenCalled();
-//     });
-//   });
-
-//   describe('onTimeUpdate', () => {
-//     it('updates the media status', () => {
-//       const { wrapper, props } = setup(jPlayers);
-
-//       wrapper.simulate('timeupdate');
-
-//       expect(props.updateMediaStatus).toHaveBeenCalled();
-//     });
-
-//     it('calls the users onTimeUpdate', () => {
-//       const onTimeUpdate = expect.createSpy();
-
-//       const { wrapper } = setup(jPlayers, { onTimeUpdate });
-
-//       wrapper.simulate('timeupdate');
-
-//       expect(onTimeUpdate).toHaveBeenCalled();
-//     });
-//   });
-// });
+  afterEach(() => {
+    Object.keys(events).forEach(key => events[key].reset());
+  });
+});
