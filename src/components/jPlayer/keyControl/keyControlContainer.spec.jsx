@@ -1,33 +1,29 @@
-import React from 'react';
 import expect from 'expect';
-import proxyquire from 'proxyquire';
 
+import keyControlContainer from './keyControlContainer';
 import containerSetup from '../../../util/specHelpers/containerSetup.spec';
 
-let onKeyDown;
 const id = 'TestPlayer';
-const mockKeyControl = ({ keyBindings }) =>
-  <div onKeyDown={() => onKeyDown(keyBindings)} />;
-const keyControlContainer = proxyquire('./keyControlContainer', {
-  'react-jplayer-utils': { KeyControl: mockKeyControl },
-}).default;
+const keyDown = 'keydown';
 const setup = (jPlayers, props) => containerSetup(keyControlContainer, jPlayers, props);
 
 describe('keyControlContainer', () => {
   let jPlayers;
+  let event;
 
   beforeEach(() => {
     jPlayers = {
       [id]: {
+        focused: true,
+        keyEnabled: true,
         src: 'www.test.com',
       },
     };
+    event = document.createEvent('Event');
   });
 
   describe('custom keyBindings', () => {
     it('merges custom keyBinding with different name', () => {
-      onKeyDown = ({ test }) => test.fn();
-
       const customKeySpy = expect.createSpy();
       const customKeyBindings = {
         test: {
@@ -35,25 +31,30 @@ describe('keyControlContainer', () => {
           fn: customKeySpy,
         },
       };
-      const { wrapper } = setup(jPlayers, { keyBindings: customKeyBindings });
 
-      wrapper.simulate('keydown');
+      setup(jPlayers, { keyBindings: customKeyBindings });
+
+      event.keyCode = 20;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       expect(customKeySpy).toHaveBeenCalled();
     });
 
     it('custom keyBinding overwrite default function with same name', () => {
-      onKeyDown = ({ play }) => play.fn();
-
       const customKeySpy = expect.createSpy();
       const customKeyBindings = {
         play: {
+          key: 20,
           fn: customKeySpy,
         },
       };
-      const { wrapper } = setup(jPlayers, { keyBindings: customKeyBindings });
 
-      wrapper.simulate('keydown');
+      setup(jPlayers, { keyBindings: customKeyBindings });
+
+      event.key = 20;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       expect(customKeySpy).toHaveBeenCalled();
     });
@@ -61,11 +62,11 @@ describe('keyControlContainer', () => {
 
   describe('play', () => {
     it('pauses when playing', () => {
-      onKeyDown = ({ play }) => play.fn();
+      const { store } = setup(jPlayers);
 
-      const { wrapper, store } = setup(jPlayers);
-
-      wrapper.simulate('keydown');
+      event.keyCode = 80;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
@@ -74,11 +75,12 @@ describe('keyControlContainer', () => {
 
     it('plays when paused', () => {
       jPlayers[id].paused = true;
-      onKeyDown = ({ play }) => play.fn();
 
-      const { wrapper, store } = setup(jPlayers);
+      const { store } = setup(jPlayers);
 
-      wrapper.simulate('keydown');
+      event.keyCode = 80;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
@@ -88,10 +90,11 @@ describe('keyControlContainer', () => {
 
   describe('fullScreen', () => {
     it('toggles fullScreen', () => {
-      onKeyDown = ({ fullScreen }) => fullScreen.fn();
-      const { wrapper, store } = setup(jPlayers);
+      const { store } = setup(jPlayers);
 
-      wrapper.simulate('keydown');
+      event.keyCode = 70;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
@@ -101,11 +104,11 @@ describe('keyControlContainer', () => {
 
   describe('mute', () => {
     it('toggles mute', () => {
-      onKeyDown = ({ mute }) => mute.fn();
+      const { store } = setup(jPlayers);
 
-      const { wrapper, store } = setup(jPlayers);
-
-      wrapper.simulate('keydown');
+      event.keyCode = 77;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
@@ -116,11 +119,12 @@ describe('keyControlContainer', () => {
   describe('volumeUp', () => {
     it('increments volume', () => {
       jPlayers[id].volume = 0;
-      onKeyDown = ({ volumeUp }) => volumeUp.fn();
 
-      const { wrapper, store } = setup(jPlayers);
+      const { store } = setup(jPlayers);
 
-      wrapper.simulate('keydown');
+      event.keyCode = 190;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
@@ -131,11 +135,12 @@ describe('keyControlContainer', () => {
   describe('volumeDown', () => {
     it('decrements volume', () => {
       jPlayers[id].volume = 0.1;
-      onKeyDown = ({ volumeDown }) => volumeDown.fn();
 
-      const { wrapper, store } = setup(jPlayers);
+      const { store } = setup(jPlayers);
 
-      wrapper.simulate('keydown');
+      event.keyCode = 188;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
@@ -145,15 +150,61 @@ describe('keyControlContainer', () => {
 
   describe('loop', () => {
     it('toggles loop', () => {
-      onKeyDown = ({ loop }) => loop.fn();
+      const { store } = setup(jPlayers);
 
-      const { wrapper, store } = setup(jPlayers);
-
-      wrapper.simulate('keydown');
+      event.keyCode = 76;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
 
       const jPlayer = store.getState().jPlayers[id];
 
       expect(jPlayer.loop).toBe(true);
+    });
+  });
+
+  describe('onKeyDown', () => {
+    it('doesnt handle the key down if focused is false', () => {
+      jPlayers[id].focused = false;
+
+      const { store } = setup(jPlayers);
+
+      event.keyCode = 80;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.paused).toNotBe(true);
+    });
+
+    it('doesnt handle the key down if keyEnabled is false', () => {
+      jPlayers[id].keyEnabled = false;
+
+      const { store } = setup(jPlayers);
+
+      event.keyCode = 80;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.paused).toNotBe(true);
+    });
+  });
+
+  describe('unmount', () => {
+    it('should remove onKeyDown event listener', () => {
+      const { wrapper, store } = setup(jPlayers);
+
+      wrapper.unmount();
+
+      event.keyCode = 80;
+      event.initEvent(keyDown);
+      document.dispatchEvent(event);
+
+      const jPlayer = store.getState().jPlayers[id];
+
+      expect(jPlayer.paused).toNotBe(true);
     });
   });
 });

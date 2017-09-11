@@ -72,6 +72,8 @@ export const classes = {
   },
 };
 
+export const keyIgnoredElementNames = ['INPUT', 'TEXTAREA', 'SELECT'];
+
 export const formats = {
   mp3: {
     CODEC: 'audio/mpeg',

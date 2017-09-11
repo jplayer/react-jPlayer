@@ -1,13 +1,17 @@
-import { connectWithId, KeyControl } from 'react-jplayer-utils';
+import { connectWithId } from 'react-jplayer-utils';
+import { compose, lifecycle as setLifecycle, withHandlers, renderNothing } from 'recompose';
 import merge from 'lodash.merge';
 
 import { setOption, play, pause, setMute, setVolume } from '../../../actions/actions';
+import { keyIgnoredElementNames } from '../../../util/constants';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   paused: jPlayers[id].paused,
   fullScreen: jPlayers[id].fullScreen,
   muted: jPlayers[id].muted,
   volume: jPlayers[id].volume,
+  keyEnabled: jPlayers[id].keyEnabled,
+  focused: jPlayers[id].focused,
   id,
 });
 
@@ -41,6 +45,39 @@ const mergeProps = (stateProps, { dispatch }, { keyBindings, id }) => ({
       fn: () => dispatch(setOption(id, 'loop', !stateProps.loop)),
     },
   }, keyBindings),
+  focused: stateProps.focused,
+  keyEnabled: stateProps.keyEnabled,
 });
 
-export default connectWithId(mapStateToProps, null, mergeProps)(KeyControl);
+const handlers = {
+  onKeyDown: props => (event) => {
+    if (keyIgnoredElementNames.some(name => name.toUpperCase()
+        === event.target.nodeName.toUpperCase()) || !props.focused || !props.keyEnabled) {
+      return;
+    }
+
+    Object.keys(props.keyBindings).forEach((key) => {
+      const keyBinding = props.keyBindings[key];
+
+      if (keyBinding.key === event.keyCode || keyBinding.key === event.key) {
+        event.preventDefault();
+        keyBinding.fn();
+      }
+    });
+  },
+};
+
+const lifecycle = {
+  componentDidMount() {
+    document.addEventListener('keydown', this.props.onKeyDown);
+  },
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.props.onKeyDown);
+  },
+};
+
+export default compose(
+  connectWithId(mapStateToProps, null, mergeProps),
+  withHandlers(handlers),
+  setLifecycle(lifecycle),
+)(renderNothing(null));
