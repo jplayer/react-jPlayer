@@ -18,7 +18,6 @@ export default {
     redux: 'Redux',
     screenfull: 'screenfull',
     'prop-types': 'PropTypes',
-    shortid: 'shortid',
   },
   entry: {
     'js/jPlayer.js': './src/index.js',
