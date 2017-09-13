@@ -129,7 +129,7 @@ https://github.com/jplayer/react-jPlayer-examples
 
 ### TL:DR
 - Connect your jPlayer to the store using reduxes connect to get access to the jPlayer's state.
-- Audio/Video events can be subscribed to by passing down the [Media events](https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events) to the [Audio](https://github.com/jplayer/react-jPlayer#audio) or [Video](https://github.com/jplayer/react-jPlayer#video) component, E.g: ` <audio { play: () => console.log("playing media")} />`.
+- Audio/Video events can be subscribed to by passing down the [Media events](https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events) to the [Audio](https://github.com/jplayer/react-jPlayer#audio) or [Video](https://github.com/jplayer/react-jPlayer#video) component, E.g: ` <audio onPlay={() => console.log("started playing media")} />`.
 
 ## Documentation
 #### `initializeOptions(jPlayerOptions)` : Required
