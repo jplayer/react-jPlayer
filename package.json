@@ -117,11 +117,10 @@
     "postcss-loader": "^2.0.6",
     "pre-commit": "^1.2.2",
     "proxyquire": "^1.8.0",
-    "react": "^15.0.0",
     "react-addons-test-utils": "^15.4.1",
-    "react-dom": "^15.0.0",
     "react-test-renderer": "^15.5.4",
     "redux": "^3.6.0",
+    "react-redux": "^5.0.2",
     "redux-mock-store": "^1.2.3",
     "rimraf": "^2.6.1",
     "style-loader": "^0.18.2",
@@ -133,12 +132,9 @@
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.5.8",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1",
     "react-jplayer-utils": "latest",
     "react-motion": "^0.5.0",
-    "react-redux": "^5.0.2",
     "recompose": "^0.24.0",
-    "redux": "^3.6.0",
     "screenfull": "^3.0.2"
   }
 }

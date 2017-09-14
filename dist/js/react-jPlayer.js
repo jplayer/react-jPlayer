@@ -61,79 +61,20 @@ var ReactJPlayer =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 35);
+/******/ 	return __webpack_require__(__webpack_require__.s = 34);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = PropTypes;
+module.exports = ReactJPlayerUtils;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.convertTime = exports.canSetVolume = exports.limitValue = exports.getElementOffset = exports.toRelativePercentage = exports.toPercentage = exports.classes = exports.formatArtistAndTitle = exports.connectWithIndex = exports.connectWithId = undefined;
-
-var _connectWithId = __webpack_require__(37);
-
-var _connectWithId2 = _interopRequireDefault(_connectWithId);
-
-var _connectWithIndex = __webpack_require__(38);
-
-var _connectWithIndex2 = _interopRequireDefault(_connectWithIndex);
-
-var _formatArtistAndTitle = __webpack_require__(39);
-
-var _formatArtistAndTitle2 = _interopRequireDefault(_formatArtistAndTitle);
-
-var _classes = __webpack_require__(40);
-
-var _classes2 = _interopRequireDefault(_classes);
-
-var _toPercentage = __webpack_require__(41);
-
-var _toPercentage2 = _interopRequireDefault(_toPercentage);
-
-var _toRelativePercentage = __webpack_require__(42);
-
-var _toRelativePercentage2 = _interopRequireDefault(_toRelativePercentage);
-
-var _getElementOffset = __webpack_require__(43);
-
-var _getElementOffset2 = _interopRequireDefault(_getElementOffset);
-
-var _limitValue = __webpack_require__(44);
-
-var _limitValue2 = _interopRequireDefault(_limitValue);
-
-var _canSetVolume = __webpack_require__(45);
-
-var _canSetVolume2 = _interopRequireDefault(_canSetVolume);
-
-var _convertTime = __webpack_require__(46);
-
-var _convertTime2 = _interopRequireDefault(_convertTime);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.connectWithId = _connectWithId2.default;
-exports.connectWithIndex = _connectWithIndex2.default;
-exports.formatArtistAndTitle = _formatArtistAndTitle2.default;
-exports.classes = _classes2.default;
-exports.toPercentage = _toPercentage2.default;
-exports.toRelativePercentage = _toRelativePercentage2.default;
-exports.getElementOffset = _getElementOffset2.default;
-exports.limitValue = _limitValue2.default;
-exports.canSetVolume = _canSetVolume2.default;
-exports.convertTime = _convertTime2.default;
+module.exports = PropTypes;
 
 /***/ }),
 /* 2 */
@@ -456,11 +397,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
-var _bar = __webpack_require__(76);
+var _bar = __webpack_require__(65);
 
 var _bar2 = _interopRequireDefault(_bar);
 
@@ -581,16 +522,10 @@ module.exports = _.merge;
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = ReactRedux;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
 module.exports = ReactMotion;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -604,7 +539,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -636,7 +571,7 @@ Gui.propTypes = {
 exports.default = Gui;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -650,13 +585,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _mediaContainer = __webpack_require__(13);
+var _mediaContainer = __webpack_require__(12);
 
 var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
@@ -753,7 +688,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(Video)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -763,11 +698,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
-var _media = __webpack_require__(52);
+var _media = __webpack_require__(41);
 
 var _media2 = _interopRequireDefault(_media);
 
@@ -915,7 +850,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_media2.default);
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -929,13 +864,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _mediaContainer = __webpack_require__(13);
+var _mediaContainer = __webpack_require__(12);
 
 var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
@@ -1032,7 +967,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(Audio)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1046,23 +981,23 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _keyControlContainer = __webpack_require__(61);
+var _keyControlContainer = __webpack_require__(50);
 
 var _keyControlContainer2 = _interopRequireDefault(_keyControlContainer);
 
-var _screenFullContainer = __webpack_require__(62);
+var _screenFullContainer = __webpack_require__(51);
 
 var _screenFullContainer2 = _interopRequireDefault(_screenFullContainer);
 
-var _errorLoggerContainer = __webpack_require__(64);
+var _errorLoggerContainer = __webpack_require__(53);
 
 var _errorLoggerContainer2 = _interopRequireDefault(_errorLoggerContainer);
 
-var _timeDisplayContainer = __webpack_require__(65);
+var _timeDisplayContainer = __webpack_require__(54);
 
 var _timeDisplayContainer2 = _interopRequireDefault(_timeDisplayContainer);
 
@@ -1107,7 +1042,7 @@ JPlayer.propTypes = {
 exports.default = JPlayer;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1121,7 +1056,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1147,7 +1082,7 @@ PlayBar.propTypes = {
 exports.default = PlayBar;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1161,7 +1096,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1184,7 +1119,7 @@ BufferBar.propTypes = {
 exports.default = BufferBar;
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1198,7 +1133,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1226,7 +1161,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(Poster)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1240,7 +1175,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1268,7 +1203,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(Title)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1282,7 +1217,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1317,7 +1252,7 @@ FullScreen.propTypes = {
 exports.default = FullScreen;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1331,7 +1266,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1363,7 +1298,7 @@ Mute.propTypes = {
 exports.default = Mute;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1377,7 +1312,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1409,7 +1344,7 @@ Play.propTypes = {
 exports.default = Play;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1423,7 +1358,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1449,7 +1384,7 @@ Repeat.propTypes = {
 exports.default = Repeat;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1463,7 +1398,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1503,7 +1438,7 @@ SeekBar.propTypes = {
 exports.default = SeekBar;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1517,7 +1452,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1525,7 +1460,7 @@ var _barContainer = __webpack_require__(6);
 
 var _barContainer2 = _interopRequireDefault(_barContainer);
 
-var _playbackRateBarValueContainer = __webpack_require__(26);
+var _playbackRateBarValueContainer = __webpack_require__(25);
 
 var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
 
@@ -1561,7 +1496,7 @@ PlaybackRateBar.propTypes = {
 exports.default = PlaybackRateBar;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1571,9 +1506,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _playbackRateBarValue = __webpack_require__(27);
+var _playbackRateBarValue = __webpack_require__(26);
 
 var _playbackRateBarValue2 = _interopRequireDefault(_playbackRateBarValue);
 
@@ -1593,7 +1528,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_playbackRateBarValue2.default);
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1607,7 +1542,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1639,7 +1574,7 @@ PlaybackRateBarValue.propTypes = {
 exports.default = PlaybackRateBarValue;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1653,7 +1588,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1661,7 +1596,7 @@ var _barContainer = __webpack_require__(6);
 
 var _barContainer2 = _interopRequireDefault(_barContainer);
 
-var _volumeBarValueContainer = __webpack_require__(29);
+var _volumeBarValueContainer = __webpack_require__(28);
 
 var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
 
@@ -1697,7 +1632,7 @@ VolumeBar.propTypes = {
 exports.default = VolumeBar;
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1707,9 +1642,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _volumeBarValue = __webpack_require__(30);
+var _volumeBarValue = __webpack_require__(29);
 
 var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
 
@@ -1728,7 +1663,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_volumeBarValue2.default);
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1742,7 +1677,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1773,7 +1708,7 @@ VolumeBarValue.propTypes = {
 exports.default = VolumeBarValue;
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1787,7 +1722,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1827,7 +1762,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(Download)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1841,7 +1776,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1869,7 +1804,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(Duration)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1883,7 +1818,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1907,7 +1842,7 @@ CurrentTime.propTypes = {
 exports.default = CurrentTime;
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1921,7 +1856,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1964,7 +1899,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props
 }, (0, _recompose.renderComponent)(BrowserUnsupported)))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1979,7 +1914,7 @@ var _initializeOptions = __webpack_require__(7);
 
 var _initializeOptions2 = _interopRequireDefault(_initializeOptions);
 
-var _reducer = __webpack_require__(36);
+var _reducer = __webpack_require__(35);
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
@@ -1991,171 +1926,171 @@ var _constants = __webpack_require__(2);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _guiContainer = __webpack_require__(49);
+var _guiContainer = __webpack_require__(38);
 
 var _guiContainer2 = _interopRequireDefault(_guiContainer);
 
-var _videoContainer = __webpack_require__(51);
+var _videoContainer = __webpack_require__(40);
 
 var _videoContainer2 = _interopRequireDefault(_videoContainer);
 
-var _audioContainer = __webpack_require__(57);
+var _audioContainer = __webpack_require__(46);
 
 var _audioContainer2 = _interopRequireDefault(_audioContainer);
 
-var _jPlayerContainer = __webpack_require__(58);
+var _jPlayerContainer = __webpack_require__(47);
 
 var _jPlayerContainer2 = _interopRequireDefault(_jPlayerContainer);
 
-var _playBarContainer = __webpack_require__(66);
+var _playBarContainer = __webpack_require__(55);
 
 var _playBarContainer2 = _interopRequireDefault(_playBarContainer);
 
-var _bufferBarContainer = __webpack_require__(68);
+var _bufferBarContainer = __webpack_require__(57);
 
 var _bufferBarContainer2 = _interopRequireDefault(_bufferBarContainer);
 
-var _posterContainer = __webpack_require__(69);
+var _posterContainer = __webpack_require__(58);
 
 var _posterContainer2 = _interopRequireDefault(_posterContainer);
 
-var _titleContainer = __webpack_require__(70);
+var _titleContainer = __webpack_require__(59);
 
 var _titleContainer2 = _interopRequireDefault(_titleContainer);
 
-var _fullScreenContainer = __webpack_require__(71);
+var _fullScreenContainer = __webpack_require__(60);
 
 var _fullScreenContainer2 = _interopRequireDefault(_fullScreenContainer);
 
-var _muteContainer = __webpack_require__(72);
+var _muteContainer = __webpack_require__(61);
 
 var _muteContainer2 = _interopRequireDefault(_muteContainer);
 
-var _playContainer = __webpack_require__(73);
+var _playContainer = __webpack_require__(62);
 
 var _playContainer2 = _interopRequireDefault(_playContainer);
 
-var _repeatContainer = __webpack_require__(74);
+var _repeatContainer = __webpack_require__(63);
 
 var _repeatContainer2 = _interopRequireDefault(_repeatContainer);
 
-var _seekBarContainer = __webpack_require__(75);
+var _seekBarContainer = __webpack_require__(64);
 
 var _seekBarContainer2 = _interopRequireDefault(_seekBarContainer);
 
-var _playbackRateBarContainer = __webpack_require__(77);
+var _playbackRateBarContainer = __webpack_require__(66);
 
 var _playbackRateBarContainer2 = _interopRequireDefault(_playbackRateBarContainer);
 
-var _playbackRateBarValueContainer = __webpack_require__(26);
+var _playbackRateBarValueContainer = __webpack_require__(25);
 
 var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
 
-var _volumeBarContainer = __webpack_require__(78);
+var _volumeBarContainer = __webpack_require__(67);
 
 var _volumeBarContainer2 = _interopRequireDefault(_volumeBarContainer);
 
-var _volumeBarValueContainer = __webpack_require__(29);
+var _volumeBarValueContainer = __webpack_require__(28);
 
 var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
 
-var _downloadContainer = __webpack_require__(79);
+var _downloadContainer = __webpack_require__(68);
 
 var _downloadContainer2 = _interopRequireDefault(_downloadContainer);
 
-var _durationContainer = __webpack_require__(80);
+var _durationContainer = __webpack_require__(69);
 
 var _durationContainer2 = _interopRequireDefault(_durationContainer);
 
-var _currentTimeContainer = __webpack_require__(81);
+var _currentTimeContainer = __webpack_require__(70);
 
 var _currentTimeContainer2 = _interopRequireDefault(_currentTimeContainer);
 
-var _browserUnsupportedContainer = __webpack_require__(82);
+var _browserUnsupportedContainer = __webpack_require__(71);
 
 var _browserUnsupportedContainer2 = _interopRequireDefault(_browserUnsupportedContainer);
 
-var _gui = __webpack_require__(11);
+var _gui = __webpack_require__(10);
 
 var _gui2 = _interopRequireDefault(_gui);
 
-var _video = __webpack_require__(12);
+var _video = __webpack_require__(11);
 
 var _video2 = _interopRequireDefault(_video);
 
-var _audio = __webpack_require__(14);
+var _audio = __webpack_require__(13);
 
 var _audio2 = _interopRequireDefault(_audio);
 
-var _jPlayer = __webpack_require__(15);
+var _jPlayer = __webpack_require__(14);
 
 var _jPlayer2 = _interopRequireDefault(_jPlayer);
 
-var _playBar = __webpack_require__(16);
+var _playBar = __webpack_require__(15);
 
 var _playBar2 = _interopRequireDefault(_playBar);
 
-var _bufferBar = __webpack_require__(17);
+var _bufferBar = __webpack_require__(16);
 
 var _bufferBar2 = _interopRequireDefault(_bufferBar);
 
-var _poster = __webpack_require__(18);
+var _poster = __webpack_require__(17);
 
 var _poster2 = _interopRequireDefault(_poster);
 
-var _title = __webpack_require__(19);
+var _title = __webpack_require__(18);
 
 var _title2 = _interopRequireDefault(_title);
 
-var _fullScreen = __webpack_require__(20);
+var _fullScreen = __webpack_require__(19);
 
 var _fullScreen2 = _interopRequireDefault(_fullScreen);
 
-var _mute = __webpack_require__(21);
+var _mute = __webpack_require__(20);
 
 var _mute2 = _interopRequireDefault(_mute);
 
-var _play = __webpack_require__(22);
+var _play = __webpack_require__(21);
 
 var _play2 = _interopRequireDefault(_play);
 
-var _repeat = __webpack_require__(23);
+var _repeat = __webpack_require__(22);
 
 var _repeat2 = _interopRequireDefault(_repeat);
 
-var _seekBar = __webpack_require__(24);
+var _seekBar = __webpack_require__(23);
 
 var _seekBar2 = _interopRequireDefault(_seekBar);
 
-var _playbackRateBar = __webpack_require__(25);
+var _playbackRateBar = __webpack_require__(24);
 
 var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
 
-var _playbackRateBarValue = __webpack_require__(27);
+var _playbackRateBarValue = __webpack_require__(26);
 
 var _playbackRateBarValue2 = _interopRequireDefault(_playbackRateBarValue);
 
-var _volumeBar = __webpack_require__(28);
+var _volumeBar = __webpack_require__(27);
 
 var _volumeBar2 = _interopRequireDefault(_volumeBar);
 
-var _volumeBarValue = __webpack_require__(30);
+var _volumeBarValue = __webpack_require__(29);
 
 var _volumeBarValue2 = _interopRequireDefault(_volumeBarValue);
 
-var _download = __webpack_require__(31);
+var _download = __webpack_require__(30);
 
 var _download2 = _interopRequireDefault(_download);
 
-var _duration = __webpack_require__(32);
+var _duration = __webpack_require__(31);
 
 var _duration2 = _interopRequireDefault(_duration);
 
-var _currentTime = __webpack_require__(33);
+var _currentTime = __webpack_require__(32);
 
 var _currentTime2 = _interopRequireDefault(_currentTime);
 
-var _browserUnsupported = __webpack_require__(34);
+var _browserUnsupported = __webpack_require__(33);
 
 var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
 
@@ -2217,7 +2152,7 @@ exports.CurrentTimeComponent = _currentTime2.default;
 exports.BrowserUnsupportedComponent = _browserUnsupported2.default;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2229,17 +2164,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _initializeOptions = __webpack_require__(7);
 
 var _constants = __webpack_require__(2);
 
-var _urlNotSetError = __webpack_require__(47);
+var _urlNotSetError = __webpack_require__(36);
 
 var _urlNotSetError2 = _interopRequireDefault(_urlNotSetError);
 
-var _noFormatSupportedError = __webpack_require__(48);
+var _noFormatSupportedError = __webpack_require__(37);
 
 var _noFormatSupportedError2 = _interopRequireDefault(_noFormatSupportedError);
 
@@ -2472,223 +2407,7 @@ var reducer = function reducer() {
 exports.default = reducer;
 
 /***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _reactRedux = __webpack_require__(9);
-
-var _recompose = __webpack_require__(4);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  return (0, _recompose.compose)((0, _recompose.getContext)({ id: _propTypes2.default.string }), _reactRedux.connect.apply(undefined, arguments));
-};
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _reactRedux = __webpack_require__(9);
-
-var _recompose = __webpack_require__(4);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  return (0, _recompose.compose)((0, _recompose.getContext)({
-    id: _propTypes2.default.string,
-    index: _propTypes2.default.number
-  }), _reactRedux.connect.apply(undefined, arguments));
-};
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (artist, title) {
-  var titleText = '';
-
-  if (artist !== null) {
-    titleText += '' + artist;
-  }
-
-  if (title !== null) {
-    if (artist !== null) {
-      titleText += ' - ';
-    }
-    titleText += '' + title;
-  }
-
-  return titleText;
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  HIDDEN: 'jp-hidden'
-};
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (number, max) {
-  return 100 * (number / max);
-};
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (number, max) {
-  return number * (max / 100);
-};
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (el) {
-  return {
-    top: el.getBoundingClientRect().top + document.body.scrollTop,
-    left: el.getBoundingClientRect().left + document.body.scrollLeft
-  };
-};
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (value, min, max) {
-  if (value < min) {
-    return min;
-  }
-
-  if (value > max) {
-    return max;
-  }
-  return value;
-};
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-// Some IOS versions don't allow manually changing volume or mute
-exports.default = function () {
-  var audio = new window.Audio();
-  audio.volume = 0.5;
-
-  return audio.volume === 0.5;
-};
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (seconds, timeFormats) {
-  if (isNaN(seconds)) {
-    return '';
-  }
-  var myTime = new Date(seconds * 1000);
-
-  var hour = myTime.getUTCHours();
-  var min = timeFormats.showHour ? myTime.getUTCMinutes() : myTime.getUTCMinutes() + hour * 60;
-  var sec = timeFormats.showMin ? myTime.getUTCSeconds() : myTime.getUTCSeconds() + min * 60;
-  var strHour = timeFormats.padHour && hour < 10 ? '0' + hour : hour;
-  var strMin = timeFormats.padMin && min < 10 ? '0' + min : min;
-  var strSec = timeFormats.padSec && sec < 10 ? '0' + sec : sec;
-
-  var strTime = '';
-  strTime += timeFormats.showHour ? strHour + timeFormats.sepHour : '';
-  strTime += timeFormats.showMin ? strMin + timeFormats.sepMin : '';
-  strTime += timeFormats.showSec ? strSec + timeFormats.sepSec : '';
-
-  return strTime;
-};
-
-/***/ }),
-/* 47 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2709,7 +2428,7 @@ exports.default = function (context) {
 };
 
 /***/ }),
-/* 48 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2730,7 +2449,7 @@ exports.default = function (context) {
 };
 
 /***/ }),
-/* 49 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2742,11 +2461,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _actions = __webpack_require__(5);
 
-var _animation = __webpack_require__(50);
+var _animation = __webpack_require__(39);
 
 var _animation2 = _interopRequireDefault(_animation);
 
@@ -2805,7 +2524,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_animation2.default);
 
 /***/ }),
-/* 50 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2819,13 +2538,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMotion = __webpack_require__(10);
+var _reactMotion = __webpack_require__(9);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _gui = __webpack_require__(11);
+var _gui = __webpack_require__(10);
 
 var _gui2 = _interopRequireDefault(_gui);
 
@@ -2862,7 +2581,7 @@ Animation.propTypes = {
 exports.default = Animation;
 
 /***/ }),
-/* 51 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2872,9 +2591,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _video = __webpack_require__(12);
+var _video = __webpack_require__(11);
 
 var _video2 = _interopRequireDefault(_video);
 
@@ -2891,7 +2610,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_video2.default);
 
 /***/ }),
-/* 52 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2907,15 +2626,15 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _eventsContainer = __webpack_require__(53);
+var _eventsContainer = __webpack_require__(42);
 
 var _eventsContainer2 = _interopRequireDefault(_eventsContainer);
 
-var _track = __webpack_require__(56);
+var _track = __webpack_require__(45);
 
 var _track2 = _interopRequireDefault(_track);
 
@@ -3004,7 +2723,7 @@ Media.propTypes = {
 exports.default = Media;
 
 /***/ }),
-/* 53 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3016,19 +2735,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _events = __webpack_require__(54);
+var _events = __webpack_require__(43);
 
 var _events2 = _interopRequireDefault(_events);
 
-var _urlNotSupportedError = __webpack_require__(55);
+var _urlNotSupportedError = __webpack_require__(44);
 
 var _urlNotSupportedError2 = _interopRequireDefault(_urlNotSupportedError);
 
@@ -3174,7 +2893,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.getContext)(contextTypes), (0, _recompose.defaultProps)(defaultProps), (0, _recompose.mapProps)(mapEvents), (0, _recompose.withHandlers)(firstHandlers), (0, _recompose.withHandlers)(secondHandlers))(_events2.default);
 
 /***/ }),
-/* 54 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3188,7 +2907,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -3252,7 +2971,7 @@ Events.propTypes = {
 exports.default = Events;
 
 /***/ }),
-/* 55 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3273,7 +2992,7 @@ exports.default = function (context) {
 };
 
 /***/ }),
-/* 56 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3287,7 +3006,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -3321,7 +3040,7 @@ Track.propTypes = {
 exports.default = Track;
 
 /***/ }),
-/* 57 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3331,9 +3050,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _audio = __webpack_require__(14);
+var _audio = __webpack_require__(13);
 
 var _audio2 = _interopRequireDefault(_audio);
 
@@ -3350,7 +3069,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_audio2.default);
 
 /***/ }),
-/* 58 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3360,19 +3079,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _states = __webpack_require__(59);
+var _states = __webpack_require__(48);
 
 var _states2 = _interopRequireDefault(_states);
 
-var _jPlayer = __webpack_require__(15);
+var _jPlayer = __webpack_require__(14);
 
 var _jPlayer2 = _interopRequireDefault(_jPlayer);
 
@@ -3433,7 +3152,7 @@ exports.default = (0, _recompose.compose)((0, _recompose.withContext)({ id: _pro
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_jPlayer2.default);
 
 /***/ }),
-/* 59 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3445,7 +3164,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _classnames = __webpack_require__(60);
+var _classnames = __webpack_require__(49);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -3466,13 +3185,13 @@ exports.default = function (jPlayer, additionalStates) {
 };
 
 /***/ }),
-/* 60 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = classNames;
 
 /***/ }),
-/* 61 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3482,7 +3201,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
@@ -3591,7 +3310,7 @@ var lifecycle = {
 exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps, null, mergeProps), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 62 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3601,11 +3320,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _screenfull = __webpack_require__(63);
+var _screenfull = __webpack_require__(52);
 
 var _screenfull2 = _interopRequireDefault(_screenfull);
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
@@ -3674,13 +3393,13 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycleFunctions))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 63 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = screenfull;
 
 /***/ }),
-/* 64 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3690,7 +3409,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
@@ -3717,7 +3436,7 @@ var lifecycleFunctions = {
 exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.lifecycle)(lifecycleFunctions))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 65 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3727,7 +3446,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
@@ -3786,7 +3505,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))((0, _recompose.renderNothing)(null));
 
 /***/ }),
-/* 66 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3796,9 +3515,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _animation = __webpack_require__(67);
+var _animation = __webpack_require__(56);
 
 var _animation2 = _interopRequireDefault(_animation);
 
@@ -3817,7 +3536,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_animation2.default);
 
 /***/ }),
-/* 67 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3831,13 +3550,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMotion = __webpack_require__(10);
+var _reactMotion = __webpack_require__(9);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _playBar = __webpack_require__(16);
+var _playBar = __webpack_require__(15);
 
 var _playBar2 = _interopRequireDefault(_playBar);
 
@@ -3866,7 +3585,7 @@ Animation.propTypes = {
 exports.default = Animation;
 
 /***/ }),
-/* 68 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3878,9 +3597,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _bufferBar = __webpack_require__(17);
+var _bufferBar = __webpack_require__(16);
 
 var _bufferBar2 = _interopRequireDefault(_bufferBar);
 
@@ -3942,7 +3661,7 @@ var lifecycle = {
 exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.withHandlers)(handlers), (0, _recompose.lifecycle)(lifecycle))(_bufferBar2.default);
 
 /***/ }),
-/* 69 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3952,9 +3671,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _poster = __webpack_require__(18);
+var _poster = __webpack_require__(17);
 
 var _poster2 = _interopRequireDefault(_poster);
 
@@ -3971,7 +3690,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_poster2.default);
 
 /***/ }),
-/* 70 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3981,9 +3700,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _title = __webpack_require__(19);
+var _title = __webpack_require__(18);
 
 var _title2 = _interopRequireDefault(_title);
 
@@ -4000,7 +3719,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_title2.default);
 
 /***/ }),
-/* 71 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4010,11 +3729,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _actions = __webpack_require__(5);
 
-var _fullScreen = __webpack_require__(20);
+var _fullScreen = __webpack_require__(19);
 
 var _fullScreen2 = _interopRequireDefault(_fullScreen);
 
@@ -4037,7 +3756,7 @@ var mapDispatchToProps = {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_fullScreen2.default);
 
 /***/ }),
-/* 72 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4047,11 +3766,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _actions = __webpack_require__(5);
 
-var _mute = __webpack_require__(21);
+var _mute = __webpack_require__(20);
 
 var _mute2 = _interopRequireDefault(_mute);
 
@@ -4072,7 +3791,7 @@ var mapDispatchToProps = {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_mute2.default);
 
 /***/ }),
-/* 73 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4082,11 +3801,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _actions = __webpack_require__(5);
 
-var _play2 = __webpack_require__(22);
+var _play2 = __webpack_require__(21);
 
 var _play3 = _interopRequireDefault(_play2);
 
@@ -4115,7 +3834,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps, mapDispatchToProps)(_play3.default);
 
 /***/ }),
-/* 74 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4125,13 +3844,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
 var _actions = __webpack_require__(5);
 
-var _repeat = __webpack_require__(23);
+var _repeat = __webpack_require__(22);
 
 var _repeat2 = _interopRequireDefault(_repeat);
 
@@ -4158,7 +3877,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers))(_repeat2.default);
 
 /***/ }),
-/* 75 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4170,11 +3889,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _actions = __webpack_require__(5);
 
-var _seekBar = __webpack_require__(24);
+var _seekBar = __webpack_require__(23);
 
 var _seekBar2 = _interopRequireDefault(_seekBar);
 
@@ -4222,7 +3941,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.withHandlers)(secondHandlers))(_seekBar2.default);
 
 /***/ }),
-/* 76 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4236,7 +3955,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -4262,7 +3981,7 @@ Bar.propTypes = {
 exports.default = Bar;
 
 /***/ }),
-/* 77 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4272,13 +3991,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
 var _actions = __webpack_require__(5);
 
-var _playbackRateBar = __webpack_require__(25);
+var _playbackRateBar = __webpack_require__(24);
 
 var _playbackRateBar2 = _interopRequireDefault(_playbackRateBar);
 
@@ -4338,7 +4057,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.withHandlers)(secondHandlers))(_playbackRateBar2.default);
 
 /***/ }),
-/* 78 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4348,13 +4067,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
 var _recompose = __webpack_require__(4);
 
 var _actions = __webpack_require__(5);
 
-var _volumeBar = __webpack_require__(28);
+var _volumeBar = __webpack_require__(27);
 
 var _volumeBar2 = _interopRequireDefault(_volumeBar);
 
@@ -4407,7 +4126,7 @@ exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(
 }), (0, _recompose.withHandlers)(handlers), (0, _recompose.withHandlers)(secondHandlers))(_volumeBar2.default);
 
 /***/ }),
-/* 79 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4417,9 +4136,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _download = __webpack_require__(31);
+var _download = __webpack_require__(30);
 
 var _download2 = _interopRequireDefault(_download);
 
@@ -4437,7 +4156,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_download2.default);
 
 /***/ }),
-/* 80 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4447,9 +4166,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _duration = __webpack_require__(32);
+var _duration = __webpack_require__(31);
 
 var _duration2 = _interopRequireDefault(_duration);
 
@@ -4466,7 +4185,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_duration2.default);
 
 /***/ }),
-/* 81 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4476,9 +4195,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _currentTime = __webpack_require__(33);
+var _currentTime = __webpack_require__(32);
 
 var _currentTime2 = _interopRequireDefault(_currentTime);
 
@@ -4495,7 +4214,7 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
 exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_currentTime2.default);
 
 /***/ }),
-/* 82 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4505,9 +4224,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(1);
+var _reactJplayerUtils = __webpack_require__(0);
 
-var _browserUnsupported = __webpack_require__(34);
+var _browserUnsupported = __webpack_require__(33);
 
 var _browserUnsupported2 = _interopRequireDefault(_browserUnsupported);
 

@@ -11,13 +11,11 @@ export default {
     classnames: 'classNames',
     'lodash.merge': '_.merge',
     react: 'React',
-    'react-dom': 'ReactDOM',
-    'react-motion': 'ReactMotion',
-    'react-redux': 'ReactRedux',
-    recompose: 'Recompose',
-    redux: 'Redux',
-    screenfull: 'screenfull',
     'prop-types': 'PropTypes',
+    'react-motion': 'ReactMotion',
+    recompose: 'Recompose',
+    screenfull: 'screenfull',
+    'react-jplayer-utils': 'ReactJPlayerUtils',
   },
   entry: {
     'js/react-jPlayer.js': './src/index.js',
@@ -34,9 +32,6 @@ export default {
     filename: '[name]',
     libraryTarget: 'var',
     library: 'ReactJPlayer',
-  },
-  devServer: {
-    historyApiFallback: true,
   },
   module: {
     rules: [
