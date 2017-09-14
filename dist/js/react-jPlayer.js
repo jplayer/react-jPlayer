@@ -1003,6 +1003,8 @@ var _timeDisplayContainer2 = _interopRequireDefault(_timeDisplayContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable react/forbid-prop-types */
+
 var JPlayer = function JPlayer(props) {
   var className = props.className,
       keyBindings = props.keyBindings,
