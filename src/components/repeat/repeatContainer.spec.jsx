@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockRepeat = ({ loop }) =>
-  <div onClick={loop} />;
+  <button onClick={loop} />;
 const RepeatContainer = proxyquire('./repeatContainer', {
   './repeat': mockRepeat,
 }).default;

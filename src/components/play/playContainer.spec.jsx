@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockPlay = ({ play, paused }) =>
-  <div onClick={() => play(id, paused)} />;
+  <button onClick={() => play(id, paused)} />;
 const PlayContainer = proxyquire('./playContainer', {
   './play': mockPlay,
 }).default;

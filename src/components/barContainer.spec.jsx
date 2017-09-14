@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockBar = props => (
-  <div
+  <button
     onClick={props.onClick}
     onTouchStart={props.onTouchStart}
     onMouseDown={props.onMouseDown}

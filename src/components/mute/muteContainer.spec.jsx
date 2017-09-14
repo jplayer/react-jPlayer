@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockMute = ({ setMute }) =>
-  <div onClick={() => setMute(id, true)} />;
+  <button onClick={() => setMute(id, true)} />;
 const MuteContainer = proxyquire('./muteContainer', {
   './mute': mockMute,
 }).default;

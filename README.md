@@ -13,6 +13,8 @@ For playlist functionaility, see [react-jPlaylist](https://github.com/jplayer/re
 
   * [Examples](#examples)
   * [Installation](#installation)
+    + [NPM](#npm)
+    + [UMD](#umd)
   * [Features](#features)
   * [To Note](#to-note)
   * [Supported browsers](#supported-browsers)
@@ -98,7 +100,13 @@ For playlist functionaility, see [react-jPlaylist](https://github.com/jplayer/re
 https://github.com/jplayer/react-jPlayer-examples
 
 ### Installation
+#### NPM
 `npm install --save react-jplayer`
+
+#### UMD
+The recommended way to use this package is through npm and webpack. However if you insist on including the .js and .css files manually then both the unminified and minified versions are available from the `/dist/` folder. The dependencies of this package have been excluded for the UMD build so you will need to include them manually as shown in the react-jPlayer-example's [UMDPlayer](https://github.com/jplayer/react-jPlayer-examples/tree/master/jPlayers/UMDPlayer).
+
+This module is exported to a variable called `ReactJPlayer`.
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers
