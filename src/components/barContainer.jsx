@@ -48,7 +48,7 @@ const lifecycle = {
     document.addEventListener('touchmove', this.props.onTouchMove, { passive: false });
     document.addEventListener('touchend', this.props.onTouchEnd);
   },
-  componentDidMount() {
+  componentWillUnmount() {
     document.removeEventListener('mouseup', this.props.onMouseUp);
     document.removeEventListener('mousemove', this.props.onMouseMove);
     document.removeEventListener('touchmove', this.props.onTouchMove);
