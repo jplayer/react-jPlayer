@@ -71,7 +71,7 @@ const lifecycle = {
   componentDidMount() {
     document.addEventListener('keydown', this.props.onKeyDown);
   },
-  componentDidMount() {
+  componentWillUnmount() {
     document.removeEventListener('keydown', this.props.onKeyDown);
   },
 };
