@@ -468,7 +468,7 @@ var handlers = function handlers() {
 };
 
 var lifecycle = {
-  componentWillMount: function componentWillMount() {
+  componentDidMount: function componentDidMount() {
     document.addEventListener('mouseup', this.props.onMouseUp);
     document.addEventListener('mousemove', this.props.onMouseMove);
     document.addEventListener('touchmove', this.props.onTouchMove, { passive: false });
