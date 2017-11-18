@@ -10,11 +10,6 @@
   "bugs": {
     "url": "https://github.com/jplayer/react-jPlayer/issues"
   },
-  "engines": {
-    "node": "~8.4.0",
-    "npm": "~5.4.0",
-    "yarn": "~1.2.0"
-  },
   "keywords": [
     "audio",
     "video",
