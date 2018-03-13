@@ -3913,7 +3913,7 @@ var handlers = {
   movePlayHead: function movePlayHead(props) {
     return function (bar, e) {
       var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
-      var x = e.pageX - offset.left;
+      var x = e.clientX - offset.left;
       var w = bar.getBoundingClientRect().width;
       var percentage = 100 * (x / w);
 
@@ -4021,8 +4021,8 @@ var handlers = {
       var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
       var w = bar.getBoundingClientRect().width;
       var h = bar.getBoundingClientRect().height;
-      var x = e.pageX - offset.left;
-      var y = h - e.pageY + offset.top;
+      var x = e.clientX - offset.left;
+      var y = h - e.clientY + offset.top;
       var ratio = void 0;
 
       if (props.verticalPlaybackRate) {
@@ -4095,8 +4095,8 @@ var handlers = {
       var offset = (0, _reactJplayerUtils.getElementOffset)(bar);
       var w = bar.getBoundingClientRect().width;
       var h = bar.getBoundingClientRect().height;
-      var y = h - e.pageY + offset.top;
-      var x = e.pageX - offset.left;
+      var y = h - e.clientY + offset.top;
+      var x = e.clientX - offset.left;
 
       if (props.verticalVolume) {
         props.setVolume(props.id, y / h);
