@@ -11,7 +11,7 @@ const mapStateToProps = ({ jPlayers }, { id }) => ({
 const handlers = {
   movePlayHead: props => (bar, e) => {
     const offset = getElementOffset(bar);
-    const x = e.pageX - offset.left;
+    const x = e.clientX - offset.left;
     const w = bar.getBoundingClientRect().width;
     const percentage = 100 * (x / w);
 

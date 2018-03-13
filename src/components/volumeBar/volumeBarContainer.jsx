@@ -13,8 +13,8 @@ const handlers = {
     const offset = getElementOffset(bar);
     const w = bar.getBoundingClientRect().width;
     const h = bar.getBoundingClientRect().height;
-    const y = (h - e.pageY) + offset.top;
-    const x = e.pageX - offset.left;
+    const y = (h - e.clientY) + offset.top;
+    const x = e.clientX - offset.left;
 
     if (props.verticalVolume) {
       props.setVolume(props.id, y / h);
