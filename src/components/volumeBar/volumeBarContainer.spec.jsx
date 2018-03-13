@@ -18,15 +18,15 @@ const mockBar = {
   }),
 };
 const mockClickEvent = {
-  pageX: 20,
-  pageY: 100,
+  clientX: 20,
+  clientY: 100,
   preventDefault: expect.createSpy(),
 };
 const mockTouchEvent = {
   touches: [
     {
-      pageX: 20,
-      pageY: 100,
+      clientX: 20,
+      clientY: 100,
     },
   ],
   preventDefault: expect.createSpy(),
