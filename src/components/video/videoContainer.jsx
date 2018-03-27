@@ -1,9 +1,32 @@
 import { connectWithId } from 'react-jplayer-utils';
+import { compose, withProps } from 'recompose';
 
 import Video from './video';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   require: jPlayers[id].mediaSettings.video,
+  src: jPlayers[id].src,
 });
 
-export default connectWithId(mapStateToProps)(Video);
+const createProps = ({ src }) => {
+  if (!src) {
+    return {
+      src: [],
+    };
+  }
+
+  if (!Array.isArray(src)) {
+    return {
+      src: [src],
+    };
+  }
+
+  return {
+    src,
+  };
+};
+
+export default compose(
+  connectWithId(mapStateToProps),
+  withProps(createProps),
+)(Video);

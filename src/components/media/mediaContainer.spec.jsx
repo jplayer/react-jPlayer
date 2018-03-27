@@ -5,7 +5,7 @@ import expect from 'expect';
 import proxyquire from 'proxyquire';
 import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-import { setMedia, setOption, setVolume, setMute, setPlayHead, play, pause } from '../../actions/actions';
+import { setOption, setVolume, setMute, setPlayHead, play, pause } from '../../actions/actions';
 
 proxyquire.noCallThru();
 
@@ -60,20 +60,6 @@ describe('MediaContainer', () => {
   });
 
   describe('onLoad', () => {
-    it('sets src if src not null', () => {
-      setup(jPlayers);
-
-      expect(mockCurrentMedia.src).toBe(jPlayers[id].src);
-    });
-
-    it('doesnt set src if src null', () => {
-      jPlayers[id].src = null;
-
-      setup(jPlayers);
-
-      expect(mockCurrentMedia.src).toBe(undefined);
-    });
-
     it('sets other media values on load', () => {
       setup(jPlayers);
 
@@ -88,25 +74,7 @@ describe('MediaContainer', () => {
   });
 
   describe('onUpdate', () => {
-    it('updates media src if src changes', () => {
-      const mediaElement = document.createElement('audio');
-      const media = {
-        sources: {
-          mp3: 'www.test.mp3',
-        },
-      };
-
-      const { store } = setup(jPlayers);
-
-      expect.spyOn(document, 'createElement').andReturn(mediaElement);
-      expect.spyOn(mediaElement, 'canPlayType').andReturn('probably');
-
-      store.dispatch(setMedia(id, media));
-
-      expect(mockCurrentMedia.src).toBe(media.sources.mp3);
-    });
-
-    it('updates other media values on change', () => {
+    it('updates media values on change', () => {
       const { store } = setup(jPlayers);
 
       store.dispatch(setOption(id, 'defaultPlaybackRate', 0.3));

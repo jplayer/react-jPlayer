@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
 import Media from '../media/mediaContainer';
+import { classes } from '../../util/constants';
 
 const Audio = props => (
   <Media
@@ -32,7 +33,12 @@ const Audio = props => (
     onVolumeChange={props.onVolumeChange}
     onWaiting={props.onWaiting}
   >
-    <audio />
+    {(setRef, tracks) => (
+      <audio key={props.src.length ? props.src[0] : null} ref={setRef} className={classes.MEDIA}>
+        {props.src.map(source => <source key={source} src={source} />)}
+        {tracks}
+      </audio>
+    )}
   </Media>
 );
 
@@ -86,6 +92,7 @@ Audio.propTypes = {
   onTimeUpdate: PropTypes.func,
   onVolumeChange: PropTypes.func,
   onWaiting: PropTypes.func,
+  src: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default compose(

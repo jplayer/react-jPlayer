@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Events from './events/eventsContainer';
 import Track from './track/track';
-import { classes } from '../../util/constants';
 
 const Media = props => (
   <Events
@@ -32,12 +31,8 @@ const Media = props => (
     onVolumeChange={props.onVolumeChange}
     onWaiting={props.onWaiting}
   >
-    {React.cloneElement(React.Children.only(props.children),
-      {
-        ref: props.setCurrentMedia,
-        className: classes.MEDIA,
-      }, props.tracks.map(track => <Track key={track.src} {...track} />))
-    }
+    {props.children(props.setCurrentMedia,
+      props.tracks.map(track => <Track key={track.src} {...track} />))}
   </Events>
 );
 
@@ -46,8 +41,8 @@ Media.defaultProps = {
 };
 
 Media.propTypes = {
-  children: PropTypes.node.isRequired,
   setCurrentMedia: PropTypes.func.isRequired,
+  children: PropTypes.func.isRequired,
   updateMediaStatus: PropTypes.func.isRequired,
   tracks: PropTypes.arrayOf(
     PropTypes.shape({

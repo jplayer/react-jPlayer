@@ -6,7 +6,6 @@ import { setOption } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers }, { id }) => ({
   loop: jPlayers[id].loop,
-  src: jPlayers[id].src,
   playHeadPercent: jPlayers[id].playHeadPercent,
   paused: jPlayers[id].paused,
   defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
@@ -50,11 +49,6 @@ const handlers = () => {
       props.setOption(props.id, 'currentTime', currentMedia.currentTime);
       props.setOption(props.id, 'playbackRate', currentMedia.playbackRate);
     },
-    updateMediaSrc: props => () => {
-      if (props.src !== null) {
-        currentMedia.src = props.src;
-      }
-    },
     updateMediaTime: props => () => {
       currentMedia.currentTime = props.newTime;
       props.setOption(props.id, 'newTime', null);
@@ -96,17 +90,9 @@ const handlers = () => {
 
 const lifecycle = {
   componentDidMount() {
-    if (this.props.src !== null) {
-      this.props.updateMediaSrc();
-    }
-
     this.props.updateOtherMediaValues();
   },
   componentDidUpdate(prevProps) {
-    if (prevProps.src !== this.props.src) {
-      this.props.updateMediaSrc();
-    }
-
     if (this.props.newTime !== null) {
       this.props.updateMediaTime();
     }

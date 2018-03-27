@@ -44,12 +44,6 @@ describe('Video', () => {
   describe('when video is required', () => {
     const require = true;
 
-    it('renders video in Media', () => {
-      const { video } = setup({ require });
-
-      expect(video.find(Media).find('video').exists()).toBe(true);
-    });
-
     Object.keys(events).forEach((key) => {
       it(`passes ${key} to Media`, () => {
         const { video } = setup({ ...events, require });

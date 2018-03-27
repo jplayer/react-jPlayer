@@ -44,12 +44,6 @@ describe('Audio', () => {
   describe('when audio is required', () => {
     const require = true;
 
-    it('renders audio in Media', () => {
-      const { audio } = setup({ require });
-
-      expect(audio.find(Media).find('audio').exists()).toBe(true);
-    });
-
     Object.keys(events).forEach((key) => {
       it(`passes ${key} to Media`, () => {
         const { audio } = setup({ ...events, require });
