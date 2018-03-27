@@ -134,9 +134,11 @@
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.5.8",
     "react": "^15.4.1",
-    "react-jplayer-utils": "latest",
     "react-motion": "^0.5.0",
     "recompose": "^0.24.0",
     "screenfull": "^3.0.2"
+  },
+  "peerDependencies": {
+    "react-jplayer-utils": "^3.1.5"
   }
 }
