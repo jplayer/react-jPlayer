@@ -66,18 +66,6 @@ var ReactJPlayer =
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = ReactJPlayerUtils;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = PropTypes;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -298,6 +286,18 @@ var defaultOptions = exports.defaultOptions = {
 };
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = ReactJPlayerUtils;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = PropTypes;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
@@ -321,7 +321,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setOption = exports.focus = exports.setMute = exports.setVolume = exports.setPlayHead = exports.pause = exports.play = exports.clearMedia = exports.setMedia = undefined;
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 var setMedia = exports.setMedia = function setMedia(id, media) {
   return {
@@ -397,7 +397,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -500,7 +500,7 @@ var _lodash = __webpack_require__(8);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -539,11 +539,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -585,7 +585,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -595,9 +595,9 @@ var _mediaContainer = __webpack_require__(12);
 
 var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _constants = __webpack_require__(0);
 
-/* eslint-disable jsx-a11y/media-has-caption */
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Video = function Video(props) {
   return _react2.default.createElement(
@@ -627,9 +627,18 @@ var Video = function Video(props) {
       onVolumeChange: props.onVolumeChange,
       onWaiting: props.onWaiting
     },
-    _react2.default.createElement('video', null)
+    function (setRef, tracks) {
+      return _react2.default.createElement(
+        'audio',
+        { key: props.src.length ? props.src[0] : null, ref: setRef, className: _constants.classes.MEDIA },
+        props.src.map(function (source) {
+          return _react2.default.createElement('source', { key: source, src: source });
+        }),
+        tracks
+      );
+    }
   );
-};
+}; /* eslint-disable jsx-a11y/media-has-caption */
 
 Video.defaultProps = {
   onAbort: Function.prototype,
@@ -680,7 +689,8 @@ Video.propTypes = {
   onSuspend: _propTypes2.default.func,
   onTimeUpdate: _propTypes2.default.func,
   onVolumeChange: _propTypes2.default.func,
-  onWaiting: _propTypes2.default.func
+  onWaiting: _propTypes2.default.func,
+  src: _propTypes2.default.arrayOf(_propTypes2.default.string).isRequired
 };
 
 exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
@@ -698,7 +708,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -715,7 +725,6 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   var id = _ref2.id;
   return {
     loop: jPlayers[id].loop,
-    src: jPlayers[id].src,
     playHeadPercent: jPlayers[id].playHeadPercent,
     paused: jPlayers[id].paused,
     defaultPlaybackRate: jPlayers[id].defaultPlaybackRate,
@@ -768,13 +777,6 @@ var handlers = function handlers() {
         props.setOption(props.id, 'playbackRate', currentMedia.playbackRate);
       };
     },
-    updateMediaSrc: function updateMediaSrc(props) {
-      return function () {
-        if (props.src !== null) {
-          currentMedia.src = props.src;
-        }
-      };
-    },
     updateMediaTime: function updateMediaTime(props) {
       return function () {
         currentMedia.currentTime = props.newTime;
@@ -821,17 +823,9 @@ var handlers = function handlers() {
 
 var lifecycle = {
   componentDidMount: function componentDidMount() {
-    if (this.props.src !== null) {
-      this.props.updateMediaSrc();
-    }
-
     this.props.updateOtherMediaValues();
   },
   componentDidUpdate: function componentDidUpdate(prevProps) {
-    if (prevProps.src !== this.props.src) {
-      this.props.updateMediaSrc();
-    }
-
     if (this.props.newTime !== null) {
       this.props.updateMediaTime();
     }
@@ -864,7 +858,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -874,9 +868,9 @@ var _mediaContainer = __webpack_require__(12);
 
 var _mediaContainer2 = _interopRequireDefault(_mediaContainer);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _constants = __webpack_require__(0);
 
-/* eslint-disable jsx-a11y/media-has-caption */
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Audio = function Audio(props) {
   return _react2.default.createElement(
@@ -906,9 +900,18 @@ var Audio = function Audio(props) {
       onVolumeChange: props.onVolumeChange,
       onWaiting: props.onWaiting
     },
-    _react2.default.createElement('audio', null)
+    function (setRef, tracks) {
+      return _react2.default.createElement(
+        'audio',
+        { key: props.src.length ? props.src[0] : null, ref: setRef, className: _constants.classes.MEDIA },
+        props.src.map(function (source) {
+          return _react2.default.createElement('source', { key: source, src: source });
+        }),
+        tracks
+      );
+    }
   );
-};
+}; /* eslint-disable jsx-a11y/media-has-caption */
 
 Audio.defaultProps = {
   onAbort: Function.prototype,
@@ -959,7 +962,8 @@ Audio.propTypes = {
   onSuspend: _propTypes2.default.func,
   onTimeUpdate: _propTypes2.default.func,
   onVolumeChange: _propTypes2.default.func,
-  onWaiting: _propTypes2.default.func
+  onWaiting: _propTypes2.default.func,
+  src: _propTypes2.default.arrayOf(_propTypes2.default.string).isRequired
 };
 
 exports.default = (0, _recompose.compose)((0, _recompose.branch)(function (props) {
@@ -981,7 +985,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1058,11 +1062,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1098,11 +1102,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1135,13 +1139,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1177,13 +1181,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1219,11 +1223,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1268,11 +1272,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1314,11 +1318,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1360,11 +1364,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1400,7 +1404,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1408,7 +1412,7 @@ var _barContainer = __webpack_require__(6);
 
 var _barContainer2 = _interopRequireDefault(_barContainer);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1454,7 +1458,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1466,7 +1470,7 @@ var _playbackRateBarValueContainer = __webpack_require__(25);
 
 var _playbackRateBarValueContainer2 = _interopRequireDefault(_playbackRateBarValueContainer);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1508,7 +1512,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _playbackRateBarValue = __webpack_require__(26);
 
@@ -1544,11 +1548,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1590,7 +1594,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -1602,7 +1606,7 @@ var _volumeBarValueContainer = __webpack_require__(28);
 
 var _volumeBarValueContainer2 = _interopRequireDefault(_volumeBarValueContainer);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1644,7 +1648,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _volumeBarValue = __webpack_require__(29);
 
@@ -1679,11 +1683,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1724,13 +1728,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1778,13 +1782,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1820,11 +1824,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1858,13 +1862,13 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1924,7 +1928,7 @@ var _actions = __webpack_require__(5);
 
 var actions = _interopRequireWildcard(_actions);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 var constants = _interopRequireWildcard(_constants);
 
@@ -2166,11 +2170,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _initializeOptions = __webpack_require__(7);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 var _urlNotSetError = __webpack_require__(36);
 
@@ -2419,7 +2423,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 exports.default = function (context) {
   return {
@@ -2440,7 +2444,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 exports.default = function (context) {
   return {
@@ -2463,7 +2467,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _actions = __webpack_require__(5);
 
@@ -2542,7 +2546,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactMotion = __webpack_require__(9);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -2593,7 +2597,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
 
 var _video = __webpack_require__(11);
 
@@ -2605,11 +2611,32 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   var jPlayers = _ref.jPlayers;
   var id = _ref2.id;
   return {
-    require: jPlayers[id].mediaSettings.video
+    require: jPlayers[id].mediaSettings.video,
+    src: jPlayers[id].src
   };
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_video2.default);
+var createProps = function createProps(_ref3) {
+  var src = _ref3.src;
+
+  if (!src) {
+    return {
+      src: []
+    };
+  }
+
+  if (!Array.isArray(src)) {
+    return {
+      src: [src]
+    };
+  }
+
+  return {
+    src: src
+  };
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.withProps)(createProps))(_video2.default);
 
 /***/ }),
 /* 41 */
@@ -2628,7 +2655,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -2639,8 +2666,6 @@ var _eventsContainer2 = _interopRequireDefault(_eventsContainer);
 var _track = __webpack_require__(45);
 
 var _track2 = _interopRequireDefault(_track);
-
-var _constants = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2673,10 +2698,7 @@ var Media = function Media(props) {
       onVolumeChange: props.onVolumeChange,
       onWaiting: props.onWaiting
     },
-    _react2.default.cloneElement(_react2.default.Children.only(props.children), {
-      ref: props.setCurrentMedia,
-      className: _constants.classes.MEDIA
-    }, props.tracks.map(function (track) {
+    props.children(props.setCurrentMedia, props.tracks.map(function (track) {
       return _react2.default.createElement(_track2.default, _extends({ key: track.src }, track));
     }))
   );
@@ -2687,8 +2709,8 @@ Media.defaultProps = {
 };
 
 Media.propTypes = {
-  children: _propTypes2.default.node.isRequired,
   setCurrentMedia: _propTypes2.default.func.isRequired,
+  children: _propTypes2.default.func.isRequired,
   updateMediaStatus: _propTypes2.default.func.isRequired,
   tracks: _propTypes2.default.arrayOf(_propTypes2.default.shape({
     default: _propTypes2.default.bool,
@@ -2737,13 +2759,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _events = __webpack_require__(43);
 
@@ -2909,7 +2931,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -2983,7 +3005,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 exports.default = function (context) {
   return {
@@ -3008,7 +3030,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -3052,7 +3074,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
+
+var _recompose = __webpack_require__(4);
 
 var _audio = __webpack_require__(13);
 
@@ -3064,11 +3088,32 @@ var mapStateToProps = function mapStateToProps(_ref, _ref2) {
   var jPlayers = _ref.jPlayers;
   var id = _ref2.id;
   return {
-    require: !jPlayers[id].mediaSettings.video
+    require: !jPlayers[id].mediaSettings.video,
+    src: jPlayers[id].src
   };
 };
 
-exports.default = (0, _reactJplayerUtils.connectWithId)(mapStateToProps)(_audio2.default);
+var createProps = function createProps(_ref3) {
+  var src = _ref3.src;
+
+  if (!src) {
+    return {
+      src: []
+    };
+  }
+
+  if (!Array.isArray(src)) {
+    return {
+      src: [src]
+    };
+  }
+
+  return {
+    src: src
+  };
+};
+
+exports.default = (0, _recompose.compose)((0, _reactJplayerUtils.connectWithId)(mapStateToProps), (0, _recompose.withProps)(createProps))(_audio2.default);
 
 /***/ }),
 /* 47 */
@@ -3081,13 +3126,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _states = __webpack_require__(48);
 
@@ -3170,7 +3215,7 @@ var _classnames = __webpack_require__(49);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3203,7 +3248,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -3213,7 +3258,7 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _actions = __webpack_require__(5);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3326,7 +3371,7 @@ var _screenfull = __webpack_require__(52);
 
 var _screenfull2 = _interopRequireDefault(_screenfull);
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -3411,7 +3456,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -3448,7 +3493,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -3517,7 +3562,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _animation = __webpack_require__(56);
 
@@ -3554,7 +3599,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactMotion = __webpack_require__(9);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -3599,7 +3644,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _bufferBar = __webpack_require__(16);
 
@@ -3673,7 +3718,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _poster = __webpack_require__(17);
 
@@ -3702,7 +3747,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _title = __webpack_require__(18);
 
@@ -3731,7 +3776,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _actions = __webpack_require__(5);
 
@@ -3768,7 +3813,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _actions = __webpack_require__(5);
 
@@ -3803,7 +3848,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _actions = __webpack_require__(5);
 
@@ -3846,7 +3891,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -3891,7 +3936,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _recompose = __webpack_require__(4);
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _actions = __webpack_require__(5);
 
@@ -3957,7 +4002,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -3993,7 +4038,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -4069,7 +4114,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _recompose = __webpack_require__(4);
 
@@ -4138,7 +4183,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _download = __webpack_require__(30);
 
@@ -4168,7 +4213,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _duration = __webpack_require__(31);
 
@@ -4197,7 +4242,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _currentTime = __webpack_require__(32);
 
@@ -4226,7 +4271,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactJplayerUtils = __webpack_require__(0);
+var _reactJplayerUtils = __webpack_require__(1);
 
 var _browserUnsupported = __webpack_require__(33);
 
