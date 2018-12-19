@@ -5,7 +5,7 @@ import Bar from './bar';
 import componentSetup from '../util/specHelpers/componentSetup.spec';
 
 const setup = props => componentSetup(Bar, {
-  children: <div className="bar" />,
+  children: <div className="@@bar" />,
   onClick: expect.createSpy(),
   onMouseDown: expect.createSpy(),
   onTouchStart: expect.createSpy(),
@@ -41,6 +41,6 @@ describe('Bar', () => {
   it('children are rendered', () => {
     const { wrapper } = setup();
 
-    expect(wrapper.find('.bar').exists()).toBe(true);
+    expect(wrapper.find('.@@bar').exists()).toBe(true);
   });
 });

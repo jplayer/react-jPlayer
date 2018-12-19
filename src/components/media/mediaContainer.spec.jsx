@@ -140,29 +140,29 @@ describe('MediaContainer', () => {
     describe('updateMediaTimeAfterSeeking', () => {
       it(`when the media is seekable it updates currentTime 
           and currentPercentRelative`, () => {
-        const { store } = setup(jPlayers);
+          const { store } = setup(jPlayers);
 
-        store.dispatch(setPlayHead(id, 22));
+          store.dispatch(setPlayHead(id, 22));
 
-        const jPlayer = store.getState().jPlayers[id];
+          const jPlayer = store.getState().jPlayers[id];
 
-        expect(mockCurrentMedia.currentTime).toBe(22);
-        expect(jPlayer.currentPercentRelative).toBe(22);
-      });
+          expect(mockCurrentMedia.currentTime).toBe(22);
+          expect(jPlayer.currentPercentRelative).toBe(22);
+        });
 
       it(`when the media has an infinitly seekable 
           it does not update the currentTime and currentPercentRelative`, () => {
-        const { store } = setup(jPlayers);
+          const { store } = setup(jPlayers);
 
-        mockCurrentMedia.seekable.end = expect.createSpy().andReturn(Infinity);
+          mockCurrentMedia.seekable.end = expect.createSpy().andReturn(Infinity);
 
-        store.dispatch(setPlayHead(id, 22));
+          store.dispatch(setPlayHead(id, 22));
 
-        const jPlayer = store.getState().jPlayers[id];
+          const jPlayer = store.getState().jPlayers[id];
 
-        expect(mockCurrentMedia.currentTime).toNotBe(22);
-        expect(jPlayer.currentPercentRelative).toNotBe(22);
-      });
+          expect(mockCurrentMedia.currentTime).toNotBe(22);
+          expect(jPlayer.currentPercentRelative).toNotBe(22);
+        });
     });
 
     describe('updateMediaPlayState', () => {
