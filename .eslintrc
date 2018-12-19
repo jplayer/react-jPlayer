@@ -25,7 +25,11 @@
       ],
       "rules": {
         "react/prop-types": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "react/prefer-stateless-function": [
+          1, 
+          { "ignorePureComponents": true }
+        ]
       }
     }
   ]

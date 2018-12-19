@@ -1,7 +1,11 @@
 import expect from 'expect';
 import { convertTime } from 'react-jplayer-utils';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import { defaultOptions } from './constants';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('convertTime', () => {
   it('sets timeText to empty if time is NaN', () => {
